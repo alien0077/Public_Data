@@ -10,6 +10,7 @@ const SHOW_ICONS = {
     'ting_hao': '\uD83D\uDCCA',
     'tech_wav': '\uD83D\uDCBB',
     'old_wang': '\uD83D\uDCC8',
+    'money_show': '\uD83D\uDCB9',
 };
 
 export class AudioSummary {
@@ -62,6 +63,7 @@ export class AudioSummary {
                 'ting_hao': 'from-emerald-500 to-emerald-600',
                 'tech_wav': 'from-purple-500 to-purple-600',
                 'old_wang': 'from-orange-500 to-orange-600',
+                'money_show': 'from-rose-500 to-rose-600',
             };
             groups[key].config = {
                 show_name: first.show_name,
@@ -72,7 +74,7 @@ export class AudioSummary {
         }
 
         // 排序
-        const order = ['zh_stock', 'ting_hao', 'tech_wav', 'old_wang'];
+        const order = ['zh_stock', 'ting_hao', 'tech_wav', 'old_wang', 'money_show'];
         const sortedKeys = Object.keys(groups).sort(
             (a, b) => order.indexOf(a) - order.indexOf(b)
         );
