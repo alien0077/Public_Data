@@ -5,13 +5,36 @@
  * 過去一週的節目 AI 摘要，按節目分組渲染為卡片佈局。
  */
 
-const SHOW_ICONS = {
-    'zh_stock': '\uD83C\uDF99\uFE0F',
-    'ting_hao': '\uD83D\uDCCA',
-    'tech_wav': '\uD83D\uDCBB',
-    'old_wang': '\uD83D\uDCC8',
-    'money_show': '\uD83D\uDCB9',
-};
+const SHOW_COLOR_PALETTE = [
+    'from-blue-500 to-blue-600',
+    'from-emerald-500 to-emerald-600',
+    'from-purple-500 to-purple-600',
+    'from-orange-500 to-orange-600',
+    'from-rose-500 to-rose-600',
+    'from-cyan-500 to-cyan-600',
+    'from-amber-500 to-amber-600',
+];
+
+function hashString(value) {
+    let hash = 0;
+    for (let i = 0; i < value.length; i++) {
+        hash = ((hash << 5) - hash + value.charCodeAt(i)) | 0;
+    }
+    return Math.abs(hash);
+}
+
+function showIcon(showName, category) {
+    const text = (showName || '') + (category || '');
+    if (text.includes('科技')) return '\uD83D\uDCBB';
+    if (text.includes('總體') || text.includes('經濟')) return '\uD83C\uDF0F';
+    if (text.includes('Podcast') || text.includes('podcast')) return '\uD83C\uDF99\uFE0F';
+    if (text.includes('台股') || text.includes('籌碼') || text.includes('技術')) return '\uD83D\uDCC8';
+    return '\uD83C\uDFA7';
+}
+
+function showColor(showKey) {
+    return SHOW_COLOR_PALETTE[hashString(showKey || '') % SHOW_COLOR_PALETTE.length];
+}
 
 export class AudioSummary {
     constructor() {
@@ -57,26 +80,28 @@ export class AudioSummary {
 
         for (const key of Object.keys(groups)) {
             const first = groups[key].episodes[0];
-            const icon = SHOW_ICONS[key] || '\uD83C\uDFA7';
-            const colors = {
-                'zh_stock': 'from-blue-500 to-blue-600',
-                'ting_hao': 'from-emerald-500 to-emerald-600',
-                'tech_wav': 'from-purple-500 to-purple-600',
-                'old_wang': 'from-orange-500 to-orange-600',
-                'money_show': 'from-rose-500 to-rose-600',
-            };
             groups[key].config = {
                 show_name: first.show_name,
                 category: first.category,
-                icon: icon,
-                color: colors[key] || 'from-gray-500 to-gray-600',
+                icon: showIcon(first.show_name, first.category),
+                color: showColor(key),
             };
         }
 
-        // 排序
-        const order = ['zh_stock', 'ting_hao', 'tech_wav', 'old_wang', 'money_show'];
+        // 依各節目最新集數排序；新增 show_key 不需改程式。
         const sortedKeys = Object.keys(groups).sort(
-            (a, b) => order.indexOf(a) - order.indexOf(b)
+            (a, b) => {
+                const aLatest = groups[a].episodes.reduce((latest, ep) => {
+                    const date = ep.publish_date || '';
+                    return date > latest ? date : latest;
+                }, '');
+                const bLatest = groups[b].episodes.reduce((latest, ep) => {
+                    const date = ep.publish_date || '';
+                    return date > latest ? date : latest;
+                }, '');
+                if (aLatest !== bLatest) return bLatest.localeCompare(aLatest);
+                return (groups[a].config.show_name || '').localeCompare(groups[b].config.show_name || '', 'zh-Hant');
+            }
         );
 
         const lastUpdated = this.data.last_updated
