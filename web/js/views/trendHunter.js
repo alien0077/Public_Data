@@ -1584,16 +1584,35 @@ export const TrendHunter = {
                 });
 
                 container.innerHTML = ''; // 清空 loading
+                container.style.minHeight = '';
+                container.style.height = 'auto';
                 const chartDom = document.createElement('div');
                 chartDom.style.width = '100%';
-                chartDom.style.height = '100%';
+                chartDom.style.flex = '0 0 auto';
+                chartDom.style.minWidth = '0';
+                const setHeatmapSize = () => {
+                    const isMobileHeatmap = window.matchMedia('(max-width: 768px)').matches;
+                    const viewportHeight = window.innerHeight || document.documentElement.clientHeight || 720;
+                    const chartHeight = isMobileHeatmap
+                        ? Math.max(560, Math.min(760, viewportHeight - 220))
+                        : Math.max(680, Math.min(920, viewportHeight - 260));
+                    chartDom.style.height = `${chartHeight}px`;
+                    chartDom.style.minHeight = `${chartHeight}px`;
+                };
+                setHeatmapSize();
                 container.appendChild(chartDom);
 
                 setTimeout(() => {
                     if (!container.contains(chartDom)) return;
                     const isDark = document.documentElement.classList.contains('dark');
                     const myChart = echarts.init(chartDom, isDark ? 'dark' : null);
-                    window.addEventListener('resize', () => myChart.resize());
+                    const resizeHeatmap = () => {
+                        setHeatmapSize();
+                        myChart.resize();
+                    };
+                    window.addEventListener('resize', resizeHeatmap);
+                    window.addEventListener('orientationchange', () => setTimeout(resizeHeatmap, 160));
+                    window.addEventListener('theme-changed', () => setTimeout(resizeHeatmap, 60));
 
                     const option = {
                         backgroundColor: 'transparent',
@@ -1617,19 +1636,23 @@ export const TrendHunter = {
                             leafDepth: 2,
                             roam: true,
                             nodeClick: 'zoomTo',
-                            breadcrumb: { show: true, bottom: 0 },
+                            breadcrumb: { show: false },
+                            left: 8,
+                            right: 8,
+                            top: 12,
+                            bottom: 8,
                             label: {
                                 show: true,
                                 formatter: '{b}',
-                                fontSize: 11,
+                                fontSize: window.matchMedia('(max-width: 768px)').matches ? 10 : 11,
                                 color: '#fff'
                             },
                             upperLabel: {
                                 show: true,
-                                height: 24,
+                                height: window.matchMedia('(max-width: 768px)').matches ? 22 : 24,
                                 color: isDark ? '#fff' : '#111',
                                 backgroundColor: isDark ? '#2d3748' : '#edf2f7',
-                                fontSize: 12,
+                                fontSize: window.matchMedia('(max-width: 768px)').matches ? 11 : 12,
                                 fontWeight: 'bold'
                             },
                             itemStyle: {
@@ -1660,6 +1683,7 @@ export const TrendHunter = {
                     };
 
                     myChart.setOption(option);
+                    setTimeout(resizeHeatmap, 80);
                     
                     myChart.on('click', function (params) {
                         if (params.data && params.data.symbol && params.treePathInfo.length > 2) {

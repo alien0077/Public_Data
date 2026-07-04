@@ -57,6 +57,27 @@ export const Favorites = {
         localStorage.setItem('twstock_favorite_data', JSON.stringify(this._data));
     },
 
+    normalizeStockSymbol(symbol = '') {
+        return String(symbol || '').replace(/^\^/, '').split('.')[0].toUpperCase();
+    },
+
+    isPlaceholderName(name, symbol) {
+        const normalizedName = String(name || '').trim().toUpperCase();
+        const baseSymbol = this.normalizeStockSymbol(symbol);
+        if (!normalizedName) return true;
+        return normalizedName === baseSymbol ||
+            normalizedName === `${baseSymbol}.TW` ||
+            normalizedName === `${baseSymbol}.TWO`;
+    },
+
+    resolveDisplayName(symbol, quote = {}, meta = {}) {
+        const baseSymbol = this.normalizeStockSymbol(symbol);
+        const metaStock = meta.stocks?.find(s => this.normalizeStockSymbol(s.symbol) === baseSymbol);
+        if (metaStock?.name) return metaStock.name;
+        if (!this.isPlaceholderName(quote.name, symbol)) return quote.name;
+        return baseSymbol || symbol;
+    },
+
     // 供其他模組呼叫 (如 stockDetail.js)
     toggleFavorite(symbol) {
         let found = false;
@@ -266,30 +287,26 @@ export const Favorites = {
         const peMap = {};
         if (peData && peData.sectors) {
             peData.sectors.forEach(sector => {
-                (sector.stocks || []).forEach(s => { peMap[s.stock_id] = s.pe_ratio; });
+                (sector.stocks || []).forEach(s => { peMap[this.normalizeStockSymbol(s.stock_id)] = s.pe_ratio; });
             });
         }
         const peAll = await api.fetchLocalJson('quant/pe_ratio.json');
         if (peAll && peAll.stocks) {
             Object.entries(peAll.stocks).forEach(([sid, info]) => {
-                if (peMap[sid] == null && info.pe) { peMap[sid] = info.pe; }
+                const cleanSid = this.normalizeStockSymbol(sid);
+                if (peMap[cleanSid] == null && info.pe) { peMap[cleanSid] = info.pe; }
             });
         }
 
         symbols.forEach(sym => {
             const quote = quotes[sym] || {};
+            const displaySymbol = this.normalizeStockSymbol(sym) || sym;
             const price = quote.price || 0;
             const refPrice = quote.referencePrice || price;
             const changePercent = (price > 0 && refPrice > 0) ? ((price - refPrice) / refPrice * 100) : 0;
             const high = quote.high || 0;
             const low = quote.low || 0;
-            
-            // Try to find name if not in quote
-            let name = quote.name || '';
-            if (!name && meta.stocks) {
-                const stockInfo = meta.stocks.find(s => s.symbol === sym || s.symbol === sym.split('.')[0]);
-                if (stockInfo) name = stockInfo.name;
-            }
+            const name = this.resolveDisplayName(sym, quote, meta);
 
             const row = document.createElement('tr');
             row.className = 'hover:bg-gray-800/30 transition-colors';
@@ -302,12 +319,12 @@ export const Favorites = {
 
             const style = getPriceChangeStyle(price, refPrice, sym);
             const priceClass = style.bgClass ? `${style.textClass} ${style.bgClass}` : style.textClass;
-            const peRatio = peMap[sym];
+            const peRatio = peMap[displaySymbol];
             const peColor = peRatio < 15 ? 'text-green-500' : peRatio < 25 ? 'text-gray-400' : 'text-orange-500';
             const peStr = peRatio ? peRatio.toFixed(1) : '--';
             
             row.innerHTML = `
-                <td class="px-3 md:px-6 py-4">${stockIdentityHTML(sym, name)}</td>
+                <td class="px-3 md:px-6 py-4">${stockIdentityHTML(displaySymbol, name)}</td>
                 <td class="px-3 md:px-6 py-4 text-right ${priceClass}">
                     ${price > 0 ? this.formatNumber(price) : '--'}
                 </td>
@@ -336,7 +353,7 @@ export const Favorites = {
                 card.className = 'hover:bg-gray-50 dark:hover:bg-gray-800/30 transition-colors';
                 card.addEventListener('click', () => window.StockDetail.show(sym));
                 card.innerHTML = stockMobileCardHTML({
-                    symbol: sym,
+                    symbol: displaySymbol,
                     name,
                     primaryHTML: `<div class="${priceClass}"><div class="font-bold">${price > 0 ? this.formatNumber(price) : '--'}</div><div class="text-[10px]">${price > 0 ? `${changePercent > 0 ? '▲' : (changePercent < 0 ? '▼' : '')} ${Math.abs(changePercent).toFixed(2)}%` : '--'}</div></div>`,
                     metricsHTML: stockMetricHTML('最高', high > 0 ? this.formatNumber(high) : '--') +

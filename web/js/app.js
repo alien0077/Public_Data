@@ -1,12 +1,12 @@
 import { db } from './db.js';
 import { api } from './api.js';
 import { charts } from './charts.js';
-import { TrendHunter } from './views/trendHunter.js?v=3';
+import { TrendHunter } from './views/trendHunter.js?v=4';
 import { AssetRisk } from './views/assetRisk.js?v=2';
 import { StockDetail } from './views/stockDetail.js?v=3';
 import { BattleRecord } from './views/battleRecord.js?v=2';
 import { Transaction } from './views/transaction.js?v=2';
-import { Favorites } from './views/favorites.js?v=2';
+import { Favorites } from './views/favorites.js?v=3';
 import { router } from './router.js';
 import { CorporateActions } from './corporateActions.js';
 import { Settings } from './views/settings.js?cb=3';
