@@ -74,6 +74,152 @@ function renderFlowSparkline(points, color = 'blue') {
     `;
 }
 
+const MACRO_THEME_NAMES = new Set([
+    'AI_Ecosystem', 'Consumer', 'Electronics', 'Energy', 'Financials',
+    'Healthcare', 'Industrials', 'Materials', 'Networking', 'Optoelectronics',
+    'Real Estate', 'Semiconductor', 'Services', 'Technology', 'Transportation'
+]);
+
+const OFFICIAL_SECTOR_NAMES = new Set([
+    '半導體業', '電腦及週邊設備業', '電子零組件業', '通信網路業', '光電業',
+    '電機機械', '生技醫療業', '金融保險業', '航運業', '汽車工業',
+    '建材營造業', '貿易百貨業', '觀光餐旅', '化學工業', '鋼鐵工業',
+    '塑膠工業', '水泥工業', '玻璃陶瓷', '橡膠工業', '造紙工業',
+    '紡織纖維', '食品工業', '居家生活', '運動休閒', '文化創意業',
+    '農業科技業', '電器電纜', '油電燃氣業', '綠能環保', '其他電子業',
+    '電子通路業', '資訊服務業', '數位雲端', '其他業'
+]);
+
+const AI_THEME_NAMES = new Set([
+    '晶圓代工', 'ASIC_IP', 'IC設計_HPC_存儲', 'AI記憶體', '半導體設備_CoWoS',
+    '封測_材料', 'AI伺服器代工', '散熱模組', '伺服器機殼_滑軌', '矽光子_CPO',
+    'PCB_CCL_ABF', '電源供應器', 'AI玻璃基板', 'AI高功率_功率半導體',
+    'BBU_電池備援', '機器人_AI視覺', '機器人_自動化', '網通設備'
+]);
+
+const OLD_ECONOMY_KEYWORDS = [
+    '航運', '航空', '金融', '金控', '銀行', '保險', '證券', '營建', '建材',
+    '食品', '塑膠', '水泥', '玻璃', '橡膠', '造紙', '紡織', '鋼鐵',
+    '化學', '百貨', '觀光', '油電', '綠能', '居家', '運動', '文化',
+    '農業', 'Transportation', 'Financials', 'Real Estate', 'Materials', 'Consumer'
+];
+
+function getRotationViewData(rotationData, view) {
+    const themes = rotationData?.themes || [];
+    if (view === 'ai') return rotationData?.ai_themes || themes.filter(t => AI_THEME_NAMES.has(t.name));
+    if (view === 'macro') return themes.filter(t => MACRO_THEME_NAMES.has(t.name));
+    if (view === 'official') return themes.filter(t => OFFICIAL_SECTOR_NAMES.has(t.name));
+    if (view === 'old') return themes.filter(t => OLD_ECONOMY_KEYWORDS.some(k => String(t.name || '').includes(k)));
+    return themes;
+}
+
+function classifyStrengthState(metrics) {
+    if (metrics.flow20 > 0 && metrics.avgReturn >= 0 && metrics.breadth >= 0.5 && metrics.flowPersistence >= 0.45) {
+        return { label: '強勢延續', cls: 'bg-red-500/10 text-red-500 border-red-500/30', tone: 'red' };
+    }
+    if ((metrics.flow20 < 0 && metrics.avgReturn < 0) || (metrics.flow5 < 0 && metrics.breadth < 0.35)) {
+        return { label: '確認轉弱', cls: 'bg-green-500/10 text-green-500 border-green-500/30', tone: 'green' };
+    }
+    if (metrics.flow5 < 0 || metrics.latestFlow < 0 || metrics.breadth < 0.45) {
+        return { label: '轉弱觀察', cls: 'bg-amber-500/10 text-amber-500 border-amber-500/30', tone: 'amber' };
+    }
+    return { label: '轉強觀察', cls: 'bg-blue-500/10 text-blue-500 border-blue-500/30', tone: 'blue' };
+}
+
+function computeMonthlyStrength(themeData) {
+    const flows = (themeData?.industry_net_flow || []).map(Number).filter(Number.isFinite);
+    const stocks = themeData?.stocks_data || [];
+    const recentFlows = flows.slice(-20);
+    const shortFlows = flows.slice(-5);
+    const latestReturns = stocks
+        .map(s => {
+            const vals = s.cumulative_return || [];
+            return Number(vals[vals.length - 1]);
+        })
+        .filter(Number.isFinite);
+    const avgReturn = latestReturns.length ? latestReturns.reduce((sum, v) => sum + v, 0) / latestReturns.length : 0;
+    const breadth = latestReturns.length ? latestReturns.filter(v => v > 0).length / latestReturns.length : 0;
+    const flow20 = recentFlows.reduce((sum, v) => sum + v, 0);
+    const flow5 = shortFlows.reduce((sum, v) => sum + v, 0);
+    const flowPersistence = recentFlows.length ? recentFlows.filter(v => v > 0).length / recentFlows.length : 0;
+    const latestFlow = flows.length ? flows[flows.length - 1] : 0;
+    const leader = stocks
+        .map(s => ({
+            id: s.stock_id,
+            name: s.stock_name,
+            ret: Number((s.cumulative_return || [])[s.cumulative_return.length - 1] || 0)
+        }))
+        .filter(s => Number.isFinite(s.ret))
+        .sort((a, b) => b.ret - a.ret)[0];
+    const metrics = { flow20, flow5, latestFlow, flowPersistence, avgReturn, breadth };
+    const state = classifyStrengthState(metrics);
+    const score = flow20 + avgReturn * 2 + flowPersistence * 12 + breadth * 10;
+    return {
+        name: themeData.theme || themeData.theme_en,
+        score,
+        state,
+        leader,
+        ...metrics
+    };
+}
+
+function renderLongTermStrengthSection(items, textSec, isDark) {
+    if (!items.length) {
+        return `
+            <div class="mt-3 mb-3 p-4 rounded-xl border border-gray-200 dark:border-gray-700 text-sm text-gray-500">
+                長期資金主線資料載入中
+            </div>
+        `;
+    }
+    const strong = items.filter(item => item.state.label === '強勢延續').slice(0, 8);
+    const weakening = items.filter(item => item.state.label !== '強勢延續').slice(0, 5);
+    const cardBg = isDark ? 'rgba(255,255,255,0.03)' : 'rgba(255,255,255,0.72)';
+    const renderCard = item => {
+        const flowText = `${item.flow20 >= 0 ? '+' : ''}${item.flow20.toFixed(1)} 億`;
+        const retText = `${item.avgReturn >= 0 ? '+' : ''}${item.avgReturn.toFixed(1)}%`;
+        const breadthText = `${Math.round(item.breadth * 100)}%`;
+        const leaderText = item.leader ? `${item.leader.id} ${item.leader.name} ${item.leader.ret >= 0 ? '+' : ''}${item.leader.ret.toFixed(1)}%` : '--';
+        return `
+            <div class="p-3 rounded-lg border border-gray-200 dark:border-gray-700" style="background:${cardBg}">
+                <div class="flex items-start justify-between gap-2 mb-2">
+                    <div class="min-w-0">
+                        <div class="text-sm font-bold text-gray-900 dark:text-white truncate">${item.name}</div>
+                        <div class="text-[10px] mt-0.5" style="color:${textSec}">領先股：${leaderText}</div>
+                    </div>
+                    <span class="shrink-0 text-[10px] font-bold px-2 py-0.5 rounded border ${item.state.cls}">${item.state.label}</span>
+                </div>
+                <div class="grid grid-cols-3 gap-2 text-[10px]">
+                    <div><div style="color:${textSec}">20日資金</div><div class="font-bold ${item.flow20 >= 0 ? 'text-red-500' : 'text-green-500'}">${flowText}</div></div>
+                    <div><div style="color:${textSec}">均報酬</div><div class="font-bold ${item.avgReturn >= 0 ? 'text-red-500' : 'text-green-500'}">${retText}</div></div>
+                    <div><div style="color:${textSec}">廣度</div><div class="font-bold text-gray-900 dark:text-white">${breadthText}</div></div>
+                </div>
+            </div>
+        `;
+    };
+    return `
+        <div class="mt-3 mb-4 p-4 rounded-xl border border-gray-200 dark:border-gray-700" style="background:${isDark ? 'rgba(255,255,255,0.025)' : 'rgba(0,0,0,0.025)'}">
+            <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-1 mb-3">
+                <div>
+                    <div class="text-sm font-bold text-gray-900 dark:text-white">長期資金主線</div>
+                    <div class="text-xs" style="color:${textSec}">依 30 日月曲線計算 20 日資金、族群廣度與平均報酬</div>
+                </div>
+                <div class="text-[10px]" style="color:${textSec}">確認轉弱預設保留 5 個交易日觀察</div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-3 mb-3">
+                ${strong.map(renderCard).join('')}
+            </div>
+            ${weakening.length ? `
+                <div class="pt-3 border-t border-gray-200 dark:border-gray-700">
+                    <div class="text-xs font-bold mb-2 text-gray-700 dark:text-gray-300">轉弱觀察</div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-5 gap-2">
+                        ${weakening.map(renderCard).join('')}
+                    </div>
+                </div>
+            ` : ''}
+        </div>
+    `;
+}
+
 export const TrendHunter = {
     subPageConfigs: {
         '量化精選': {
@@ -154,7 +300,7 @@ export const TrendHunter = {
 
         // Ensure container is visible and has correct class for layout
         container.classList.remove('hidden');
-        
+
         // Render the main responsive layout
         this.renderLayout(container, subPage);
 
@@ -450,7 +596,7 @@ export const TrendHunter = {
                                 <div class="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400">▼</div>
                             </div>
                         </div>
-                        
+
                         <div id="etf-meta-display" class="grid grid-cols-2 md:grid-cols-4 gap-4">
                             <div class="p-3 bg-blue-500/5 dark:bg-blue-500/10 rounded-xl border border-blue-500/10">
                                 <div class="text-[10px] text-gray-400 mb-1 uppercase font-bold">ETF 名稱</div>
@@ -553,7 +699,7 @@ export const TrendHunter = {
 
     async initSubPageLogic(subPage) {
         console.log(`SubPage ${subPage} logic initialized`);
-        
+
         if (subPage === '法人建倉') {
             const sectorsContainer = document.getElementById('inst-track-sectors');
             const emptyContainer = document.getElementById('inst-track-empty');
@@ -1005,7 +1151,7 @@ export const TrendHunter = {
 
             try {
                 const rotationData = await api.fetchLocalJson('quant/theme_rotation.json');
-                
+
                 if (!rotationData.themes || rotationData.themes.length === 0) {
                     container.innerHTML = `<div class="text-center text-gray-500 py-8">無資金輪動數據</div>`;
                     return;
@@ -1042,11 +1188,52 @@ export const TrendHunter = {
                 `;
                 container.insertAdjacentHTML('beforeend', bannerHtml);
 
+                const longTermDom = document.createElement('div');
+                longTermDom.innerHTML = `
+                    <div class="mt-3 mb-4 p-4 rounded-xl border border-gray-200 dark:border-gray-700 text-sm text-gray-500" style="background:${isDark ? 'rgba(255,255,255,0.025)' : 'rgba(0,0,0,0.025)'}">
+                        長期資金主線載入中...
+                    </div>
+                `;
+                container.appendChild(longTermDom);
+
+                (async () => {
+                    try {
+                        const flowIndex = await api.fetchLocalJson('quant/sector_monthly_flow/index.json');
+                        const themes = flowIndex?.themes || [];
+                        const mandatoryThemes = [
+                            'Financials', 'Transportation', 'Real Estate', 'Materials', 'Consumer',
+                            'Semiconductor', 'AI_Ecosystem', 'Energy', '航運業', '金融保險業',
+                            '建材營造業', '食品工業', '塑膠工業', '觀光餐旅', '紡織纖維',
+                            '鋼鐵工業', '綠能環保'
+                        ];
+                        const topRotation = (rotationData.themes || []).slice(0, 45).map(t => t.name);
+                        const candidateThemes = [...new Set([...mandatoryThemes, ...topRotation])]
+                            .filter(name => themes.includes(name));
+                        const results = await Promise.allSettled(candidateThemes.map(async themeName => {
+                            const safeName = encodeURIComponent(themeName);
+                            const data = await api.fetchLocalJson(`quant/sector_monthly_flow/${safeName}.json`);
+                            return computeMonthlyStrength(data);
+                        }));
+                        const items = results
+                            .filter(r => r.status === 'fulfilled' && r.value)
+                            .map(r => r.value)
+                            .sort((a, b) => b.score - a.score);
+                        longTermDom.innerHTML = renderLongTermStrengthSection(items, textSec, isDark);
+                    } catch (err) {
+                        console.warn('long-term strength loading failed:', err);
+                        longTermDom.innerHTML = `
+                            <div class="mt-3 mb-4 p-4 rounded-xl border border-amber-300/40 text-sm text-amber-600">
+                                長期資金主線暫時無法載入
+                            </div>
+                        `;
+                    }
+                })();
+
                 // === 2. 🚀 v10.7: 族群資金輪動熱力圖 (Treemap) ===
                 const treemapHtml = `
                     <div class="mb-2 flex items-center gap-2">
                         <span class="text-xs font-bold">🔥 族群資金輪動熱力圖</span>
-                        <span class="text-xs" style="color:${textSec}">面積代表成交值佔比，顏色代表平均漲跌幅</span>
+                        <span class="text-xs" style="color:${textSec}">面積代表成交值佔比，顏色代表平均漲跌幅，可切換官方產業與題材層級</span>
                     </div>
                 `;
                 container.insertAdjacentHTML('beforeend', treemapHtml);
@@ -1058,9 +1245,12 @@ export const TrendHunter = {
 
                 // === 3. 產業/AI 主題切換開關 + 象限圖 ===
                 const toggleHtml = `
-                    <div class="flex bg-gray-100 dark:bg-gray-800 rounded-lg p-0.5 mb-2" style="width:fit-content">
-                        <button class="view-toggle px-3 py-1 text-xs rounded-md font-bold bg-white dark:bg-gray-700 text-blue-600 dark:text-blue-400 shadow-sm" data-view="industry">🏭 產業分類</button>
-                        <button class="view-toggle px-3 py-1 text-xs rounded-md text-gray-500 dark:text-gray-400" data-view="ai">🤖 AI主題</button>
+                    <div class="flex flex-wrap bg-gray-100 dark:bg-gray-800 rounded-lg p-0.5 mb-2 gap-0.5" style="width:fit-content">
+                        <button class="view-toggle px-3 py-1 text-xs rounded-md font-bold bg-white dark:bg-gray-700 text-blue-600 dark:text-blue-400 shadow-sm" data-view="all">全部</button>
+                        <button class="view-toggle px-3 py-1 text-xs rounded-md text-gray-500 dark:text-gray-400" data-view="official">官方產業</button>
+                        <button class="view-toggle px-3 py-1 text-xs rounded-md text-gray-500 dark:text-gray-400" data-view="macro">大板塊</button>
+                        <button class="view-toggle px-3 py-1 text-xs rounded-md text-gray-500 dark:text-gray-400" data-view="ai">AI題材</button>
+                        <button class="view-toggle px-3 py-1 text-xs rounded-md text-gray-500 dark:text-gray-400" data-view="old">舊經濟</button>
                     </div>
                 `;
                 container.insertAdjacentHTML('beforeend', toggleHtml);
@@ -1137,17 +1327,20 @@ export const TrendHunter = {
                         };
                     }
 
-                    treemapChart.setOption(buildTreemapOption(rotationData.themes));
+                    treemapChart.setOption(buildTreemapOption(getRotationViewData(rotationData, 'all')));
                     treemapChart.resize();
 
                     // Scatter chart (象限圖)
                     const myChart = echarts.init(chartDom, isDark ? 'dark' : null);
 
                     function getActiveData(view) {
-                        return view === 'ai' ? (rotationData.ai_themes || rotationData.themes) : rotationData.themes;
+                        return getRotationViewData(rotationData, view);
                     }
 
                     function buildOption(data) {
+                        if (!data.length) {
+                            data = [{ name: '無資料', net_flow: 0, avg_pct: 0, trend: 'FLAT', flow_ratio: 1 }];
+                        }
                         const netFlows = data.map(t => t.net_flow || 0);
                         const bound = Math.max(...netFlows.map(Math.abs), 5);
                         const seriesData = data.map(t => [t.net_flow || 0, t.avg_pct, t.name, t.trend, t.flow_ratio]);
@@ -1182,12 +1375,12 @@ export const TrendHunter = {
                                 name: '平均漲跌幅 (%)',
                                 nameLocation: 'end',
                                 nameGap: isMobile ? 25 : 35,
-                                splitLine: { 
+                                splitLine: {
                                     show: true,
                                     lineStyle: { color: isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)' }
                                 },
                                 axisLabel: { color: isDark ? '#888' : '#666', fontSize: isMobile ? 8 : 10 },
-                                min: function(value) { 
+                                min: function(value) {
                                     const absMax = Math.max(Math.abs(value.min), Math.abs(value.max), 3);
                                     return -absMax - 0.5;
                                 },
@@ -1292,7 +1485,7 @@ export const TrendHunter = {
                         };
                     }
 
-                    let currentView = 'industry';
+                    let currentView = 'all';
                     let option = buildOption(getActiveData(currentView));
                     myChart.setOption(option);
                     myChart.resize();
@@ -1353,7 +1546,7 @@ export const TrendHunter = {
                         let currentThemeData = null;
 
                         async function loadTheme(themeName) {
-                            const data = await api.fetchLocalJson(`quant/sector_monthly_flow/${themeName}.json`);
+                            const data = await api.fetchLocalJson(`quant/sector_monthly_flow/${encodeURIComponent(themeName)}.json`);
                             if (!data) return;
                             currentThemeData = data;
                             renderMonthlyCurve(data);
@@ -1578,7 +1771,7 @@ export const TrendHunter = {
                 container.innerHTML = `<div class="text-center text-red-500 py-8">圖表加載失敗: ${err.message}</div>`;
             }
         }
-        
+
         else if (subPage === '熱力圖') {
             const container = document.getElementById('trend-chart-container');
             if (!container) return;
@@ -1588,7 +1781,7 @@ export const TrendHunter = {
                     api.fetchLocalJson('meta/stocks.json'),
                     api.fetchLocalJson('index.json')
                 ]);
-                
+
                 const latestDate = indexData.latest_daily_tw;
                 if (!latestDate) throw new Error('No trading date found in index');
 
@@ -1776,7 +1969,7 @@ export const TrendHunter = {
 
                     myChart.setOption(option);
                     setTimeout(resizeHeatmap, 80);
-                    
+
                     myChart.on('click', function (params) {
                         if (params.data && params.data.symbol && params.treePathInfo.length > 2) {
                             if (window.StockDetail && typeof window.StockDetail.show === 'function') {
@@ -1800,7 +1993,7 @@ export const TrendHunter = {
             const statsContainer = document.getElementById('quant-stats');
             const paginationContainer = document.getElementById('quant-signals-pagination');
             const strategySelector = document.getElementById('quant-strategy-selector');
-            
+
             let allSignals = [];
             let currentPage = 1;
             const pageSize = 25;
@@ -2262,10 +2455,10 @@ export const TrendHunter = {
                                 </div>
                                 <div class="text-sm font-bold text-yellow-500">${ratingStars}</div>
                             </div>
-                            
+
                             ${s.note ? `<p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed bg-blue-50/50 dark:bg-blue-900/10 p-2.5 rounded-lg border border-blue-100 dark:border-blue-900/30">${s.note}</p>` : ''}
                             ${s.params ? `<p class="text-[10px] font-mono text-orange-500 leading-relaxed bg-orange-50/50 dark:bg-orange-900/10 px-2.5 py-1.5 rounded-lg border border-orange-200/50 dark:border-orange-900/30">⚙️ ${s.params}</p>` : ''}
-                            
+
                             <div class="grid grid-cols-3 gap-2 bg-gray-50 dark:bg-gray-900/50 p-3 rounded-xl font-mono text-center">
                                 <div>
                                     <div class="text-[10px] text-gray-400">總報酬率</div>
@@ -2780,16 +2973,16 @@ export const TrendHunter = {
                 }
 
                 if (select) {
-                    select.innerHTML = `<option value="">-- 請選擇 ETF --</option>` + 
+                    select.innerHTML = `<option value="">-- 請選擇 ETF --</option>` +
                         etfs.map(e => `<option value="${e.symbol}">${e.symbol} - ${e.name}</option>`).join('');
-                    
+
                     select.addEventListener('change', (e) => {
                         const sym = e.target.value;
                         if (!sym) {
                             if (tableBody) tableBody.innerHTML = `<tr><td colspan="4" class="px-6 py-8 text-center text-gray-500">請先選擇欲查看的 ETF</td></tr>`;
                             return;
                         }
-                        
+
                         const etf = etfs.find(e => e.symbol === sym);
                         if (!etf) {
                             if (tableBody) tableBody.innerHTML = `<tr><td colspan="4" class="px-6 py-8 text-center text-gray-500">請先選擇欲查看的 ETF</td></tr>`;
@@ -2816,7 +3009,7 @@ export const TrendHunter = {
                                             <td class="px-6 py-3 text-gray-700 dark:text-gray-300 font-bold">${constituentName}</td>
                                             <td class="px-6 py-3 text-right font-bold text-blue-600 dark:text-blue-400 font-mono">${(h.weight || 0).toFixed(2)}%</td>
                                             <td class="px-6 py-3 text-right">
-                                                <button class="px-3 py-1 bg-blue-500/10 hover:bg-blue-500 text-blue-600 hover:text-white border border-blue-500/20 rounded-lg text-xs font-bold transition-all" 
+                                                <button class="px-3 py-1 bg-blue-500/10 hover:bg-blue-500 text-blue-600 hover:text-white border border-blue-500/20 rounded-lg text-xs font-bold transition-all"
                                                         onclick="window.StockDetail.show('${h.stock_id}')">
                                                     查看
                                                 </button>
@@ -2871,7 +3064,7 @@ export const TrendHunter = {
                             }
                         }
                     });
-                    
+
                     // Select first one by default if exists
                     if (etfs.length > 0) {
                         select.value = etfs[0].symbol;

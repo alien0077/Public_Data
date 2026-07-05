@@ -98,6 +98,58 @@ export const StockDetail = {
         }
     },
 
+    cleanClassificationValue(value) {
+        const text = String(value || '').trim();
+        if (!text || text === '--') return '';
+        const lowered = text.toLowerCase();
+        if (lowered === 'nan' || lowered === 'null') return '';
+        return text;
+    },
+
+    buildClassification(stockInfo) {
+        const macroSector = this.cleanClassificationValue(stockInfo?.macro_sector);
+        const primaryTheme = this.cleanClassificationValue(stockInfo?.primary_theme || stockInfo?.sub_industry);
+        const officialSector = this.cleanClassificationValue(stockInfo?.official_sector || stockInfo?.industry);
+        const subIndustry = this.cleanClassificationValue(stockInfo?.sub_industry);
+        const powerChainRole = this.cleanClassificationValue(stockInfo?.power_chain_role);
+        const seen = new Set([macroSector, primaryTheme, officialSector].filter(Boolean));
+        const themes = (stockInfo?.themes || [])
+            .map(t => this.cleanClassificationValue(t))
+            .filter(Boolean)
+            .filter(t => {
+                if (seen.has(t)) return false;
+                seen.add(t);
+                return true;
+            });
+        return { macroSector, primaryTheme, officialSector, subIndustry, powerChainRole, themes };
+    },
+
+    renderClassificationPanel(stockInfo) {
+        const c = this.buildClassification(stockInfo);
+        const chip = (label, value, cls) => value ? `
+            <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg ${cls}">
+                <span class="text-[10px] opacity-75">${label}</span>
+                <span class="text-xs font-bold">${this.escapeHtml(value)}</span>
+            </span>` : '';
+        const themeChips = c.themes.slice(0, 5).map(t => chip('題材', t, 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-300')).join('');
+        const chips = [
+            chip('大板塊', c.macroSector, 'bg-indigo-50 text-indigo-700 dark:bg-indigo-950/40 dark:text-indigo-300'),
+            c.primaryTheme ? '<span class="text-gray-400 text-xs font-bold">›</span>' : '',
+            chip('主分類', c.primaryTheme, 'bg-orange-50 text-orange-700 dark:bg-orange-950/40 dark:text-orange-300'),
+            c.officialSector !== c.primaryTheme ? chip('官方', c.officialSector, 'bg-blue-50 text-blue-700 dark:bg-blue-950/40 dark:text-blue-300') : '',
+            c.subIndustry && c.subIndustry !== c.primaryTheme ? chip('細分', c.subIndustry, 'bg-teal-50 text-teal-700 dark:bg-teal-950/40 dark:text-teal-300') : '',
+            chip('角色', c.powerChainRole, 'bg-purple-50 text-purple-700 dark:bg-purple-950/40 dark:text-purple-300'),
+            themeChips
+        ].filter(Boolean).join('');
+
+        if (!chips) return '';
+        return `
+            <div class="mt-4">
+                <div class="text-xs text-gray-500 mb-1.5">分類路徑</div>
+                <div class="flex flex-wrap items-center gap-1.5">${chips}</div>
+            </div>`;
+    },
+
     renderLiarWarning(data) {
         let warningContainer = document.getElementById('liar-warning-container');
         if (!warningContainer) {
@@ -660,9 +712,9 @@ export const StockDetail = {
         }
         const per = price > 0 && ttmEps > 0 ? (price / ttmEps).toFixed(2) : '--';
         const latest = sorted[0] || {};
-        const themes = stockInfo?.themes || [];
-        const sector = stockInfo?.official_sector || stockInfo?.industry || '--';
-        const subIndustry = stockInfo?.sub_industry || '--';
+        const classification = this.buildClassification(stockInfo);
+        const sector = classification.officialSector || '--';
+        const subIndustry = classification.subIndustry || classification.primaryTheme || '--';
 
         const etfHoldings = etfSnapshot ? Object.entries(etfSnapshot)
             .filter(([, etf]) => etf.holdings?.some(h => (h.stock_id || '') === this.currentSymbol.split('.')[0]))
@@ -678,17 +730,7 @@ export const StockDetail = {
             <div class="p-4 space-y-6 flex-1 overflow-y-auto no-scrollbar pb-12">
                 <div class="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 p-5">
                     <h3 class="text-lg font-bold mb-4">${stockInfo?.name || this.currentSymbol}</h3>
-                    <div class="grid grid-cols-2 gap-3 text-sm">
-                        <div><span class="text-gray-500">產業</span><br><span class="font-bold">${sector}</span></div>
-                        <div><span class="text-gray-500">次產業</span><br><span class="font-bold">${subIndustry}</span></div>
-                    </div>
-                    ${themes.length > 0 ? `
-                    <div class="mt-4">
-                        <span class="text-xs text-gray-500">主題標籤</span>
-                        <div class="flex flex-wrap gap-1.5 mt-1">
-                            ${themes.map(t => `<span class="text-[10px] px-2 py-0.5 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 font-bold">${t}</span>`).join('')}
-                        </div>
-                    </div>` : ''}
+                    ${this.renderClassificationPanel(stockInfo)}
                 </div>
 
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
@@ -779,7 +821,7 @@ export const StockDetail = {
                     <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
                         本股屬於 <span class="font-bold text-blue-600 dark:text-blue-400">${sector}</span> 產業，
                         主要業務涵蓋 <span class="font-bold text-blue-600 dark:text-blue-400">${subIndustry}</span> 相關領域。
-                        ${themes.length > 0 ? `近期市場關注主題包括 ${themes.map(t => `<span class="font-medium text-orange-500">${t}</span>`).join('、')}。` : ''}
+                        ${classification.themes.length > 0 ? `近期市場關注題材包括 ${classification.themes.map(t => `<span class="font-medium text-orange-500">${this.escapeHtml(t)}</span>`).join('、')}。` : ''}
                     </p>
                 </div>
             </div>`;

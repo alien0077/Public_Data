@@ -1,9 +1,9 @@
 import { db } from './db.js';
 import { api } from './api.js';
 import { charts } from './charts.js';
-import { TrendHunter } from './views/trendHunter.v5.js';
+import { TrendHunter } from './views/trendHunter.v5.js?v=6';
 import { AssetRisk } from './views/assetRisk.js?v=2';
-import { StockDetail } from './views/stockDetail.js?v=3';
+import { StockDetail } from './views/stockDetail.js?v=4';
 import { BattleRecord } from './views/battleRecord.js?v=2';
 import { Transaction } from './views/transaction.js?v=2';
 import { Favorites } from './views/favorites.js?v=3';
