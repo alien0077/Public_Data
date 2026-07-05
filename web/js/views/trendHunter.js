@@ -6,6 +6,74 @@
 import { api } from '../api.js';
 import { stockIdentityHTML, stockMetricHTML, stockMobileCardHTML } from '../utils/stockListLayout.js';
 
+function buildThemeRotationContext(rotationData) {
+    const themes = rotationData?.themes || [];
+    const flows = themes
+        .map(theme => Number(theme.flow_ratio))
+        .filter(value => Number.isFinite(value))
+        .sort((a, b) => a - b);
+    return {
+        medianFlow: flows.length ? flows[Math.floor(flows.length / 2)] : 0,
+        metricsByName: new Map(themes.map(theme => [theme.name, theme])),
+    };
+}
+
+function getQuadrantInfo(rotationContext, sectorTag) {
+    const metric = rotationContext?.metricsByName?.get(sectorTag);
+    const flow = Number(metric?.flow_ratio);
+    const pct = Number(metric?.avg_pct);
+    if (!Number.isFinite(flow) || !Number.isFinite(pct)) return null;
+
+    if (flow >= rotationContext.medianFlow && pct > 0) {
+        return { index: 1, title: '領先', cls: 'bg-red-500/15 text-red-500 border-red-500/30' };
+    }
+    if (flow < rotationContext.medianFlow && pct > 0) {
+        return { index: 2, title: '轉強', cls: 'bg-orange-500/15 text-orange-500 border-orange-500/30' };
+    }
+    if (flow < rotationContext.medianFlow && pct <= 0) {
+        return { index: 3, title: '落後', cls: 'bg-green-500/15 text-green-500 border-green-500/30' };
+    }
+    return { index: 4, title: '出貨', cls: 'bg-blue-500/15 text-blue-500 border-blue-500/30' };
+}
+
+function renderQuadrantBadge(info) {
+    if (!info) return '<span class="text-[10px] text-gray-400">--</span>';
+    return `<span class="inline-flex items-center justify-center whitespace-nowrap text-[10px] font-bold px-2 py-1 rounded border ${info.cls}" title="第 ${info.index} 象限 · ${info.title}">Q${info.index} ${info.title}</span>`;
+}
+
+function renderFlowSparkline(points, color = 'blue') {
+    const values = (points || [])
+        .map(point => Number(point.value))
+        .filter(value => Number.isFinite(value));
+    if (values.length < 2) return '<span class="text-[10px] text-gray-400">--</span>';
+
+    const width = 96;
+    const height = 28;
+    const min = Math.min(...values);
+    const max = Math.max(...values);
+    const range = Math.max(max - min, 1);
+    const clampY = value => Math.max(2, Math.min(height - 2, height - ((value - min) / range) * height));
+    const svgPoints = values.map((value, index) => {
+        const x = values.length === 1 ? 0 : (width * index) / (values.length - 1);
+        return `${x.toFixed(1)},${clampY(value).toFixed(1)}`;
+    }).join(' ');
+    const zeroY = clampY(0);
+    const stroke = color === 'cyan' ? '#0891b2' : '#2563eb';
+    const latest = values[values.length - 1];
+    const latestClass = latest >= 0 ? 'text-red-500' : 'text-green-500';
+    const latestText = Math.abs(latest) >= 1000 ? `${(latest / 1000).toFixed(1)}K` : latest.toLocaleString();
+
+    return `
+        <div class="inline-flex flex-col items-end gap-0.5" title="法人每日淨流入曲線">
+            <svg width="${width}" height="${height}" viewBox="0 0 ${width} ${height}" class="block">
+                <line x1="0" y1="${zeroY.toFixed(1)}" x2="${width}" y2="${zeroY.toFixed(1)}" stroke="currentColor" class="text-gray-300 dark:text-gray-700" stroke-width="1" />
+                <polyline fill="none" stroke="${stroke}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" points="${svgPoints}" />
+            </svg>
+            <span class="text-[9px] font-bold ${latestClass}">${latest >= 0 ? '+' : ''}${latestText}</span>
+        </div>
+    `;
+}
+
 export const TrendHunter = {
     subPageConfigs: {
         '量化精選': {
@@ -494,6 +562,8 @@ export const TrendHunter = {
 
             try {
                 const data = await api.fetchLocalJson('quant/institutional_leaderboard.json');
+                const rotationData = await api.fetchLocalJson('quant/theme_rotation.json').catch(() => null);
+                const rotationContext = buildThemeRotationContext(rotationData);
                 if (!data || !data.sectors || data.sectors.length === 0) {
                     if (emptyContainer) emptyContainer.innerHTML = '<div class="text-center py-12 text-gray-500">目前無符合法人低檔建倉條件的標的</div>';
                     return;
@@ -536,6 +606,8 @@ export const TrendHunter = {
                         </div>
                         <div class="md:hidden divide-y divide-gray-100 dark:divide-gray-800">
                             ${sector.stocks.map(s => {
+                                const quadrantBadge = renderQuadrantBadge(getQuadrantInfo(rotationContext, sector.sector_tag));
+                                const flowSparkline = renderFlowSparkline(s.daily_inst_flow, 'blue');
                                 const ret = s.current_return || 0;
                                 const retStr = (ret >= 0 ? '+' : '') + (ret * 100).toFixed(1) + '%';
                                 const retClass = ret >= 0 ? 'text-red-500' : 'text-green-500';
@@ -567,6 +639,8 @@ export const TrendHunter = {
                                     metricsHTML: stockMetricHTML('開始日', s.start_date ? s.start_date.substring(5) : '--') +
                                         stockMetricHTML('天數', `${s.tracking_days}d`) +
                                         stockMetricHTML('累計買超', buyStr, { valueClass: 'text-blue-500' }) +
+                                        stockMetricHTML('法人流', flowSparkline) +
+                                        stockMetricHTML('象限', quadrantBadge) +
                                         stockMetricHTML('本益比', peStr, { valueClass: peColor }),
                                     detailHTML: s.note ? `<span class="text-orange-500">${s.note}</span>` : '',
                                     onClick: `window.StockDetail.show('${s.stock_id}')`
@@ -582,6 +656,8 @@ export const TrendHunter = {
                                         <th class="px-5 py-2 text-right">開始日</th>
                                         <th class="px-5 py-2 text-right">天數</th>
                                         <th class="px-5 py-2 text-right">累計買超(張)</th>
+                                        <th class="px-5 py-2 text-center">法人流</th>
+                                        <th class="px-5 py-2 text-center">象限</th>
                                         <th class="px-5 py-2 text-right">區間損益</th>
                                          <th class="px-5 py-2 text-right">本益比</th>
                                         <th class="px-5 py-2 text-right">訊號</th>
@@ -589,6 +665,8 @@ export const TrendHunter = {
                                 </thead>
                                 <tbody class="divide-y divide-gray-100 dark:divide-gray-800 font-mono text-xs">
                                     ${sector.stocks.map(s => {
+                                        const quadrantBadge = renderQuadrantBadge(getQuadrantInfo(rotationContext, sector.sector_tag));
+                                        const flowSparkline = renderFlowSparkline(s.daily_inst_flow, 'blue');
                                         const ret = s.current_return || 0;
                                         const retStr = (ret >= 0 ? '+' : '') + (ret * 100).toFixed(1) + '%';
                                         const retClass = ret >= 0 ? 'text-red-500' : 'text-green-500';
@@ -621,6 +699,8 @@ export const TrendHunter = {
                                             <td class="px-5 py-2.5 text-right text-gray-500 whitespace-nowrap">${s.start_date ? s.start_date.substring(5) : '--'}</td>
                                             <td class="px-5 py-2.5 text-right text-gray-500">${s.tracking_days}d</td>
                                             <td class="px-5 py-2.5 text-right font-bold text-blue-500">${buyStr}</td>
+                                            <td class="px-5 py-2.5 text-center">${flowSparkline}</td>
+                                            <td class="px-5 py-2.5 text-center">${quadrantBadge}</td>
                                             <td class="px-5 py-2.5 text-right font-bold ${retClass}">${retStr}</td>
                                              <td class="px-5 py-2.5 text-right font-bold ${peColor}">${peStr}</td>
                                             <td class="px-5 py-2.5 text-right">
@@ -708,6 +788,8 @@ export const TrendHunter = {
 
             try {
                 const data = await api.fetchLocalJson('quant/rapid_screen.json');
+                const rotationData = await api.fetchLocalJson('quant/theme_rotation.json').catch(() => null);
+                const rotationContext = buildThemeRotationContext(rotationData);
                 if (!data || !data.stocks || data.stocks.length === 0) {
                     if (emptyContainer) emptyContainer.innerHTML = '<div class="text-center py-12 text-gray-500">目前無符合短期快篩條件的標的</div>';
                     return;
@@ -732,6 +814,8 @@ export const TrendHunter = {
                     <div class="bg-white dark:bg-[#161b22] rounded-2xl border border-gray-200 dark:border-gray-800 shadow-sm overflow-hidden">
                         <div class="md:hidden divide-y divide-gray-100 dark:divide-gray-800">
                             ${data.stocks.map(s => {
+                                const quadrantBadge = renderQuadrantBadge(getQuadrantInfo(rotationContext, s.sector_tag));
+                                const flowSparkline = renderFlowSparkline(s.daily_inst_flow, 'cyan');
                                 const buyStr = s.total_inst_buy >= 1000
                                     ? (s.total_inst_buy / 1000).toFixed(1) + 'K'
                                     : s.total_inst_buy.toLocaleString();
@@ -757,6 +841,8 @@ export const TrendHunter = {
                                         stockMetricHTML('一致性', `${(s.consistency * 100).toFixed(0)}%`, {
                                             valueClass: s.consistency >= 0.8 ? 'text-green-500' : s.consistency >= 0.6 ? 'text-orange-500' : 'text-gray-500'
                                         }) +
+                                        stockMetricHTML('法人流', flowSparkline) +
+                                        stockMetricHTML('象限', quadrantBadge) +
                                         stockMetricHTML('日均買超', avgStr) +
                                         stockMetricHTML('近3日', r3Str) +
                                         stockMetricHTML('本益比', peStr, { valueClass: peColor }),
@@ -772,6 +858,8 @@ export const TrendHunter = {
                                         <th class="px-4 py-2">股票</th>
                                         <th class="px-4 py-2 text-left">產業</th>
                                         <th class="px-4 py-2 text-right">累計買超</th>
+                                        <th class="px-4 py-2 text-center">法人流</th>
+                                        <th class="px-4 py-2 text-center">象限</th>
                                         <th class="px-4 py-2 text-right">買入/${data.window_days}</th>
                                          <th class="px-4 py-2 text-right">一致性</th>
                                          <th class="px-4 py-2 text-right">日均買超</th>
@@ -782,6 +870,8 @@ export const TrendHunter = {
                                 </thead>
                                 <tbody class="divide-y divide-gray-100 dark:divide-gray-800 font-mono text-xs">
                                     ${data.stocks.map(s => {
+                                        const quadrantBadge = renderQuadrantBadge(getQuadrantInfo(rotationContext, s.sector_tag));
+                                        const flowSparkline = renderFlowSparkline(s.daily_inst_flow, 'cyan');
                                         const buyStr = s.total_inst_buy >= 1000
                                             ? (s.total_inst_buy / 1000).toFixed(1) + 'K'
                                             : s.total_inst_buy.toLocaleString();
@@ -805,6 +895,8 @@ export const TrendHunter = {
                                             <td class="px-4 py-2.5">${stockIdentityHTML(s.stock_id, s.name || s.stock_id)}</td>
                                             <td class="px-4 py-2.5 text-left text-gray-500 text-[10px]">${s.sector_tag || '--'}</td>
                                             <td class="px-4 py-2.5 text-right font-bold text-cyan-600 dark:text-cyan-400">${buyStr}</td>
+                                            <td class="px-4 py-2.5 text-center">${flowSparkline}</td>
+                                            <td class="px-4 py-2.5 text-center">${quadrantBadge}</td>
                                             <td class="px-4 py-2.5 text-right text-gray-600 dark:text-gray-300">${s.buy_days}/${s.total_days || data.window_days}</td>
                                              <td class="px-4 py-2.5 text-right">
                                                  <span class="${s.consistency >= 0.8 ? 'text-green-500' : s.consistency >= 0.6 ? 'text-orange-500' : 'text-gray-500'}">${(s.consistency * 100).toFixed(0)}%</span>
