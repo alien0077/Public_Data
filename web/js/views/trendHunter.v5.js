@@ -1121,10 +1121,7 @@ export const TrendHunter = {
                                         const epsStr = s.eps !== null ? s.eps.toFixed(2) : '--';
                                         return `<tr class="hover:bg-gray-50 dark:hover:bg-gray-800/20 cursor-pointer transition-colors"
                                                      onclick="window.StockDetail.show('${s.stock_id}')">
-                                            <td class="px-4 py-2.5">
-                                                <div class="font-bold text-gray-900 dark:text-white">${s.stock_id}</div>
-                                                <div class="text-[10px] text-gray-400">${s.name || ''}</div>
-                                            </td>
+                                            <td class="px-4 py-2.5">${stockIdentityHTML(s.stock_id, s.name || s.stock_id)}</td>
                                             <td class="px-4 py-2.5 text-right text-gray-600 dark:text-gray-300">${s.close.toFixed(1)}</td>
                                             <td class="px-4 py-2.5 text-right text-gray-500">${epsStr}</td>
                                             <td class="px-4 py-2.5 text-right font-bold ${s.pe_ratio !== null ? (s.pe_ratio < 15 ? 'text-green-500' : s.pe_ratio > 30 ? 'text-red-500' : 'text-gray-900 dark:text-white') : 'text-gray-400'}">${peStr}</td>
@@ -2019,10 +2016,7 @@ export const TrendHunter = {
                     return `
                         <tr class="hover:bg-gray-800/30 transition-colors cursor-pointer" onclick="window.StockDetail.show('${cleanStockId.split('.')[0]}')">
                             <td class="px-6 py-4 font-mono text-gray-500">${s.entry_date || s.exit_date || s.date}</td>
-                            <td class="px-6 py-4">
-                                <div class="font-bold text-gray-900 dark:text-white">${cleanStockId}</div>
-                                <div class="text-[10px] text-gray-400">${stockName}</div>
-                            </td>
+                            <td class="px-6 py-4">${stockIdentityHTML(cleanStockId.split('.')[0], stockName || cleanStockId)}</td>
                             <td class="px-6 py-4">
                                 <span class="px-2 py-0.5 rounded text-[10px] font-bold ${type === 'BUY' ? 'bg-red-500/10 text-red-500' : 'bg-green-500/10 text-green-500'}">
                                     ${type === 'BUY' ? '買進 BUY' : '賣出 SELL'}
@@ -2305,8 +2299,7 @@ export const TrendHunter = {
                             const peColor = peRatio < 15 ? 'text-green-500' : peRatio < 25 ? 'text-gray-600 dark:text-gray-300' : 'text-orange-500';
                             const peStr = peRatio ? peRatio.toFixed(1) : '--';
                              return `<tr class="hover:bg-gray-50 dark:hover:bg-gray-900/30 cursor-pointer" onclick="window.StockDetail.show('${cleanStockId}')">
-                                 <td class="px-6 py-4 font-medium text-gray-900 dark:text-white">
-                                     <div class="font-bold">${cleanStockId}</div><div class="text-xs text-gray-500">${name}</div></td>
+                                 <td class="px-6 py-4">${stockIdentityHTML(cleanStockId, name)}</td>
                                   <td class="px-6 py-4 text-left">${reason ? `<span class="inline-block px-2 py-0.5 rounded text-[10px] font-bold ${reasonColor}">${reason}</span>` : ''}</td>
                                   <td class="px-6 py-4 text-right font-bold text-gray-700 dark:text-gray-300">${((p.weight || 0) * 100).toFixed(1)}%</td>
                                   <td class="px-6 py-4 text-right text-gray-500 font-mono text-xs">${p.entry_date || '--'}</td>
@@ -2596,11 +2589,10 @@ export const TrendHunter = {
                                             const color = pct >= 0 ? 'text-red-500' : 'text-green-500';
                                             return `
                                                 <tr class="hover:bg-gray-50 dark:hover:bg-gray-900/30 cursor-pointer" onclick="window.StockDetail.show('${s.id}')">
-                                                    <td class="px-4 py-2 flex items-center space-x-2">
+                                                    <td class="px-4 py-2">
+                                                        <div class="flex items-center space-x-2">
                                                         <span class="w-4 h-4 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center text-[10px] text-gray-500 font-bold">${idx + 1}</span>
-                                                        <div>
-                                                            <div class="font-bold text-gray-950 dark:text-white">${s.id}</div>
-                                                            <div class="text-[10px] text-gray-400 truncate max-w-[80px]">${name}</div>
+                                                        ${stockIdentityHTML(s.id, name)}
                                                         </div>
                                                     </td>
                                                     <td class="px-4 py-2 text-right font-bold text-gray-700 dark:text-gray-300">${s.c?.toFixed(2) || '--'}</td>
@@ -2681,10 +2673,7 @@ export const TrendHunter = {
                             ${items.map((item, i) => `
                                 <tr class="hover:bg-gray-50 dark:hover:bg-gray-800/50 cursor-pointer" onclick="window.StockDetail.show('${item.stock_id}')">
                                     <td class="px-4 py-3 font-mono text-gray-400">${i + 1}</td>
-                                    <td class="px-4 py-3">
-                                        <div class="font-bold text-gray-900 dark:text-white">${item.stock_id}</div>
-                                        <div class="text-[10px] text-gray-400">${item.stock_name || ''}</div>
-                                    </td>
+                                    <td class="px-4 py-3">${stockIdentityHTML(item.stock_id, item.stock_name || item.stock_id)}</td>
                                     <td class="px-4 py-3 text-right font-mono font-bold ${color}">
                                         ${item.net_flow >= 0 ? '+' : ''}${item.net_flow.toFixed(4)}%
                                     </td>
@@ -3005,8 +2994,7 @@ export const TrendHunter = {
                                     const constituentName = h.name || h.stock_name || '--';
                                     return `
                                         <tr class="hover:bg-gray-50 dark:hover:bg-gray-900/30 transition-colors">
-                                            <td class="px-6 py-3 font-bold text-gray-900 dark:text-white font-mono">${h.stock_id}</td>
-                                            <td class="px-6 py-3 text-gray-700 dark:text-gray-300 font-bold">${constituentName}</td>
+                                            <td class="px-6 py-3" colspan="2">${stockIdentityHTML(h.stock_id, constituentName)}</td>
                                             <td class="px-6 py-3 text-right font-bold text-blue-600 dark:text-blue-400 font-mono">${(h.weight || 0).toFixed(2)}%</td>
                                             <td class="px-6 py-3 text-right">
                                                 <button class="px-3 py-1 bg-blue-500/10 hover:bg-blue-500 text-blue-600 hover:text-white border border-blue-500/20 rounded-lg text-xs font-bold transition-all"

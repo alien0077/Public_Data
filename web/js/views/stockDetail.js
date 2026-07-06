@@ -127,10 +127,13 @@ export const StockDetail = {
     renderClassificationPanel(stockInfo) {
         const c = this.buildClassification(stockInfo);
         const chip = (label, value, cls) => value ? `
-            <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg ${cls}">
+            <button type="button"
+                onclick="event.stopPropagation(); window.GroupSearch?.openGroup(decodeURIComponent('${encodeURIComponent(value)}'))"
+                title="查看 ${this.escapeHtml(value)} 個股列表"
+                class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg ${cls} hover:ring-2 hover:ring-current/20 active:scale-[0.98] transition">
                 <span class="text-[10px] opacity-75">${label}</span>
                 <span class="text-xs font-bold">${this.escapeHtml(value)}</span>
-            </span>` : '';
+            </button>` : '';
         const themeChips = c.themes.slice(0, 5).map(t => chip('題材', t, 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-300')).join('');
         const chips = [
             chip('大板塊', c.macroSector, 'bg-indigo-50 text-indigo-700 dark:bg-indigo-950/40 dark:text-indigo-300'),
