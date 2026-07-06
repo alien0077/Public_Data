@@ -106,15 +106,35 @@ export const StockDetail = {
         return text;
     },
 
+    canonicalClassificationValue(value) {
+        const name = this.cleanClassificationValue(value);
+        const canonical = {
+            'CPO_Optical': '矽光子_CPO',
+            'Silicon_Photonics': '矽光子_CPO',
+            'Optical_Transceiver': '矽光子_CPO',
+            'AI_Server': 'AI伺服器代工',
+            'AI_Memory': 'AI記憶體',
+            'ASIC': 'ASIC_IP',
+            'BBU': 'BBU_電池備援',
+            'Cooling_Liquid': '散熱模組',
+            'PCB_CCL_Drilling': 'PCB_CCL_ABF',
+            'Power_Grid': '電源供應器',
+            'Low_Orbit_Satellite': '低軌衛星_SpaceX鏈',
+            'Robotics_AI': '機器人_自動化',
+            'Defense_Aerospace': '軍工_航太',
+        };
+        return canonical[name] || name;
+    },
+
     buildClassification(stockInfo) {
-        const macroSector = this.cleanClassificationValue(stockInfo?.macro_sector);
-        const primaryTheme = this.cleanClassificationValue(stockInfo?.primary_theme || stockInfo?.sub_industry);
-        const officialSector = this.cleanClassificationValue(stockInfo?.official_sector || stockInfo?.industry);
-        const subIndustry = this.cleanClassificationValue(stockInfo?.sub_industry);
-        const powerChainRole = this.cleanClassificationValue(stockInfo?.power_chain_role);
+        const macroSector = this.canonicalClassificationValue(stockInfo?.macro_sector);
+        const primaryTheme = this.canonicalClassificationValue(stockInfo?.primary_theme || stockInfo?.sub_industry);
+        const officialSector = this.canonicalClassificationValue(stockInfo?.official_sector || stockInfo?.industry);
+        const subIndustry = this.canonicalClassificationValue(stockInfo?.sub_industry);
+        const powerChainRole = this.canonicalClassificationValue(stockInfo?.power_chain_role);
         const seen = new Set([macroSector, primaryTheme, officialSector].filter(Boolean));
         const themes = (stockInfo?.themes || [])
-            .map(t => this.cleanClassificationValue(t))
+            .map(t => this.canonicalClassificationValue(t))
             .filter(Boolean)
             .filter(t => {
                 if (seen.has(t)) return false;

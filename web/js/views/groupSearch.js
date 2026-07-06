@@ -83,7 +83,7 @@ export const GroupSearch = {
                 if (Array.isArray(s.themes)) s.themes.forEach(t => groups.add(t));
 
                 groups.forEach(g => {
-                    const name = this.cleanGroupName(g);
+                    const name = this.canonicalGroupName(g);
                     if (!name) return;
                     if (!idx[name]) idx[name] = [];
                     if (!idx[name].includes(symbol)) idx[name].push(symbol);
@@ -123,6 +123,8 @@ export const GroupSearch = {
 
     _findGroupNames(q) {
         const synonyms = {
+            'cpo': '矽光子_CPO', '光收發': '矽光子_CPO', '矽光子': '矽光子_CPO',
+            'CPO_Optical': '矽光子_CPO', 'Silicon_Photonics': '矽光子_CPO',
             '載板': 'PCB_CCL_ABF', 'abf': 'PCB_CCL_ABF', 'ic載板': 'PCB_CCL_ABF',
             'pcb': 'PCB_CCL_ABF', 'ccl': 'PCB_CCL_ABF',
             '鑽孔': 'PCB_CCL_Drilling',
@@ -305,6 +307,26 @@ export const GroupSearch = {
         const lowered = text.toLowerCase();
         if (lowered === 'nan' || lowered === 'null') return '';
         return text;
+    },
+
+    canonicalGroupName(value) {
+        const name = this.cleanGroupName(value);
+        const canonical = {
+            'CPO_Optical': '矽光子_CPO',
+            'Silicon_Photonics': '矽光子_CPO',
+            'Optical_Transceiver': '矽光子_CPO',
+            'AI_Server': 'AI伺服器代工',
+            'AI_Memory': 'AI記憶體',
+            'ASIC': 'ASIC_IP',
+            'BBU': 'BBU_電池備援',
+            'Cooling_Liquid': '散熱模組',
+            'PCB_CCL_Drilling': 'PCB_CCL_ABF',
+            'Power_Grid': '電源供應器',
+            'Low_Orbit_Satellite': '低軌衛星_SpaceX鏈',
+            'Robotics_AI': '機器人_自動化',
+            'Defense_Aerospace': '軍工_航太',
+        };
+        return canonical[name] || name;
     },
 
     formatNumber(num, decimals = 2) {
