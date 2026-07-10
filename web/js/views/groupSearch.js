@@ -1,6 +1,7 @@
 import { api } from '../api.js';
 import { getPriceChangeStyle } from '../utils/priceStyle.js';
 import { stockIdentityHTML, stockMetricHTML, stockMobileCardHTML } from '../utils/stockListLayout.js';
+import { canonicalGroupName, cleanGroupName } from '../utils/groupTaxonomy.js';
 
 export const GroupSearch = {
     _groupIndex: {},
@@ -49,7 +50,7 @@ export const GroupSearch = {
     },
 
     async openGroup(groupName) {
-        const query = String(groupName || '').trim();
+        const query = canonicalGroupName(groupName);
         if (!query) return;
         this._pendingQuery = query;
         document.getElementById('stock-detail')?.classList.add('hidden');
@@ -83,7 +84,7 @@ export const GroupSearch = {
                 if (Array.isArray(s.themes)) s.themes.forEach(t => groups.add(t));
 
                 groups.forEach(g => {
-                    const name = this.canonicalGroupName(g);
+                    const name = canonicalGroupName(g);
                     if (!name) return;
                     if (!idx[name]) idx[name] = [];
                     if (!idx[name].includes(symbol)) idx[name].push(symbol);
@@ -116,7 +117,10 @@ export const GroupSearch = {
             return;
         }
 
-        const exact = names.length === 1 && names[0].toLowerCase() === q.toLowerCase();
+        const exact = names.length === 1 && (
+            names[0].toLowerCase() === q.toLowerCase() ||
+            names[0].toLowerCase() === canonicalGroupName(q).toLowerCase()
+        );
         resultsEl.innerHTML = '<div class="text-center text-gray-500 py-10"><div class="inline-block w-5 h-5 border-2 border-gray-300 dark:border-gray-600 border-t-blue-500 rounded-full animate-spin mr-2 align-middle"></div>整理個股清單...</div>';
         resultsEl.innerHTML = await this._renderGroups(names, exact);
     },
@@ -128,15 +132,17 @@ export const GroupSearch = {
             '載板': 'PCB_CCL_ABF', 'abf': 'PCB_CCL_ABF', 'ic載板': 'PCB_CCL_ABF',
             'pcb': 'PCB_CCL_ABF', 'ccl': 'PCB_CCL_ABF',
             '鑽孔': 'PCB_CCL_Drilling',
-            '網通': 'Networking', '光通': 'Fiber_Optic',
+            '網通': '網通光通', '光通': 'Fiber_Optic',
             '散熱': 'Cooling_Module',
             '重電': 'Heavy_Electrical',
             '綠能': 'Green_Energy',
             '軍工': 'Defense',
             '生技': 'Biotechnology',
             '航運': 'Shipping',
-            '金融': 'Financials',
-            '建設': 'Real Estate',
+            'financials': '金融保險業', '金融': '金融保險業',
+            '建設': '建材營造業', '營建': '建材營造業',
+            'materials': '原物料大板塊', '原物料': '原物料大板塊',
+            'semiconductor': '半導體業', 'technology': '科技大板塊',
             '低軌': '低軌衛星_SpaceX鏈', '衛星': '低軌衛星_SpaceX鏈',
             'mosfet': '上游IC設計',
             '二極體': '中游製造與IDM',
@@ -146,7 +152,7 @@ export const GroupSearch = {
         const query = q.toLowerCase();
         const synonymTargets = Object.keys(synonyms)
             .filter(k => k.toLowerCase().includes(query))
-            .map(k => synonyms[k]);
+            .map(k => canonicalGroupName(synonyms[k]));
 
         return Object.keys(this._groupIndex).filter(name => {
             if (name.toLowerCase().includes(query)) return true;
@@ -250,7 +256,7 @@ export const GroupSearch = {
             symbol,
             name: stock.name || quote.name || symbol,
             market: stock.market || '',
-            primaryTheme: stock.primary_theme || stock.sub_industry || '',
+            primaryTheme: canonicalGroupName(stock.primary_theme || stock.sub_industry || ''),
             price,
             refPrice,
             changePercent,
@@ -302,31 +308,11 @@ export const GroupSearch = {
     },
 
     cleanGroupName(value) {
-        const text = String(value || '').trim();
-        if (!text || text === '--') return '';
-        const lowered = text.toLowerCase();
-        if (lowered === 'nan' || lowered === 'null') return '';
-        return text;
+        return cleanGroupName(value);
     },
 
     canonicalGroupName(value) {
-        const name = this.cleanGroupName(value);
-        const canonical = {
-            'CPO_Optical': '矽光子_CPO',
-            'Silicon_Photonics': '矽光子_CPO',
-            'Optical_Transceiver': '矽光子_CPO',
-            'AI_Server': 'AI伺服器代工',
-            'AI_Memory': 'AI記憶體',
-            'ASIC': 'ASIC_IP',
-            'BBU': 'BBU_電池備援',
-            'Cooling_Liquid': '散熱模組',
-            'PCB_CCL_Drilling': 'PCB_CCL_ABF',
-            'Power_Grid': '電源供應器',
-            'Low_Orbit_Satellite': '低軌衛星_SpaceX鏈',
-            'Robotics_AI': '機器人_自動化',
-            'Defense_Aerospace': '軍工_航太',
-        };
-        return canonical[name] || name;
+        return canonicalGroupName(value);
     },
 
     formatNumber(num, decimals = 2) {

@@ -7,6 +7,7 @@ import { charts } from '../charts.js';
 import { db } from '../db.js';
 import { CorporateActions } from '../corporateActions.js';
 import { getPriceChangeStyle } from '../utils/priceStyle.js';
+import { canonicalGroupName, cleanGroupName } from '../utils/groupTaxonomy.js';
 
 export const StockDetail = {
     currentSymbol: null,
@@ -99,31 +100,11 @@ export const StockDetail = {
     },
 
     cleanClassificationValue(value) {
-        const text = String(value || '').trim();
-        if (!text || text === '--') return '';
-        const lowered = text.toLowerCase();
-        if (lowered === 'nan' || lowered === 'null') return '';
-        return text;
+        return cleanGroupName(value);
     },
 
     canonicalClassificationValue(value) {
-        const name = this.cleanClassificationValue(value);
-        const canonical = {
-            'CPO_Optical': '矽光子_CPO',
-            'Silicon_Photonics': '矽光子_CPO',
-            'Optical_Transceiver': '矽光子_CPO',
-            'AI_Server': 'AI伺服器代工',
-            'AI_Memory': 'AI記憶體',
-            'ASIC': 'ASIC_IP',
-            'BBU': 'BBU_電池備援',
-            'Cooling_Liquid': '散熱模組',
-            'PCB_CCL_Drilling': 'PCB_CCL_ABF',
-            'Power_Grid': '電源供應器',
-            'Low_Orbit_Satellite': '低軌衛星_SpaceX鏈',
-            'Robotics_AI': '機器人_自動化',
-            'Defense_Aerospace': '軍工_航太',
-        };
-        return canonical[name] || name;
+        return canonicalGroupName(value);
     },
 
     buildClassification(stockInfo) {

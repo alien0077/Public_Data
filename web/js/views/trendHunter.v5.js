@@ -5,6 +5,7 @@
 
 import { api } from '../api.js';
 import { stockIdentityHTML, stockMetricHTML, stockMobileCardHTML } from '../utils/stockListLayout.js';
+import { canonicalGroupName, openGroupList } from '../utils/groupTaxonomy.js';
 
 function buildThemeRotationContext(rotationData) {
     const themes = rotationData?.themes || [];
@@ -106,11 +107,45 @@ const OLD_ECONOMY_KEYWORDS = [
 
 function getRotationViewData(rotationData, view) {
     const themes = rotationData?.themes || [];
-    if (view === 'ai') return rotationData?.ai_themes || themes.filter(t => AI_THEME_NAMES.has(t.name));
-    if (view === 'macro') return themes.filter(t => MACRO_THEME_NAMES.has(t.name));
-    if (view === 'official') return themes.filter(t => OFFICIAL_SECTOR_NAMES.has(t.name));
-    if (view === 'old') return themes.filter(t => OLD_ECONOMY_KEYWORDS.some(k => String(t.name || '').includes(k)));
-    return themes;
+    if (view === 'ai') return mergeRotationThemeMetrics(rotationData?.ai_themes || themes.filter(t => AI_THEME_NAMES.has(t.name)));
+    if (view === 'macro') return mergeRotationThemeMetrics(themes.filter(t => MACRO_THEME_NAMES.has(t.name)));
+    if (view === 'official') return mergeRotationThemeMetrics(themes.filter(t => OFFICIAL_SECTOR_NAMES.has(t.name)));
+    if (view === 'old') return mergeRotationThemeMetrics(themes.filter(t => OLD_ECONOMY_KEYWORDS.some(k => String(t.name || '').includes(k))));
+    return mergeRotationThemeMetrics(themes);
+}
+
+function mergeRotationThemeMetrics(themes) {
+    const merged = new Map();
+    for (const theme of themes || []) {
+        const name = canonicalGroupName(theme.name);
+        if (!name) continue;
+        const current = merged.get(name);
+        if (!current) {
+            merged.set(name, { ...theme, name, raw_names: theme.name && theme.name !== name ? [theme.name] : [] });
+            continue;
+        }
+        const flowA = Number(current.flow_ratio) || 0;
+        const flowB = Number(theme.flow_ratio) || 0;
+        const totalFlow = flowA + flowB;
+        const pctA = Number(current.avg_pct) || 0;
+        const pctB = Number(theme.avg_pct) || 0;
+        current.net_flow = (Number(current.net_flow) || 0) + (Number(theme.net_flow) || 0);
+        current.flow_ratio = totalFlow;
+        current.avg_pct = totalFlow > 0 ? ((pctA * flowA) + (pctB * flowB)) / totalFlow : Math.max(pctA, pctB);
+        current.top_stocks = mergeTopStocks(current.top_stocks, theme.top_stocks);
+        if (theme.name && theme.name !== name && !current.raw_names.includes(theme.name)) current.raw_names.push(theme.name);
+    }
+    return [...merged.values()];
+}
+
+function mergeTopStocks(a = [], b = []) {
+    const seen = new Set();
+    return [...(a || []), ...(b || [])].filter(stock => {
+        const id = stock?.id || stock?.stock_id || stock?.symbol;
+        if (!id || seen.has(id)) return false;
+        seen.add(id);
+        return true;
+    });
 }
 
 function classifyStrengthState(metrics) {
@@ -155,12 +190,22 @@ function computeMonthlyStrength(themeData) {
     const state = classifyStrengthState(metrics);
     const score = flow20 + avgReturn * 2 + flowPersistence * 12 + breadth * 10;
     return {
-        name: themeData.theme || themeData.theme_en,
+        name: canonicalGroupName(themeData.theme || themeData.theme_en),
         score,
         state,
         leader,
         ...metrics
     };
+}
+
+function dedupeStrengthItems(items) {
+    const bestByName = new Map();
+    for (const item of items || []) {
+        if (!item?.name) continue;
+        const current = bestByName.get(item.name);
+        if (!current || item.score > current.score) bestByName.set(item.name, item);
+    }
+    return [...bestByName.values()];
 }
 
 function renderLongTermStrengthSection(items, textSec, isDark) {
@@ -175,15 +220,17 @@ function renderLongTermStrengthSection(items, textSec, isDark) {
     const weakening = items.filter(item => item.state.label !== '強勢延續').slice(0, 5);
     const cardBg = isDark ? 'rgba(255,255,255,0.03)' : 'rgba(255,255,255,0.72)';
     const renderCard = item => {
+        const groupName = canonicalGroupName(item.name);
+        const encodedGroup = encodeURIComponent(groupName);
         const flowText = `${item.flow20 >= 0 ? '+' : ''}${item.flow20.toFixed(1)} 億`;
         const retText = `${item.avgReturn >= 0 ? '+' : ''}${item.avgReturn.toFixed(1)}%`;
         const breadthText = `${Math.round(item.breadth * 100)}%`;
         const leaderText = item.leader ? `${item.leader.id} ${item.leader.name} ${item.leader.ret >= 0 ? '+' : ''}${item.leader.ret.toFixed(1)}%` : '--';
         return `
-            <div class="p-3 rounded-lg border border-gray-200 dark:border-gray-700" style="background:${cardBg}">
+            <button type="button" class="w-full text-left p-3 rounded-lg border border-gray-200 dark:border-gray-700 hover:ring-2 hover:ring-blue-500/20 active:scale-[0.99] transition cursor-pointer" style="background:${cardBg}" onclick="window.GroupSearch?.openGroup(decodeURIComponent('${encodedGroup}'))" title="查看 ${groupName} 個股列表">
                 <div class="flex items-start justify-between gap-2 mb-2">
                     <div class="min-w-0">
-                        <div class="text-sm font-bold text-gray-900 dark:text-white truncate">${item.name}</div>
+                        <div class="text-sm font-bold text-gray-900 dark:text-white truncate">${groupName}</div>
                         <div class="text-[10px] mt-0.5" style="color:${textSec}">領先股：${leaderText}</div>
                     </div>
                     <span class="shrink-0 text-[10px] font-bold px-2 py-0.5 rounded border ${item.state.cls}">${item.state.label}</span>
@@ -193,7 +240,7 @@ function renderLongTermStrengthSection(items, textSec, isDark) {
                     <div><div style="color:${textSec}">均報酬</div><div class="font-bold ${item.avgReturn >= 0 ? 'text-red-500' : 'text-green-500'}">${retText}</div></div>
                     <div><div style="color:${textSec}">廣度</div><div class="font-bold text-gray-900 dark:text-white">${breadthText}</div></div>
                 </div>
-            </div>
+            </button>
         `;
     };
     return `
@@ -1211,9 +1258,9 @@ export const TrendHunter = {
                             const data = await api.fetchLocalJson(`quant/sector_monthly_flow/${safeName}.json`);
                             return computeMonthlyStrength(data);
                         }));
-                        const items = results
+                        const items = dedupeStrengthItems(results
                             .filter(r => r.status === 'fulfilled' && r.value)
-                            .map(r => r.value)
+                            .map(r => r.value))
                             .sort((a, b) => b.score - a.score);
                         longTermDom.innerHTML = renderLongTermStrengthSection(items, textSec, isDark);
                     } catch (err) {
@@ -1284,7 +1331,7 @@ export const TrendHunter = {
                                     const d = p.data;
                                     const pct = (d._avgPct || 0);
                                     const pctStr = pct > 0 ? `+${pct.toFixed(1)}%` : `${pct.toFixed(1)}%`;
-                                    return `<b>${d.name}</b><br/>成交佔比: ${(d._flowRatio || 0).toFixed(1)}%<br/>平均漲跌幅: ${pctStr}`;
+                                    return `<b>${d.name}</b><br/>成交佔比: ${(d._flowRatio || 0).toFixed(1)}%<br/>平均漲跌幅: ${pctStr}<br/><span style="font-size:11px;color:#94a3b8">點擊查看個股列表</span>`;
                                 }
                             },
                             series: [{
@@ -1299,7 +1346,8 @@ export const TrendHunter = {
                                     color: '#fff',
                                     fontWeight: 'bold',
                                     textShadowBlur: 2,
-                                    textShadowColor: 'rgba(0,0,0,0.5)'
+                                    textShadowColor: 'rgba(0,0,0,0.5)',
+                                    formatter: params => canonicalGroupName(params.name)
                                 },
                                 itemStyle: {
                                     borderColor: isDark ? '#333' : '#fff',
@@ -1314,7 +1362,7 @@ export const TrendHunter = {
                                     }
                                 }],
                                 data: sorted.map(t => ({
-                                    name: t.name,
+                                    name: canonicalGroupName(t.name),
                                     value: Math.max(t.flow_ratio || 1, 0.5),
                                     _flowRatio: t.flow_ratio,
                                     _avgPct: t.avg_pct,
@@ -1325,6 +1373,7 @@ export const TrendHunter = {
                     }
 
                     treemapChart.setOption(buildTreemapOption(getRotationViewData(rotationData, 'all')));
+                    treemapChart.on('click', params => openGroupList(params?.data?.name || params?.name));
                     treemapChart.resize();
 
                     // Scatter chart (象限圖)
@@ -1340,7 +1389,7 @@ export const TrendHunter = {
                         }
                         const netFlows = data.map(t => t.net_flow || 0);
                         const bound = Math.max(...netFlows.map(Math.abs), 5);
-                        const seriesData = data.map(t => [t.net_flow || 0, t.avg_pct, t.name, t.trend, t.flow_ratio]);
+                        const seriesData = data.map(t => [t.net_flow || 0, t.avg_pct, canonicalGroupName(t.name), t.trend, t.flow_ratio]);
 
                         return {
                             backgroundColor: 'transparent',
@@ -1349,7 +1398,7 @@ export const TrendHunter = {
                                 formatter: function (params) {
                                     const nf = params.value[0];
                                     const nfStr = nf >= 0 ? `+${nf.toFixed(1)}億` : `${nf.toFixed(1)}億`;
-                                    return `<b>${params.value[2]}</b><br/>法人淨買超: ${nfStr}<br/>平均漲跌幅: ${params.value[1].toFixed(2)}%<br/>成交佔比: ${(params.value[4] || 0).toFixed(1)}%`;
+                                    return `<b>${params.value[2]}</b><br/>法人淨買超: ${nfStr}<br/>平均漲跌幅: ${params.value[1].toFixed(2)}%<br/>成交佔比: ${(params.value[4] || 0).toFixed(1)}%<br/><span style="font-size:11px;color:#94a3b8">點擊查看個股列表</span>`;
                                 }
                             },
                             grid: {
@@ -1485,6 +1534,7 @@ export const TrendHunter = {
                     let currentView = 'all';
                     let option = buildOption(getActiveData(currentView));
                     myChart.setOption(option);
+                    myChart.on('click', params => openGroupList(params?.value?.[2] || params?.name));
                     myChart.resize();
                     window.addEventListener('resize', () => {
                         treemapChart.resize();
@@ -1814,7 +1864,7 @@ export const TrendHunter = {
                 const groups = {};
                 filtered.forEach(s => {
                     const meta = stockMetaMap[s.id];
-                    const ind = meta.industry;
+                    const ind = canonicalGroupName(meta.industry) || '其他';
                     if (!groups[ind]) groups[ind] = { name: ind, totalValue: 0, items: [] };
                     groups[ind].items.push({
                         id: s.id,
@@ -1851,7 +1901,7 @@ export const TrendHunter = {
                     // 對每個族群內部的個股進行 Leader Partitioning 檢查
                     // 雖然我們主要靠 ECharts 渲染，但我們可以調整數據權重或分組來輔助
                     return {
-                        name: sector.name,
+                        name: canonicalGroupName(sector.name),
                         value: sector.totalValue,
                         children: sector.items.sort((a, b) => b.value - a.value).map(item => ({
                             name: `${item.name}\n${item.pct >= 0 ? '+' : ''}${item.pct}%`,
@@ -1972,6 +2022,8 @@ export const TrendHunter = {
                             if (window.StockDetail && typeof window.StockDetail.show === 'function') {
                                 window.StockDetail.show(params.data.symbol);
                             }
+                        } else if (params.data?.name) {
+                            openGroupList(params.data.name);
                         }
                     });
 
