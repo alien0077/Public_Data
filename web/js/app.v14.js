@@ -899,11 +899,18 @@ document.addEventListener('DOMContentLoaded', () => {
                     <div class="text-[8px] text-gray-400 leading-relaxed">融資水位 = 目前融資餘額 / MA20 月均線。>100% 表示融資增加（散戶偏多），<100% 表示融資減少（散戶偏空）。</div>
                     ${d.maintenance_rate ? `
                     <div class="flex justify-between items-center pt-1">
-                        <span class="text-[10px] text-gray-500">融資維持率</span>
+                        <span class="text-[10px] text-gray-500">普通股融資市值比</span>
                         <span class="text-[10px] font-bold font-mono ${d.maintenance_rate < 140 ? "text-red-500" : d.maintenance_rate < 150 ? "text-orange-500" : "text-green-500"}">${d.maintenance_rate.toFixed(1)}%${d.maintenance_rate < 140 ? " ⚠️" : ""}</span>
                     </div>
-                    <div class="text-[8px] text-gray-400 leading-relaxed">融資維持率 = 股票市值 / 融資金額。>166% 安全，130-166% 警戒，<130% 可能斷頭。</div>` : ""}
+                    <div class="text-[8px] text-gray-400 leading-relaxed">普通股融資市值比 = Σ(普通股融資張數×收盤×1000) / 全市場融資金額。</div>` : ""}
                     <div class="text-[10px] text-gray-500 leading-relaxed mt-1">${summaryText}</div>
+                    <div class="mt-6 pt-4 border-t border-gray-100 dark:border-gray-800">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-xs font-bold text-gray-400 uppercase tracking-widest">普通股融資市值比歷史走勢</span>
+                            <span class="text-[9px] text-gray-500">雙軸：市值比 / 加權指數</span>
+                        </div>
+                        <div id="maintenance-rate-trend-chart" class="w-full" style="height:260px;"></div>
+                    </div>
                 </div>
             `;
 
@@ -951,6 +958,118 @@ document.addEventListener('DOMContentLoaded', () => {
                     });
                     window.addEventListener('resize', () => chart.resize());
                 }
+            }
+
+            const mrChartContainer = document.getElementById('maintenance-rate-trend-chart');
+            if (mrChartContainer && typeof echarts !== 'undefined') {
+                api.fetchLocalJson('meta/market_margin_history.json').then(histData => {
+                    if (!histData || !histData.history || histData.history.length < 5) return;
+                    const valid = histData.history.filter(h => h.index_close > 0 && h.maintenance_rate > 0 && h.margin_shares_count >= 1000);
+                    if (valid.length < 5) return;
+                    const dates = valid.map(h => h.date.substring(5));
+                    const rates = valid.map(h => h.maintenance_rate);
+                    const indices = valid.map(h => h.index_close);
+                    const chart2 = echarts.init(mrChartContainer);
+                    chart2.setOption({
+                        tooltip: {
+                            trigger: 'axis',
+                            axisPointer: { type: 'cross' },
+                            backgroundColor: 'rgba(22,27,34,0.9)',
+                            borderColor: '#30363d',
+                            textStyle: { color: '#e6edf3', fontSize: 10 },
+                            formatter: function(params) {
+                                const p = params[0];
+                                const date = valid[p.dataIndex]?.date || '';
+                                return date +
+                                    '<br/>市值比: <span style=\"color:#3b82f6\">' +
+                                    p.value.toFixed(2) + '%</span>' +
+                                    '<br/>加權: <span style=\"color:#f59e0b\">' +
+                                    params[1].value.toLocaleString() + '</span>';
+                            }
+                        },
+                        legend: {
+                            data: ['普通股市值比', '加權指數'],
+                            top: 0,
+                            textStyle: { color: '#8b949e', fontSize: 10 }
+                        },
+                        grid: {
+                            left: '3%', right: '4%',
+                            bottom: '3%', top: '18%',
+                            containLabel: true
+                        },
+                        xAxis: {
+                            type: 'category',
+                            data: dates,
+                            axisLine: { lineStyle: { color: '#30363d' } },
+                            axisLabel: {
+                                color: '#8b949e', fontSize: 8,
+                                interval: Math.max(0, Math.floor(dates.length / 15) - 1)
+                            },
+                            splitLine: { show: false }
+                        },
+                        yAxis: [
+                            {
+                                type: 'value',
+                                name: '市值比 %',
+                                nameTextStyle: { color: '#3b82f6', fontSize: 9 },
+                                min: 130, max: 220,
+                                axisLine: { lineStyle: { color: '#3b82f6' } },
+                                axisLabel: { color: '#3b82f6', fontSize: 9, formatter: '{value}%' },
+                                splitLine: { lineStyle: { color: '#21262d', type: 'dashed' } }
+                            },
+                            {
+                                type: 'value',
+                                name: '加權指數',
+                                nameTextStyle: { color: '#f59e0b', fontSize: 9 },
+                                axisLine: { lineStyle: { color: '#f59e0b' } },
+                                axisLabel: {
+                                    color: '#f59e0b', fontSize: 9,
+                                    formatter: function(v) { return (v/1000).toFixed(0) + 'k'; }
+                                },
+                                splitLine: { show: false }
+                            }
+                        ],
+                        series: [
+                            {
+                                name: '普通股市值比',
+                                type: 'line',
+                                data: rates,
+                                smooth: true,
+                                symbol: 'none',
+                                lineStyle: { width: 2, color: '#3b82f6' },
+                                areaStyle: {
+                                    color: {
+                                        type: 'linear', x: 0, y: 0, x2: 0, y2: 1,
+                                        colorStops: [
+                                            { offset: 0, color: 'rgba(59,130,246,0.3)' },
+                                            { offset: 1, color: 'rgba(59,130,246,0.02)' }
+                                        ]
+                                    }
+                                }
+                            },
+                            {
+                                name: '加權指數',
+                                type: 'line',
+                                yAxisIndex: 1,
+                                data: indices,
+                                smooth: true,
+                                symbol: 'none',
+                                lineStyle: { width: 1.5, color: '#f59e0b' },
+                                areaStyle: {
+                                    color: {
+                                        type: 'linear', x: 0, y: 0, x2: 0, y2: 1,
+                                        colorStops: [
+                                            { offset: 0, color: 'rgba(245,158,11,0.2)' },
+                                            { offset: 1, color: 'rgba(245,158,11,0.02)' }
+                                        ]
+                                    }
+                                }
+                            }
+                        ],
+                        backgroundColor: 'transparent'
+                    });
+                    window.addEventListener('resize', () => chart2.resize());
+                }).catch(() => {});
             }
 
             const gaugeContainer = document.getElementById('market-health-gauge');

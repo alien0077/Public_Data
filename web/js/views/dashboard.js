@@ -81,6 +81,22 @@ export const Dashboard = {
                         </div>
                     </div>
                 </div>
+
+                <!-- 大盤融資維持率趨勢圖 -->
+                <div class="bg-white dark:bg-[#161b22] rounded-2xl border border-gray-200 dark:border-gray-800 overflow-hidden shadow-sm" id="dashboard-maintenance-chart-card">
+                    <div class="p-5 border-b border-gray-100 dark:border-gray-800 flex justify-between items-center">
+                        <h3 class="font-bold text-gray-900 dark:text-white flex items-center">
+                            <span class="mr-2">📊</span> 大盤融資維持率
+                        </h3>
+                        <div class="flex items-center gap-3">
+                            <span id="dashboard-mr-current" class="text-sm font-mono font-bold text-blue-500">--</span>
+                            <span id="dashboard-mr-status" class="text-[10px] px-2 py-0.5 rounded-full font-bold">--</span>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <div id="dashboard-maintenance-chart" class="w-full" style="height:320px;"></div>
+                    </div>
+                </div>
             </div>
         `;
 
@@ -107,16 +123,17 @@ export const Dashboard = {
             const tradesPromise = db.getAllTrades().catch(() => []);
             const riskPromise = api.fetchLocalJson('meta/market_risk.json').catch(() => null);
             const narrativePromise = api.fetchLocalJson('meta/market_narrative.json').catch(() => null);
+            const marginHistoryPromise = api.fetchLocalJson('meta/market_margin_history.json').catch(() => null);
 
-            const [quotes, marginData, liarData, quantData, trades, riskData, narrativeData] = await Promise.all([
-                quotesPromise, marginPromise, liarPromise, quantPromise, tradesPromise, riskPromise, narrativePromise
+            const [quotes, marginData, liarData, quantData, trades, riskData, narrativeData, marginHistory] = await Promise.all([
+                quotesPromise, marginPromise, liarPromise, quantPromise, tradesPromise, riskPromise, narrativePromise, marginHistoryPromise
             ]);
 
             this.renderMarket(quotes, marginData);
             this.renderLiar(liarData);
             this.renderQuant(quantData);
             this.renderPortfolioSummary(trades);
-            this.renderIntelligence(riskData, narrativeData);
+            this.renderIntelligence(riskData, narrativeData, marginHistory);
 
         } catch (err) {
             console.error('Dashboard: Top-level render error', err);
@@ -364,6 +381,164 @@ export const Dashboard = {
                 <div class="text-xl font-mono font-bold text-blue-500">${data?.nav ? data.nav.toFixed(2) : '--'}</div>
             </div>
         `;
+    },
+
+    renderIntelligence(riskData, narrativeData, marginHistory) {
+        // 大盤融資維持率 — 當前值 + 歷史趨勢圖
+        const mrEl = document.getElementById('dashboard-mr-current');
+        const statusEl = document.getElementById('dashboard-mr-status');
+        const chartEl = document.getElementById('dashboard-maintenance-chart');
+        if (!chartEl) return;
+
+        if (riskData?.stocks?.[0]?.maintenance_rate) {
+            const rate = riskData.stocks[0].maintenance_rate;
+            const status = riskData.stocks[0].status || '--';
+            mrEl.textContent = rate.toFixed(1) + '%';
+            statusEl.textContent = status;
+            const colors = { '危險': 'bg-red-500', '過熱': 'bg-orange-500', '穩定': 'bg-green-500', '平穩': 'bg-blue-500' };
+            statusEl.className = `text-[10px] px-2 py-0.5 rounded-full font-bold text-white ${colors[status] || 'bg-gray-500'}`;
+        }
+
+        if (!marginHistory || !marginHistory.history || marginHistory.history.length < 2) return;
+
+        // 過濾有效數據（僅保留有 TAIEX 指數的交易日）
+        const validData = marginHistory.history.filter(h => h.index_close > 0 && h.maintenance_rate > 0);
+
+        // 準備 ECharts 數據
+        const dates = validData.map(h => h.date.substring(5)); // MM-DD
+        const rates = validData.map(h => h.maintenance_rate);
+        const indices = validData.map(h => h.index_close);
+
+        // 清理舊實例
+        if (this._maintenanceChart) this._maintenanceChart.dispose();
+
+        const chart = echarts.init(chartEl);
+        this._maintenanceChart = chart;
+
+        chart.setOption({
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: { type: 'cross' },
+                backgroundColor: 'rgba(22,27,34,0.9)',
+                borderColor: '#30363d',
+                textStyle: { color: '#e6edf3', fontSize: 11 },
+                formatter: function(params) {
+                    const p = params[0];
+                    const idx = p.dataIndex;
+                    const date = validData[idx]?.date || '';
+                    const rate = params[0]?.value?.toFixed(2) || '--';
+                    const indexVal = params[1]?.value?.toLocaleString() || '--';
+                    return `<div style="font-size:12px;font-weight:bold;margin-bottom:4px;">${date}</div>
+                            <div style="display:flex;justify-content:space-between;gap:16px;">
+                                <span>維持率: <span style="color:#3b82f6;font-weight:bold;">${rate}%</span></span>
+                                <span>加權: <span style="color:#f59e0b;font-weight:bold;">${indexVal}</span></span>
+                            </div>`;
+                }
+            },
+            legend: {
+                data: ['大盤融資維持率', '加權指數'],
+                top: 0,
+                textStyle: { color: '#8b949e', fontSize: 11 }
+            },
+            grid: {
+                left: '3%',
+                right: '4%',
+                bottom: '3%',
+                top: '15%',
+                containLabel: true
+            },
+            xAxis: {
+                type: 'category',
+                data: dates,
+                axisLine: { lineStyle: { color: '#30363d' } },
+                axisLabel: {
+                    color: '#8b949e',
+                    fontSize: 9,
+                    interval: Math.max(0, Math.floor(dates.length / 20) - 1)
+                },
+                splitLine: { show: false }
+            },
+            yAxis: [
+                {
+                    type: 'value',
+                    name: '維持率 %',
+                    nameTextStyle: { color: '#3b82f6', fontSize: 10 },
+                    min: 130,
+                    max: 190,
+                    axisLine: { lineStyle: { color: '#3b82f6' } },
+                    axisLabel: {
+                        color: '#3b82f6',
+                        fontSize: 10,
+                        formatter: '{value}%'
+                    },
+                    splitLine: {
+                        lineStyle: { color: '#21262d', type: 'dashed' }
+                    }
+                },
+                {
+                    type: 'value',
+                    name: '加權指數',
+                    nameTextStyle: { color: '#f59e0b', fontSize: 10 },
+                    min: 18000,
+                    max: 45000,
+                    axisLine: { lineStyle: { color: '#f59e0b' } },
+                    axisLabel: {
+                        color: '#f59e0b',
+                        fontSize: 10,
+                        formatter: function(v) { return (v / 1000).toFixed(0) + 'k'; }
+                    },
+                    splitLine: { show: false }
+                }
+            ],
+            series: [
+                {
+                    name: '大盤融資維持率',
+                    type: 'line',
+                    data: rates,
+                    smooth: true,
+                    symbol: 'none',
+                    lineStyle: { width: 2, color: '#3b82f6' },
+                    areaStyle: {
+                        color: {
+                            type: 'linear',
+                            x: 0, y: 0, x2: 0, y2: 1,
+                            colorStops: [
+                                { offset: 0, color: 'rgba(59,130,246,0.3)' },
+                                { offset: 1, color: 'rgba(59,130,246,0.02)' }
+                            ]
+                        }
+                    },
+                    markLine: {
+                        silent: true,
+                        data: [
+                            { yAxis: 140, label: { formatter: '警戒 140%', color: '#ef4444', fontSize: 9 }, lineStyle: { color: '#ef4444', type: 'dashed', width: 1 } },
+                            { yAxis: 160, label: { formatter: '安全 160%', color: '#22c55e', fontSize: 9 }, lineStyle: { color: '#22c55e', type: 'dashed', width: 1 } }
+                        ]
+                    }
+                },
+                {
+                    name: '加權指數',
+                    type: 'line',
+                    yAxisIndex: 1,
+                    data: indices,
+                    smooth: true,
+                    symbol: 'none',
+                    lineStyle: { width: 1.5, color: '#f59e0b' },
+                    areaStyle: {
+                        color: {
+                            type: 'linear',
+                            x: 0, y: 0, x2: 0, y2: 1,
+                            colorStops: [
+                                { offset: 0, color: 'rgba(245,158,11,0.2)' },
+                                { offset: 1, color: 'rgba(245,158,11,0.02)' }
+                            ]
+                        }
+                    }
+                }
+            ],
+            // 深色主題
+            backgroundColor: 'transparent'
+        });
     },
 
     async renderPortfolioSummary(trades) {
