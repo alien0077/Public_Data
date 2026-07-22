@@ -12,6 +12,7 @@ import { CorporateActions } from './corporateActions.js';
 import { Settings } from './views/settings.js?cb=3';
 import { GroupSearch } from './views/groupSearch.js?v=5';
 import { AudioSummary } from './views/audioSummary.js';
+import { MarginRankings } from './views/marginRankings.js';
 import { getPriceChangeStyle } from './utils/priceStyle.js';
 import { stockIdentityHTML, stockMetricHTML, stockMobileCardHTML } from './utils/stockListLayout.js';
 
@@ -62,8 +63,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const { primary, secondary } = e.detail;
         if (stockDetailOverlay) stockDetailOverlay.classList.add('hidden');
         try {
-            if (primary === 'trendHunter') TrendHunter.init(secondary);
-            else if (primary === 'assetRisk') AssetRisk.init(secondary);
+        if (primary === 'trendHunter') TrendHunter.init(secondary);
+        else if (primary === 'assetRisk') AssetRisk.init(secondary);
+        else if (primary === 'marginRankings') MarginRankings.show(document.getElementById('view-marginRankings'));
             else if (primary === 'performance') BattleRecord.init();
             else if (primary === 'addTrade') Transaction.init();
             else if (primary === 'favorites') Favorites.init(secondary);
@@ -79,7 +81,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const el = document.getElementById(id);
         if (el) el.addEventListener('click', (e) => { e.preventDefault(); router.switchPage(p); });
     };
-    ['portfolio', 'trendHunter', 'assetRisk', 'performance', 'addTrade', 'favorites', 'audioSummary', 'groupSearch', 'settings'].forEach(p => {
+    ['portfolio', 'trendHunter', 'marginRankings', 'assetRisk', 'performance', 'addTrade', 'favorites', 'audioSummary', 'groupSearch', 'settings'].forEach(p => {
         bindPage('nav-' + p, p);
         const m = document.getElementById('mobile-nav-' + p);
         if (m) m.addEventListener('click', (e) => { e.preventDefault(); router.switchPage(p); });

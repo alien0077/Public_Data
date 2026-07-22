@@ -17,7 +17,7 @@ export const charts = {
         return this.instance;
     },
 
-    renderKLine(symbol, rawData, trades = [], structureData = null) {
+    renderKLine(symbol, rawData, trades = [], structureData = null, healthData = null) {
         if (!this.instance) return;
         const data = this.transformKData(rawData);
         if (data.categoryData.length === 0) return;
@@ -51,6 +51,25 @@ export const charts = {
                     lineStyle: { type: 'solid', color: color, width: 1, opacity: 0.4 }
                 });
             });
+        }
+
+        // 🚀 v1.3: 融資成本線
+        if (healthData && healthData.margin) {
+            const hm = healthData.margin;
+            if (hm.estimated_margin_cost && hm.estimated_margin_cost > 0) {
+                markLines.push({
+                    yAxis: hm.estimated_margin_cost,
+                    label: { formatter: `融資成本: ${hm.estimated_margin_cost.toFixed(1)}`, position: 'start', backgroundColor: '#f97316', color: '#fff', padding: [2, 4], borderRadius: 2, fontSize: 9 },
+                    lineStyle: { type: 'dashed', color: '#f97316', width: 1, opacity: 0.7 }
+                });
+            }
+            if (hm.estimated_warning_price_130 && hm.estimated_warning_price_130 > 0) {
+                markLines.push({
+                    yAxis: hm.estimated_warning_price_130,
+                    label: { formatter: `警戒: ${hm.estimated_warning_price_130.toFixed(1)}`, position: 'start', backgroundColor: '#ef4444', color: '#fff', padding: [2, 4], borderRadius: 2, fontSize: 9 },
+                    lineStyle: { type: 'dotted', color: '#ef4444', width: 1, opacity: 0.6 }
+                });
+            }
         }
 
         // 🚀 Render Trade Icons (markPoints)

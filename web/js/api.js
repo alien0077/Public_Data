@@ -303,7 +303,8 @@ export const api = {
             }
         }
         return { supportMA: 'X', maBias: null };
-    }
+    },
+    async fetchMarginStockRankings() { try { return await this.fetchLocalJson('quant/margin_stock_rankings.json'); } catch (e) { return null; } },
 };
 
 window.api = api;

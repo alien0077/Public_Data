@@ -247,13 +247,14 @@ export const StockDetail = {
         </div>`;
         
         charts.init('detail-chart-container');
-        const [chartData, structureData, trades] = await Promise.all([
+        const [chartData, structureData, trades, healthData] = await Promise.all([
             api.fetchChart(this.currentSymbol).catch(() => null),
             api.fetchStructure(this.currentSymbol).catch(() => null),
-            db.getAllTrades().catch(() => [])
+            db.getAllTrades().catch(() => []),
+            api.fetchHealthData(this.currentSymbol).catch(() => null)
         ]);
         
-        if (chartData) charts.renderKLine(this.currentSymbol, chartData, trades, structureData);
+        if (chartData) charts.renderKLine(this.currentSymbol, chartData, trades, structureData, healthData);
         else document.getElementById('detail-chart-container').innerHTML = `<div class="flex items-center justify-center h-full text-gray-500 text-sm font-bold">暫無 K 線歷史數據</div>`;
 
         const quickTradesContainer = document.getElementById('detail-quick-trades');
@@ -354,8 +355,195 @@ export const StockDetail = {
                     <div class="text-[10px] text-gray-400">${slope > 1000 ? "融資爆增" : "籌碼平穩"}</div>
                 </div>
             </div>
+
+            ${this.renderMarginPressureSection(data)}
         </div>`;
-    },    async renderMarketTab(container) {
+    },
+
+    renderMarginPressureSection(data) {
+        const m = data.margin || {};
+        const score = m.margin_pressure_score;
+        const level = m.margin_pressure_level || 'LOW';
+        if (score == null) return '';
+
+        const levelColors = { HIGH: 'text-red-500 bg-red-500/10', CAUTION: 'text-orange-500 bg-orange-500/10', NORMAL: 'text-yellow-500 bg-yellow-500/10', LOW: 'text-green-500 bg-green-500/10' };
+        const levelLabels = { HIGH: '高', CAUTION: '注意', NORMAL: '正常', LOW: '低' };
+        const lColor = levelColors[level] || levelColors.LOW;
+        const lLabel = levelLabels[level] || '低';
+        const barColor = level === 'HIGH' ? '#ef4444' : level === 'CAUTION' ? '#f97316' : level === 'NORMAL' ? '#eab308' : '#22c55e';
+
+        const usage = m.margin_usage_rate;
+        const chg5d = m.margin_balance_change_5d;
+        const delta5d = m.margin_balance_delta_5d || 0;
+        const buyRatio = m.margin_buy_volume_ratio;
+        const divergence = m.margin_price_divergence_5d;
+
+        const divLabels = { PRICE_UP_MARGIN_UP: '價漲融資增', PRICE_UP_MARGIN_DOWN: '價漲融資減', PRICE_DOWN_MARGIN_UP: '價跌融資增', PRICE_DOWN_MARGIN_DOWN: '價跌融資減' };
+        const divColors = { PRICE_DOWN_MARGIN_UP: 'text-red-500', PRICE_UP_MARGIN_DOWN: 'text-green-500', PRICE_UP_MARGIN_UP: 'text-orange-500', PRICE_DOWN_MARGIN_DOWN: 'text-blue-500' };
+
+        return `
+            <div class="bg-gray-50 dark:bg-gray-900 rounded-2xl p-6 border border-gray-100 dark:border-gray-800">
+                <h3 class="text-sm font-bold mb-4 flex items-center"><span class="mr-2">🔴</span> 融資壓力監測</h3>
+                <div class="mb-4">
+                    <div class="flex items-center justify-between mb-1">
+                        <span class="text-[10px] text-gray-500">融資壓力分數</span>
+                        <span class="text-lg font-black ${lColor.split(' ')[0]}">${score}<span class="text-xs text-gray-400 ml-1">/100</span></span>
+                    </div>
+                    <div class="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+                        <div class="h-full rounded-full transition-all" style="width:${Math.min(score, 100)}%;background:${barColor}"></div>
+                    </div>
+                    <div class="mt-1 inline-block text-[10px] font-bold px-2 py-0.5 rounded-full ${lColor}">${lLabel}</div>
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    ${usage != null ? `
+                    <div class="bg-gray-100 dark:bg-gray-800 p-3 rounded-xl">
+                        <div class="text-[10px] text-gray-500 mb-1">融資使用率</div>
+                        <div class="text-base font-bold ${usage > 0.5 ? 'text-red-500' : 'text-blue-500'}">${(usage * 100).toFixed(1)}%</div>
+                        <div class="text-[10px] text-gray-400">${usage > 0.5 ? '使用率偏高' : '使用率正常'}</div>
+                    </div>` : ''}
+                    ${chg5d != null ? `
+                    <div class="bg-gray-100 dark:bg-gray-800 p-3 rounded-xl">
+                        <div class="text-[10px] text-gray-500 mb-1">5日融資變化</div>
+                        <div class="text-base font-bold ${chg5d > 0 ? 'text-red-500' : 'text-green-500'}">${(chg5d > 0 ? '+' : '')}${(chg5d * 100).toFixed(1)}%</div>
+                        <div class="text-[10px] text-gray-400">${Math.abs(delta5d).toLocaleString()}張</div>
+                    </div>` : ''}
+                    ${buyRatio != null ? `
+                    <div class="bg-gray-100 dark:bg-gray-800 p-3 rounded-xl">
+                        <div class="text-[10px] text-gray-500 mb-1">融資買盤佔比</div>
+                        <div class="text-base font-bold ${buyRatio > 0.2 ? 'text-orange-500' : 'text-blue-500'}">${(buyRatio * 100).toFixed(1)}%</div>
+                        <div class="text-[10px] text-gray-400">${buyRatio > 0.2 ? '買盤偏高' : '買盤正常'}</div>
+                    </div>` : ''}
+                    ${divergence ? `
+                    <div class="bg-gray-100 dark:bg-gray-800 p-3 rounded-xl">
+                        <div class="text-[10px] text-gray-500 mb-1">價量背離(5日)</div>
+                        <div class="text-base font-bold ${divColors[divergence] || 'text-gray-500'}">${divLabels[divergence] || divergence}</div>
+                        <div class="text-[10px] text-gray-400">${divergence === 'PRICE_DOWN_MARGIN_UP' ? '散戶接刀' : divergence === 'PRICE_UP_MARGIN_DOWN' ? '籌碼沉澱' : divergence === 'PRICE_UP_MARGIN_UP' ? '籌碼過熱' : '去槓桿'}</div>
+                    </div>` : ''}
+                </div>
+            </div>
+
+            ${this.renderCostEstimateSection(data)}
+            ${this.renderSignalsAndPercentiles(data)}
+            </div>`;
+    },
+
+    renderCostEstimateSection(data) {
+        const m = data.margin || {};
+        const conf = m.margin_model_confidence;
+        const cost = m.estimated_margin_cost;
+        if (conf == null || conf <= 0 || cost == null) return '';
+
+        const ret = m.estimated_margin_return;
+        const cr60 = m.estimated_collateral_ratio_60;
+        const wp130 = m.estimated_warning_price_130;
+        const dw130 = m.distance_to_warning_130;
+        const close = data.close || 0;
+
+        const confLabel = conf > 0.7 ? '高' : conf > 0.4 ? '中' : '低';
+        const confColor = conf > 0.7 ? 'text-green-500' : conf > 0.4 ? 'text-orange-500' : 'text-red-500';
+
+        return `
+            <div class="bg-gray-50 dark:bg-gray-900 rounded-2xl p-6 border border-yellow-200 dark:border-yellow-800/30">
+                <h3 class="text-sm font-bold mb-4 flex items-center"><span class="mr-2">📐</span> 推估融資成本
+                    <span class="ml-2 text-[10px] font-bold px-1.5 py-0.5 rounded ${confColor} bg-opacity-10">可信度:${confLabel}</span>
+                </h3>
+
+                <div class="flex items-center justify-between mb-4 p-3 bg-gray-100 dark:bg-gray-800 rounded-xl">
+                    <div>
+                        <div class="text-[10px] text-gray-500">推估平均成本</div>
+                        <div class="text-lg font-black font-mono">${cost.toFixed(2)}</div>
+                    </div>
+                    <div class="text-right">
+                        <div class="text-[10px] text-gray-500">模型可信度</div>
+                        <div class="text-base font-bold ${confColor}">${confLabel} (${(conf * 100).toFixed(0)}%)</div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    ${ret != null ? `
+                    <div class="bg-gray-100 dark:bg-gray-800 p-3 rounded-xl">
+                        <div class="text-[10px] text-gray-500 mb-1">推估融資損益</div>
+                        <div class="text-base font-bold ${ret < 0 ? 'text-red-500' : 'text-green-500'}">${(ret > 0 ? '+' : '')}${(ret * 100).toFixed(1)}%</div>
+                        <div class="text-[10px] text-gray-400">${ret < 0 ? '庫存虧損中' : '庫存獲利中'}</div>
+                    </div>` : ''}
+                    ${cr60 != null ? `
+                    <div class="bg-gray-100 dark:bg-gray-800 p-3 rounded-xl">
+                        <div class="text-[10px] text-gray-500 mb-1">推估擔保比率(60%)</div>
+                        <div class="text-base font-bold ${cr60 < 1.5 ? 'text-red-500' : 'text-green-500'}">${(cr60 * 100).toFixed(0)}%</div>
+                        <div class="text-[10px] text-gray-400">${cr60 < 1.5 ? '接近警戒' : '安全'}</div>
+                    </div>` : ''}
+                    ${wp130 && close ? `
+                    <div class="bg-gray-100 dark:bg-gray-800 p-3 rounded-xl">
+                        <div class="text-[10px] text-gray-500 mb-1">警戒價(130%)</div>
+                        <div class="text-base font-bold text-orange-500">${wp130.toFixed(2)}</div>
+                        <div class="text-[10px] text-gray-400">距離 ${((close / wp130 - 1) * 100).toFixed(1)}%</div>
+                    </div>` : ''}
+                    ${dw130 != null ? `
+                    <div class="bg-gray-100 dark:bg-gray-800 p-3 rounded-xl">
+                        <div class="text-[10px] text-gray-500 mb-1">距離警戒(130%)</div>
+                        <div class="text-base font-bold ${dw130 < 0.05 ? 'text-red-500' : 'text-blue-500'}">${(dw130 > 0 ? '+' : '')}${(dw130 * 100).toFixed(1)}%</div>
+                        <div class="text-[10px] text-gray-400">${dw130 < 0.05 ? '接近壓力區' : '尚屬安全'}</div>
+                    </div>` : ''}
+                </div>
+
+                <div class="mt-3 text-[9px] text-gray-400 leading-tight">
+                    推估成本與擔保比率由公開融資流量模型計算，不代表券商實際信用帳戶維持率。
+                </div>
+            </div>`;
+    },
+
+    renderSignalsAndPercentiles(data) {
+        const m = data.margin || {};
+        const signals = data.margin_signals || [];
+        const pctile = m.estimated_margin_return_percentile_250;
+        const zscore = m.margin_balance_change_zscore_60;
+
+        let html = '';
+
+        // Signals
+        const signalMap = {
+            MARGIN_CHASING: { label: '融資追高', color: 'text-orange-500 bg-orange-500/10' },
+            MARGIN_AVERAGING_DOWN: { label: '融資攤平', color: 'text-red-500 bg-red-500/10' },
+            MARGIN_DELEVERAGING: { label: '融資去槓桿', color: 'text-purple-500 bg-purple-500/10' },
+            POSSIBLE_MARGIN_CALL_PRESSURE: { label: '疑似斷頭壓力', color: 'text-red-600 bg-red-600/10' },
+            MARGIN_STRUCTURE_IMPROVING: { label: '籌碼改善', color: 'text-green-500 bg-green-500/10' }
+        };
+
+        if (signals.length > 0) {
+            html += `<div class="bg-gray-50 dark:bg-gray-900 rounded-2xl p-6 border border-gray-100 dark:border-gray-800">
+                <h3 class="text-sm font-bold mb-3 flex items-center"><span class="mr-2">🚨</span> 融資訊號</h3>
+                <div class="flex flex-wrap gap-2">`;
+            signals.forEach(sig => {
+                const info = signalMap[sig] || { label: sig, color: 'text-gray-500 bg-gray-500/10' };
+                html += `<span class="text-[10px] font-bold px-2.5 py-1 rounded-full ${info.color}">${info.label}</span>`;
+            });
+            html += `</div></div>`;
+        }
+
+        // Percentiles
+        if (pctile != null || zscore != null) {
+            html += `<div class="bg-gray-50 dark:bg-gray-900 rounded-2xl p-6 border border-gray-100 dark:border-gray-800">
+                <h3 class="text-sm font-bold mb-3 flex items-center"><span class="mr-2">📊</span> 歷史標準化指標</h3>
+                <div class="grid grid-cols-2 gap-3">`;
+            if (pctile != null) {
+                html += `<div class="bg-gray-100 dark:bg-gray-800 p-3 rounded-xl">
+                    <div class="text-[10px] text-gray-500 mb-1">推估報酬百分位(250日)</div>
+                    <div class="text-base font-bold">${pctile.toFixed(1)}%</div>
+                </div>`;
+            }
+            if (zscore != null) {
+                html += `<div class="bg-gray-100 dark:bg-gray-800 p-3 rounded-xl">
+                    <div class="text-[10px] text-gray-500 mb-1">融資變化Z-score(60日)</div>
+                    <div class="text-base font-bold ${zscore > 2 ? 'text-red-500' : zscore < -2 ? 'text-green-500' : ''}">${zscore.toFixed(2)}</div>
+                </div>`;
+            }
+            html += `</div></div>`;
+        }
+
+        return html;
+    },
+
+    async renderMarketTab(container) {
         // 🚀 從 api.fetchQuotes 獲取真實報價數據來填充盤面
         const quoteMap = await api.fetchQuotes([this.currentSymbol]);
         const q = quoteMap[this.currentSymbol] || {};

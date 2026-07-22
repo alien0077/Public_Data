@@ -38,6 +38,20 @@ export function stockMetricHTML(label, value, options = {}) {
     `;
 }
 
+export function stockMarginPressureBadgeHTML(score, level = 'LOW') {
+    if (score == null) return '';
+    const colors = {
+        HIGH: 'text-red-500 bg-red-500/10 border-red-500/30',
+        CAUTION: 'text-orange-500 bg-orange-500/10 border-orange-500/30',
+        NORMAL: 'text-yellow-500 bg-yellow-500/10 border-yellow-500/30',
+        LOW: 'text-green-500 bg-green-500/10 border-green-500/30'
+    };
+    const labels = { HIGH: '高', CAUTION: '注意', NORMAL: '正常', LOW: '低' };
+    const cls = colors[level] || colors.LOW;
+    const label = labels[level] || '低';
+    return `<span class="text-[10px] font-bold px-1.5 py-0.5 rounded border ${cls}">${label} ${score}</span>`;
+}
+
 export function stockMobileCardHTML({
     symbol,
     name,
