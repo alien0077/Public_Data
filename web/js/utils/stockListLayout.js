@@ -17,11 +17,17 @@ export function stockIdentityHTML(symbol, name, options = {}) {
     const safeSymbol = escapeHtml(symbol || '');
     const safeName = escapeHtml(name || symbol || '');
 
+    // 🚀 v1.3: 自動附加融資壓力 badge（若 MarginPressure 已載入）
+    let marginBadge = badgeHTML;
+    if (!marginBadge && window.MarginPressure) {
+        marginBadge = MarginPressure.getBadgeHTML(symbol);
+    }
+
     return `
         <div class="stock-identity ${className}">
             <div class="stock-identity-main">
                 <span class="stock-symbol ${symbolClass}">${safeSymbol}</span>
-                ${badgeHTML}
+                ${marginBadge}
             </div>
             <div class="stock-name ${nameClass}">${safeName}</div>
         </div>

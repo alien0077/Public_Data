@@ -13,10 +13,14 @@ import { Settings } from './views/settings.js?cb=3';
 import { GroupSearch } from './views/groupSearch.js?v=5';
 import { AudioSummary } from './views/audioSummary.js';
 import { MarginRankings } from './views/marginRankings.js';
+import { MarginPressure } from './utils/marginPressure.js';
 import { getPriceChangeStyle } from './utils/priceStyle.js';
 import { stockIdentityHTML, stockMetricHTML, stockMobileCardHTML } from './utils/stockListLayout.js';
 
 const audioSummary = new AudioSummary();
+
+// 🚀 v1.3: 預載融資壓力排行資料（供所有股票列表 badge 使用）
+MarginPressure.load();
 
 document.addEventListener('DOMContentLoaded', () => {
     const portfolioBody = document.getElementById('portfolio-body');

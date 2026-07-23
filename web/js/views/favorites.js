@@ -1,6 +1,6 @@
 import { api } from '../api.js';
 import { getPriceChangeStyle } from '../utils/priceStyle.js';
-import { stockIdentityHTML, stockMetricHTML, stockMobileCardHTML } from '../utils/stockListLayout.js';
+import { stockIdentityHTML, stockMetricHTML, stockMobileCardHTML, stockMarginPressureBadgeHTML } from '../utils/stockListLayout.js';
 
 /**
  * Favorites View
@@ -11,6 +11,7 @@ export const Favorites = {
     _data: {}, // { "類別名稱": ["2330", "0050"] }
     _activeTab: 0,
     _intervalId: null,
+    _marginPressureMap: null,
     
     init(secondaryTab = null) {
         this.loadData();
@@ -28,6 +29,7 @@ export const Favorites = {
         this.renderStructure(viewContainer);
         this.renderContent();
         this.startAutoRefresh();
+        this.loadMarginPressure();
     },
 
     loadData() {
@@ -324,7 +326,7 @@ export const Favorites = {
             const peStr = peRatio ? peRatio.toFixed(1) : '--';
             
             row.innerHTML = `
-                <td class="px-3 md:px-6 py-4">${stockIdentityHTML(displaySymbol, name)}</td>
+                <td class="px-3 md:px-6 py-4">${stockIdentityHTML(displaySymbol, name, { badgeHTML: this.getMarginBadge(displaySymbol) })}</td>
                 <td class="px-3 md:px-6 py-4 text-right ${priceClass}">
                     ${price > 0 ? this.formatNumber(price) : '--'}
                 </td>
@@ -355,6 +357,7 @@ export const Favorites = {
                 card.innerHTML = stockMobileCardHTML({
                     symbol: displaySymbol,
                     name,
+                    badgeHTML: this.getMarginBadge(displaySymbol),
                     primaryHTML: `<div class="${priceClass}"><div class="font-bold">${price > 0 ? this.formatNumber(price) : '--'}</div><div class="text-[10px]">${price > 0 ? `${changePercent > 0 ? '▲' : (changePercent < 0 ? '▼' : '')} ${Math.abs(changePercent).toFixed(2)}%` : '--'}</div></div>`,
                     metricsHTML: stockMetricHTML('最高', high > 0 ? this.formatNumber(high) : '--') +
                         stockMetricHTML('最低', low > 0 ? this.formatNumber(low) : '--') +
@@ -404,6 +407,35 @@ export const Favorites = {
         this.saveData();
         const container = document.getElementById('view-favorites');
         if (container) { this.renderStructure(container); this.renderContent(); }
+    },
+
+    async loadMarginPressure() {
+        try {
+            const data = await api.fetchMarginStockRankings();
+            const map = {};
+            if (data) {
+                Object.values(data).forEach(cat => {
+                    if (!Array.isArray(cat)) return;
+                    cat.forEach(entry => {
+                        if (entry.stock_id && !map[entry.stock_id]) {
+                            map[entry.stock_id] = entry.value;
+                        }
+                    });
+                });
+            }
+            this._marginPressureMap = map;
+        } catch(e) { this._marginPressureMap = {}; }
+    },
+
+    getMarginBadge(symbol) {
+        if (!this._marginPressureMap) return '';
+        const val = this._marginPressureMap[symbol];
+        if (val == null) return '';
+        let level = 'LOW';
+        if (val >= 60) level = 'HIGH';
+        else if (val >= 40) level = 'CAUTION';
+        else if (val >= 20) level = 'NORMAL';
+        return stockMarginPressureBadgeHTML(Math.round(val), level);
     },
 
     startAutoRefresh() {
