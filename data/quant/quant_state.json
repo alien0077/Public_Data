@@ -1697,20 +1697,20 @@
     },
     "mr": {
       "sharpe": 0.6298481874283908,
-      "total_return": 0.03743,
+      "total_return": 0.00663,
       "win_rate": 0.0425531914893617,
       "backtest_total_return": 0.1475443999999999
     },
     "ai_inst": {
       "sharpe": 1.5815637827810773,
-      "total_return": -0.040102,
+      "total_return": -0.115322,
       "win_rate": 0.550531914893617,
       "backtest_total_return": 1.3750406000000002
     },
     "portfolio": {
-      "sharpe": 1.4566101920107988,
-      "total_return": 0.048415666666666635,
-      "win_rate": 0.4,
+      "sharpe": 0.4874273927311875,
+      "total_return": 0.013075599999999854,
+      "win_rate": 0.3870967741935484,
       "backtest_total_return": 0.6113746499999997,
       "backtest_sharpe": 1.678755718208644,
       "backtest_win_rate": 0.5585106382978723
@@ -1847,20 +1847,12 @@
   "portfolio": {
     "cash": {
       "trend": 1147919.0,
-      "mr": 728550.0,
-      "ai_inst": 7363.299999999999
+      "mr": 1006630.0,
+      "ai_inst": 133575.3
     },
     "positions": {
       "trend": [],
-      "mr": [
-        {
-          "stock": "2308",
-          "entry_date": "2026-07-21",
-          "entry_price": 1835.0,
-          "shares": 176,
-          "max_return": 0.02452316076294281
-        }
-      ],
+      "mr": [],
       "ai_inst": [
         {
           "stock": "3596",
@@ -1896,17 +1888,6 @@
           "phase": "ACCUMULATING"
         },
         {
-          "stock": "8046",
-          "entry_date": "2026-06-30",
-          "entry_price": 1185.0,
-          "shares": 105,
-          "max_return": 0.19409282700421948,
-          "consecutive_buy_days": 5,
-          "total_inst_buy": 31496968,
-          "b_signal_triggered": false,
-          "phase": "ACCUMULATING"
-        },
-        {
           "stock": "4938",
           "entry_date": "2026-07-20",
           "entry_price": 80.0,
@@ -1936,17 +1917,6 @@
           "max_return": 0.047101449275362306,
           "consecutive_buy_days": 5,
           "total_inst_buy": 1894623,
-          "b_signal_triggered": false,
-          "phase": "ACCUMULATING"
-        },
-        {
-          "stock": "8027",
-          "entry_date": "2026-07-22",
-          "entry_price": 213.0,
-          "shares": 136,
-          "max_return": 0.0,
-          "consecutive_buy_days": 5,
-          "total_inst_buy": 775773,
           "b_signal_triggered": false,
           "phase": "ACCUMULATING"
         },
@@ -2098,6 +2068,10 @@
       {
         "date": "2026-07-27",
         "nav": 3145247.0
+      },
+      {
+        "date": "2026-07-28",
+        "nav": 3039226.8
       }
     ],
     "strategy_navs": {
@@ -2225,6 +2199,10 @@
         {
           "date": "2026-07-27",
           "nav": 1147919.0
+        },
+        {
+          "date": "2026-07-28",
+          "nav": 1147919.0
         }
       ],
       "mr": [
@@ -2351,6 +2329,10 @@
         {
           "date": "2026-07-27",
           "nav": 1037430.0
+        },
+        {
+          "date": "2026-07-28",
+          "nav": 1006630.0
         }
       ],
       "ai_inst": [
@@ -2477,6 +2459,10 @@
         {
           "date": "2026-07-27",
           "nav": 959898.0
+        },
+        {
+          "date": "2026-07-28",
+          "nav": 884677.8
         }
       ]
     }
@@ -5513,6 +5499,45 @@
     "mr": 75
   },
   "trade_log": [
+    {
+      "stock": "8027",
+      "entry_date": "2026-07-22",
+      "exit_date": "2026-07-28",
+      "entry_price": 213.0,
+      "exit_price": 174.5,
+      "shares": 136,
+      "return": -0.1808,
+      "reason": "AI_INST_STOP_LOSS (15%)",
+      "select_reason": "\u6cd5\u4eba\u5efa\u5009",
+      "primary_theme": "AI\u73bb\u7483\u57fa\u677f",
+      "action": "SELL"
+    },
+    {
+      "stock": "8046",
+      "entry_date": "2026-06-30",
+      "exit_date": "2026-07-28",
+      "entry_price": 1185.0,
+      "exit_price": 976.0,
+      "shares": 105,
+      "return": -0.1764,
+      "reason": "AI_INST_STOP_LOSS (15%)",
+      "select_reason": "\u6cd5\u4eba\u5efa\u5009\u00b7ETF\u52d5\u80fd",
+      "primary_theme": "PCB_CCL_ABF",
+      "action": "SELL"
+    },
+    {
+      "stock": "2308",
+      "entry_date": "2026-07-21",
+      "exit_date": "2026-07-28",
+      "entry_price": 1835.0,
+      "exit_price": 1580.0,
+      "shares": 176,
+      "return": -0.139,
+      "reason": "MR_STOP_LOSS (9%)",
+      "select_reason": "\u5747\u503c\u56de\u6b78\u00b7ETF\u52d5\u80fd",
+      "primary_theme": "\u96fb\u6e90\u4f9b\u61c9\u5668",
+      "action": "SELL"
+    },
     {
       "stock": "3081",
       "entry_date": "2026-07-20",
