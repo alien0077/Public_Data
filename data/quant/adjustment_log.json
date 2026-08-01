@@ -1,52 +1,46 @@
 {
-  "date": "2026-07-25",
+  "date": "2026-08-01",
   "adjustments": [
     {
-      "strategy": "multi_factor",
+      "strategy": "portfolio_combined",
       "rank": 1,
-      "sharpe_4w": -2.4795707924807457,
-      "mdd_4w": -0.1604587074406614,
-      "action": "調整"
+      "sharpe_4w": -1.7565356993017875,
+      "mdd_4w": -0.06316576340870876,
+      "action": "維持"
+    },
+    {
+      "strategy": "multi_factor",
+      "rank": 2,
+      "sharpe_4w": -7.381971866457846,
+      "mdd_4w": -0.19223810385380857,
+      "action": "維持"
     },
     {
       "strategy": "trend",
-      "rank": 2,
+      "rank": 3,
       "sharpe_4w": 0,
       "mdd_4w": 0,
       "action": "維持"
     },
     {
-      "strategy": "portfolio_combined",
-      "rank": 3,
-      "sharpe_4w": 0.7781934885259946,
-      "mdd_4w": -0.06003609765365251,
-      "action": "維持"
-    },
-    {
       "strategy": "mr",
       "rank": 4,
-      "sharpe_4w": 3.319453596465375,
-      "mdd_4w": -0.04428005834548864,
+      "sharpe_4w": 1.994007136169468,
+      "mdd_4w": -0.07507121198199036,
       "action": "調整"
     }
   ],
-  "liquidations": [],
+  "liquidations": [
+    "multi_factor"
+  ],
   "rolling_performance": [
     {
       "strategy": "mr",
       "label": "MR Ensemble Fund",
-      "sharpe_4w": 3.319453596465375,
-      "total_return_4w": 0.11008197593952951,
-      "mdd_4w": -0.04428005834548864,
+      "sharpe_4w": 1.994007136169468,
+      "total_return_4w": 0.06338474540460592,
+      "mdd_4w": -0.07507121198199036,
       "rank_4w": 4
-    },
-    {
-      "strategy": "portfolio_combined",
-      "label": "Portfolio (TREND+MR)",
-      "sharpe_4w": 0.7781934885259946,
-      "total_return_4w": 0.012063308241652138,
-      "mdd_4w": -0.06003609765365251,
-      "rank_4w": 3
     },
     {
       "strategy": "trend",
@@ -54,14 +48,22 @@
       "sharpe_4w": 0,
       "total_return_4w": 0.0,
       "mdd_4w": 0,
-      "rank_4w": 2
+      "rank_4w": 3
     },
     {
       "strategy": "multi_factor",
       "label": "Multi-Factor AI",
-      "sharpe_4w": -2.4795707924807457,
-      "total_return_4w": -0.0818414322250639,
-      "mdd_4w": -0.1604587074406614,
+      "sharpe_4w": -7.381971866457846,
+      "total_return_4w": -0.1881671793016103,
+      "mdd_4w": -0.19223810385380857,
+      "rank_4w": 2
+    },
+    {
+      "strategy": "portfolio_combined",
+      "label": "Portfolio (TREND+MR)",
+      "sharpe_4w": -1.7565356993017875,
+      "total_return_4w": -0.03733053274775644,
+      "mdd_4w": -0.06316576340870876,
       "rank_4w": 1
     }
   ]
