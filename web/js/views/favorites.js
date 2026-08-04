@@ -1,6 +1,6 @@
 import { api } from '../api.js';
 import { getPriceChangeStyle } from '../utils/priceStyle.js';
-import { stockIdentityHTML, stockMetricHTML, stockMobileCardHTML, stockMarginPressureBadgeHTML } from '../utils/stockListLayout.js';
+import { stockIdentityHTML, stockMetricHTML, stockMobileCardHTML, stockMarginMaintenanceBadgeHTML } from '../utils/stockListLayout.js';
 
 /**
  * Favorites View
@@ -11,7 +11,7 @@ export const Favorites = {
     _data: {}, // { "類別名稱": ["2330", "0050"] }
     _activeTab: 0,
     _intervalId: null,
-    _marginPressureMap: null,
+    _marginMaintenanceMap: null,
     
     init(secondaryTab = null) {
         this.loadData();
@@ -411,31 +411,22 @@ export const Favorites = {
 
     async loadMarginPressure() {
         try {
-            const data = await api.fetchMarginStockRankings();
+            const data = await api.fetchMarginMaintenance();
             const map = {};
-            if (data) {
-                Object.values(data).forEach(cat => {
-                    if (!Array.isArray(cat)) return;
-                    cat.forEach(entry => {
-                        if (entry.stock_id && !map[entry.stock_id]) {
-                            map[entry.stock_id] = entry.value;
-                        }
-                    });
+            if (data?.stocks) {
+                Object.entries(data.stocks).forEach(([stockId, record]) => {
+                    const ratio = Number(record?.maintenance_ratio);
+                    if (Number.isFinite(ratio) && ratio > 0) map[stockId] = ratio;
                 });
             }
-            this._marginPressureMap = map;
-        } catch(e) { this._marginPressureMap = {}; }
+            this._marginMaintenanceMap = map;
+        } catch(e) { this._marginMaintenanceMap = {}; }
     },
 
     getMarginBadge(symbol) {
-        if (!this._marginPressureMap) return '';
-        const val = this._marginPressureMap[symbol];
-        if (val == null) return '';
-        let level = 'LOW';
-        if (val >= 60) level = 'HIGH';
-        else if (val >= 40) level = 'CAUTION';
-        else if (val >= 20) level = 'NORMAL';
-        return stockMarginPressureBadgeHTML(Math.round(val), level);
+        if (!this._marginMaintenanceMap) return '';
+        const ratio = this._marginMaintenanceMap[symbol];
+        return ratio == null ? '' : stockMarginMaintenanceBadgeHTML(ratio);
     },
 
     startAutoRefresh() {

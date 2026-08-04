@@ -1,9 +1,9 @@
 /**
- * Margin Pressure Lookup Utility
- * Pre-loads margin stock rankings and provides badge HTML for any stock.
+ * Stock Margin Maintenance Lookup Utility
+ * Pre-loads stock maintenance ratios and provides badge HTML for any stock.
  */
 import { api } from '../api.js';
-import { stockMarginPressureBadgeHTML } from './stockListLayout.js';
+import { stockMarginMaintenanceBadgeHTML } from './stockListLayout.js';
 
 const MarginPressure = {
     _data: null,
@@ -14,16 +14,11 @@ const MarginPressure = {
         if (this._data) return this._data;
         if (this._loading) return this._promise;
         this._loading = true;
-        this._promise = api.fetchMarginStockRankings().then(data => {
+        this._promise = api.fetchMarginMaintenance().then(data => {
             const map = {};
-            if (!data) return map;
-            Object.values(data).forEach(cat => {
-                if (!Array.isArray(cat)) return;
-                cat.forEach(entry => {
-                    if (entry.stock_id && !map[entry.stock_id]) {
-                        map[entry.stock_id] = entry.value;
-                    }
-                });
+            Object.entries(data?.stocks || {}).forEach(([stockId, record]) => {
+                const ratio = Number(record?.maintenance_ratio);
+                if (stockId && Number.isFinite(ratio) && ratio > 0) map[stockId] = ratio;
             });
             this._data = map;
             return map;
@@ -33,13 +28,8 @@ const MarginPressure = {
 
     getBadgeHTML(symbol) {
         if (!this._data) return '';
-        const val = this._data[symbol];
-        if (val == null) return '';
-        let level = 'LOW';
-        if (val >= 60) level = 'HIGH';
-        else if (val >= 40) level = 'CAUTION';
-        else if (val >= 20) level = 'NORMAL';
-        return stockMarginPressureBadgeHTML(Math.round(val), level);
+        const ratio = this._data[symbol];
+        return ratio == null ? '' : stockMarginMaintenanceBadgeHTML(ratio);
     }
 };
 

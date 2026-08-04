@@ -19,7 +19,7 @@ import { stockIdentityHTML, stockMetricHTML, stockMobileCardHTML } from './utils
 
 const audioSummary = new AudioSummary();
 
-// 🚀 v1.3: 預載融資壓力排行資料（供所有股票列表 badge 使用）
+// 🚀 v1.4: 預載個股推估融資維持率（供所有股票列表 badge 使用）
 MarginPressure.load();
 
 document.addEventListener('DOMContentLoaded', () => {

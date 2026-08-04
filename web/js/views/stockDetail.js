@@ -878,16 +878,24 @@ export const StockDetail = {
     },
 
     async renderFundamentalTab(container) {
-        const [stockInfo, quarterly, quoteMap, etfSnapshot] = await Promise.all([
+        const [stockInfo, quarterly, quoteMap, etfSnapshot, etfRebalance, stocksMeta] = await Promise.all([
             api.getStockInfo(this.currentSymbol),
             api.fetchFinancials(this.currentSymbol, 'quarterly'),
             api.fetchQuotes([this.currentSymbol]),
-            api.fetchETFHoldings()
+            api.fetchETFHoldings(),
+            api.fetchETFRebalance(),
+            api.getStocksMeta()
         ]);
 
         const isETF = stockInfo?.official_sector === 'ETF' || stockInfo?.industry === 'ETF';
         if (isETF && etfSnapshot?.[this.currentSymbol]) {
-            this.renderETFComposition(container, etfSnapshot[this.currentSymbol]);
+            this.renderETFComposition(
+                container,
+                etfSnapshot[this.currentSymbol],
+                etfRebalance?.[this.currentSymbol],
+                etfRebalance !== null,
+                stocksMeta
+            );
             return;
         }
 
@@ -1019,11 +1027,52 @@ export const StockDetail = {
             </div>`;
     },
 
-    renderETFComposition(container, etfData) {
+    renderETFComposition(container, etfData, rebalance = null, rebalanceAvailable = false, stocksMeta = null) {
         const holdings = [...etfData.holdings].sort((a, b) => b.weight - a.weight);
         const top10 = holdings.slice(0, 10);
         const others = holdings.slice(10);
         const othersWeight = others.reduce((s, h) => s + (h.weight || 0), 0);
+        const stockName = stockId => {
+            const holding = holdings.find(item => (item.stock_id || '') === stockId);
+            const meta = stocksMeta?.stocks?.find(item => item.symbol === stockId);
+            return holding?.stock_name || holding?.name || meta?.name || stockId;
+        };
+        const movementItems = (items, colorClass, formatter) => (items || []).slice(0, 4).map(item => {
+            const symbol = item.stock_id || item;
+            const value = formatter
+                ? '<span class="font-mono font-bold ' + colorClass + ' shrink-0">' + formatter(item) + '</span>'
+                : '';
+            return '<div class="flex items-center justify-between gap-2 text-xs">' +
+                '<span class="truncate"><span class="font-mono font-bold">' + this.escapeHtml(symbol) + '</span> ' +
+                this.escapeHtml(stockName(symbol)) + '</span>' + value + '</div>';
+        }).join('');
+        const movementGroup = (title, items, colorClass, formatter = null) => {
+            if (!items?.length) return '';
+            const extra = items.length > 4
+                ? '<div class="text-[10px] text-gray-400">另有 ' + (items.length - 4) + ' 檔</div>'
+                : '';
+            return '<div class="space-y-1.5">' +
+                '<div class="text-xs font-bold ' + colorClass + '">' + title + ' ' + items.length + '</div>' +
+                movementItems(items, colorClass, formatter) + extra + '</div>';
+        };
+        const rebalanceHasChanges = rebalance && ['added', 'removed', 'weight_up', 'weight_down']
+            .some(key => rebalance[key]?.length);
+        const rebalancePanel = rebalanceAvailable
+            ? '<div class="bg-gradient-to-r from-orange-50 to-rose-50 dark:from-orange-900/10 dark:to-rose-900/10 rounded-2xl border border-orange-200 dark:border-orange-800/30 p-5">' +
+                '<h4 class="text-sm font-bold text-orange-700 dark:text-orange-400 mb-3 flex items-center">' +
+                    '<span class="mr-1.5">🔄</span> 今日換股動向' +
+                    '<span class="ml-2 text-[10px] text-gray-500 font-normal">最新交易日異動</span>' +
+                '</h4>' +
+                (rebalanceHasChanges
+                    ? '<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">' +
+                        movementGroup('新進', rebalance.added, 'text-red-500') +
+                        movementGroup('剔除', rebalance.removed, 'text-green-500') +
+                        movementGroup('權重增加', rebalance.weight_up, 'text-red-500', item => '+' + Number(item.diff || 0).toFixed(2) + '%') +
+                        movementGroup('權重減少', rebalance.weight_down, 'text-green-500', item => Number(item.diff || 0).toFixed(2) + '%') +
+                    '</div>'
+                    : '<div class="text-sm text-gray-500">今日未偵測到明顯換股異動</div>') +
+            '</div>'
+            : '';
 
         container.innerHTML = `
             <div class="p-4 space-y-4 flex-1 overflow-y-auto no-scrollbar pb-12">
@@ -1034,6 +1083,8 @@ export const StockDetail = {
                         <span class="text-[10px] px-2 py-0.5 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-500">${etfData.data_mode === 'full_holdings' ? '完整揭露' : '前幾大持股'}</span>
                     </div>
                 </div>
+
+                ${rebalancePanel}
 
                 <div id="etf-pie-chart" class="w-full h-64 bg-white dark:bg-gray-900 rounded-2xl border p-2"></div>
 

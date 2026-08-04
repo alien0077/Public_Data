@@ -12,10 +12,13 @@ import { CorporateActions } from './corporateActions.js';
 import { Settings } from './views/settings.js?cb=3';
 import { GroupSearch } from './views/groupSearch.js?v=5';
 import { AudioSummary } from './views/audioSummary.js';
+import { MarginPressure } from './utils/marginPressure.js';
 import { getPriceChangeStyle } from './utils/priceStyle.js';
 import { stockIdentityHTML, stockMetricHTML, stockMobileCardHTML } from './utils/stockListLayout.js';
 
 const audioSummary = new AudioSummary();
+
+MarginPressure.load();
 
 document.addEventListener('DOMContentLoaded', () => {
     const portfolioBody = document.getElementById('portfolio-body');

@@ -13,6 +13,7 @@ export const api = {
     _calendarCache: null,
     _ytdRefCache: null,
     _quantMetricsCache: null,
+    _marginMaintenanceCache: null,
 
     async getStocksMeta() {
         if (!this._stocksMetaCache) {
@@ -222,6 +223,7 @@ export const api = {
     },
     async fetchShareholders(symbol) { try { return await this.fetchLocalJson(`weekly/shareholders/${symbol.split('.')[0]}.json`); } catch (e) { return null; } },
     async fetchETFHoldings() { try { return await this.fetchLocalJson('quant/etf/outputs/latest_snapshot.json'); } catch (e) { return null; } },
+    async fetchETFRebalance() { try { return await this.fetchLocalJson('quant/etf/outputs/rebalance.json'); } catch (e) { return null; } },
     async fetchExchangeRates() {
         try {
             const d = await this.fetchLocalJson('meta/exchange_rate_history.json');
@@ -305,6 +307,16 @@ export const api = {
         return { supportMA: 'X', maBias: null };
     },
     async fetchMarginStockRankings() { try { return await this.fetchLocalJson('quant/margin_stock_rankings.json'); } catch (e) { return null; } },
+    async fetchMarginMaintenance() {
+        if (!this._marginMaintenanceCache) {
+            try {
+                this._marginMaintenanceCache = await this.fetchLocalJson('quant/margin_maintenance.json');
+            } catch (e) {
+                this._marginMaintenanceCache = { stocks: {} };
+            }
+        }
+        return this._marginMaintenanceCache;
+    },
 };
 
 window.api = api;
