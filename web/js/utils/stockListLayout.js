@@ -52,7 +52,14 @@ export function fairValueHTML(valuation) {
     const upside = Number(valuation.upside);
     const upsideText = Number.isFinite(upside) ? `${upside >= 0 ? '▲' : '▼'} ${(Math.abs(upside) * 100).toFixed(1)}%` : '--';
     const upsideClass = Number.isFinite(upside) ? (upside >= 0 ? 'text-red-500' : 'text-green-500') : 'text-gray-400';
-    return `<div class="font-bold ${upsideClass}" title="${escapeHtml(valuation.model || '自有公允價')}，基準估值">${fairValue.toFixed(1)}</div><div class="text-[10px] ${upsideClass}">${upsideText}</div>`;
+    const signal = valuation.valuation_signal_label || (
+        upside > 0 ? '低估' : upside < 0 ? '高估' : '合理區間'
+    );
+    const signalClass = signal === '低估' ? 'text-red-500' : signal === '高估' ? 'text-green-500' : 'text-orange-500';
+    const spreadText = Number.isFinite(Number(valuation.model_spread))
+        ? ` · 模型分歧 ${(Number(valuation.model_spread) * 100).toFixed(0)}%`
+        : '';
+    return `<div class="font-bold ${upsideClass}" title="${escapeHtml(valuation.model || '自有公允價')}，估值中樞">${fairValue.toFixed(1)}</div><div class="text-[10px] ${upsideClass}">${upsideText}</div><div class="text-[10px] font-bold ${signalClass}" title="${escapeHtml(`以模型中位數與 25%-75% 合理區間判定${spreadText}`)}">${escapeHtml(signal)}</div>`;
 }
 
 export function maintenanceLevel(ratio) {

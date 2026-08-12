@@ -280,6 +280,7 @@ export const StockDetail = {
     renderFairValueDetail(fairValue, stockInfo = null) {
         const titleName = stockInfo?.name || fairValue?.name || this.currentSymbol;
         const labels = {
+            ensemble: '多模型中位數（估值集合）',
             residual_income: 'Residual Income（剩餘收益）',
             dividend_discount: 'Dividend Discount（股利折現）',
             relative_pb: 'Relative P/B（同業股價淨值比）',
@@ -291,30 +292,35 @@ export const StockDetail = {
         }
         const input = fairValue.inputs || {};
         const inputRows = [
-            ['TTM EPS', input.ttm_eps, 2], ['BVPS', input.bvps, 2], ['ROE', input.roe != null ? `${(input.roe * 100).toFixed(1)}%` : '--'],
+            ['已報告 TTM EPS', input.ttm_eps, 2], ['估值 EPS', input.valuation_eps ?? input.ttm_eps, 2], ['BVPS', input.bvps, 2], ['ROE', input.roe != null ? `${(input.roe * 100).toFixed(1)}%` : '--'],
             ['Beta', input.beta, 2], ['股權成本 Ke', input.cost_of_equity != null ? `${(input.cost_of_equity * 100).toFixed(2)}%` : '--'],
             ['終值成長 g', input.terminal_growth != null ? `${(input.terminal_growth * 100).toFixed(2)}%` : '--']
         ];
         const formatInput = (value, decimals = 1) => typeof value === 'number' ? value.toFixed(decimals) : (value || '--');
         const upside = Number(fairValue.upside);
         const upsideClass = Number.isFinite(upside) && upside >= 0 ? 'text-red-500' : 'text-green-500';
+        const signalLabel = fairValue.valuation_signal_label || (upside >= 0 ? '低估' : '高估');
+        const signalClass = signalLabel === '低估' ? 'text-red-500' : signalLabel === '高估' ? 'text-green-500' : 'text-orange-500';
         return `
             <div class="bg-orange-50 dark:bg-orange-950/20 rounded-2xl border border-orange-200 dark:border-orange-800/40 p-5" data-testid="fair-value-detail">
                 <div class="flex items-center justify-between gap-3 mb-4">
                     <div><h3 class="text-sm font-bold text-orange-700 dark:text-orange-300">公允值明細（${this.escapeHtml(this.currentSymbol)} ${this.escapeHtml(titleName)}）</h3><p class="text-[10px] text-gray-500 mt-1">模型：${this.escapeHtml(labels[fairValue.model] || fairValue.model || '公開資料估值')}</p></div>
                     <span class="text-[10px] px-2 py-1 rounded-full bg-orange-100 dark:bg-orange-900/40 text-orange-700 dark:text-orange-300">${this.escapeHtml(fairValue.confidence || '--')}</span>
                 </div>
-                <div class="grid grid-cols-2 md:grid-cols-6 gap-3">
-                    ${[['基準公允值', fairValue.fair_value, 'text-orange-600'], ['現價', fairValue.market_price, 'text-gray-900 dark:text-white'], ['上行空間', Number.isFinite(upside) ? `${(upside * 100).toFixed(1)}%` : '--', upsideClass], ['悲觀', fairValue.range?.bear, 'text-gray-700 dark:text-gray-300'], ['基準', fairValue.range?.base, 'text-gray-700 dark:text-gray-300'], ['樂觀', fairValue.range?.bull, 'text-gray-700 dark:text-gray-300']].map(([label, value, cls]) => `<div class="bg-white/70 dark:bg-gray-900/50 rounded-xl p-3 border border-orange-100 dark:border-orange-900/30"><div class="text-[10px] text-gray-500 mb-1">${label}</div><div class="text-lg font-bold font-mono ${cls}">${typeof value === 'number' ? value.toFixed(1) : (value || '--')}</div></div>`).join('')}
+                <div class="grid grid-cols-2 md:grid-cols-7 gap-3">
+                    ${[['估值中樞', fairValue.fair_value, 'text-orange-600'], ['現價', fairValue.market_price, 'text-gray-900 dark:text-white'], ['上行空間', Number.isFinite(upside) ? `${(upside * 100).toFixed(1)}%` : '--', upsideClass], ['判定', signalLabel, signalClass], ['合理區間低', fairValue.range?.bear, 'text-gray-700 dark:text-gray-300'], ['合理區間中', fairValue.range?.base, 'text-gray-700 dark:text-gray-300'], ['合理區間高', fairValue.range?.bull, 'text-gray-700 dark:text-gray-300']].map(([label, value, cls]) => `<div class="bg-white/70 dark:bg-gray-900/50 rounded-xl p-3 border border-orange-100 dark:border-orange-900/30"><div class="text-[10px] text-gray-500 mb-1">${label}</div><div class="text-lg font-bold font-mono ${cls}">${typeof value === 'number' ? value.toFixed(1) : (value || '--')}</div></div>`).join('')}
                 </div>
                 <div class="mt-4 grid grid-cols-2 md:grid-cols-3 gap-2">${inputRows.map(([label, value, decimals]) => `<div class="bg-white/60 dark:bg-gray-900/40 rounded-lg px-3 py-2"><div class="text-[10px] text-gray-500">${label}</div><div class="text-xs font-mono font-bold">${typeof value === 'number' ? formatInput(value, decimals) : (value || '--')}</div></div>`).join('')}</div>
                 <div class="mt-3 text-[10px] text-gray-500">財報：${this.escapeHtml(fairValue.source_dates?.financials || '--')} · 價格：${this.escapeHtml(fairValue.source_dates?.price || '--')} · 結果為模型估計，不代表保證價格</div>
                 <details class="mt-4 border-t border-orange-200/70 dark:border-orange-800/40 pt-3">
                     <summary class="cursor-pointer text-xs font-bold text-orange-700 dark:text-orange-300">算法說明</summary>
                     <div class="mt-3 space-y-2 text-[11px] leading-relaxed text-gray-600 dark:text-gray-300">
-                        <p><b>主模型：Residual Income（剩餘收益）</b>。以「帳面價值 + 未來剩餘收益折現」估值：<code>RI_t = EPS_t − Ke × BVPS_(t−1)</code>，公允值為目前 BVPS 加上 5 年剩餘收益與終值的折現。</p>
+                        <p><b>估值中樞：多模型中位數</b>。各自計算 Residual Income、實際同業 P/E、實際同業 P/B 與 DDM；可用模型的基準值取中位數，不再固定套用 PE 20。</p>
+                        <p><b>判定：</b>現價低於合理區間低點為低估（紅色），高於合理區間高點為高估（綠色），落在區間內為合理區間；本檔使用 ${fairValue.model_count || 0} 個模型，模型分歧 ${(Number(fairValue.model_spread || 0) * 100).toFixed(1)}%。</p>
+                        <p><b>Residual Income：</b><code>RI_t = EPS_t − Ke × BVPS_(t−1)</code>，公允值為目前 BVPS 加上 5 年剩餘收益與終值的折現；P/E 模型會使用月營收錨定的近端 EPS nowcast（若資料完整）。</p>
                         <p><b>折現率：</b><code>Ke = 台灣無風險利率 + Beta × 台灣股票風險溢酬</code>。無法滿足必要條件時，不會把缺值當成零。</p>
-                        <p><b>情境：</b>Bear／Base／Bull 使用歷史 EPS 年增率的第 25／50／75 百分位，5 年內逐步收斂至長期成長率。</p>
+                        <p><b>近端更新：</b>${fairValue.forecast ? `目前財報尚未涵蓋 ${this.escapeHtml(fairValue.forecast.forecast_period || '--')}，估值 EPS 使用「最新已公告季度 EPS × 下一完整季度營收／最新財報季度營收」替換 TTM 最舊季度；這是維持最新已公告利潤率的 nowcast，不是官方 EPS。` : '沒有相鄰且完整的月營收季度可供近端更新，使用已報告 TTM EPS。'}</p>
+                        <p><b>情境：</b>Bear／Base／Bull 使用歷史 EPS 年增率的第 25／50／75 百分位，5 年內逐步收斂至長期成長率；月營收只更新近端 EPS，不把單月或單季營收成長永久外推。</p>
                         <p><b>替代模型：</b>主模型不適用時，依資料條件使用實際現金股利 DDM，或同業群組的 P/B、P/E 區間；畫面會標示實際模型。</p>
                         <p><b>資料：</b>公開季度財報、raw close、現金股利、央行無風險利率與台灣 ERP；每檔結果保留來源日期。模型估值不是保證價格。</p>
                     </div>
@@ -944,6 +950,7 @@ export const StockDetail = {
 
         const isETF = stockInfo?.official_sector === 'ETF' || stockInfo?.industry === 'ETF';
         const fairValueMethodLabels = {
+            ensemble: '多模型中位數（估值集合）',
             residual_income: 'Residual Income（剩餘收益）',
             dividend_discount: 'Dividend Discount（股利折現）',
             relative_pb: 'Relative P/B（同業股價淨值比）',
@@ -1023,14 +1030,15 @@ export const StockDetail = {
                         </div>
                         <span class="text-[10px] px-2 py-1 rounded-full bg-orange-100 dark:bg-orange-900/40 text-orange-700 dark:text-orange-300">${this.escapeHtml(fairValue.confidence || '--')}</span>
                     </div>
-                    <div class="grid grid-cols-2 md:grid-cols-6 gap-3">
+                    <div class="grid grid-cols-2 md:grid-cols-7 gap-3">
                         ${[
-                            ['基準公允價', fairValue.fair_value, 'text-orange-600'],
+                            ['估值中樞', fairValue.fair_value, 'text-orange-600'],
                             ['現價', fairValue.market_price, 'text-gray-900 dark:text-white'],
                             ['上行空間', fairValue.upside != null ? `${(fairValue.upside * 100).toFixed(1)}%` : '--', fairValue.upside >= 0 ? 'text-red-500' : 'text-green-500'],
-                            ['悲觀', fairValue.range?.bear, 'text-gray-700 dark:text-gray-300'],
-                            ['基準', fairValue.range?.base, 'text-gray-700 dark:text-gray-300'],
-                            ['樂觀', fairValue.range?.bull, 'text-gray-700 dark:text-gray-300']
+                            ['判定', fairValue.valuation_signal_label || '--', fairValue.valuation_signal_label === '低估' ? 'text-red-500' : fairValue.valuation_signal_label === '高估' ? 'text-green-500' : 'text-orange-500'],
+                            ['合理區間低', fairValue.range?.bear, 'text-gray-700 dark:text-gray-300'],
+                            ['合理區間中', fairValue.range?.base, 'text-gray-700 dark:text-gray-300'],
+                            ['合理區間高', fairValue.range?.bull, 'text-gray-700 dark:text-gray-300']
                         ].map(([label, value, cls]) => `
                             <div class="bg-white/70 dark:bg-gray-900/50 rounded-xl p-3 border border-orange-100 dark:border-orange-900/30">
                                 <div class="text-[10px] text-gray-500 mb-1">${label}</div>
@@ -1038,8 +1046,18 @@ export const StockDetail = {
                             </div>`).join('')}
                     </div>
                     <div class="mt-3 text-[10px] text-gray-500">
-                        財報：${this.escapeHtml(fairValue.source_dates?.financials || '--')} · 價格：${this.escapeHtml(fairValue.source_dates?.price || '--')} · 模型結果不代表保證價格
+                        財報：${this.escapeHtml(fairValue.source_dates?.financials || '--')} · 月營收：${this.escapeHtml(fairValue.source_dates?.monthly_revenue || '--')} · 價格：${this.escapeHtml(fairValue.source_dates?.price || '--')} · 模型結果不代表保證價格
                     </div>
+                    ${fairValue.forecast ? `<details class="mt-4 border-t border-orange-200/70 dark:border-orange-800/40 pt-3"><summary class="cursor-pointer text-xs font-bold text-orange-700 dark:text-orange-300">近端 EPS 估算依據</summary><p class="mt-2 text-[11px] leading-relaxed text-gray-600 dark:text-gray-300">${this.escapeHtml(fairValue.forecast.formula || '')}<br>${this.escapeHtml(fairValue.forecast.assumption || '')}</p></details>` : ''}
+                    <details class="mt-4 border-t border-orange-200/70 dark:border-orange-800/40 pt-3">
+                        <summary class="cursor-pointer text-xs font-bold text-orange-700 dark:text-orange-300">算法說明</summary>
+                        <div class="mt-2 space-y-1 text-[11px] leading-relaxed text-gray-600 dark:text-gray-300">
+                            <p>估值中樞採 Residual Income、實際同業 P/E、實際同業 P/B、DDM 的可用基準值中位數；合理區間是模型基準值第 25 至 75 百分位。</p>
+                            <p>判定規則：現價低於區間低點為低估（紅色），高於區間高點為高估（綠色），其餘為合理區間；模型分歧另以百分比呈現。</p>
+                            <p>ROE 使用最新已公告季度；月營收只在下一完整季度尚未有季報時，按最新已公告季度 EPS 利潤率建立近端 nowcast，不把營收年增率永久外推。</p>
+                            <p>Bear／Base／Bull 來自歷史 EPS 成長百分位；資料不足時不補猜，改用明確標示的 DDM、同業 P/B 或 P/E。</p>
+                        </div>
+                    </details>
                 </div>` : `
                 <div class="bg-gray-50 dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 p-5">
                     <h4 class="text-sm font-bold text-gray-600 dark:text-gray-300">自有公允價</h4>
