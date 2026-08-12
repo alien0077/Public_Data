@@ -1,6 +1,6 @@
 import { api } from '../api.js';
 import { getPriceChangeStyle } from '../utils/priceStyle.js';
-import { stockIdentityHTML, stockMetricHTML, stockMobileCardHTML, stockMarginMaintenanceBadgeHTML } from '../utils/stockListLayout.js';
+import { stockIdentityHTML, stockMetricHTML, stockMobileCardHTML, stockMarginMaintenanceBadgeHTML, fairValueHTML } from '../utils/stockListLayout.js';
 
 /**
  * Favorites View
@@ -155,6 +155,7 @@ export const Favorites = {
                                     <th class="px-3 md:px-6 py-4 text-right">漲跌幅</th>
                                      <th class="px-3 md:px-6 py-4 text-right">最高</th>
                                      <th class="px-3 md:px-6 py-4 text-right">最低</th>
+                                     <th class="px-3 md:px-6 py-4 text-right">公允值</th>
                                      <th class="px-3 md:px-6 py-4 text-right">本益比</th>
                                     <th class="px-3 md:px-6 py-4 text-right">操作</th>
                                 </tr>
@@ -269,7 +270,7 @@ export const Favorites = {
         if (symbols.length === 0) {
             body.innerHTML = `
                 <tr>
-                    <td colspan="7" class="px-6 py-10 text-center text-gray-500">
+                    <td colspan="8" class="px-6 py-10 text-center text-gray-500">
                         這個分類還沒有收藏任何股票，請從其他畫面將股票加入收藏！
                     </td>
                 </tr>
@@ -285,6 +286,7 @@ export const Favorites = {
         
         // 若有從 api.getStocksMeta() 取得的資料可以輔助名稱
         const meta = await api.getStocksMeta();
+        const fairValueMap = await api.fetchFairValueMap();
         const peData = await api.fetchSectorPE();
         const peMap = {};
         if (peData && peData.sectors) {
@@ -339,6 +341,7 @@ export const Favorites = {
                  <td class="px-3 md:px-6 py-4 text-right text-gray-400 text-xs">
                      ${low > 0 ? this.formatNumber(low) : '--'}
                  </td>
+                 <td class="px-3 md:px-6 py-4 text-right">${fairValueHTML(fairValueMap[displaySymbol])}</td>
                  <td class="px-3 md:px-6 py-4 text-right font-bold ${peColor}">${peStr}</td>
                 <td class="px-3 md:px-6 py-4 text-right">
                     <button class="remove-fav text-gray-500 hover:text-red-500 transition-colors" data-symbol="${sym}" title="移除收藏">
@@ -361,6 +364,7 @@ export const Favorites = {
                     primaryHTML: `<div class="${priceClass}"><div class="font-bold">${price > 0 ? this.formatNumber(price) : '--'}</div><div class="text-[10px]">${price > 0 ? `${changePercent > 0 ? '▲' : (changePercent < 0 ? '▼' : '')} ${Math.abs(changePercent).toFixed(2)}%` : '--'}</div></div>`,
                     metricsHTML: stockMetricHTML('最高', high > 0 ? this.formatNumber(high) : '--') +
                         stockMetricHTML('最低', low > 0 ? this.formatNumber(low) : '--') +
+                        stockMetricHTML('公允值', fairValueMap[displaySymbol]?.fair_value != null ? this.formatNumber(fairValueMap[displaySymbol].fair_value) : '資料不足', { valueClass: fairValueMap[displaySymbol]?.upside >= 0 ? 'text-red-500' : fairValueMap[displaySymbol]?.upside < 0 ? 'text-green-500' : 'text-gray-400' }) +
                         stockMetricHTML('本益比', peStr, { valueClass: peColor }),
                     actionsHTML: `
                         <button class="remove-fav-mobile text-gray-500 hover:text-red-500 transition-colors" data-symbol="${sym}" title="移除收藏">

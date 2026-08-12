@@ -215,6 +215,21 @@ export const api = {
 
     async fetchStructure(symbol) { try { return await this.fetchLocalJson(`structure/daily/${symbol.split('.')[0]}.json`); } catch (e) { return null; } },
     async fetchFinancials(symbol, type = 'quarterly') { try { return await this.fetchLocalJson(`${type}/${symbol.split('.')[0]}.json`); } catch (e) { return null; } },
+    async fetchFairValue(symbol) {
+        try {
+            const data = await this.fetchLocalJson('valuation/fair_value.json');
+            return data?.stocks?.[symbol.split('.')[0]] || null;
+        } catch (e) { return null; }
+    },
+    async fetchFairValueMap() {
+        if (!this._fairValueMap) {
+            try {
+                const data = await this.fetchLocalJson('valuation/fair_value.json');
+                this._fairValueMap = data?.stocks || {};
+            } catch (e) { this._fairValueMap = {}; }
+        }
+        return this._fairValueMap;
+    },
     async fetchHealthData(symbol) { try { return await this.fetchLocalJson(`stocks/${symbol.split('.')[0]}.json`); } catch (e) { return null; } },
     async fetchIntradayMarket(symbol) { 
         const quotes = await this.fetchQuotes([symbol, '^TWII']);

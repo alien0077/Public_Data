@@ -3,7 +3,7 @@ import { api } from './api.js';
 import { charts } from './charts.js';
 import { TrendHunter } from './views/trendHunter.js?v=6';
 import { AssetRisk } from './views/assetRisk.js?v=2';
-import { StockDetail } from './views/stockDetail.js?v=7';
+import { StockDetail } from './views/stockDetail.js?v=8';
 import { BattleRecord } from './views/battleRecord.js?v=2';
 import { Transaction } from './views/transaction.js?v=2';
 import { Favorites } from './views/favorites.js?v=3';
@@ -14,7 +14,7 @@ import { GroupSearch } from './views/groupSearch.js?v=5';
 import { AudioSummary } from './views/audioSummary.js';
 import { MarginPressure } from './utils/marginPressure.js';
 import { getPriceChangeStyle } from './utils/priceStyle.js';
-import { stockIdentityHTML, stockMetricHTML, stockMobileCardHTML } from './utils/stockListLayout.js';
+import { stockIdentityHTML, stockMetricHTML, stockMobileCardHTML, fairValueHTML } from './utils/stockListLayout.js';
 
 const audioSummary = new AudioSummary();
 
@@ -344,14 +344,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const syms = Object.keys(holdings).filter(s => s !== 'yearlyStats' && holdings[s].shares > 0.001);
 
-        const [quantMetrics, healthDataMap, chartDataMap] = await Promise.all([
+        const [quantMetrics, healthDataMap, chartDataMap, fairValueMap] = await Promise.all([
             api.fetchQuantMetrics().catch(() => ({})),
             Promise.all(syms.map(async (s) => {
                 try { const d = await api.fetchHealthData(s); return [s, d]; } catch { return [s, null]; }
             })).then(results => Object.fromEntries(results)),
             Promise.all(syms.map(async (s) => {
                 try { const c = await api.fetchChart(s); return [s, c]; } catch { return [s, null]; }
-            })).then(results => Object.fromEntries(results))
+            })).then(results => Object.fromEntries(results)),
+            api.fetchFairValueMap()
         ]);
 
         const supportMap = {};
@@ -416,6 +417,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const quant = quantMetrics[sym] || {};
             const health = healthDataMap[sym];
+            const fairValue = fairValueMap[sym.split('.')[0]];
             const support = supportMap[sym] || {};
             const healthScore = health?.health_score;
 
@@ -434,6 +436,7 @@ document.addEventListener('DOMContentLoaded', () => {
             row.innerHTML = '<td class="px-3 md:px-6 py-4">' + stockIdentityHTML(sym, displayName, { badgeHTML: adviceBadge }) + '</td>' +
                 '<td class="px-3 md:px-6 py-4 text-center text-xs">' + betaText + '</td>' +
                 '<td class="px-3 md:px-6 py-4 text-center">' + healthBadge + '</td>' +
+                '<td class="px-3 md:px-6 py-4 text-right">' + fairValueHTML(fairValue) + '</td>' +
                 '<td class="px-3 md:px-6 py-4 text-right ' + priceClass + '">' + (price > 0 ? formatNumber(price) : '--') + '</td>' +
                 '<td class="px-3 md:px-6 py-4 text-right ' + priceClass + ' text-xs">' + (price > 0 ? (pct > 0 ? '▲' : (pct < 0 ? '▼' : '')) + ' ' + Math.abs(pct).toFixed(2) + '%' : '--') + '</td>' +
                 '<td class="px-3 md:px-6 py-4 text-right">' + formatNumber(shares, 0) + '</td>' +
@@ -469,6 +472,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         '<div class="text-[10px]">' + (price > 0 ? (pct > 0 ? '▲' : (pct < 0 ? '▼' : '')) + Math.abs(pct).toFixed(2) + '%' : '--') + '</div>' +
                     '</div>',
                     metricsHTML: stockMetricHTML('股數/成本', formatNumber(shares, 0) + '股 @ ' + formatNumber(avgCost)) +
+                        stockMetricHTML('公允值', fairValue?.fair_value != null ? formatNumber(fairValue.fair_value) : '資料不足', { valueClass: fairValue?.upside >= 0 ? 'text-red-500' : fairValue?.upside < 0 ? 'text-green-500' : 'text-gray-400' }) +
                         stockMetricHTML('損益', (pnl >= 0 ? '+' : '') + formatNumber(pnl, 0) + ' (' + roi.toFixed(2) + '%)', {
                             valueClass: (pnl >= 0 ? 'text-red-500' : 'text-green-500')
                         }),

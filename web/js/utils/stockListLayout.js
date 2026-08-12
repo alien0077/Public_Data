@@ -44,6 +44,17 @@ export function stockMetricHTML(label, value, options = {}) {
     `;
 }
 
+export function fairValueHTML(valuation) {
+    if (!valuation || valuation.status !== 'ok' || !Number.isFinite(Number(valuation.fair_value))) {
+        return '<span class="text-[10px] text-gray-400" title="估值資料不足">資料不足</span>';
+    }
+    const fairValue = Number(valuation.fair_value);
+    const upside = Number(valuation.upside);
+    const upsideText = Number.isFinite(upside) ? `${upside >= 0 ? '▲' : '▼'} ${(Math.abs(upside) * 100).toFixed(1)}%` : '--';
+    const upsideClass = Number.isFinite(upside) ? (upside >= 0 ? 'text-red-500' : 'text-green-500') : 'text-gray-400';
+    return `<div class="font-bold ${upsideClass}" title="${escapeHtml(valuation.model || '自有公允價')}，基準估值">${fairValue.toFixed(1)}</div><div class="text-[10px] ${upsideClass}">${upsideText}</div>`;
+}
+
 export function maintenanceLevel(ratio) {
     if (ratio < 140) return 'HIGH';
     if (ratio < 150) return 'CAUTION';
