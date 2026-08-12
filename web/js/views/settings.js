@@ -53,6 +53,76 @@ export const Settings = {
                     </div>
                 </div>
 
+                <!-- 公允價算法 -->
+                <div id="fair-value-methodology" class="bg-white dark:bg-[#161b22] rounded-2xl border border-orange-200 dark:border-orange-900/50 shadow-sm overflow-hidden">
+                    <div class="p-5 border-b border-orange-100 dark:border-orange-900/40 bg-orange-50/50 dark:bg-orange-900/10">
+                        <div class="flex items-start justify-between gap-3">
+                            <div>
+                                <h3 class="font-bold text-gray-900 dark:text-white flex items-center">
+                                    <span class="mr-2">📐</span> 公允價算法
+                                </h3>
+                                <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">FV-1.4 目前執行 · 非固定 P/E=20</p>
+                            </div>
+                            <span class="shrink-0 rounded-full bg-orange-500/10 px-2 py-1 text-[10px] font-bold text-orange-500">可追溯模型</span>
+                        </div>
+                    </div>
+                    <div class="p-5 space-y-3 text-xs text-gray-600 dark:text-gray-300">
+                        <p>公允價是可取得且可追溯模型的集合，不是保證價格。每次更新會保存資料日期、模型、合理區間、模型分歧與資料品質；缺資料時顯示資料不足，不猜一個價格。</p>
+
+                        <details class="rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden" open>
+                            <summary class="cursor-pointer bg-gray-50/70 dark:bg-gray-900/50 px-4 py-3 font-bold text-gray-900 dark:text-white">一、輸入變數是什麼？</summary>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 p-4 border-t border-gray-200 dark:border-gray-700">
+                                <div><b>TTM EPS</b><br><span>最近四季每股盈餘；Q4 先扣除同年度 Q1–Q3，避免把全年 EPS 當成單季。</span></div>
+                                <div><b>BVPS</b><br><span>每股帳面淨值，代表最新財報中的每股股東權益。</span></div>
+                                <div><b>ROE</b><br><span>股東權益報酬率；優先用最新季度公告值，缺值才由 EPS ÷ BVPS 推導。</span></div>
+                                <div><b>raw close</b><br><span>未還原的最新收盤價，只用於現價與公允價比較，不使用 adj_close。</span></div>
+                                <div><b>月營收</b><br><span>已公告月營收；完整下一季度營收可用於近端 EPS nowcast。</span></div>
+                                <div><b>DPS / payout</b><br><span>DPS 是最近一年每股現金股利；payout 是現金股利 ÷ 估值 EPS。</span></div>
+                                <div><b>Beta</b><br><span>個股相對加權指數的系統性波動，使用最近約 252 個共同交易日報酬。</span></div>
+                                <div><b>無風險利率</b><br><span>中央銀行基準資料；API 失敗時使用有日期標記的 fallback。</span></div>
+                                <div><b>ERP</b><br><span>市場股權風險溢酬，代表股票相對無風險資產要求的額外報酬。</span></div>
+                                <div><b>Ke</b><br><span>股東要求報酬率：無風險利率 + Beta × ERP。</span></div>
+                                <div><b>終值成長率 g</b><br><span>長期可持續成長率，來自 World Bank 名目 GDP 成長序列，不是短期題材成長率。</span></div>
+                            </div>
+                        </details>
+
+                        <details class="rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden">
+                            <summary class="cursor-pointer bg-gray-50/70 dark:bg-gray-900/50 px-4 py-3 font-bold text-gray-900 dark:text-white">二、目前已執行的估值模型</summary>
+                            <div class="space-y-3 p-4 border-t border-gray-200 dark:border-gray-700">
+                                <div><b>Residual Income（剩餘收益）</b><br><code>公允價 = BVPS + 未來剩餘收益折現值 + 終值折現值</code><br><span>剩餘收益 = EPS − Ke × 期初帳面價值。</span></div>
+                                <div><b>EPS 成長情境</b><br><span>依歷史同季 EPS 年增率建立 Bear／Base／Bull，五年內逐步收斂至長期 g，不把短期成長永久延續。</span></div>
+                                <div><b>Revenue-anchored EPS nowcast</b><br><code>近端預估 EPS = 最新公告季度 EPS × 下一季度營收 ÷ 最新財報季度營收</code><br><span>只替換 TTM 中最舊季度，且標記為 provisional，並非公司正式公告 EPS。</span></div>
+                                <div><b>同業 P/E、P/B</b><br><span>至少五個有效同業後，取同業倍數第 25／50／75 百分位建立 Bear／Base／Bull；不使用固定倍數。</span></div>
+                                <div><b>DDM</b><br><span>有現金股利且 Ke 大於成長率時才折現股利；沒有可靠股利不硬套。</span></div>
+                            </div>
+                        </details>
+
+                        <details class="rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden">
+                            <summary class="cursor-pointer bg-gray-50/70 dark:bg-gray-900/50 px-4 py-3 font-bold text-gray-900 dark:text-white">三、模型集合、訊號與品質</summary>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 p-4 border-t border-gray-200 dark:border-gray-700">
+                                <div><b>公允價中樞</b><br><span>兩個以上模型取各模型 Base 中位數；單一模型保留自己的 Bear／Bull 範圍。</span></div>
+                                <div><b>合理區間</b><br><span>多模型取 Base 值第 25／75 百分位；區間越寬代表模型分歧越大。</span></div>
+                                <div><b>低估／高估</b><br><span>現價低於下緣為低估（紅色）；高於上緣為高估（綠色）；區間內為合理（橘色）。</span></div>
+                                <div><b>model spread</b><br><span>(區間上緣 − 下緣) ÷ 公允價中樞，衡量模型分歧，不是報酬率。</span></div>
+                                <div><b>confidence</b><br><span>資料完整度與前瞻假設強度，不是上漲機率，也不代表模型一定正確。</span></div>
+                                <div><b>資料狀態</b><br><span>complete=主要內在模型完整；provisional=含速報或營收 nowcast；partial fallback=替代模型；insufficient=無法追溯估值。</span></div>
+                            </div>
+                        </details>
+
+                        <details class="rounded-xl border border-blue-200 dark:border-blue-900/50 overflow-hidden">
+                            <summary class="cursor-pointer bg-blue-50/70 dark:bg-blue-900/10 px-4 py-3 font-bold text-gray-900 dark:text-white">四、FV-1.4 前瞻線性 EPS（目前執行）</summary>
+                            <div class="space-y-3 p-4 border-t border-blue-200 dark:border-blue-900/50">
+                                <p>目前會先把單季 EPS 轉成連續 TTM EPS 序列，再以最近 6–8 個 TTM EPS 做後期權重較高的線性趨勢；若有至少四個重疊季度，另以「已公告營收 × 觀察到的 EPS／營收強度」交叉檢查，最後用同業 P/E 評價 2027／2028 EPS，再以 Ke 折現回今天。資料不足時不猜一個淨利率。</p>
+                                <div><b>Bear／Base／Bull</b><br><span>Base 使用加權線性趨勢；Bear／Bull 使用最近 TTM EPS 季增變化的第 25／75 百分位；少於六個連續 TTM 觀測點不做線性外插。</span></div>
+                                <div><b>防止本夢比</b><br><span>不把 2027／2028 高成長永久延續；沒有公告、營收加速、利潤率或產業導入證據時，只列低信心，不覆蓋基本面公允價。</span></div>
+                                <div><b>雙層輸出</b><br><span>保留目前基本面公允價與前瞻情境價，讓已實現獲利與未來選擇權分開。</span></div>
+                            </div>
+                        </details>
+
+                        <p class="rounded-xl bg-orange-500/10 p-3 font-medium text-orange-600 dark:text-orange-300">同步規則：公式、資料來源、門檻、訊號或資料狀態只要改變，必須同步更新估值程式、docs/fair_value_methodology.md、iOS AboutView 與 Web 設定頁，並更新說明版本。</p>
+                    </div>
+                </div>
+
                 <!-- 資料管理 -->
                 <div class="bg-white dark:bg-[#161b22] rounded-2xl border border-gray-200 dark:border-gray-800 shadow-sm overflow-hidden">
                     <div class="p-5 border-b border-gray-100 dark:border-gray-800 bg-gray-50/50 dark:bg-gray-900/50">

@@ -1,6 +1,6 @@
 import { api } from '../api.js';
 import { getPriceChangeStyle } from '../utils/priceStyle.js';
-import { stockIdentityHTML, stockMetricHTML, stockMobileCardHTML } from '../utils/stockListLayout.js';
+import { stockIdentityHTML, stockMetricHTML, stockMobileCardHTML, fairValueHTML } from '../utils/stockListLayout.js';
 import { canonicalGroupName, cleanGroupName } from '../utils/groupTaxonomy.js';
 
 export const GroupSearch = {
@@ -194,12 +194,13 @@ export const GroupSearch = {
     },
 
     async _renderStockList(symbols) {
-        const [quotes, peMap] = await Promise.all([
+        const [quotes, peMap, fairValueMap] = await Promise.all([
             api.fetchQuotes(symbols).catch(() => ({})),
-            this._getPeMap()
+            this._getPeMap(),
+            api.fetchFairValueMap().catch(() => ({}))
         ]);
 
-        const items = symbols.map(sym => this._buildStockItem(sym, quotes, peMap))
+        const items = symbols.map(sym => this._buildStockItem(sym, quotes, peMap, fairValueMap))
             .sort((a, b) => b.changePercent - a.changePercent);
 
         const desktopRows = items.map(item => `
@@ -208,6 +209,7 @@ export const GroupSearch = {
                 <td class="px-3 md:px-5 py-3 text-right ${item.priceClass}">${item.price > 0 ? this.formatNumber(item.price) : '--'}</td>
                 <td class="px-3 md:px-5 py-3 text-right ${item.priceClass} text-xs font-bold">${item.price > 0 ? item.changeText : '--'}</td>
                 <td class="px-3 md:px-5 py-3 text-right font-bold ${item.peColor}">${item.peText}</td>
+                <td class="px-3 md:px-5 py-3 text-right">${fairValueHTML(item.fairValue)}</td>
                 <td class="px-3 md:px-5 py-3 text-right text-xs text-gray-500">明細 ↗</td>
             </tr>
         `).join('');
@@ -219,18 +221,20 @@ export const GroupSearch = {
             metricsHTML: stockMetricHTML('本益比', item.peText, { valueClass: item.peColor }) +
                 stockMetricHTML('分類', item.primaryTheme || '--') +
                 stockMetricHTML('市場', item.market || '--'),
+            valuation: item.fairValue,
             onClick: `window.StockDetail.show(decodeURIComponent('${encodeURIComponent(item.symbol)}'))`
         })).join('');
 
         return `
             <div class="hidden md:block overflow-x-auto">
-                <table class="w-full text-sm">
+                <table class="w-full text-sm stock-list-table">
                     <thead class="text-xs text-gray-500 bg-gray-50 dark:bg-gray-900/60">
                         <tr>
                             <th class="px-3 md:px-5 py-2 text-left">股票</th>
                             <th class="px-3 md:px-5 py-2 text-right">股價</th>
                             <th class="px-3 md:px-5 py-2 text-right">漲跌幅</th>
                             <th class="px-3 md:px-5 py-2 text-right">PE</th>
+                            <th class="px-3 md:px-5 py-2 text-right">公允價</th>
                             <th class="px-3 md:px-5 py-2 text-right">操作</th>
                         </tr>
                     </thead>
@@ -241,7 +245,7 @@ export const GroupSearch = {
         `;
     },
 
-    _buildStockItem(sym, quotes, peMap) {
+    _buildStockItem(sym, quotes, peMap, fairValueMap = {}) {
         const symbol = this.normalizeStockSymbol(sym);
         const stock = this._stockBySymbol[symbol] || {};
         const quote = quotes[sym] || quotes[symbol] || {};
@@ -263,7 +267,8 @@ export const GroupSearch = {
             changeText: `${changePercent > 0 ? '▲' : (changePercent < 0 ? '▼' : '')} ${Math.abs(changePercent).toFixed(2)}%`,
             priceClass,
             peText: peRatio ? peRatio.toFixed(1) : '--',
-            peColor
+            peColor,
+            fairValue: fairValueMap[symbol]
         };
     },
 

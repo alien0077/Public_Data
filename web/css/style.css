@@ -114,7 +114,7 @@
 }
 
 .stock-card-row {
-    padding: 0.875rem 1rem;
+    padding: 0.75rem 0.875rem;
     cursor: pointer;
     transition: background 0.15s ease;
 }
@@ -142,10 +142,23 @@
 
 .stock-card-metrics {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 0.5rem 0.75rem;
-    margin-top: 0.625rem;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.45rem 0.5rem;
+    margin-top: 0.5rem;
     font-size: 0.75rem;
+}
+
+.stock-card-metrics .stock-metric {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: right;
+}
+
+.stock-card-metrics .stock-metric-value,
+.stock-card-metrics .stock-metric-label {
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .stock-card-detail {
@@ -166,6 +179,68 @@
 
 .dark .stock-card-actions {
     border-top-color: #1f2937;
+}
+
+/* Shared dense table rhythm: columns stay aligned on desktop while mobile
+   lists use the card layout above instead of horizontal scrolling. */
+#gs-results table,
+#inst-track-sectors table,
+#rapid-screen-list table,
+#sector-pe-list table,
+#portfolio-body {
+    table-layout: fixed;
+}
+
+#gs-results table td,
+#inst-track-sectors table td,
+#rapid-screen-list table td,
+#sector-pe-list table td {
+    vertical-align: middle;
+}
+
+/* Desktop stock lists: keep the identity column visible while the user
+   horizontally scrolls through the dense metric columns. Mobile lists use
+   stock-card-row instead, so they do not need a horizontal sticky column. */
+@media (min-width: 768px) {
+    .stock-list-table {
+        min-width: 720px;
+        border-collapse: separate;
+        border-spacing: 0;
+    }
+
+    .stock-list-table thead th:first-child,
+    .stock-list-table tbody td:first-child {
+        position: sticky;
+        left: 0;
+        min-width: 10rem;
+        width: 10rem;
+        overflow: hidden;
+        z-index: 3;
+        background: #ffffff;
+        box-shadow: 8px 0 12px -12px rgba(15, 23, 42, 0.65);
+    }
+
+    .stock-list-table thead th:first-child {
+        z-index: 5;
+        background: #f9fafb;
+    }
+
+    .stock-list-table tbody tr:hover td:first-child {
+        background: #f9fafb;
+    }
+
+    .dark .stock-list-table tbody td:first-child {
+        background: #161b22;
+        box-shadow: 8px 0 12px -12px rgba(0, 0, 0, 0.9);
+    }
+
+    .dark .stock-list-table thead th:first-child {
+        background: #111827;
+    }
+
+    .dark .stock-list-table tbody tr:hover td:first-child {
+        background: #1f2937;
+    }
 }
 
 /* 二級導航動畫與樣式 */
@@ -239,9 +314,18 @@
     }
 
     /* Adjust Grid layouts for iPhone width */
-    .grid-cols-2 {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 0.5rem !important;
+    .grid-cols-2 { gap: 0.5rem !important; }
+
+    .stock-card-metrics {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 0.4rem;
+    }
+
+    .stock-card-primary { min-width: 4.25rem; }
+
+    .stock-card-detail {
+        margin-top: 0.4rem;
+        font-size: 0.6875rem;
     }
 
     /* Navigation Bottom Safe Area */

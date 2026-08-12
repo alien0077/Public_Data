@@ -471,8 +471,8 @@ document.addEventListener('DOMContentLoaded', () => {
                         '<div class="font-bold">' + (price > 0 ? formatNumber(price) : '--') + '</div>' +
                         '<div class="text-[10px]">' + (price > 0 ? (pct > 0 ? '▲' : (pct < 0 ? '▼' : '')) + Math.abs(pct).toFixed(2) + '%' : '--') + '</div>' +
                     '</div>',
+                    valuation: fairValue,
                     metricsHTML: stockMetricHTML('股數/成本', formatNumber(shares, 0) + '股 @ ' + formatNumber(avgCost)) +
-                        stockMetricHTML('公允值', fairValue?.fair_value != null ? formatNumber(fairValue.fair_value) : '資料不足', { valueClass: fairValue?.upside >= 0 ? 'text-red-500' : fairValue?.upside < 0 ? 'text-green-500' : 'text-gray-400' }) +
                         stockMetricHTML('損益', (pnl >= 0 ? '+' : '') + formatNumber(pnl, 0) + ' (' + roi.toFixed(2) + '%)', {
                             valueClass: (pnl >= 0 ? 'text-red-500' : 'text-green-500')
                         }),

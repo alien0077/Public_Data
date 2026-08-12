@@ -62,6 +62,15 @@ export function fairValueHTML(valuation) {
     return `<div class="font-bold ${upsideClass}" title="${escapeHtml(valuation.model || '自有公允價')}，估值中樞">${fairValue.toFixed(1)}</div><div class="text-[10px] ${upsideClass}">${upsideText}</div><div class="text-[10px] font-bold ${signalClass}" title="${escapeHtml(`以模型中位數與 25%-75% 合理區間判定${spreadText}`)}">${escapeHtml(signal)}</div>`;
 }
 
+export function fairValueMetricHTML(valuation) {
+    if (!valuation || valuation.status !== 'ok' || !Number.isFinite(Number(valuation.fair_value))) {
+        return stockMetricHTML('公允價', '--', { valueClass: 'text-gray-400' });
+    }
+    const signal = valuation.valuation_signal_label || '合理區間';
+    const color = signal === '低估' ? 'text-red-500' : signal === '高估' ? 'text-green-500' : 'text-orange-500';
+    return stockMetricHTML('公允價', Number(valuation.fair_value).toFixed(1), { valueClass: color, labelClass: color });
+}
+
 export function maintenanceLevel(ratio) {
     if (ratio < 140) return 'HIGH';
     if (ratio < 150) return 'CAUTION';
@@ -89,7 +98,8 @@ export function stockMobileCardHTML({
     metricsHTML = '',
     detailHTML = '',
     actionsHTML = '',
-    onClick = ''
+    onClick = '',
+    valuation = null
 }) {
     const clickAttr = onClick ? ` onclick="${onClick}"` : '';
     return `
@@ -98,7 +108,7 @@ export function stockMobileCardHTML({
                 ${stockIdentityHTML(symbol, name, { badgeHTML })}
                 <div class="stock-card-primary">${primaryHTML}</div>
             </div>
-            ${metricsHTML ? `<div class="stock-card-metrics">${metricsHTML}</div>` : ''}
+            ${metricsHTML || valuation ? `<div class="stock-card-metrics">${valuation ? fairValueMetricHTML(valuation) : ''}${metricsHTML}</div>` : ''}
             ${detailHTML ? `<div class="stock-card-detail">${detailHTML}</div>` : ''}
             ${actionsHTML ? `<div class="stock-card-actions">${actionsHTML}</div>` : ''}
         </div>

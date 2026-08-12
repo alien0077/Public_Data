@@ -147,7 +147,7 @@ export const Favorites = {
                 <!-- List Content -->
                 <div class="bg-white dark:bg-[#161b22] rounded-2xl border border-gray-200 dark:border-gray-800 overflow-hidden shadow-sm flex-1 flex flex-col transition-colors duration-300">
                     <div class="overflow-x-auto flex-1 hidden md:block">
-                        <table class="w-full text-left">
+                        <table class="w-full text-left stock-list-table">
                             <thead class="bg-gray-50/50 dark:bg-gray-900/50 text-gray-400 dark:text-gray-500 text-[10px] md:text-xs uppercase sticky top-0 z-10 backdrop-blur-sm">
                                 <tr>
                                     <th class="px-3 md:px-6 py-4">代碼/名稱</th>
@@ -362,9 +362,9 @@ export const Favorites = {
                     name,
                     badgeHTML: this.getMarginBadge(displaySymbol),
                     primaryHTML: `<div class="${priceClass}"><div class="font-bold">${price > 0 ? this.formatNumber(price) : '--'}</div><div class="text-[10px]">${price > 0 ? `${changePercent > 0 ? '▲' : (changePercent < 0 ? '▼' : '')} ${Math.abs(changePercent).toFixed(2)}%` : '--'}</div></div>`,
+                    valuation: fairValueMap[displaySymbol],
                     metricsHTML: stockMetricHTML('最高', high > 0 ? this.formatNumber(high) : '--') +
                         stockMetricHTML('最低', low > 0 ? this.formatNumber(low) : '--') +
-                        stockMetricHTML('公允值', fairValueMap[displaySymbol]?.fair_value != null ? this.formatNumber(fairValueMap[displaySymbol].fair_value) : '資料不足', { valueClass: fairValueMap[displaySymbol]?.upside >= 0 ? 'text-red-500' : fairValueMap[displaySymbol]?.upside < 0 ? 'text-green-500' : 'text-gray-400' }) +
                         stockMetricHTML('本益比', peStr, { valueClass: peColor }),
                     actionsHTML: `
                         <button class="remove-fav-mobile text-gray-500 hover:text-red-500 transition-colors" data-symbol="${sym}" title="移除收藏">

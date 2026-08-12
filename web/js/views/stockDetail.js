@@ -284,7 +284,8 @@ export const StockDetail = {
             residual_income: 'Residual Income（剩餘收益）',
             dividend_discount: 'Dividend Discount（股利折現）',
             relative_pb: 'Relative P/B（同業股價淨值比）',
-            relative_pe: 'Relative P/E（同業本益比）'
+            relative_pe: 'Relative P/E（同業本益比）',
+            forward_eps: 'Forward EPS（前瞻線性 EPS）'
         };
         if (!fairValue || fairValue.status !== 'ok' || fairValue.fair_value == null) {
             const missing = fairValue?.missing_data?.length ? `資料不足：${fairValue.missing_data.join('、')}` : '資料不足，尚未產生公允價';
@@ -294,7 +295,9 @@ export const StockDetail = {
         const inputRows = [
             ['已報告 TTM EPS', input.ttm_eps, 2], ['估值 EPS', input.valuation_eps ?? input.ttm_eps, 2], ['BVPS', input.bvps, 2], ['ROE', input.roe != null ? `${(input.roe * 100).toFixed(1)}%` : '--'],
             ['Beta', input.beta, 2], ['股權成本 Ke', input.cost_of_equity != null ? `${(input.cost_of_equity * 100).toFixed(2)}%` : '--'],
-            ['終值成長 g', input.terminal_growth != null ? `${(input.terminal_growth * 100).toFixed(2)}%` : '--']
+            ['終值成長 g', input.terminal_growth != null ? `${(input.terminal_growth * 100).toFixed(2)}%` : '--'],
+            ['2027E EPS', input.forward_eps_2027, 2], ['2028E EPS', input.forward_eps_2028, 2],
+            ['前瞻趨勢樣本', input.forward_trend_points, 0], ['前瞻折現年數', input.forward_discount_years, 2]
         ];
         const formatInput = (value, decimals = 1) => typeof value === 'number' ? value.toFixed(decimals) : (value || '--');
         const upside = Number(fairValue.upside);
@@ -321,6 +324,7 @@ export const StockDetail = {
                         <p><b>折現率：</b><code>Ke = 台灣無風險利率 + Beta × 台灣股票風險溢酬</code>。無法滿足必要條件時，不會把缺值當成零。</p>
                         <p><b>近端更新：</b>${fairValue.forecast ? `目前財報尚未涵蓋 ${this.escapeHtml(fairValue.forecast.forecast_period || '--')}，估值 EPS 使用「最新已公告季度 EPS × 下一完整季度營收／最新財報季度營收」替換 TTM 最舊季度；這是維持最新已公告利潤率的 nowcast，不是官方 EPS。` : '沒有相鄰且完整的月營收季度可供近端更新，使用已報告 TTM EPS。'}</p>
                         <p><b>情境：</b>Bear／Base／Bull 使用歷史 EPS 年增率的第 25／50／75 百分位，5 年內逐步收斂至長期成長率；月營收只更新近端 EPS，不把單月或單季營收成長永久外推。</p>
+                        ${fairValue.forward_eps ? `<p><b>FV-1.4 前瞻 EPS：</b>最近 ${fairValue.forward_eps.trend_points || '--'} 個連續 TTM EPS 以後期較高權重做線性趨勢，並用 ${fairValue.forward_eps.revenue_points || 0} 個已公告季度營收／EPS 強度觀測值交叉檢查；2028-Q4 EPS 以同業 P/E 評價，再按 Ke 折現回今天。這是模型估算，不是公司公告 EPS。</p>` : ''}
                         <p><b>替代模型：</b>主模型不適用時，依資料條件使用實際現金股利 DDM，或同業群組的 P/B、P/E 區間；畫面會標示實際模型。</p>
                         <p><b>資料：</b>公開季度財報、raw close、現金股利、央行無風險利率與台灣 ERP；每檔結果保留來源日期。模型估值不是保證價格。</p>
                     </div>
@@ -954,7 +958,8 @@ export const StockDetail = {
             residual_income: 'Residual Income（剩餘收益）',
             dividend_discount: 'Dividend Discount（股利折現）',
             relative_pb: 'Relative P/B（同業股價淨值比）',
-            relative_pe: 'Relative P/E（同業本益比）'
+            relative_pe: 'Relative P/E（同業本益比）',
+            forward_eps: 'Forward EPS（前瞻線性 EPS）'
         };
         if (isETF && etfSnapshot?.[this.currentSymbol]) {
             this.renderETFComposition(
@@ -1045,6 +1050,10 @@ export const StockDetail = {
                                 <div class="text-lg font-bold font-mono ${cls}">${typeof value === 'number' ? value.toFixed(1) : (value || '--')}</div>
                             </div>`).join('')}
                     </div>
+                    ${fairValue.inputs?.forward_eps_2027 != null || fairValue.inputs?.forward_eps_2028 != null ? `
+                    <div class="mt-3 grid grid-cols-2 gap-3">
+                        ${[['2027E EPS', fairValue.inputs?.forward_eps_2027], ['2028E EPS', fairValue.inputs?.forward_eps_2028]].map(([label, value]) => `<div class="bg-blue-50/70 dark:bg-blue-900/20 rounded-xl p-3 border border-blue-100 dark:border-blue-900/40"><div class="text-[10px] text-gray-500 mb-1">${label}</div><div class="text-lg font-bold font-mono text-blue-600 dark:text-blue-300">${typeof value === 'number' ? value.toFixed(2) : '--'}</div></div>`).join('')}
+                    </div>` : ''}
                     <div class="mt-3 text-[10px] text-gray-500">
                         財報：${this.escapeHtml(fairValue.source_dates?.financials || '--')} · 月營收：${this.escapeHtml(fairValue.source_dates?.monthly_revenue || '--')} · 價格：${this.escapeHtml(fairValue.source_dates?.price || '--')} · 模型結果不代表保證價格
                     </div>
@@ -1056,6 +1065,7 @@ export const StockDetail = {
                             <p>判定規則：現價低於區間低點為低估（紅色），高於區間高點為高估（綠色），其餘為合理區間；模型分歧另以百分比呈現。</p>
                             <p>ROE 使用最新已公告季度；月營收只在下一完整季度尚未有季報時，按最新已公告季度 EPS 利潤率建立近端 nowcast，不把營收年增率永久外推。</p>
                             <p>Bear／Base／Bull 來自歷史 EPS 成長百分位；資料不足時不補猜，改用明確標示的 DDM、同業 P/B 或 P/E。</p>
+                            ${fairValue.forward_eps ? `<p>FV-1.4 前瞻 EPS 使用最近 ${fairValue.forward_eps.trend_points || '--'} 個 TTM EPS 的加權線性趨勢，與已公告營收／EPS 強度交叉檢查，將 2028-Q4 EPS 乘以同業 P/E 後按 Ke 折現；前瞻結果不取代已實現基本面。</p>` : ''}
                         </div>
                     </details>
                 </div>` : `
