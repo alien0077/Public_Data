@@ -1,6 +1,6 @@
 import { api } from '../api.js';
 import { getPriceChangeStyle } from '../utils/priceStyle.js';
-import { stockIdentityHTML, stockMetricHTML, stockMobileCardHTML, fairValueHTML } from '../utils/stockListLayout.js';
+import { stockIdentityHTML, stockMetricHTML, stockMobileCardHTML, fairValueHTML } from '../utils/stockListLayout.js?v=2';
 import { canonicalGroupName, cleanGroupName } from '../utils/groupTaxonomy.js';
 
 export const GroupSearch = {
@@ -217,7 +217,8 @@ export const GroupSearch = {
         const mobileCards = items.map(item => stockMobileCardHTML({
             symbol: item.symbol,
             name: item.name,
-            primaryHTML: `<div class="${item.priceClass}"><div class="font-bold">${item.price > 0 ? this.formatNumber(item.price) : '--'}</div><div class="text-[10px]">${item.price > 0 ? item.changeText : '--'}</div></div>`,
+            primaryHTML: '',
+            quoteHTML: `<div class="${item.priceClass}"><div class="font-bold">${item.price > 0 ? this.formatNumber(item.price) : '--'}</div><div class="text-[10px]">${item.price > 0 ? item.changeText : '--'}</div></div>`,
             metricsHTML: stockMetricHTML('本益比', item.peText, { valueClass: item.peColor }) +
                 stockMetricHTML('分類', item.primaryTheme || '--') +
                 stockMetricHTML('市場', item.market || '--'),

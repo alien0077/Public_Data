@@ -95,6 +95,7 @@ export function stockMobileCardHTML({
     name,
     badgeHTML = '',
     primaryHTML = '',
+    quoteHTML = '',
     metricsHTML = '',
     detailHTML = '',
     actionsHTML = '',
@@ -102,13 +103,19 @@ export function stockMobileCardHTML({
     valuation = null
 }) {
     const clickAttr = onClick ? ` onclick="${onClick}"` : '';
+    const hasQuotePair = Boolean(quoteHTML && valuation);
+    const topPrimaryHTML = hasQuotePair ? primaryHTML : (quoteHTML || primaryHTML);
     return `
         <div class="stock-card-row"${clickAttr}>
             <div class="stock-card-top">
                 ${stockIdentityHTML(symbol, name, { badgeHTML })}
-                <div class="stock-card-primary">${primaryHTML}</div>
+                ${topPrimaryHTML ? `<div class="stock-card-primary">${topPrimaryHTML}</div>` : ''}
             </div>
-            ${metricsHTML || valuation ? `<div class="stock-card-metrics">${valuation ? fairValueMetricHTML(valuation) : ''}${metricsHTML}</div>` : ''}
+            ${hasQuotePair ? `<div class="stock-card-quote-pair">
+                <div class="stock-card-quote-cell">${quoteHTML}<div class="stock-card-quote-label">現價</div></div>
+                ${fairValueMetricHTML(valuation)}
+            </div>` : ''}
+            ${metricsHTML || (valuation && !hasQuotePair) ? `<div class="stock-card-metrics">${valuation && !hasQuotePair ? fairValueMetricHTML(valuation) : ''}${metricsHTML}</div>` : ''}
             ${detailHTML ? `<div class="stock-card-detail">${detailHTML}</div>` : ''}
             ${actionsHTML ? `<div class="stock-card-actions">${actionsHTML}</div>` : ''}
         </div>

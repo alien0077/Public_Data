@@ -1,7 +1,7 @@
 import { db } from './db.js';
 import { api } from './api.js';
 import { charts } from './charts.js';
-import { TrendHunter } from './views/trendHunter.js?v=7';
+import { TrendHunter } from './views/trendHunter.js?v=8';
 import { AssetRisk } from './views/assetRisk.js?v=2';
 import { StockDetail } from './views/stockDetail.js?v=8';
 import { BattleRecord } from './views/battleRecord.js?v=2';
@@ -14,7 +14,7 @@ import { GroupSearch } from './views/groupSearch.js?v=5';
 import { AudioSummary } from './views/audioSummary.js';
 import { MarginPressure } from './utils/marginPressure.js';
 import { getPriceChangeStyle } from './utils/priceStyle.js';
-import { stockIdentityHTML, stockMetricHTML, stockMobileCardHTML, fairValueHTML } from './utils/stockListLayout.js';
+import { stockIdentityHTML, stockMetricHTML, stockMobileCardHTML, fairValueHTML } from './utils/stockListLayout.js?v=2';
 
 const audioSummary = new AudioSummary();
 
@@ -467,7 +467,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     symbol: sym,
                     name: displayName,
                     badgeHTML: adviceBadge + (betaText ? '<span class="text-[10px] text-gray-500">' + betaText + '</span>' : '') + healthBadge,
-                    primaryHTML: '<div class="' + priceClass + '">' +
+                    primaryHTML: '',
+                    quoteHTML: '<div class="' + priceClass + '">' +
                         '<div class="font-bold">' + (price > 0 ? formatNumber(price) : '--') + '</div>' +
                         '<div class="text-[10px]">' + (price > 0 ? (pct > 0 ? '▲' : (pct < 0 ? '▼' : '')) + Math.abs(pct).toFixed(2) + '%' : '--') + '</div>' +
                     '</div>',

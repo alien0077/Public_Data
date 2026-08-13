@@ -1,6 +1,6 @@
 import { api } from '../api.js';
 import { getPriceChangeStyle } from '../utils/priceStyle.js';
-import { stockIdentityHTML, stockMetricHTML, stockMobileCardHTML, stockMarginMaintenanceBadgeHTML, fairValueHTML } from '../utils/stockListLayout.js';
+import { stockIdentityHTML, stockMetricHTML, stockMobileCardHTML, stockMarginMaintenanceBadgeHTML, fairValueHTML } from '../utils/stockListLayout.js?v=2';
 
 /**
  * Favorites View
@@ -361,7 +361,8 @@ export const Favorites = {
                     symbol: displaySymbol,
                     name,
                     badgeHTML: this.getMarginBadge(displaySymbol),
-                    primaryHTML: `<div class="${priceClass}"><div class="font-bold">${price > 0 ? this.formatNumber(price) : '--'}</div><div class="text-[10px]">${price > 0 ? `${changePercent > 0 ? '▲' : (changePercent < 0 ? '▼' : '')} ${Math.abs(changePercent).toFixed(2)}%` : '--'}</div></div>`,
+                    primaryHTML: '',
+                    quoteHTML: `<div class="${priceClass}"><div class="font-bold">${price > 0 ? this.formatNumber(price) : '--'}</div><div class="text-[10px]">${price > 0 ? `${changePercent > 0 ? '▲' : (changePercent < 0 ? '▼' : '')} ${Math.abs(changePercent).toFixed(2)}%` : '--'}</div></div>`,
                     valuation: fairValueMap[displaySymbol],
                     metricsHTML: stockMetricHTML('最高', high > 0 ? this.formatNumber(high) : '--') +
                         stockMetricHTML('最低', low > 0 ? this.formatNumber(low) : '--') +

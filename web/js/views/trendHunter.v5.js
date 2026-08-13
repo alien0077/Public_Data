@@ -4,7 +4,7 @@
  */
 
 import { api } from '../api.js';
-import { stockIdentityHTML, stockMetricHTML, stockMobileCardHTML, fairValueHTML } from '../utils/stockListLayout.js';
+import { stockIdentityHTML, stockMetricHTML, stockMobileCardHTML, fairValueHTML } from '../utils/stockListLayout.js?v=2';
 import { canonicalGroupName, openGroupList } from '../utils/groupTaxonomy.js';
 
 function formatStockQuote(quote) {
@@ -853,9 +853,8 @@ export const TrendHunter = {
                                     name: s.name || s.stock_id,
                                     badgeHTML: signalBadge + entryBadge,
                                     primaryHTML: `<div class="${retClass}"><div class="font-bold">${retStr}</div><div class="text-[10px]">區間損益</div></div>`,
+                                    quoteHTML: `<div class="${quote.valueClass}"><div class="font-bold">${quote.priceText}</div><div class="text-[10px]">${quote.changeText}</div></div>`,
                                     metricsHTML: stockMetricHTML('開始日', s.start_date ? s.start_date.substring(5) : '--') +
-                                        stockMetricHTML('現價', quote.priceText, { valueClass: quote.valueClass }) +
-                                        stockMetricHTML('漲跌幅', quote.changeText, { valueClass: quote.valueClass }) +
                                         stockMetricHTML('天數', `${s.tracking_days}d`) +
                                         stockMetricHTML('累計買超', buyStr, { valueClass: 'text-blue-500' }) +
                                         stockMetricHTML('法人流', flowSparkline) +
@@ -1069,9 +1068,8 @@ export const TrendHunter = {
                                     name: s.name || s.stock_id,
                                     badgeHTML: `<span class="text-[10px] font-bold px-2 py-1 rounded border ${labelColor}">${s.label}</span>`,
                                     primaryHTML: `<div class="text-cyan-600 dark:text-cyan-400"><div class="font-bold">${buyStr}</div><div class="text-[10px]">累計買超</div></div>`,
+                                    quoteHTML: `<div class="${quote.valueClass}"><div class="font-bold">${quote.priceText}</div><div class="text-[10px]">${quote.changeText}</div></div>`,
                                     metricsHTML: stockMetricHTML(`買入/${data.window_days}`, `${s.buy_days}/${s.total_days || data.window_days}`) +
-                                        stockMetricHTML('現價', quote.priceText, { valueClass: quote.valueClass }) +
-                                        stockMetricHTML('漲跌幅', quote.changeText, { valueClass: quote.valueClass }) +
                                         stockMetricHTML('一致性', `${(s.consistency * 100).toFixed(0)}%`, {
                                             valueClass: s.consistency >= 0.8 ? 'text-green-500' : s.consistency >= 0.6 ? 'text-orange-500' : 'text-gray-500'
                                         }) +
@@ -1209,7 +1207,8 @@ export const TrendHunter = {
                                 return stockMobileCardHTML({
                                     symbol: s.stock_id,
                                     name: s.name || s.stock_id,
-                                    primaryHTML: `<div class="${quote.valueClass}"><div class="font-bold">${quote.priceText}</div><div class="text-[10px]">${quote.changeText}</div></div>`,
+                                    primaryHTML: '',
+                                    quoteHTML: `<div class="${quote.valueClass}"><div class="font-bold">${quote.priceText}</div><div class="text-[10px]">${quote.changeText}</div></div>`,
                                     valuation: fairValue,
                                     metricsHTML: stockMetricHTML('EPS', epsStr) + stockMetricHTML('本益比', peStr, { valueClass: labelColor }),
                                     detailHTML: `<span class="${labelColor}">${s.label || '--'}</span>`,
@@ -2461,10 +2460,9 @@ export const TrendHunter = {
                                     symbol: cleanStockId,
                                     name,
                                     primaryHTML: `<div class="text-right"><div class="font-bold ${rawRet >= 0 ? 'text-red-500' : 'text-green-500'}">${rawRet >= 0 ? '+' : ''}${rawRet.toFixed(1)}%</div><div class="text-[10px]">區間報酬</div></div>`,
+                                    quoteHTML: `<div class="${quote.valueClass}"><div class="font-bold">${quote.priceText}</div><div class="text-[10px]">${quote.changeText}</div></div>`,
                                     valuation: fairValue,
                                     metricsHTML: stockMetricHTML('配置權重', `${((p.weight || 0) * 100).toFixed(1)}%`) +
-                                        stockMetricHTML('現價', quote.priceText, { valueClass: quote.valueClass }) +
-                                        stockMetricHTML('漲跌幅', quote.changeText, { valueClass: quote.valueClass }) +
                                         stockMetricHTML('本益比', peStr) +
                                         stockMetricHTML('操作', action),
                                     detailHTML: p.select_reason || p.entry_reason || '',

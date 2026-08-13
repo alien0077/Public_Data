@@ -74,7 +74,7 @@ export const Settings = {
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-3 p-4 border-t border-gray-200 dark:border-gray-700">
                                 <div><b>TTM EPS</b><br><span>最近四季每股盈餘；Q4 先扣除同年度 Q1–Q3，避免把全年 EPS 當成單季。</span></div>
                                 <div><b>BVPS</b><br><span>每股帳面淨值，代表最新財報中的每股股東權益。</span></div>
-                                <div><b>ROE</b><br><span>股東權益報酬率；優先用最新季度公告值，缺值才由 EPS ÷ BVPS 推導。</span></div>
+                                <div><b>ROE</b><br><span>Residual Income 使用 TTM EPS ÷ 最新 BVPS 的可稽核代理值；季度公告 ROE 是單季指標，只作觀察，不直接當作長期終值 ROE。</span></div>
                                 <div><b>raw close</b><br><span>未還原的最新收盤價，只用於現價與公允價比較，不使用 adj_close。</span></div>
                                 <div><b>月營收</b><br><span>已公告月營收；完整下一季度營收可用於近端 EPS nowcast。</span></div>
                                 <div><b>DPS / payout</b><br><span>DPS 是最近一年每股現金股利；payout 是現金股利 ÷ 估值 EPS。</span></div>
@@ -110,12 +110,17 @@ export const Settings = {
                         </details>
 
                         <details class="rounded-xl border border-blue-200 dark:border-blue-900/50 overflow-hidden">
-                            <summary class="cursor-pointer bg-blue-50/70 dark:bg-blue-900/10 px-4 py-3 font-bold text-gray-900 dark:text-white">四、FV-1.4 前瞻線性 EPS（目前執行）</summary>
+                            <summary class="cursor-pointer bg-blue-50/70 dark:bg-blue-900/10 px-4 py-3 font-bold text-gray-900 dark:text-white">四、FV-1.11 前瞻線性 EPS（目前執行）</summary>
                             <div class="space-y-3 p-4 border-t border-blue-200 dark:border-blue-900/50">
                                 <p>目前會先把單季 EPS 轉成連續 TTM EPS 序列，再以最近 6–8 個 TTM EPS 做後期權重較高的線性趨勢；若有至少四個重疊季度，另以「已公告營收 × 觀察到的 EPS／營收強度」交叉檢查，最後用同業 P/E 評價 2027／2028 EPS，再以 Ke 折現回今天。資料不足時不猜一個淨利率。</p>
                                 <div><b>Bear／Base／Bull</b><br><span>Base 使用加權線性趨勢；Bear／Bull 使用最近 TTM EPS 季增變化的第 25／75 百分位；少於六個連續 TTM 觀測點不做線性外插。</span></div>
                                 <div><b>防止本夢比</b><br><span>不把 2027／2028 高成長永久延續；沒有公告、營收加速、利潤率或產業導入證據時，只列低信心，不覆蓋基本面公允價。</span></div>
                                 <div><b>雙層輸出</b><br><span>保留目前基本面公允價與前瞻情境價，讓已實現獲利與未來選擇權分開。</span></div>
+                                <div><b>品質診斷</b><br><span>輸出 TTM ROE、單季 ROE、ROE 使用基礎與修正動作；若公允價相對現價極端或模型分歧超過 100%，標記警示供複核。</span></div>
+                                <div><b>模型收斂閘門</b><br><span>Residual Income／DDM 只有在 Ke − g 至少 2% 時使用；終值 ROE 以 Ke + 25% × (TTM ROE − Ke) 回歸；虧損或 2028 EPS 低於最新 TTM EPS 25% 的前瞻模型停用。</span></div>
+                                <div><b>外插與相對模型閘門</b><br><span>前瞻 EPS 每個情境最多為最新 TTM 的 4 倍；DDM 需至少 1% 現金股利殖利率；P/B 需 BVPS 至少 1 元；最新 TTM EPS 非正時不以營收 nowcast 冒充 P/E 分母。</span></div>
+                                <div><b>模型異常值閘門</b><br><span>至少四個模型時，排除異常爆高的模型；一般相對模型若低於其他模型中位數 0.25 倍也會排除，但 Residual Income／DDM 的低估值會保留，因為可能代表同業整體被炒高。只有三個模型時完整保留並顯示 model_spread。</span></div>
+                                <div><b>稽核分類</b><br><span>實際排除模型列為 model_anomalies；模型 Base 差距超過 100% 另列 model_disagreements，表示降低信心，不直接宣稱公式錯誤；現價比較則另列 market_signals。</span></div>
                             </div>
                         </details>
 
