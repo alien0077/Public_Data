@@ -7,6 +7,22 @@ import { api } from '../api.js';
 import { stockIdentityHTML, stockMetricHTML, stockMobileCardHTML, fairValueHTML } from '../utils/stockListLayout.js';
 import { canonicalGroupName, openGroupList } from '../utils/groupTaxonomy.js';
 
+function formatStockQuote(quote) {
+    const price = Number(quote?.price);
+    const referencePrice = Number(quote?.referencePrice);
+    let changePercent = Number(quote?.changePercent);
+    if (!Number.isFinite(changePercent) && price > 0 && referencePrice > 0) {
+        changePercent = ((price - referencePrice) / referencePrice) * 100;
+    }
+    const hasPrice = Number.isFinite(price) && price > 0;
+    const hasChange = hasPrice && Number.isFinite(changePercent);
+    return {
+        priceText: hasPrice ? price.toLocaleString('zh-TW', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : '--',
+        changeText: hasChange ? `${changePercent >= 0 ? '▲' : '▼'} ${Math.abs(changePercent).toFixed(2)}%` : '--',
+        valueClass: hasChange ? (changePercent >= 0 ? 'text-red-500' : 'text-green-500') : 'text-gray-400'
+    };
+}
+
 function buildThemeRotationContext(rotationData) {
     const themes = rotationData?.themes || [];
     const flows = themes
@@ -449,6 +465,8 @@ export const TrendHunter = {
                                 <thead class="bg-gray-50/50 dark:bg-gray-900/50 text-gray-400 text-xs uppercase">
                                     <tr>
                                         <th class="px-6 py-3">股號/名稱</th>
+                                         <th class="px-6 py-3 text-right">現價</th>
+                                         <th class="px-6 py-3 text-right">漲跌幅</th>
                                          <th class="px-6 py-3 text-left">原因</th>
                                          <th class="px-6 py-3 text-right">配置權重</th>
                                          <th class="px-6 py-3 text-right">進場日期</th>
@@ -759,6 +777,7 @@ export const TrendHunter = {
                 const data = await api.fetchLocalJson('quant/institutional_leaderboard.json');
                 const rotationData = await api.fetchLocalJson('quant/theme_rotation.json').catch(() => null);
                 const fairValueMap = await api.fetchFairValueMap().catch(() => ({}));
+                const quoteMap = await api.fetchQuotes([...new Set((data?.sectors || []).flatMap(sector => (sector.stocks || []).map(stock => stock.stock_id)))]).catch(() => ({}));
                 const rotationContext = buildThemeRotationContext(rotationData);
                 if (!data || !data.sectors || data.sectors.length === 0) {
                     if (emptyContainer) emptyContainer.innerHTML = '<div class="text-center py-12 text-gray-500">目前無符合法人低檔建倉條件的標的</div>';
@@ -803,6 +822,7 @@ export const TrendHunter = {
                         <div class="md:hidden divide-y divide-gray-100 dark:divide-gray-800">
                             ${sector.stocks.map(s => {
                                 const fairValue = fairValueMap[s.stock_id];
+                                const quote = formatStockQuote(quoteMap[s.stock_id]);
                                 const quadrantBadge = renderQuadrantBadge(getQuadrantInfo(rotationContext, sector.sector_tag));
                                 const flowSparkline = renderFlowSparkline(s.daily_inst_flow, 'blue');
                                 const ret = s.current_return || 0;
@@ -834,6 +854,8 @@ export const TrendHunter = {
                                     badgeHTML: signalBadge + entryBadge,
                                     primaryHTML: `<div class="${retClass}"><div class="font-bold">${retStr}</div><div class="text-[10px]">區間損益</div></div>`,
                                     metricsHTML: stockMetricHTML('開始日', s.start_date ? s.start_date.substring(5) : '--') +
+                                        stockMetricHTML('現價', quote.priceText, { valueClass: quote.valueClass }) +
+                                        stockMetricHTML('漲跌幅', quote.changeText, { valueClass: quote.valueClass }) +
                                         stockMetricHTML('天數', `${s.tracking_days}d`) +
                                         stockMetricHTML('累計買超', buyStr, { valueClass: 'text-blue-500' }) +
                                         stockMetricHTML('法人流', flowSparkline) +
@@ -850,6 +872,8 @@ export const TrendHunter = {
                                 <thead class="bg-gray-50/50 dark:bg-gray-900/50 text-gray-400 text-[10px] uppercase">
                                     <tr>
                                         <th class="px-5 py-2">股票</th>
+                                        <th class="px-5 py-2 text-right">現價</th>
+                                        <th class="px-5 py-2 text-right">漲跌幅</th>
                                         <th class="px-5 py-2 text-left">備註</th>
                                         <th class="px-5 py-2 text-right">開始日</th>
                                         <th class="px-5 py-2 text-right">天數</th>
@@ -865,6 +889,7 @@ export const TrendHunter = {
                                 <tbody class="divide-y divide-gray-100 dark:divide-gray-800 font-mono text-xs">
                                     ${sector.stocks.map(s => {
                                         const fairValue = fairValueMap[s.stock_id];
+                                        const quote = formatStockQuote(quoteMap[s.stock_id]);
                                         const quadrantBadge = renderQuadrantBadge(getQuadrantInfo(rotationContext, sector.sector_tag));
                                         const flowSparkline = renderFlowSparkline(s.daily_inst_flow, 'blue');
                                         const ret = s.current_return || 0;
@@ -893,6 +918,8 @@ export const TrendHunter = {
                                         return `<tr class="hover:bg-gray-50 dark:hover:bg-gray-800/20 cursor-pointer transition-colors"
                                                      onclick="window.StockDetail.show('${s.stock_id}')">
                                             <td class="px-5 py-2.5">${stockIdentityHTML(s.stock_id, s.name || s.stock_id)}</td>
+                                            <td class="px-5 py-2.5 text-right font-bold ${quote.valueClass}">${quote.priceText}</td>
+                                            <td class="px-5 py-2.5 text-right font-bold ${quote.valueClass}">${quote.changeText}</td>
                                             <td class="px-5 py-2.5 text-left">
                                                 ${s.note ? `<span class="text-[10px] text-orange-500 leading-tight">${s.note}</span>` : '<span class="text-[10px] text-gray-400">--</span>'}
                                             </td>
@@ -991,6 +1018,7 @@ export const TrendHunter = {
                 const data = await api.fetchLocalJson('quant/rapid_screen.json');
                 const rotationData = await api.fetchLocalJson('quant/theme_rotation.json').catch(() => null);
                 const fairValueMap = await api.fetchFairValueMap().catch(() => ({}));
+                const quoteMap = await api.fetchQuotes((data?.stocks || []).map(stock => stock.stock_id)).catch(() => ({}));
                 const rotationContext = buildThemeRotationContext(rotationData);
                 if (!data || !data.stocks || data.stocks.length === 0) {
                     if (emptyContainer) emptyContainer.innerHTML = '<div class="text-center py-12 text-gray-500">目前無符合短期快篩條件的標的</div>';
@@ -1015,8 +1043,9 @@ export const TrendHunter = {
                 listContainer.innerHTML = `
                     <div class="bg-white dark:bg-[#161b22] rounded-2xl border border-gray-200 dark:border-gray-800 shadow-sm overflow-hidden">
                         <div class="md:hidden divide-y divide-gray-100 dark:divide-gray-800">
-                            ${data.stocks.map(s => {
+                    ${data.stocks.map(s => {
                                 const fairValue = fairValueMap[s.stock_id];
+                                const quote = formatStockQuote(quoteMap[s.stock_id]);
                                 const quadrantBadge = renderQuadrantBadge(getQuadrantInfo(rotationContext, s.sector_tag));
                                 const flowSparkline = renderFlowSparkline(s.daily_inst_flow, 'cyan');
                                 const buyStr = s.total_inst_buy >= 1000
@@ -1041,6 +1070,8 @@ export const TrendHunter = {
                                     badgeHTML: `<span class="text-[10px] font-bold px-2 py-1 rounded border ${labelColor}">${s.label}</span>`,
                                     primaryHTML: `<div class="text-cyan-600 dark:text-cyan-400"><div class="font-bold">${buyStr}</div><div class="text-[10px]">累計買超</div></div>`,
                                     metricsHTML: stockMetricHTML(`買入/${data.window_days}`, `${s.buy_days}/${s.total_days || data.window_days}`) +
+                                        stockMetricHTML('現價', quote.priceText, { valueClass: quote.valueClass }) +
+                                        stockMetricHTML('漲跌幅', quote.changeText, { valueClass: quote.valueClass }) +
                                         stockMetricHTML('一致性', `${(s.consistency * 100).toFixed(0)}%`, {
                                             valueClass: s.consistency >= 0.8 ? 'text-green-500' : s.consistency >= 0.6 ? 'text-orange-500' : 'text-gray-500'
                                         }) +
@@ -1060,6 +1091,8 @@ export const TrendHunter = {
                                 <thead class="bg-gray-50/50 dark:bg-gray-900/50 text-gray-400 text-[10px] uppercase">
                                     <tr>
                                         <th class="px-4 py-2">股票</th>
+                                        <th class="px-4 py-2 text-right">現價</th>
+                                        <th class="px-4 py-2 text-right">漲跌幅</th>
                                         <th class="px-4 py-2 text-left">產業</th>
                                         <th class="px-4 py-2 text-right">累計買超</th>
                                         <th class="px-4 py-2 text-center">法人流</th>
@@ -1076,6 +1109,7 @@ export const TrendHunter = {
                                 <tbody class="divide-y divide-gray-100 dark:divide-gray-800 font-mono text-xs">
                                     ${data.stocks.map(s => {
                                         const fairValue = fairValueMap[s.stock_id];
+                                        const quote = formatStockQuote(quoteMap[s.stock_id]);
                                         const quadrantBadge = renderQuadrantBadge(getQuadrantInfo(rotationContext, s.sector_tag));
                                         const flowSparkline = renderFlowSparkline(s.daily_inst_flow, 'cyan');
                                         const buyStr = s.total_inst_buy >= 1000
@@ -1099,6 +1133,8 @@ export const TrendHunter = {
                                         return `<tr class="hover:bg-gray-50 dark:hover:bg-gray-800/20 cursor-pointer transition-colors"
                                                      onclick="window.StockDetail.show('${s.stock_id}')">
                                             <td class="px-4 py-2.5">${stockIdentityHTML(s.stock_id, s.name || s.stock_id)}</td>
+                                            <td class="px-4 py-2.5 text-right font-bold ${quote.valueClass}">${quote.priceText}</td>
+                                            <td class="px-4 py-2.5 text-right font-bold ${quote.valueClass}">${quote.changeText}</td>
                                             <td class="px-4 py-2.5 text-left text-gray-500 text-[10px]">${s.sector_tag || '--'}</td>
                                             <td class="px-4 py-2.5 text-right font-bold text-cyan-600 dark:text-cyan-400">${buyStr}</td>
                                             <td class="px-4 py-2.5 text-center">${flowSparkline}</td>
@@ -1138,6 +1174,7 @@ export const TrendHunter = {
             try {
                 const data = await api.fetchLocalJson('quant/sector_pe.json');
                 const fairValueMap = await api.fetchFairValueMap().catch(() => ({}));
+                const quoteMap = await api.fetchQuotes([...new Set((data?.sectors || []).flatMap(sector => (sector.stocks || []).map(stock => stock.stock_id)))]).catch(() => ({}));
                 if (!data || !data.sectors || data.sectors.length === 0) {
                     if (emptyContainer) emptyContainer.innerHTML = '<div class="text-center py-12 text-gray-500">暫無本益比數據</div>';
                     return;
@@ -1165,13 +1202,14 @@ export const TrendHunter = {
                         <div class="md:hidden divide-y divide-gray-100 dark:divide-gray-800">
                             ${sector.stocks.map(s => {
                                 const fairValue = fairValueMap[s.stock_id];
+                                const quote = formatStockQuote(quoteMap[s.stock_id]);
                                 const peStr = s.pe_ratio !== null ? s.pe_ratio.toFixed(1) : '--';
                                 const epsStr = s.eps !== null ? s.eps.toFixed(2) : '--';
                                 const labelColor = s.label?.includes('🔵') ? 'text-blue-500' : s.label?.includes('🔴') ? 'text-red-500' : 'text-gray-500';
                                 return stockMobileCardHTML({
                                     symbol: s.stock_id,
                                     name: s.name || s.stock_id,
-                                    primaryHTML: `<div class="text-gray-700 dark:text-gray-300"><div class="font-bold">${s.close.toFixed(1)}</div><div class="text-[10px]">股價</div></div>`,
+                                    primaryHTML: `<div class="${quote.valueClass}"><div class="font-bold">${quote.priceText}</div><div class="text-[10px]">${quote.changeText}</div></div>`,
                                     valuation: fairValue,
                                     metricsHTML: stockMetricHTML('EPS', epsStr) + stockMetricHTML('本益比', peStr, { valueClass: labelColor }),
                                     detailHTML: `<span class="${labelColor}">${s.label || '--'}</span>`,
@@ -1184,7 +1222,8 @@ export const TrendHunter = {
                                 <thead class="bg-gray-50/50 dark:bg-gray-900/50 text-gray-400 text-[10px] uppercase">
                                     <tr>
                                         <th class="px-4 py-2">股票</th>
-                                        <th class="px-4 py-2 text-right">股價</th>
+                                        <th class="px-4 py-2 text-right">現價</th>
+                                        <th class="px-4 py-2 text-right">漲跌幅</th>
                                         <th class="px-4 py-2 text-right">EPS</th>
                                         <th class="px-4 py-2 text-right">本益比</th>
                                         <th class="px-4 py-2 text-right">公允價</th>
@@ -1195,6 +1234,7 @@ export const TrendHunter = {
                                     ${sector.stocks.map(s => {
                                         const peStr = s.pe_ratio !== null ? s.pe_ratio.toFixed(1) : '--';
                                         const fairValue = fairValueMap[s.stock_id];
+                                        const quote = formatStockQuote(quoteMap[s.stock_id]);
                                         let labelColor = 'text-gray-500';
                                         if (s.label.includes('🔵')) labelColor = 'text-blue-500';
                                         else if (s.label.includes('🔴')) labelColor = 'text-red-500';
@@ -1203,7 +1243,8 @@ export const TrendHunter = {
                                         return `<tr class="hover:bg-gray-50 dark:hover:bg-gray-800/20 cursor-pointer transition-colors"
                                                      onclick="window.StockDetail.show('${s.stock_id}')">
                                             <td class="px-4 py-2.5">${stockIdentityHTML(s.stock_id, s.name || s.stock_id)}</td>
-                                            <td class="px-4 py-2.5 text-right text-gray-600 dark:text-gray-300">${s.close.toFixed(1)}</td>
+                                            <td class="px-4 py-2.5 text-right font-bold ${quote.valueClass}">${quote.priceText}</td>
+                                            <td class="px-4 py-2.5 text-right font-bold ${quote.valueClass}">${quote.changeText}</td>
                                             <td class="px-4 py-2.5 text-right text-gray-500">${epsStr}</td>
                                             <td class="px-4 py-2.5 text-right font-bold ${s.pe_ratio !== null ? (s.pe_ratio < 15 ? 'text-green-500' : s.pe_ratio > 30 ? 'text-red-500' : 'text-gray-900 dark:text-white') : 'text-gray-400'}">${peStr}</td>
                                             <td class="px-4 py-2.5 text-right">${fairValueHTML(fairValue)}</td>
@@ -2372,17 +2413,19 @@ export const TrendHunter = {
                     holdingsCard.parentNode.insertBefore(tempDiv.firstElementChild, holdingsCard);
                 }
                 if (holdingsTable) {
+                    const holdingQuoteMap = await api.fetchQuotes(activeHoldings.map(p => p.stock.replace(/\.TW(O)?$/, ''))).catch(() => ({}));
                     if (activeHoldings.length === 0) {
-                        holdingsTable.innerHTML = `<tr><td colspan="11" class="px-6 py-8 text-center text-gray-500">模型目前無持股，保持全現金觀望。</td></tr>`;
+                        holdingsTable.innerHTML = `<tr><td colspan="13" class="px-6 py-8 text-center text-gray-500">模型目前無持股，保持全現金觀望。</td></tr>`;
                         if (holdingsMobile) holdingsMobile.innerHTML = '<div class="px-5 py-8 text-center text-gray-500 text-sm">模型目前無持股，保持全現金觀望。</div>';
                     } else {
                         const fairValueMap = data.__fairValueMap || {};
                         holdingsTable.innerHTML = activeHoldings.map(p => {
                             const name = stocksMeta[p.stock] || stocksMeta[p.stock.replace(/\.TW(O)?$/, '')] || p.stock;
+                            const cleanStockId = p.stock.replace(/\.TW(O)?$/, '');
+                            const quote = formatStockQuote(holdingQuoteMap[cleanStockId]);
                             const rawRet = p.return_pct !== undefined ? p.return_pct : (p.return !== undefined ? p.return * 100 : 0);
                             const isProfit = rawRet >= 0; const action = p.action || 'HOLD';
                             const actionColor = action === 'BUY' ? 'bg-red-500/10 text-red-500' : (action === 'SELL' ? 'bg-green-500/10 text-green-500' : 'bg-gray-500/10 text-gray-400');
-                            const cleanStockId = p.stock.replace(/\.TW(O)?$/, '');
                             const reason = p.select_reason || '';
                             const reasonColor = reason.includes('趨勢') ? 'text-red-500 bg-red-500/10' : reason.includes('法人') ? 'text-orange-500 bg-orange-500/10' : reason.includes('ETF') ? 'text-purple-500 bg-purple-500/10' : 'text-blue-500 bg-blue-500/10';
                             const peRatio = p.pe_ratio;
@@ -2391,6 +2434,8 @@ export const TrendHunter = {
                             const fairValue = fairValueMap[cleanStockId];
                              return `<tr class="hover:bg-gray-50 dark:hover:bg-gray-900/30 cursor-pointer" onclick="window.StockDetail.show('${cleanStockId}')">
                                  <td class="px-6 py-4">${stockIdentityHTML(cleanStockId, name)}</td>
+                                  <td class="px-6 py-4 text-right font-bold ${quote.valueClass}">${quote.priceText}</td>
+                                  <td class="px-6 py-4 text-right font-bold ${quote.valueClass}">${quote.changeText}</td>
                                   <td class="px-6 py-4 text-left">${reason ? `<span class="inline-block px-2 py-0.5 rounded text-[10px] font-bold ${reasonColor}">${reason}</span>` : ''}</td>
                                   <td class="px-6 py-4 text-right font-bold text-gray-700 dark:text-gray-300">${((p.weight || 0) * 100).toFixed(1)}%</td>
                                   <td class="px-6 py-4 text-right text-gray-500 font-mono text-xs">${p.entry_date || '--'}</td>
@@ -2407,6 +2452,7 @@ export const TrendHunter = {
                             holdingsMobile.innerHTML = activeHoldings.map(p => {
                                 const cleanStockId = p.stock.replace(/\.TW(O)?$/, '');
                                 const name = stocksMeta[p.stock] || stocksMeta[cleanStockId] || p.stock;
+                                const quote = formatStockQuote(holdingQuoteMap[cleanStockId]);
                                 const rawRet = p.return_pct !== undefined ? p.return_pct : (p.return !== undefined ? p.return * 100 : 0);
                                 const action = p.action || 'HOLD';
                                 const peStr = p.pe_ratio ? p.pe_ratio.toFixed(1) : '--';
@@ -2417,6 +2463,8 @@ export const TrendHunter = {
                                     primaryHTML: `<div class="text-right"><div class="font-bold ${rawRet >= 0 ? 'text-red-500' : 'text-green-500'}">${rawRet >= 0 ? '+' : ''}${rawRet.toFixed(1)}%</div><div class="text-[10px]">區間報酬</div></div>`,
                                     valuation: fairValue,
                                     metricsHTML: stockMetricHTML('配置權重', `${((p.weight || 0) * 100).toFixed(1)}%`) +
+                                        stockMetricHTML('現價', quote.priceText, { valueClass: quote.valueClass }) +
+                                        stockMetricHTML('漲跌幅', quote.changeText, { valueClass: quote.valueClass }) +
                                         stockMetricHTML('本益比', peStr) +
                                         stockMetricHTML('操作', action),
                                     detailHTML: p.select_reason || p.entry_reason || '',
