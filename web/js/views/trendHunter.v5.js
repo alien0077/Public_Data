@@ -2177,7 +2177,7 @@ export const TrendHunter = {
                 });
             };
 
-            const renderStrategy = (data) => {
+            const renderStrategy = async (data) => {
                 // 清除上次渲染的殘留元素
                 document.querySelector('#quant-source-stats')?.remove();
                 document.querySelector('#quant-source-stats-placeholder')?.remove();
