@@ -16,6 +16,7 @@ import { MarginRankings } from './views/marginRankings.js';
 import { MarginPressure } from './utils/marginPressure.js';
 import { getPriceChangeStyle } from './utils/priceStyle.js';
 import { stockIdentityHTML, stockMetricHTML, stockMobileCardHTML, fairValueHTML } from './utils/stockListLayout.js?v=2';
+import { StockListPreferences } from './utils/stockListPreferences.js';
 
 const audioSummary = new AudioSummary();
 
@@ -508,7 +509,11 @@ document.addEventListener('DOMContentLoaded', () => {
         dailyPnlEl.className = 'text-3xl font-mono font-bold ' + (dPnl >= 0 ? 'text-red-500' : 'text-green-500');
         const pt = document.querySelector('#total-pnl')?.previousElementSibling;
         if (pt) pt.textContent = '總盈虧';
+        StockListPreferences.applyAll();
     }
+
+    window.addEventListener('twstock:list-columns-changed', () => StockListPreferences.applyAll());
+    window.addEventListener('twstock:ready', () => setTimeout(() => StockListPreferences.applyAll(), 0));
 
     function renderAssetRow2(trades, holdings, quotes) {
         try {

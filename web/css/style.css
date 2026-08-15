@@ -213,14 +213,15 @@
     border-top-color: #1f2937;
 }
 
-/* Shared dense table rhythm: columns stay aligned on desktop while mobile
-   lists use the card layout above instead of horizontal scrolling. */
+/* Shared dense table rhythm: every stock list uses one table layout on both
+   desktop and mobile. The identity column stays frozen while metric columns
+   scroll horizontally. */
 #gs-results table,
 #inst-track-sectors table,
 #rapid-screen-list table,
 #sector-pe-list table,
 #portfolio-body {
-    table-layout: fixed;
+    table-layout: auto;
 }
 
 #gs-results table td,
@@ -230,49 +231,54 @@
     vertical-align: middle;
 }
 
-/* Desktop stock lists: keep the identity column visible while the user
-   horizontally scrolls through the dense metric columns. Mobile lists use
-   stock-card-row instead, so they do not need a horizontal sticky column. */
-@media (min-width: 768px) {
-    .stock-list-table {
-        min-width: 720px;
-        border-collapse: separate;
-        border-spacing: 0;
-    }
+.stock-table-responsive {
+    overflow-x: auto;
+    max-width: 100%;
+    isolation: isolate;
+}
 
-    .stock-list-table thead th:first-child,
-    .stock-list-table tbody td:first-child {
-        position: sticky;
-        left: 0;
-        min-width: 10rem;
-        width: 10rem;
-        overflow: hidden;
-        z-index: 3;
-        background: #ffffff;
-        box-shadow: 8px 0 12px -12px rgba(15, 23, 42, 0.65);
-    }
+.stock-list-table {
+    min-width: 720px;
+    border-collapse: separate;
+    border-spacing: 0;
+}
 
-    .stock-list-table thead th:first-child {
-        z-index: 5;
-        background: #f9fafb;
-    }
+.stock-list-table thead th:first-child,
+.stock-list-table tbody td:first-child {
+    position: sticky;
+    left: 0;
+    min-width: 10rem;
+    width: 10rem;
+    overflow: hidden;
+    z-index: 3;
+    background: #ffffff;
+    box-shadow: 8px 0 12px -12px rgba(15, 23, 42, 0.65);
+}
 
-    .stock-list-table tbody tr:hover td:first-child {
-        background: #f9fafb;
-    }
+.stock-list-table thead th:first-child {
+    z-index: 5;
+    background: #f9fafb;
+}
 
-    .dark .stock-list-table tbody td:first-child {
-        background: #161b22;
-        box-shadow: 8px 0 12px -12px rgba(0, 0, 0, 0.9);
-    }
+.stock-list-table tbody tr:hover td:first-child {
+    background: #f9fafb;
+}
 
-    .dark .stock-list-table thead th:first-child {
-        background: #111827;
-    }
+.dark .stock-list-table tbody td:first-child {
+    background: #161b22;
+    box-shadow: 8px 0 12px -12px rgba(0, 0, 0, 0.9);
+}
 
-    .dark .stock-list-table tbody tr:hover td:first-child {
-        background: #1f2937;
-    }
+.dark .stock-list-table thead th:first-child {
+    background: #111827;
+}
+
+.dark .stock-list-table tbody tr:hover td:first-child {
+    background: #1f2937;
+}
+
+.stock-column-hidden {
+    display: none !important;
 }
 
 /* 二級導航動畫與樣式 */
@@ -335,14 +341,30 @@
         border-radius: 1rem !important;
     }
 
-    /* Fix table width on small screens */
-    .overflow-x-auto {
+    /* All stock lists keep the first column frozen on mobile too. */
+    .stock-table-responsive,
+    #view-portfolio [class~="overflow-x-auto"][class~="hidden"][class~="md:block"],
+    #view-favorites [class~="overflow-x-auto"][class~="hidden"][class~="md:block"],
+    #inst-track-sectors [class~="overflow-x-auto"][class~="hidden"][class~="md:block"],
+    #rapid-screen-list [class~="overflow-x-auto"][class~="hidden"][class~="md:block"],
+    #sector-pe-list [class~="overflow-x-auto"][class~="hidden"][class~="md:block"] {
+        display: block !important;
         margin: 0 -0.75rem;
         padding: 0 0.75rem;
     }
 
+    #portfolio-cards,
+    #view-favorites #favorites-cards,
+    #quant-holdings-mobile,
+    #favorites-cards,
+    #inst-track-sectors [class~="md:hidden"],
+    #rapid-screen-list [class~="md:hidden"],
+    #sector-pe-list [class~="md:hidden"] {
+        display: none !important;
+    }
+
     table {
-        min-width: 600px; /* Force internal scroll for tables rather than squishing */
+        min-width: 600px;
     }
 
     /* Adjust Grid layouts for iPhone width */

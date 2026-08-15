@@ -1,5 +1,6 @@
 import { api } from '../api.js';
 import { db } from '../db.js';
+import { StockListPreferences, stockListColumnSettingsHTML } from '../utils/stockListPreferences.js';
 
 export const Settings = {
     async init() {
@@ -53,6 +54,19 @@ export const Settings = {
                     </div>
                 </div>
 
+                <!-- 個股列表欄位 -->
+                <div class="bg-white dark:bg-[#161b22] rounded-2xl border border-blue-200 dark:border-blue-900/50 shadow-sm overflow-hidden">
+                    <div class="p-5 border-b border-blue-100 dark:border-blue-900/40 bg-blue-50/50 dark:bg-blue-900/10">
+                        <h3 class="font-bold text-gray-900 dark:text-white flex items-center">
+                            <span class="mr-2">📋</span> 個股列表欄位
+                        </h3>
+                        <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">固定股票身份欄；右側欄位可左右滑動。每個分頁可獨立選擇顯示欄位。</p>
+                    </div>
+                    <div id="stock-list-column-settings" class="p-5 space-y-2">
+                        ${stockListColumnSettingsHTML()}
+                    </div>
+                </div>
+
                 <!-- 公允價算法 -->
                 <div id="fair-value-methodology" class="bg-white dark:bg-[#161b22] rounded-2xl border border-orange-200 dark:border-orange-900/50 shadow-sm overflow-hidden">
                     <div class="p-5 border-b border-orange-100 dark:border-orange-900/40 bg-orange-50/50 dark:bg-orange-900/10">
@@ -61,7 +75,7 @@ export const Settings = {
                                 <h3 class="font-bold text-gray-900 dark:text-white flex items-center">
                                     <span class="mr-2">📐</span> 公允價算法
                                 </h3>
-                                <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">FV-1.4 目前執行 · 非固定 P/E=20</p>
+                                <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">FV-1.16 目前執行 · 非固定 P/E=20</p>
                             </div>
                             <span class="shrink-0 rounded-full bg-orange-500/10 px-2 py-1 text-[10px] font-bold text-orange-500">可追溯模型</span>
                         </div>
@@ -92,7 +106,8 @@ export const Settings = {
                                 <div><b>Residual Income（剩餘收益）</b><br><code>公允價 = BVPS + 未來剩餘收益折現值 + 終值折現值</code><br><span>剩餘收益 = EPS − Ke × 期初帳面價值。</span></div>
                                 <div><b>EPS 成長情境</b><br><span>依歷史同季 EPS 年增率建立 Bear／Base／Bull，五年內逐步收斂至長期 g，不把短期成長永久延續。</span></div>
                                 <div><b>Revenue-anchored EPS nowcast</b><br><code>近端預估 EPS = 最新公告季度 EPS × 下一季度營收 ÷ 最新財報季度營收</code><br><span>只替換 TTM 中最舊季度，且標記為 provisional，並非公司正式公告 EPS。</span></div>
-                                <div><b>同業 P/E、P/B</b><br><span>至少五個有效同業後，取同業倍數第 25／50／75 百分位建立 Bear／Base／Bull；不使用固定倍數。</span></div>
+                                <div><b>正常化 EPS 與細分同業</b><br><span>有至少兩個完整年度時，取最多五年年度 EPS 中位數；若 TTM 處於週期極端才改用正常化 EPS。只有兩年標記短歷史並維持低信心。P/E、P/B 優先使用 industry_node／primary_theme，同業倍數先裁切第 10～90 百分位極端值。</span></div>
+                                <div><b>同業 P/E、P/B</b><br><span>至少五個有效同業後，取裁切後倍數第 25／50／75 百分位建立 Bear／Base／Bull；不使用固定倍數。</span></div>
                                 <div><b>DDM</b><br><span>有現金股利且 Ke 大於成長率時才折現股利；沒有可靠股利不硬套。</span></div>
                             </div>
                         </details>
@@ -100,8 +115,8 @@ export const Settings = {
                         <details class="rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden">
                             <summary class="cursor-pointer bg-gray-50/70 dark:bg-gray-900/50 px-4 py-3 font-bold text-gray-900 dark:text-white">三、模型集合、訊號與品質</summary>
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-3 p-4 border-t border-gray-200 dark:border-gray-700">
-                                <div><b>公允價中樞</b><br><span>兩個以上模型取各模型 Base 中位數；單一模型保留自己的 Bear／Bull 範圍。</span></div>
-                                <div><b>合理區間</b><br><span>多模型取 Base 值第 25／75 百分位；區間越寬代表模型分歧越大。</span></div>
+                                <div><b>公允價中樞</b><br><span>以模型基礎值的加權算術平均整合：Residual Income 45%、DDM 25%、P/B 20%、P/E 20%、前瞻 EPS 10%。若採正常化 EPS，ROE 也同步改用正常化 EPS ÷ BVPS；符合前瞻成長條件時另顯示基準、結構性成長與牛市價格。</span></div>
+                                <div><b>合理區間</b><br><span>多模型取加權 Base 值第 25／75 百分位；區間越寬代表模型分歧越大。</span></div>
                                 <div><b>低估／高估</b><br><span>現價低於下緣為低估（紅色）；高於上緣為高估（綠色）；區間內為合理（橘色）。</span></div>
                                 <div><b>model spread</b><br><span>(區間上緣 − 下緣) ÷ 公允價中樞，衡量模型分歧，不是報酬率。</span></div>
                                 <div><b>confidence</b><br><span>資料完整度與前瞻假設強度，不是上漲機率，也不代表模型一定正確。</span></div>
@@ -110,17 +125,21 @@ export const Settings = {
                         </details>
 
                         <details class="rounded-xl border border-blue-200 dark:border-blue-900/50 overflow-hidden">
-                            <summary class="cursor-pointer bg-blue-50/70 dark:bg-blue-900/10 px-4 py-3 font-bold text-gray-900 dark:text-white">四、FV-1.11 前瞻線性 EPS（目前執行）</summary>
+                            <summary class="cursor-pointer bg-blue-50/70 dark:bg-blue-900/10 px-4 py-3 font-bold text-gray-900 dark:text-white">四、FV-1.16 景氣反轉、前瞻 EPS 與市場隱含預期（目前執行）</summary>
                             <div class="space-y-3 p-4 border-t border-blue-200 dark:border-blue-900/50">
                                 <p>目前會先把單季 EPS 轉成連續 TTM EPS 序列，再以最近 6–8 個 TTM EPS 做後期權重較高的線性趨勢；若有至少四個重疊季度，另以「已公告營收 × 觀察到的 EPS／營收強度」交叉檢查，最後用同業 P/E 評價 2027／2028 EPS，再以 Ke 折現回今天。資料不足時不猜一個淨利率。</p>
                                 <div><b>Bear／Base／Bull</b><br><span>Base 使用加權線性趨勢；Bear／Bull 使用最近 TTM EPS 季增變化的第 25／75 百分位；少於六個連續 TTM 觀測點不做線性外插。</span></div>
+                                <div><b>官方公告優先</b><br><span>公司正式公告 EPS 可由 data/earnings_updates/latest.json 以來源、公告期間、日期與信心度輸入；同季度較新的有證據公告可取代舊正式資料，較舊或無證據公告會被拒絕。這是全市場共用的資料優先序，不是單一股票價格覆寫。</span></div>
+                                <div><b>景氣反轉 EPS</b><br><span>若最近兩個正 EPS 季度依序改善超過 25%，且兩季年化 run-rate 超過正常化 EPS 1.5 倍，估值 EPS 使用 50% 最新 TTM + 50% 兩季年化 run-rate；條件不足不啟用。</span></div>
+                                <div><b>反轉類模型限制</b><br><span>景氣反轉類停用低谷同業 P/E 及其衍生前瞻模型，保留 Residual Income 與相對 P/B，避免低谷分母製造假性高估；啟用條件與季度會寫入 detail。</span></div>
                                 <div><b>防止本夢比</b><br><span>不把 2027／2028 高成長永久延續；沒有公告、營收加速、利潤率或產業導入證據時，只列低信心，不覆蓋基本面公允價。</span></div>
                                 <div><b>雙層輸出</b><br><span>保留目前基本面公允價與前瞻情境價，讓已實現獲利與未來選擇權分開。</span></div>
                                 <div><b>品質診斷</b><br><span>輸出 TTM ROE、單季 ROE、ROE 使用基礎與修正動作；若公允價相對現價極端或模型分歧超過 100%，標記警示供複核。</span></div>
                                 <div><b>模型收斂閘門</b><br><span>Residual Income／DDM 只有在 Ke − g 至少 2% 時使用；終值 ROE 以 Ke + 25% × (TTM ROE − Ke) 回歸；虧損或 2028 EPS 低於最新 TTM EPS 25% 的前瞻模型停用。</span></div>
-                                <div><b>外插與相對模型閘門</b><br><span>前瞻 EPS 每個情境最多為最新 TTM 的 4 倍；DDM 需至少 1% 現金股利殖利率；P/B 需 BVPS 至少 1 元；最新 TTM EPS 非正時不以營收 nowcast 冒充 P/E 分母。</span></div>
+                                <div><b>外插與相對模型閘門</b><br><span>前瞻 EPS 每個情境最多為最新 TTM 的 2.5 倍，且在中樞只占 10%；DDM 需至少 1% 現金股利殖利率；P/B 需 BVPS 至少 1 元；最新 TTM EPS 非正時不以營收 nowcast 冒充 P/E 分母。</span></div>
                                 <div><b>模型異常值閘門</b><br><span>至少四個模型時，排除異常爆高的模型；一般相對模型若低於其他模型中位數 0.25 倍也會排除，但 Residual Income／DDM 的低估值會保留，因為可能代表同業整體被炒高。只有三個模型時完整保留並顯示 model_spread。</span></div>
                                 <div><b>稽核分類</b><br><span>實際排除模型列為 model_anomalies；模型 Base 差距超過 100% 另列 model_disagreements，表示降低信心，不直接宣稱公式錯誤；現價比較則另列 market_signals。</span></div>
+                                <div><b>市場隱含預期</b><br><span>現價只反算現價 P/E、現價／公允價及同業 P/E 下需要的 2028 EPS，不回饋公允價，避免用股價自我證明股價合理。</span></div>
                             </div>
                         </details>
 
@@ -326,6 +345,28 @@ export const Settings = {
         });
         document.getElementById('settings-clear-fav')?.addEventListener('click', () => {
             this.clearFavorites();
+        });
+
+        document.querySelectorAll('.stock-column-toggle').forEach((input) => {
+            input.addEventListener('change', () => {
+                StockListPreferences.set(input.dataset.stockColumnPage, input.dataset.stockColumn, input.checked);
+                const container = document.getElementById('view-settings');
+                if (container) {
+                    this.render(container);
+                    this.bindEvents();
+                }
+            });
+        });
+
+        document.querySelectorAll('[data-stock-column-reset]').forEach((button) => {
+            button.addEventListener('click', () => {
+                StockListPreferences.reset(button.dataset.stockColumnReset);
+                const container = document.getElementById('view-settings');
+                if (container) {
+                    this.render(container);
+                    this.bindEvents();
+                }
+            });
         });
     },
 

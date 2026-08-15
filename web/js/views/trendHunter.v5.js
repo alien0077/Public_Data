@@ -5,6 +5,7 @@
 
 import { api } from '../api.js';
 import { stockIdentityHTML, stockMetricHTML, stockMobileCardHTML, fairValueHTML } from '../utils/stockListLayout.js?v=2';
+import { StockListPreferences } from '../utils/stockListPreferences.js';
 import { canonicalGroupName, openGroupList } from '../utils/groupTaxonomy.js';
 
 function formatStockQuote(quote) {
@@ -943,6 +944,7 @@ export const TrendHunter = {
                         </div>
                     </div>
                 `).join('');
+                StockListPreferences.applyAll();
 
                 // 📡 訊號規則說明
                 const signalRulesHtml = `
@@ -1155,6 +1157,7 @@ export const TrendHunter = {
                         </div>
                     </div>
                 `;
+                StockListPreferences.applyAll();
             } catch (err) {
                 console.error('短期快篩 loading error:', err);
                 if (emptyContainer) {
@@ -1255,6 +1258,7 @@ export const TrendHunter = {
                         </div>
                     </div>
                 `).join('');
+                StockListPreferences.applyAll();
             } catch (err) {
                 console.error('族群本益比 loading error:', err);
                 if (emptyContainer) {
@@ -2447,6 +2451,7 @@ export const TrendHunter = {
                                   <td class="px-6 py-4 text-right">${fairValueHTML(fairValue)}</td>
                              </tr>`;
                         }).join('');
+                        StockListPreferences.applyAll();
                         if (holdingsMobile) {
                             holdingsMobile.innerHTML = activeHoldings.map(p => {
                                 const cleanStockId = p.stock.replace(/\.TW(O)?$/, '');

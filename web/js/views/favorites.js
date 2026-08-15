@@ -1,6 +1,7 @@
 import { api } from '../api.js';
 import { getPriceChangeStyle } from '../utils/priceStyle.js';
 import { stockIdentityHTML, stockMetricHTML, stockMobileCardHTML, stockMarginMaintenanceBadgeHTML, fairValueHTML } from '../utils/stockListLayout.js?v=2';
+import { StockListPreferences } from '../utils/stockListPreferences.js';
 
 /**
  * Favorites View
@@ -278,6 +279,7 @@ export const Favorites = {
             if (cards) {
                 cards.innerHTML = '<div class="px-4 py-10 text-center text-gray-500 text-sm">這個分類還沒有收藏任何股票，請從其他畫面將股票加入收藏！</div>';
             }
+            StockListPreferences.applyAll();
             return;
         }
 
@@ -389,6 +391,7 @@ export const Favorites = {
                 }
             });
         });
+        StockListPreferences.applyAll();
     },
 
     async refreshQuotes() {
