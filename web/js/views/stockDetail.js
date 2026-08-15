@@ -304,6 +304,7 @@ export const StockDetail = {
         const upsideClass = Number.isFinite(upside) && upside >= 0 ? 'text-red-500' : 'text-green-500';
         const signalLabel = fairValue.valuation_signal_label || (upside >= 0 ? '低估' : '高估');
         const signalClass = signalLabel === '低估' ? 'text-red-500' : signalLabel === '高估' ? 'text-green-500' : 'text-orange-500';
+        const reasonLines = this.fairValueReasonLines(fairValue, upside);
         return `
             <div class="bg-orange-50 dark:bg-orange-950/20 rounded-2xl border border-orange-200 dark:border-orange-800/40 p-5" data-testid="fair-value-detail">
                 <div class="flex items-center justify-between gap-3 mb-4">
@@ -315,6 +316,7 @@ export const StockDetail = {
                 </div>
                 <div class="mt-4 grid grid-cols-2 md:grid-cols-3 gap-2">${inputRows.map(([label, value, decimals]) => `<div class="bg-white/60 dark:bg-gray-900/40 rounded-lg px-3 py-2"><div class="text-[10px] text-gray-500">${label}</div><div class="text-xs font-mono font-bold">${typeof value === 'number' ? formatInput(value, decimals) : (value || '--')}</div></div>`).join('')}</div>
                 <div class="mt-3 text-[10px] text-gray-500">財報：${this.escapeHtml(fairValue.source_dates?.financials || '--')} · 價格：${this.escapeHtml(fairValue.source_dates?.price || '--')} · 結果為模型估計，不代表保證價格</div>
+                <div class="mt-4 rounded-xl border border-orange-200/70 dark:border-orange-800/40 bg-white/50 dark:bg-gray-900/30 p-3" data-testid="fair-value-reason"><div class="text-xs font-bold text-orange-700 dark:text-orange-300 mb-2">為什麼和現價不同？</div><ul class="list-disc pl-5 space-y-1 text-[11px] leading-relaxed text-gray-600 dark:text-gray-300">${reasonLines.map(line => `<li>${this.escapeHtml(line)}</li>`).join('')}</ul></div>
                 <details class="mt-4 border-t border-orange-200/70 dark:border-orange-800/40 pt-3">
                     <summary class="cursor-pointer text-xs font-bold text-orange-700 dark:text-orange-300">算法說明</summary>
                     <div class="mt-3 space-y-2 text-[11px] leading-relaxed text-gray-600 dark:text-gray-300">
@@ -330,6 +332,29 @@ export const StockDetail = {
                     </div>
                 </details>
             </div>`;
+    },
+
+    fairValueReasonLines(fairValue, upside) {
+        const input = fairValue?.inputs || {};
+        const lines = [];
+        const percent = Number.isFinite(upside) ? `${Math.abs(upside * 100).toFixed(1)}%` : '目前差距';
+        if (Number.isFinite(upside)) {
+            lines.push(upside >= 0 ? `模型公允價比現價高 ${percent}，表示模型認為市場價格尚未反映估值條件。` : `模型公允價比現價低 ${percent}，表示目前股價包含模型尚未支持的市場溢價或成長預期。`);
+        }
+        const basis = input.earnings_basis;
+        if (basis === 'cycle_recovery_run_rate') {
+            lines.push(`估值採景氣反轉 EPS：${input.recovery_previous_period || '--'} 至 ${input.recovery_latest_period || '--'} 兩個正 EPS 季度年化後，與 TTM EPS 各占 50%；反轉類停用低谷同業 P/E，避免高估。`);
+        } else if (basis === 'cycle_normalized_median' || basis === 'cycle_normalized_short_history') {
+            lines.push(`估值採週期正常化 EPS（${basis === 'cycle_normalized_short_history' ? '目前只有短歷史' : '完整年度中位數'}），避免單一景氣高峰或低谷主導結果。`);
+        } else {
+            lines.push('估值主要使用最近四季已公告 TTM EPS；若資料不足，會改用可追溯的同業 P/B、P/E 或股利模型。');
+        }
+        const models = (fairValue.models_used || []).map(model => ({ residual_income: '剩餘收益', dividend_discount: '股利折現', relative_pb: '同業 P/B', relative_pe: '同業 P/E', forward_eps: '前瞻 EPS' }[model] || model));
+        if (models.length) lines.push(`本檔使用：${models.join('、')}；公允價是這些模型依權重整合，不是固定 P/E=20。`);
+        if ((fairValue.excluded_models || []).length) lines.push(`模型異常閘門排除了：${fairValue.excluded_models.join('、')}，因與其他模型差距過大。`);
+        if (Number(fairValue.model_spread || 0) >= 1) lines.push(`模型分歧達 ${(Number(fairValue.model_spread) * 100).toFixed(0)}%，這是低信心結果，差異不應解讀成精確目標價。`);
+        if (input.forward_eps_2027 != null || input.forward_eps_2028 != null) lines.push(`模型另納入前瞻 EPS（2027E ${input.forward_eps_2027 ?? '--'}、2028E ${input.forward_eps_2028 ?? '--'}），但前瞻模型有權重與上限，不能單獨推高公允價。`);
+        return lines;
     },
 
     async renderHealthTab(container) {
