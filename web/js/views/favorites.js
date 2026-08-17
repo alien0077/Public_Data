@@ -289,20 +289,7 @@ export const Favorites = {
         // 若有從 api.getStocksMeta() 取得的資料可以輔助名稱
         const meta = await api.getStocksMeta();
         const fairValueMap = await api.fetchFairValueMap();
-        const peData = await api.fetchSectorPE();
-        const peMap = {};
-        if (peData && peData.sectors) {
-            peData.sectors.forEach(sector => {
-                (sector.stocks || []).forEach(s => { peMap[this.normalizeStockSymbol(s.stock_id)] = s.pe_ratio; });
-            });
-        }
-        const peAll = await api.fetchLocalJson('quant/pe_ratio.json');
-        if (peAll && peAll.stocks) {
-            Object.entries(peAll.stocks).forEach(([sid, info]) => {
-                const cleanSid = this.normalizeStockSymbol(sid);
-                if (peMap[cleanSid] == null && info.pe) { peMap[cleanSid] = info.pe; }
-            });
-        }
+        const peMap = await api.fetchPERatioMap();
 
         symbols.forEach(sym => {
             const quote = quotes[sym] || {};

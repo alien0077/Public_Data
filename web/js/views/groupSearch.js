@@ -275,22 +275,7 @@ export const GroupSearch = {
 
     async _getPeMap() {
         if (this._peMap) return this._peMap;
-        const peMap = {};
-        const [sectorPe, peAll] = await Promise.all([
-            api.fetchSectorPE().catch(() => null),
-            api.fetchLocalJson('quant/pe_ratio.json').catch(() => null)
-        ]);
-        if (sectorPe?.sectors) {
-            sectorPe.sectors.forEach(sector => {
-                (sector.stocks || []).forEach(s => { peMap[this.normalizeStockSymbol(s.stock_id)] = s.pe_ratio; });
-            });
-        }
-        if (peAll?.stocks) {
-            Object.entries(peAll.stocks).forEach(([sid, info]) => {
-                const cleanSid = this.normalizeStockSymbol(sid);
-                if (peMap[cleanSid] == null && info.pe) peMap[cleanSid] = info.pe;
-            });
-        }
+        const peMap = await api.fetchPERatioMap().catch(() => ({}));
         this._peMap = peMap;
         return peMap;
     },

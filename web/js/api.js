@@ -258,6 +258,10 @@ export const api = {
         }
         return this._stockMetricsCache;
     },
+    async fetchPERatioMap() {
+        const metrics = await this.fetchStockMetricsMap();
+        return Object.fromEntries(Object.entries(metrics).map(([symbol, row]) => [symbol, row.pe]));
+    },
     async fetchHealthData(symbol) { try { return await this.fetchLocalJson(`stocks/${symbol.split('.')[0]}.json`); } catch (e) { return null; } },
     async fetchIntradayMarket(symbol) { 
         const quotes = await this.fetchQuotes([symbol, '^TWII']);
