@@ -238,21 +238,106 @@
 }
 
 .stock-list-table {
-    min-width: 720px;
+    table-layout: auto;
+    width: max-content !important;
+    min-width: max-content !important;
     border-collapse: separate;
     border-spacing: 0;
+}
+
+/* 欄寬由表頭與資料內容的最大寬度決定；只保留左側間距，避免固定欄位寬度浪費手機畫面。 */
+.stock-list-table th[data-stock-column],
+.stock-list-table td[data-stock-column] {
+    box-sizing: border-box;
+    white-space: nowrap;
+    padding-left: 0.375rem;
+    padding-right: 0;
+}
+
+/* 長備註只佔固定的兩行，避免把整張法人列表往右撐寬。 */
+.stock-list-table th[data-stock-column="note"],
+.stock-list-table td[data-stock-column="note"] {
+    white-space: normal;
+    width: 7.5rem;
+    line-height: 1.15;
+    max-width: 7.5rem;
+}
+
+.stock-list-table td[data-stock-column="note"] > * {
+    display: -webkit-box;
+    max-width: 7.5rem;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow-wrap: anywhere;
+}
+
+/* 同一訊號欄的兩個 badge 上下排列，避免互相擠壓造成內容難讀。 */
+.stock-list-table td[data-stock-column="signal"] > .flex {
+    display: inline-flex;
+    flex-direction: column !important;
+    flex-wrap: nowrap !important;
+    align-items: flex-end;
+    width: max-content;
+    max-width: none;
+    white-space: nowrap;
+}
+
+/* 主訊號與進場訊號是同一欄的兩個內容，固定上下排列；手機卡片也共用此規則。 */
+.stock-list-signal-stack {
+    display: inline-flex !important;
+    flex-direction: column !important;
+    align-items: flex-end;
+    gap: 0.25rem;
+    width: max-content;
+    max-width: none;
 }
 
 .stock-list-table thead th:first-child,
 .stock-list-table tbody td:first-child {
     position: sticky;
     left: 0;
-    min-width: 10rem;
-    width: 10rem;
+    /* 不讓表格可用寬度變成固定首欄寬度。 */
+    /* 1% lets the auto table algorithm use the intrinsic child width instead
+       of distributing the remaining table width to the sticky column. */
+    width: 1% !important;
+    min-width: 0 !important;
+    max-width: 10rem;
     overflow: hidden;
+    white-space: nowrap;
+    padding-left: 0.5rem !important;
+    padding-right: 0 !important;
     z-index: 3;
     background: #ffffff;
     box-shadow: 8px 0 12px -12px rgba(15, 23, 42, 0.65);
+}
+
+.stock-list-table thead th:first-child > *,
+.stock-list-table tbody td:first-child > .stock-identity {
+    width: max-content;
+    max-width: 10rem;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* 訊號是上下兩個 badge，但每個 badge 內部不可被逐字壓成直排。 */
+.stock-list-table td[data-stock-column="signal"] .stock-list-signal-stack > *,
+.stock-list-signal-stack > * {
+    display: inline-flex;
+    width: max-content;
+    max-width: none;
+    min-width: max-content;
+    white-space: nowrap !important;
+    word-break: keep-all;
+    overflow-wrap: normal;
+    writing-mode: horizontal-tb;
+}
+
+.stock-list-table th[data-stock-column="signal"],
+.stock-list-table td[data-stock-column="signal"] {
+    width: max-content !important;
+    min-width: max-content !important;
 }
 
 .stock-list-table thead th:first-child {
@@ -365,6 +450,14 @@
 
     table {
         min-width: 600px;
+    }
+
+    /* Keep the identity column readable without hiding the metric columns. */
+    .stock-list-table thead th:first-child,
+    .stock-list-table tbody td:first-child {
+        white-space: nowrap;
+        width: 1% !important;
+        max-width: 8.5rem;
     }
 
     /* Adjust Grid layouts for iPhone width */

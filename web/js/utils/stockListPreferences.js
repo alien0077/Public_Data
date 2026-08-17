@@ -19,6 +19,11 @@ export const STOCK_LIST_COLUMNS = {
     TOP_RANK: 'top_rank'
 };
 
+// 備註是法人列表的固定輔助欄位，不納入使用者勾選欄位，但仍套用共用欄寬規則。
+const STOCK_LIST_AUXILIARY_COLUMNS = {
+    NOTE: 'note'
+};
+
 export const STOCK_LIST_PAGES = {
     PORTFOLIO: 'portfolio',
     INSTITUTIONAL: 'institutional',
@@ -60,7 +65,7 @@ const COLUMN_TITLES = {
 
 const HEADER_TO_COLUMN = [
     [/成本|股數/, STOCK_LIST_COLUMNS.COST_SHARES],
-    [/現價|漲跌|股價/, STOCK_LIST_COLUMNS.CURRENT_CHANGE],
+    [/現價|漲跌|股價|最高|最低/, STOCK_LIST_COLUMNS.CURRENT_CHANGE],
     [/公允價|公允值/, STOCK_LIST_COLUMNS.FAIR_VALUE],
     [/盈虧|損益|報酬/, STOCK_LIST_COLUMNS.PROFIT_RETURN],
     [/產業/, STOCK_LIST_COLUMNS.SECTOR],
@@ -73,7 +78,9 @@ const HEADER_TO_COLUMN = [
     [/EPS/, STOCK_LIST_COLUMNS.EPS],
     [/評價/, STOCK_LIST_COLUMNS.EVALUATION],
     [/訊號|操作建議/, STOCK_LIST_COLUMNS.SIGNAL],
-    [/評分|一致性/, STOCK_LIST_COLUMNS.SCORE_RETURN]
+    [/備註/, STOCK_LIST_AUXILIARY_COLUMNS.NOTE],
+    [/評分|一致性/, STOCK_LIST_COLUMNS.SCORE_RETURN],
+    [/Top\s*5|上榜|領頭/, STOCK_LIST_COLUMNS.TOP_RANK]
 ];
 
 function load() {
@@ -126,6 +133,7 @@ export const StockListPreferences = {
             ['#inst-track-sectors', STOCK_LIST_PAGES.INSTITUTIONAL],
             ['#rapid-screen-list', STOCK_LIST_PAGES.RAPID_SCREEN],
             ['#sector-pe-list', STOCK_LIST_PAGES.SECTOR_PE],
+            ['#hottest-container', STOCK_LIST_PAGES.HOTTEST],
             ['#quant-holdings-table', STOCK_LIST_PAGES.QUANT],
             ['#favorites-body', STOCK_LIST_PAGES.FAVORITES]
         ];
@@ -142,6 +150,7 @@ export const StockListPreferences = {
     },
     applyToTable(table, page) {
         const visible = new Set(this.get(page));
+        table.dataset.stockListPage = page;
         const headers = [...table.querySelectorAll('thead th')];
         const columns = headers.map(header => {
             const text = header.textContent.replace(/\s+/g, ' ').trim();
@@ -151,9 +160,15 @@ export const StockListPreferences = {
         headers.forEach((header, index) => {
             const column = columns[index];
             if (!column) return;
-            const hidden = !visible.has(column);
+            header.dataset.stockColumn = column;
+            const hidden = column !== STOCK_LIST_AUXILIARY_COLUMNS.NOTE && !visible.has(column);
             header.classList.toggle('stock-column-hidden', hidden);
-            table.querySelectorAll('tbody tr').forEach(row => row.children[index]?.classList.toggle('stock-column-hidden', hidden));
+            table.querySelectorAll('tbody tr').forEach(row => {
+                const cell = row.children[index];
+                if (!cell) return;
+                cell.dataset.stockColumn = column;
+                cell.classList.toggle('stock-column-hidden', hidden);
+            });
         });
     }
 };

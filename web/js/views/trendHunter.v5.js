@@ -852,7 +852,7 @@ export const TrendHunter = {
                                 return stockMobileCardHTML({
                                     symbol: s.stock_id,
                                     name: s.name || s.stock_id,
-                                    badgeHTML: signalBadge + entryBadge,
+                                    badgeHTML: `<span class="stock-list-signal-stack">${signalBadge}${entryBadge}</span>`,
                                     primaryHTML: `<div class="${retClass}"><div class="font-bold">${retStr}</div><div class="text-[10px]">區間損益</div></div>`,
                                     quoteHTML: `<div class="${quote.valueClass}"><div class="font-bold">${quote.priceText}</div><div class="text-[10px]">${quote.changeText}</div></div>`,
                                     metricsHTML: stockMetricHTML('開始日', s.start_date ? s.start_date.substring(5) : '--') +
@@ -932,7 +932,7 @@ export const TrendHunter = {
                                              <td class="px-5 py-2.5 text-right font-bold ${peColor}">${peStr}</td>
                                             <td class="px-5 py-2.5 text-right">${fairValueHTML(fairValue)}</td>
                                             <td class="px-5 py-2.5 text-right">
-                                                <div class="flex flex-wrap justify-end gap-1">
+                                                <div class="flex flex-wrap justify-end gap-1 stock-list-signal-stack">
                                                     ${signalBadge}
                                                     ${entryBadge}
                                                 </div>
