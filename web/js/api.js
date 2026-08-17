@@ -14,6 +14,7 @@ export const api = {
     _ytdRefCache: null,
     _quantMetricsCache: null,
     _marginMaintenanceCache: null,
+    _stockMetricsCache: null,
 
     async getStocksMeta() {
         if (!this._stocksMetaCache) {
@@ -224,11 +225,38 @@ export const api = {
     async fetchFairValueMap() {
         if (!this._fairValueMap) {
             try {
-                const data = await this.fetchLocalJson('valuation/fair_value.json');
-                this._fairValueMap = data?.stocks || {};
-            } catch (e) { this._fairValueMap = {}; }
+                const metrics = await this.fetchStockMetricsMap();
+                // List/card consumers only need the current valuation fields.
+                // Detail pages continue to call fetchFairValue() for full inputs/reasons.
+                this._fairValueMap = Object.fromEntries(Object.entries(metrics).map(([symbol, row]) => [symbol, {
+                    status: row.valuation_status,
+                    name: row.name,
+                    market_price: row.price,
+                    fair_value: row.fair_value,
+                    upside: row.fair_value_upside,
+                    valuation_signal: row.valuation_signal,
+                    valuation_signal_label: row.valuation_signal_label,
+                    model: row.valuation_model,
+                    confidence: row.valuation_confidence,
+                    source_dates: row.source_dates
+                }]));
+            } catch (e) {
+                try {
+                    const data = await this.fetchLocalJson('valuation/fair_value.json');
+                    this._fairValueMap = data?.stocks || {};
+                } catch (fallbackError) { this._fairValueMap = {}; }
+            }
         }
         return this._fairValueMap;
+    },
+    async fetchStockMetricsMap() {
+        if (!this._stockMetricsCache) {
+            try {
+                const data = await this.fetchLocalJson('metrics/stock_metrics.json');
+                this._stockMetricsCache = data?.stocks || {};
+            } catch (e) { this._stockMetricsCache = {}; }
+        }
+        return this._stockMetricsCache;
     },
     async fetchHealthData(symbol) { try { return await this.fetchLocalJson(`stocks/${symbol.split('.')[0]}.json`); } catch (e) { return null; } },
     async fetchIntradayMarket(symbol) { 
