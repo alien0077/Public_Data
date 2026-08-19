@@ -229,7 +229,7 @@ export const AssetRisk = {
             <div class="p-4 border-b border-gray-100 dark:border-gray-800 flex justify-between items-center bg-gray-50/50 dark:bg-gray-900/50">
                 <span class="text-sm font-bold text-gray-900 dark:text-white">持股比例與產業分佈</span>
             </div>
-            <div id="allocation-chart-inner" class="w-full h-80"></div>
+            <div id="allocation-chart-inner" class="w-full min-h-[380px]"></div>
             <div class="border-t border-gray-100 dark:border-gray-800 overflow-x-auto">
                 <table class="w-full text-left text-xs font-mono">
                     <thead class="bg-gray-50 dark:bg-gray-900 text-gray-500">
@@ -253,11 +253,33 @@ export const AssetRisk = {
             const chartDom = document.getElementById('allocation-chart-inner');
             if (!chartDom) return;
             const isDark = document.documentElement.classList.contains('dark');
+            const chartHeight = Math.max(380, Math.min(560, processed.length * 30 + 80));
+            chartDom.style.height = `${chartHeight}px`;
             const myChart = echarts.init(chartDom, isDark ? 'dark' : null);
             myChart.setOption({
                 backgroundColor: 'transparent',
                 tooltip: { trigger: 'item', formatter: '{b}: {d}%' },
-                series: [{ name: '配置', type: 'pie', radius: ['40%', '70%'], itemStyle: { borderRadius: 8, borderColor: isDark ? '#161b22' : '#fff', borderWidth: 2 }, data: processed.map(p => ({ name: `${p.symbol} ${p.name || p.symbol}`, value: p.marketValue })) }]
+                series: [{
+                    name: '配置',
+                    type: 'pie',
+                    radius: ['40%', '67%'],
+                    center: ['50%', '50%'],
+                    avoidLabelOverlap: true,
+                    itemStyle: { borderRadius: 8, borderColor: isDark ? '#161b22' : '#fff', borderWidth: 2 },
+                    label: {
+                        show: true,
+                        position: 'outside',
+                        width: 128,
+                        overflow: 'breakAll',
+                        lineHeight: 14,
+                        fontSize: 11,
+                        color: isDark ? '#e5e7eb' : '#374151',
+                        formatter: params => `${params.name}\n${Number(params.percent).toFixed(2)}%`
+                    },
+                    labelLine: { show: true, length: 14, length2: 16, smooth: 0.12 },
+                    labelLayout: { moveOverlap: 'shiftY', hideOverlap: false },
+                    data: processed.map(p => ({ name: `${p.symbol} ${p.name || p.symbol}`, value: p.marketValue }))
+                }]
             });
         }, 50);
     },
