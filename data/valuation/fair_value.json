@@ -1,6 +1,6 @@
 {
   "version": "1.16",
-  "updated_at": "2026-08-25T04:34:21.050019+00:00",
+  "updated_at": "2026-08-25T08:42:57.861537+00:00",
   "as_of": "2026-08-25",
   "price_date": "2026-08-21",
   "methodology": "FV-1.16 layered valuation: cycle-normalized EPS from complete annual observations, consistent EPS/BVPS ROE for Residual Income, a shared recovery run-rate rule for cyclical turnarounds, refined industry/theme peer multiples with clipped outliers, and a capped forward EPS scenario; the ensemble uses a weighted arithmetic center with base weights of RI 45%, DDM 25%, P/B 20%, P/E 20% and forward EPS 10%, renormalized for missing models; when TTM ROE exceeds Ke, up to 10 percentage points are transferred from P/B to P/E and forward EPS; normalized EPS does not extend trough decline as perpetual growth; recovery-class issuers blend two positive improving quarters annualized with TTM EPS and disable trough peer P/E and its derived forward model, using RI plus P/B; current price is used only for market-implied diagnostics; newer evidenced company EPS updates may replace stale formal warehouse data for the same period, while older or undocumented updates are rejected; forward EPS requires six TTM observations, revenue/EPS evidence and a 2.5x cap; Residual Income applies a Ke-minus-terminal-growth convergence gate of at least 2%; DDM requires at least 1% dividend yield and P/B requires BVPS at least 1",
@@ -9,8 +9,8 @@
     "valued": 1934,
     "insufficient_data": 8,
     "by_method": {
-      "relative_pb": 751,
-      "ensemble": 1174,
+      "relative_pb": 755,
+      "ensemble": 1170,
       "residual_income": 9
     },
     "by_reason": {
@@ -10079,12 +10079,12 @@
           "bull": 85.04
         },
         "relative_pe": {
-          "bear": 22.13,
+          "bear": 22.39,
           "base": 37.33,
           "bull": 88.56
         },
         "forward_eps": {
-          "bear": 2.53,
+          "bear": 2.56,
           "base": 4.27,
           "bull": 28.6
         }
@@ -10990,75 +10990,59 @@
       "data_status": "provisional/forward_eps_trend",
       "name": "富林-KY",
       "market_price": 0.0,
-      "fair_value": 61.73,
-      "base_fair_value": 61.73,
+      "fair_value": 17.43,
+      "base_fair_value": 17.43,
       "growth_fair_value": null,
       "bull_fair_value": null,
       "range": {
-        "bear": 32.44,
-        "base": 61.73,
-        "bull": 94.81
+        "bear": 13.9,
+        "base": 17.43,
+        "bull": 25.35
       },
       "upside": null,
-      "model": "ensemble",
+      "model": "relative_pb",
       "valuation_signal": "unavailable",
       "valuation_signal_label": "無法判定",
-      "model_count": 3,
+      "model_count": 1,
       "models_used": [
-        "relative_pb",
-        "relative_pe",
-        "forward_eps"
+        "relative_pb"
       ],
       "model_weights": {
-        "relative_pb": 0.1,
-        "relative_pe": 0.26,
-        "forward_eps": 0.14
+        "relative_pb": 0.1
       },
-      "model_spread": 1.0104,
+      "model_spread": 0.657,
       "excluded_models": [],
-      "range_basis": "weighted_model_base_percentiles",
+      "range_basis": "single_model_scenarios",
       "confidence": 0.97,
       "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap04_L",
       "reported_period": "2026-H1",
       "models": {
         "relative_pb": {
-          "bear": 13.32,
-          "base": 16.71,
-          "bull": 24.3
-        },
-        "relative_pe": {
-          "bear": 54.11,
-          "base": 94.81,
-          "bull": 156.53
-        },
-        "forward_eps": {
-          "bear": 9.0,
-          "base": 32.44,
-          "bull": 171.14
+          "bear": 13.9,
+          "base": 17.43,
+          "bull": 25.35
         }
       },
-      "diagnostic_flags": [
-        "model_spread_over_100pct"
-      ],
-      "correction_action": "ttm_roe_proxy_for_residual_income;terminal_convergence_and_forward_eps_gates",
+      "diagnostic_flags": [],
+      "correction_action": "valuation_eps_bvps_roe_for_residual_income;terminal_convergence_and_forward_eps_gates",
       "inputs": {
-        "ttm_eps": 4.08,
-        "valuation_eps": 4.08,
-        "earnings_basis": "ttm",
+        "ttm_eps": 6.82,
+        "valuation_eps": 7.77,
+        "earnings_basis": "cycle_recovery_run_rate",
         "normalized_eps": 4.545,
         "normalized_years": 2,
         "normalized_volatility": 0.1837,
-        "recovery_run_rate_eps": null,
-        "recovery_previous_period": null,
-        "recovery_latest_period": null,
-        "bvps": 22.45,
-        "roe": 0.1817,
-        "ttm_roe": 0.1817,
-        "valuation_roe": 0.1817,
-        "latest_quarter_roe": 0.0723,
-        "roe_basis": "ttm_eps_divided_by_latest_bvps",
+        "recovery_run_rate_eps": 8.72,
+        "recovery_previous_period": "2026-Q1",
+        "recovery_latest_period": "2026-Q2",
+        "bvps": 23.42,
+        "roe": 0.2912,
+        "ttm_roe": 0.2912,
+        "valuation_roe": 0.3318,
+        "latest_quarter_roe": 0.117,
+        "roe_basis": "valuation_eps_divided_by_latest_bvps",
         "cash_dividend_per_share": 4.0,
-        "payout_ratio": 0.9804,
+        "payout_ratio": 0.5148,
         "beta": 0.1999,
         "risk_free_rate": 0.0175,
         "market_erp": 0.0501,
@@ -11066,15 +11050,15 @@
         "terminal_growth": 0.03,
         "peer_median_pe": 23.2379,
         "peer_median_pb": 0.7443,
-        "forward_eps_2027": 1.9044,
-        "forward_eps_2028": 1.5042,
-        "forward_trend_slope_per_quarter": -0.184571,
-        "forward_trend_points": 6,
-        "forward_discount_years": 2.75
+        "forward_eps_2027": 3.4076,
+        "forward_eps_2028": 3.6404,
+        "forward_trend_slope_per_quarter": 0.131905,
+        "forward_trend_points": 7,
+        "forward_discount_years": 2.5
       },
       "source_dates": {
         "price": "2026-08-21",
-        "financials": "2026-03-31",
+        "financials": "2026-06-30",
         "earnings": "2026-08-18",
         "monthly_revenue": null,
         "risk_free": "2026-06-09",
@@ -11098,12 +11082,13 @@
         "同業群組（塑膠工業）P/B 納入估值集合",
         "同業群組（塑膠工業）P/E 納入估值集合",
         "FV-1.16 前瞻 EPS 納入低權重情境集合：最近 6–8 個 TTM EPS 加權線性趨勢，並以已公告季度營收／EPS 強度交叉檢查；2028-Q4 以同業 P/E 評價後折現",
+        "景氣反轉類停用低谷同業 P/E 及其衍生前瞻模型；以 Residual Income 與 P/B 估值，避免低谷分母製造假性高估",
         "前瞻 EPS 是模型估算，不是公司已公告 EPS；需至少六個連續 TTM 觀測點，並以同業 P/E 與 Ke 折現"
       ],
       "forward_eps": {
         "type": "weighted_linear_ttm_eps_plus_revenue_anchor",
-        "latest_period": "2026-Q1",
-        "latest_ttm_eps": 4.08,
+        "latest_period": "2026-Q2",
+        "latest_ttm_eps": 5.29,
         "ttm_points": [
           {
             "period": "2024-Q4",
@@ -11128,20 +11113,24 @@
           {
             "period": "2026-Q1",
             "ttm_eps": 4.08
+          },
+          {
+            "period": "2026-Q2",
+            "ttm_eps": 5.29
           }
         ],
-        "trend_points": 6,
-        "trend_slope_per_quarter": -0.184571,
+        "trend_points": 7,
+        "trend_slope_per_quarter": 0.131905,
         "revenue_points": 8,
         "eps_revenue_intensity": 2.5028e-06,
         "targets": {
           "2027": {
             "period": "2027-Q4",
-            "horizon_quarters": 7,
+            "horizon_quarters": 6,
             "trend_eps": {
               "bear": 0.0,
-              "base": 2.2837,
-              "bull": 6.67
+              "base": 5.2902,
+              "bull": 10.525
             },
             "revenue_anchor_eps": {
               "bear": 1.525,
@@ -11150,17 +11139,17 @@
             },
             "eps": {
               "bear": 0.7625,
-              "base": 1.9044,
-              "bull": 4.0975
+              "base": 3.4076,
+              "bull": 6.025
             }
           },
           "2028": {
             "period": "2028-Q4",
-            "horizon_quarters": 11,
+            "horizon_quarters": 10,
             "trend_eps": {
               "bear": 0.0,
-              "base": 1.5454,
-              "bull": 8.15
+              "base": 5.8179,
+              "bull": 14.015
             },
             "revenue_anchor_eps": {
               "bear": 1.4629,
@@ -11169,8 +11158,8 @@
             },
             "eps": {
               "bear": 0.7315,
-              "base": 1.5042,
-              "bull": 4.8065
+              "base": 3.6404,
+              "bull": 7.739
             }
           }
         },
@@ -11193,7 +11182,7 @@
       "growth_fair_value": null,
       "bull_fair_value": null,
       "range": {
-        "bear": 26.49,
+        "bear": 26.69,
         "base": 39.47,
         "bull": 64.57
       },
@@ -11208,7 +11197,7 @@
       "model_weights": {
         "relative_pb": 0.1
       },
-      "model_spread": 0.965,
+      "model_spread": 0.9597,
       "excluded_models": [],
       "range_basis": "single_model_scenarios",
       "confidence": "low",
@@ -11216,7 +11205,7 @@
       "reported_period": "2026-Q2",
       "models": {
         "relative_pb": {
-          "bear": 26.49,
+          "bear": 26.69,
           "base": 39.47,
           "bull": 64.57
         }
@@ -12390,7 +12379,7 @@
       "growth_fair_value": null,
       "bull_fair_value": null,
       "range": {
-        "bear": 22.14,
+        "bear": 22.31,
         "base": 32.98,
         "bull": 53.97
       },
@@ -12405,7 +12394,7 @@
       "model_weights": {
         "relative_pb": 0.15667809903065483
       },
-      "model_spread": 0.965,
+      "model_spread": 0.9597,
       "excluded_models": [],
       "range_basis": "single_model_scenarios",
       "confidence": 0.97,
@@ -12413,7 +12402,7 @@
       "reported_period": "2026-H1",
       "models": {
         "relative_pb": {
-          "bear": 22.14,
+          "bear": 22.31,
           "base": 32.98,
           "bull": 53.97
         }
@@ -13757,7 +13746,7 @@
       "growth_fair_value": null,
       "bull_fair_value": null,
       "range": {
-        "bear": 6.03,
+        "bear": 6.08,
         "base": 8.99,
         "bull": 14.71
       },
@@ -13772,7 +13761,7 @@
       "model_weights": {
         "relative_pb": 0.2
       },
-      "model_spread": 0.965,
+      "model_spread": 0.9597,
       "excluded_models": [],
       "range_basis": "single_model_scenarios",
       "confidence": 0.97,
@@ -13780,7 +13769,7 @@
       "reported_period": "2026-H1",
       "models": {
         "relative_pb": {
-          "bear": 6.03,
+          "bear": 6.08,
           "base": 8.99,
           "bull": 14.71
         }
@@ -14142,7 +14131,7 @@
       "growth_fair_value": null,
       "bull_fair_value": null,
       "range": {
-        "bear": 39.08,
+        "bear": 39.39,
         "base": 58.24,
         "bull": 95.28
       },
@@ -14157,7 +14146,7 @@
       "model_weights": {
         "relative_pb": 0.1
       },
-      "model_spread": 0.965,
+      "model_spread": 0.9597,
       "excluded_models": [],
       "range_basis": "single_model_scenarios",
       "confidence": 0.97,
@@ -14165,7 +14154,7 @@
       "reported_period": "2026-H1",
       "models": {
         "relative_pb": {
-          "bear": 39.08,
+          "bear": 39.39,
           "base": 58.24,
           "bull": 95.28
         }
@@ -15343,7 +15332,7 @@
       "reported_period": "2026-Q2",
       "models": {
         "relative_pb": {
-          "bear": 16.2,
+          "bear": 16.32,
           "base": 24.13,
           "bull": 39.48
         },
@@ -22398,7 +22387,7 @@
       "growth_fair_value": null,
       "bull_fair_value": null,
       "range": {
-        "bear": 4.62,
+        "bear": 4.65,
         "base": 6.88,
         "bull": 11.26
       },
@@ -22413,7 +22402,7 @@
       "model_weights": {
         "relative_pb": 0.2
       },
-      "model_spread": 0.965,
+      "model_spread": 0.9597,
       "excluded_models": [],
       "range_basis": "single_model_scenarios",
       "confidence": 0.97,
@@ -22421,7 +22410,7 @@
       "reported_period": "2026-H1",
       "models": {
         "relative_pb": {
-          "bear": 4.62,
+          "bear": 4.65,
           "base": 6.88,
           "bull": 11.26
         }
@@ -28361,12 +28350,12 @@
           "bull": 177.68
         },
         "relative_pe": {
-          "bear": 83.33,
+          "bear": 84.29,
           "base": 140.57,
           "bull": 333.44
         },
         "forward_eps": {
-          "bear": 9.04,
+          "bear": 9.15,
           "base": 15.25,
           "bull": 36.18
         }
@@ -28772,7 +28761,7 @@
       "reported_period": "2026-Q2",
       "models": {
         "relative_pb": {
-          "bear": 19.0,
+          "bear": 19.15,
           "base": 28.32,
           "bull": 46.33
         },
@@ -63483,7 +63472,7 @@
       "reported_period": "2026-H1",
       "models": {
         "relative_pb": {
-          "bear": 39.03,
+          "bear": 39.33,
           "base": 58.16,
           "bull": 95.15
         },
@@ -65716,7 +65705,7 @@
         "relative_pb"
       ],
       "model_weights": {
-        "relative_pb": 0.15044160673312934
+        "relative_pb": 0.15044160673312937
       },
       "model_spread": 0.703,
       "excluded_models": [],
@@ -69183,12 +69172,12 @@
           "bull": 212.61
         },
         "relative_pe": {
-          "bear": 219.28,
+          "bear": 221.8,
           "base": 369.89,
           "bull": 877.4
         },
         "forward_eps": {
-          "bear": 25.52,
+          "bear": 25.81,
           "base": 61.01,
           "bull": 297.06
         }
@@ -69374,7 +69363,7 @@
         "relative_pe"
       ],
       "model_weights": {
-        "relative_pb": 0.12940108811466802,
+        "relative_pb": 0.12940108811466805,
         "relative_pe": 0.2423593471311992
       },
       "model_spread": 0.0613,
@@ -70025,7 +70014,7 @@
           "bull": 214.0
         },
         "relative_pe": {
-          "bear": 82.07,
+          "bear": 83.02,
           "base": 138.44,
           "bull": 328.4
         },
@@ -71263,12 +71252,12 @@
           "bull": 82.22
         },
         "relative_pe": {
-          "bear": 38.12,
+          "bear": 38.56,
           "base": 64.31,
           "bull": 152.54
         },
         "forward_eps": {
-          "bear": 6.51,
+          "bear": 6.58,
           "base": 10.98,
           "bull": 125.4
         }
@@ -72652,12 +72641,12 @@
           "bull": 61.68
         },
         "relative_pe": {
-          "bear": 49.78,
+          "bear": 50.35,
           "base": 83.97,
           "bull": 199.18
         },
         "forward_eps": {
-          "bear": 43.33,
+          "bear": 43.83,
           "base": 144.29,
           "bull": 379.4
         }
@@ -73057,12 +73046,12 @@
           "bull": 66.72
         },
         "relative_pe": {
-          "bear": 23.24,
+          "bear": 23.5,
           "base": 39.19,
           "bull": 92.97
         },
         "forward_eps": {
-          "bear": 8.8,
+          "bear": 8.9,
           "base": 39.44,
           "bull": 139.14
         }
@@ -77048,7 +77037,7 @@
           "bull": 45.14
         },
         "relative_pe": {
-          "bear": 1.26,
+          "bear": 1.27,
           "base": 2.13,
           "bull": 5.04
         },
@@ -84721,12 +84710,12 @@
           "bull": 84.51
         },
         "relative_pe": {
-          "bear": 106.33,
+          "bear": 107.56,
           "base": 179.37,
           "bull": 425.47
         },
         "forward_eps": {
-          "bear": 17.09,
+          "bear": 17.29,
           "base": 54.85,
           "bull": 327.05
         }
@@ -85139,7 +85128,7 @@
       "reported_period": "2026-Q2",
       "models": {
         "relative_pb": {
-          "bear": 40.14,
+          "bear": 40.45,
           "base": 59.81,
           "bull": 97.86
         },
@@ -86968,7 +86957,7 @@
       "reported_period": "2026-H1",
       "models": {
         "relative_pb": {
-          "bear": 31.76,
+          "bear": 32.01,
           "base": 47.32,
           "bull": 77.42
         },
@@ -93709,7 +93698,7 @@
       "reported_period": "2026-H1",
       "models": {
         "relative_pb": {
-          "bear": 12.5,
+          "bear": 12.59,
           "base": 18.62,
           "bull": 30.46
         },
@@ -98988,7 +98977,7 @@
       "growth_fair_value": null,
       "bull_fair_value": null,
       "range": {
-        "bear": 6.5,
+        "bear": 6.55,
         "base": 9.69,
         "bull": 15.85
       },
@@ -99003,7 +98992,7 @@
       "model_weights": {
         "relative_pb": 0.2
       },
-      "model_spread": 0.965,
+      "model_spread": 0.9597,
       "excluded_models": [],
       "range_basis": "single_model_scenarios",
       "confidence": "low",
@@ -99011,7 +99000,7 @@
       "reported_period": "2026-Q1",
       "models": {
         "relative_pb": {
-          "bear": 6.5,
+          "bear": 6.55,
           "base": 9.69,
           "bull": 15.85
         }
@@ -102883,71 +102872,57 @@
       "data_status": "provisional/forward_eps_trend",
       "name": "彰銀",
       "market_price": 24.1,
-      "fair_value": 20.04,
-      "base_fair_value": 20.04,
+      "fair_value": 21.26,
+      "base_fair_value": 21.26,
       "growth_fair_value": null,
       "bull_fair_value": null,
       "range": {
-        "bear": 19.16,
-        "base": 20.04,
-        "bull": 20.92
+        "bear": 18.92,
+        "base": 21.26,
+        "bull": 22.67
       },
-      "upside": -0.1685,
-      "model": "ensemble",
+      "upside": -0.1178,
+      "model": "relative_pb",
       "valuation_signal": "overvalued",
       "valuation_signal_label": "高估",
-      "model_count": 3,
+      "model_count": 1,
       "models_used": [
-        "relative_pb",
-        "relative_pe",
-        "forward_eps"
+        "relative_pb"
       ],
       "model_weights": {
-        "relative_pb": 0.14121701414162036,
-        "relative_pe": 0.2352697915150278,
-        "forward_eps": 0.12351319434335187
+        "relative_pb": 0.1
       },
-      "model_spread": 0.0881,
+      "model_spread": 0.176,
       "excluded_models": [],
-      "range_basis": "weighted_model_base_percentiles",
+      "range_basis": "single_model_scenarios",
       "confidence": 0.97,
       "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap04_L",
       "reported_period": "2026-H1",
       "models": {
         "relative_pb": {
-          "bear": 18.62,
-          "base": 20.92,
-          "bull": 22.31
-        },
-        "relative_pe": {
-          "bear": 17.01,
-          "base": 19.16,
-          "bull": 19.44
-        },
-        "forward_eps": {
-          "bear": 16.71,
-          "base": 20.73,
-          "bull": 26.95
+          "bear": 18.92,
+          "base": 21.26,
+          "bull": 22.67
         }
       },
       "diagnostic_flags": [],
-      "correction_action": "ttm_roe_proxy_for_residual_income;terminal_convergence_and_forward_eps_gates",
+      "correction_action": "valuation_eps_bvps_roe_for_residual_income;terminal_convergence_and_forward_eps_gates",
       "inputs": {
-        "ttm_eps": 1.58,
-        "valuation_eps": 1.2761,
-        "earnings_basis": "ttm",
+        "ttm_eps": 2.52,
+        "valuation_eps": 2.64,
+        "earnings_basis": "cycle_recovery_run_rate",
         "normalized_eps": 1.42,
         "normalized_years": 2,
         "normalized_volatility": 0.0634,
-        "recovery_run_rate_eps": null,
-        "recovery_previous_period": null,
-        "recovery_latest_period": null,
-        "bvps": 19.21,
-        "roe": 0.0822,
-        "ttm_roe": 0.0822,
-        "valuation_roe": 0.0822,
+        "recovery_run_rate_eps": 2.76,
+        "recovery_previous_period": "2026-Q1",
+        "recovery_latest_period": "2026-Q2",
+        "bvps": 19.52,
+        "roe": 0.1291,
+        "ttm_roe": 0.1291,
+        "valuation_roe": 0.1352,
         "latest_quarter_roe": 0.0,
-        "roe_basis": "ttm_eps_divided_by_latest_bvps",
+        "roe_basis": "valuation_eps_divided_by_latest_bvps",
         "cash_dividend_per_share": 0.0,
         "payout_ratio": 0.0,
         "beta": 0.1191,
@@ -102957,22 +102932,17 @@
         "terminal_growth": 0.03,
         "peer_median_pe": 15.0118,
         "peer_median_pb": 1.0891,
-        "forward_eps_2027": 1.3431,
-        "forward_eps_2028": 1.4716,
-        "forward_trend_slope_per_quarter": 0.042714,
-        "forward_trend_points": 6,
-        "forward_discount_years": 2.75,
-        "reported_ttm_eps": 1.58,
-        "forecast_eps": 0.4761,
-        "revenue_ratio": 1.0821,
-        "reference_revenue": 12405577.0,
-        "forecast_revenue": 13423509.0
+        "forward_eps_2027": 1.537,
+        "forward_eps_2028": 1.7102,
+        "forward_trend_slope_per_quarter": 0.058571,
+        "forward_trend_points": 7,
+        "forward_discount_years": 2.5
       },
       "source_dates": {
         "price": "2026-08-21",
-        "financials": "2026-03-31",
+        "financials": "2026-06-30",
         "earnings": "2026-08-24",
-        "monthly_revenue": "2026-07",
+        "monthly_revenue": null,
         "risk_free": "2026-06-09",
         "erp": "2026-01-05",
         "terminal_growth": "2026-08-25"
@@ -102993,21 +102963,21 @@
         "Residual Income 使用與估值 EPS 同基準的 EPS / 最新 BVPS 推導 ROE；季度 ROE 僅作觀察，不作長期 ROE",
         "近一年沒有現金股利資料，留存率按 100% 計算",
         "同業群組（銀行）P/B 納入估值集合",
-        "同業群組（銀行）P/E 納入估值集合；分母含營收錨定 EPS nowcast",
+        "同業群組（銀行）P/E 納入估值集合",
         "FV-1.16 前瞻 EPS 納入低權重情境集合：最近 6–8 個 TTM EPS 加權線性趨勢，並以已公告季度營收／EPS 強度交叉檢查；2028-Q4 以同業 P/E 評價後折現",
-        "前瞻 EPS 是模型估算，不是公司已公告 EPS；需至少六個連續 TTM 觀測點，並以同業 P/E 與 Ke 折現",
-        "近端 EPS 為營收錨定 nowcast（2026-Q2），尚非已公告季報 EPS；假設最新財報季度利潤率維持"
+        "景氣反轉類停用低谷同業 P/E 及其衍生前瞻模型；以 Residual Income 與 P/B 估值，避免低谷分母製造假性高估",
+        "前瞻 EPS 是模型估算，不是公司已公告 EPS；需至少六個連續 TTM 觀測點，並以同業 P/E 與 Ke 折現"
       ],
       "market_implied": {
-        "current_pe_on_valuation_eps": 18.8856,
-        "price_to_fair_value": 1.2026,
+        "current_pe_on_valuation_eps": 9.1288,
+        "price_to_fair_value": 1.1336,
         "interpretation": "現價包含高於模型基本面價值的成長或溢價；此欄位不回饋公允價模型",
-        "required_2028_eps_at_peer_pe": 1.7111
+        "required_2028_eps_at_peer_pe": 1.7012
       },
       "forward_eps": {
         "type": "weighted_linear_ttm_eps_plus_revenue_anchor",
-        "latest_period": "2026-Q1",
-        "latest_ttm_eps": 1.58,
+        "latest_period": "2026-Q2",
+        "latest_ttm_eps": 1.74,
         "ttm_points": [
           {
             "period": "2024-Q4",
@@ -103032,49 +103002,53 @@
           {
             "period": "2026-Q1",
             "ttm_eps": 1.58
+          },
+          {
+            "period": "2026-Q2",
+            "ttm_eps": 1.74
           }
         ],
-        "trend_points": 6,
-        "trend_slope_per_quarter": 0.042714,
+        "trend_points": 7,
+        "trend_slope_per_quarter": 0.058571,
         "revenue_points": 8,
-        "eps_revenue_intensity": 5.08e-08,
+        "eps_revenue_intensity": 6.61e-08,
         "targets": {
           "2027": {
             "period": "2027-Q4",
-            "horizon_quarters": 7,
+            "horizon_quarters": 6,
             "trend_eps": {
-              "bear": 1.72,
-              "base": 1.9011,
-              "bull": 2.42
+              "bear": 1.935,
+              "base": 2.0518,
+              "bull": 2.64
             },
             "revenue_anchor_eps": {
-              "bear": 0.7851,
-              "base": 0.7851,
-              "bull": 0.7851
+              "bear": 1.0221,
+              "base": 1.0221,
+              "bull": 1.0221
             },
             "eps": {
-              "bear": 1.2526,
-              "base": 1.3431,
-              "bull": 1.6026
+              "bear": 1.4786,
+              "base": 1.537,
+              "bull": 1.8311
             }
           },
           "2028": {
             "period": "2028-Q4",
-            "horizon_quarters": 11,
+            "horizon_quarters": 10,
             "trend_eps": {
-              "bear": 1.8,
-              "base": 2.072,
-              "bull": 2.9
+              "bear": 2.065,
+              "base": 2.2861,
+              "bull": 3.24
             },
             "revenue_anchor_eps": {
-              "bear": 0.8713,
-              "base": 0.8713,
-              "bull": 0.8713
+              "bear": 1.1343,
+              "base": 1.1343,
+              "bull": 1.1343
             },
             "eps": {
-              "bear": 1.3356,
-              "base": 1.4716,
-              "bull": 1.8856
+              "bear": 1.5996,
+              "base": 1.7102,
+              "bull": 2.1871
             }
           }
         },
@@ -103085,13 +103059,6 @@
           "cap": "每一情境 EPS 不超過最新 TTM EPS 的 2.5 倍，避免短期線性斜率外推成無限本夢比",
           "target": "2027-Q4 與 2028-Q4 EPS，未來版本使用 2028-Q4 目標價折現回估值日"
         }
-      },
-      "forecast": {
-        "type": "revenue_anchored_eps_nowcast",
-        "reference_period": "2026-Q1",
-        "forecast_period": "2026-Q2",
-        "formula": "最新已公告季度 EPS × 下一完整季度營收 / 最新財報季度營收；以此替換 TTM 最舊季度",
-        "assumption": "最新已公告季度 EPS 利潤率維持不變；下一季 EPS 尚未視為官方實際值"
       }
     },
     "2812": {
@@ -103293,16 +103260,16 @@
       "data_status": "provisional/forward_eps_trend",
       "name": "旺旺保",
       "market_price": 37.9,
-      "fair_value": 59.34,
-      "base_fair_value": 59.34,
+      "fair_value": 58.96,
+      "base_fair_value": 58.96,
       "growth_fair_value": null,
       "bull_fair_value": null,
       "range": {
-        "bear": 59.34,
-        "base": 59.34,
+        "bear": 58.96,
+        "base": 58.96,
         "bull": 66.51
       },
-      "upside": 0.5657,
+      "upside": 0.5557,
       "model": "ensemble",
       "valuation_signal": "undervalued",
       "valuation_signal_label": "低估",
@@ -103317,7 +103284,7 @@
         "relative_pe": 0.251637045588012,
         "forward_eps": 0.13442469705867466
       },
-      "model_spread": 0.1209,
+      "model_spread": 0.1281,
       "excluded_models": [],
       "range_basis": "weighted_model_base_percentiles",
       "confidence": "low",
@@ -103326,7 +103293,7 @@
       "models": {
         "relative_pb": {
           "bear": 33.95,
-          "base": 40.1,
+          "base": 38.43,
           "bull": 49.86
         },
         "relative_pe": {
@@ -103366,7 +103333,7 @@
         "cost_of_equity": 0.033105,
         "terminal_growth": 0.03,
         "peer_median_pe": 14.7157,
-        "peer_median_pb": 1.0571,
+        "peer_median_pb": 1.0132,
         "forward_eps_2027": 3.8457,
         "forward_eps_2028": 4.6244,
         "forward_trend_slope_per_quarter": 0.373286,
@@ -103403,7 +103370,7 @@
       ],
       "market_implied": {
         "current_pe_on_valuation_eps": 8.385,
-        "price_to_fair_value": 0.6387,
+        "price_to_fair_value": 0.6428,
         "interpretation": "現價包含高於模型基本面價值的成長或溢價；此欄位不回饋公允價模型",
         "required_2028_eps_at_peer_pe": 2.8168
       },
@@ -103495,16 +103462,16 @@
       "data_status": "provisional/forward_eps_trend",
       "name": "華票",
       "market_price": 16.4,
-      "fair_value": 22.16,
-      "base_fair_value": 22.16,
+      "fair_value": 21.89,
+      "base_fair_value": 21.89,
       "growth_fair_value": null,
       "bull_fair_value": null,
       "range": {
         "bear": 19.17,
-        "base": 22.16,
-        "bull": 22.16
+        "base": 21.89,
+        "bull": 21.89
       },
-      "upside": 0.3512,
+      "upside": 0.3348,
       "model": "ensemble",
       "valuation_signal": "undervalued",
       "valuation_signal_label": "低估",
@@ -103519,7 +103486,7 @@
         "relative_pe": 0.23095598304719586,
         "forward_eps": 0.1206373220314639
       },
-      "model_spread": 0.1351,
+      "model_spread": 0.1244,
       "excluded_models": [],
       "range_basis": "weighted_model_base_percentiles",
       "confidence": "low",
@@ -103528,7 +103495,7 @@
       "models": {
         "relative_pb": {
           "bear": 18.58,
-          "base": 21.95,
+          "base": 21.03,
           "bull": 27.29
         },
         "relative_pe": {
@@ -103568,7 +103535,7 @@
         "cost_of_equity": 0.021624,
         "terminal_growth": 0.03,
         "peer_median_pe": 14.7157,
-        "peer_median_pb": 1.0571,
+        "peer_median_pb": 1.0132,
         "forward_eps_2027": 1.6949,
         "forward_eps_2028": 2.0301,
         "forward_trend_slope_per_quarter": 0.102286,
@@ -103611,7 +103578,7 @@
       ],
       "market_implied": {
         "current_pe_on_valuation_eps": 12.5888,
-        "price_to_fair_value": 0.7401,
+        "price_to_fair_value": 0.7492,
         "interpretation": "現價包含高於模型基本面價值的成長或溢價；此欄位不回饋公允價模型",
         "required_2028_eps_at_peer_pe": 1.182
       },
@@ -103710,16 +103677,16 @@
       "data_status": "provisional/forward_eps_trend",
       "name": "台產",
       "market_price": 61.5,
-      "fair_value": 48.84,
-      "base_fair_value": 48.84,
+      "fair_value": 48.14,
+      "base_fair_value": 48.14,
       "growth_fair_value": null,
       "bull_fair_value": null,
       "range": {
         "bear": 43.71,
-        "base": 48.84,
-        "bull": 50.99
+        "base": 48.14,
+        "bull": 48.88
       },
-      "upside": -0.2059,
+      "upside": -0.2172,
       "model": "ensemble",
       "valuation_signal": "overvalued",
       "valuation_signal_label": "高估",
@@ -103734,7 +103701,7 @@
         "relative_pe": 0.22044595080798368,
         "forward_eps": 0.11363063387198913
       },
-      "model_spread": 0.1492,
+      "model_spread": 0.1074,
       "excluded_models": [],
       "range_basis": "weighted_model_base_percentiles",
       "confidence": "low",
@@ -103743,7 +103710,7 @@
       "models": {
         "relative_pb": {
           "bear": 43.18,
-          "base": 50.99,
+          "base": 48.88,
           "bull": 63.41
         },
         "relative_pe": {
@@ -103783,7 +103750,7 @@
         "cost_of_equity": 0.027491,
         "terminal_growth": 0.03,
         "peer_median_pe": 14.7157,
-        "peer_median_pb": 1.0571,
+        "peer_median_pb": 1.0132,
         "forward_eps_2027": 3.774,
         "forward_eps_2028": 4.0763,
         "forward_trend_slope_per_quarter": 0.075571,
@@ -103820,7 +103787,7 @@
       ],
       "market_implied": {
         "current_pe_on_valuation_eps": 20.7071,
-        "price_to_fair_value": 1.2592,
+        "price_to_fair_value": 1.2775,
         "interpretation": "現價包含高於模型基本面價值的成長或溢價；此欄位不回饋公允價模型",
         "required_2028_eps_at_peer_pe": 4.5028
       },
@@ -103943,12 +103910,12 @@
         "relative_pe": {
           "bear": 13.51,
           "base": 15.21,
-          "bull": 15.44
+          "bull": 16.74
         },
         "forward_eps": {
           "bear": 9.65,
           "base": 15.48,
-          "bull": 16.52
+          "bull": 17.92
         }
       },
       "diagnostic_flags": [],
@@ -104120,71 +104087,57 @@
       "data_status": "provisional/forward_eps_trend",
       "name": "高雄銀",
       "market_price": 12.1,
-      "fair_value": 11.93,
-      "base_fair_value": 11.93,
+      "fair_value": 16.21,
+      "base_fair_value": 16.21,
       "growth_fair_value": null,
       "bull_fair_value": null,
       "range": {
-        "bear": 9.76,
-        "base": 11.93,
-        "bull": 15.66
+        "bear": 14.43,
+        "base": 16.21,
+        "bull": 17.28
       },
-      "upside": -0.014,
-      "model": "ensemble",
-      "valuation_signal": "fair_value_range",
-      "valuation_signal_label": "合理區間",
-      "model_count": 3,
+      "upside": 0.3397,
+      "model": "relative_pb",
+      "valuation_signal": "undervalued",
+      "valuation_signal_label": "低估",
+      "model_count": 1,
       "models_used": [
-        "relative_pb",
-        "relative_pe",
-        "forward_eps"
+        "relative_pb"
       ],
       "model_weights": {
-        "relative_pb": 0.1738478331198599,
-        "relative_pe": 0.21569130012808407,
-        "forward_eps": 0.11046086675205605
+        "relative_pb": 0.1473278382045803
       },
-      "model_spread": 0.495,
+      "model_spread": 0.176,
       "excluded_models": [],
-      "range_basis": "weighted_model_base_percentiles",
+      "range_basis": "single_model_scenarios",
       "confidence": 0.97,
       "source_url": "https://openapi.twse.com.tw/v1/opendata/t187ap04_L",
       "reported_period": "2026-H1",
       "models": {
         "relative_pb": {
-          "bear": 13.94,
-          "base": 15.66,
-          "bull": 16.7
-        },
-        "relative_pe": {
-          "bear": 8.66,
-          "base": 9.76,
-          "bull": 9.9
-        },
-        "forward_eps": {
-          "bear": 8.82,
-          "base": 10.3,
-          "bull": 11.65
+          "bear": 14.43,
+          "base": 16.21,
+          "bull": 17.28
         }
       },
       "diagnostic_flags": [],
-      "correction_action": "ttm_roe_proxy_for_residual_income;terminal_convergence_and_forward_eps_gates",
+      "correction_action": "valuation_eps_bvps_roe_for_residual_income;terminal_convergence_and_forward_eps_gates",
       "inputs": {
-        "ttm_eps": 0.73,
-        "valuation_eps": 0.6499,
-        "earnings_basis": "ttm",
+        "ttm_eps": 1.12,
+        "valuation_eps": 1.15,
+        "earnings_basis": "cycle_recovery_run_rate",
         "normalized_eps": 0.615,
         "normalized_years": 2,
         "normalized_volatility": 0.1057,
-        "recovery_run_rate_eps": null,
-        "recovery_previous_period": null,
-        "recovery_latest_period": null,
-        "bvps": 14.38,
-        "roe": 0.0508,
-        "ttm_roe": 0.0508,
-        "valuation_roe": 0.0508,
+        "recovery_run_rate_eps": 1.18,
+        "recovery_previous_period": "2026-Q1",
+        "recovery_latest_period": "2026-Q2",
+        "bvps": 14.88,
+        "roe": 0.0753,
+        "ttm_roe": 0.0753,
+        "valuation_roe": 0.0773,
         "latest_quarter_roe": 0.0,
-        "roe_basis": "ttm_eps_divided_by_latest_bvps",
+        "roe_basis": "valuation_eps_divided_by_latest_bvps",
         "cash_dividend_per_share": 0.0,
         "payout_ratio": 0.0,
         "beta": 0.142,
@@ -104194,22 +104147,17 @@
         "terminal_growth": 0.03,
         "peer_median_pe": 15.0118,
         "peer_median_pb": 1.0891,
-        "forward_eps_2027": 0.6489,
-        "forward_eps_2028": 0.7334,
-        "forward_trend_slope_per_quarter": 0.034571,
-        "forward_trend_points": 6,
-        "forward_discount_years": 2.75,
-        "reported_ttm_eps": 0.73,
-        "forecast_eps": 0.2299,
-        "revenue_ratio": 1.1496,
-        "reference_revenue": 1246036.0,
-        "forecast_revenue": 1432470.0
+        "forward_eps_2027": 0.7173,
+        "forward_eps_2028": 0.8196,
+        "forward_trend_slope_per_quarter": 0.041905,
+        "forward_trend_points": 7,
+        "forward_discount_years": 2.5
       },
       "source_dates": {
         "price": "2026-08-21",
-        "financials": "2026-03-31",
+        "financials": "2026-06-30",
         "earnings": "2026-08-20",
-        "monthly_revenue": "2026-07",
+        "monthly_revenue": null,
         "risk_free": "2026-06-09",
         "erp": "2026-01-05",
         "terminal_growth": "2026-08-25"
@@ -104230,21 +104178,21 @@
         "Residual Income 使用與估值 EPS 同基準的 EPS / 最新 BVPS 推導 ROE；季度 ROE 僅作觀察，不作長期 ROE",
         "近一年沒有現金股利資料，留存率按 100% 計算",
         "同業群組（銀行）P/B 納入估值集合",
-        "同業群組（銀行）P/E 納入估值集合；分母含營收錨定 EPS nowcast",
+        "同業群組（銀行）P/E 納入估值集合",
         "FV-1.16 前瞻 EPS 納入低權重情境集合：最近 6–8 個 TTM EPS 加權線性趨勢，並以已公告季度營收／EPS 強度交叉檢查；2028-Q4 以同業 P/E 評價後折現",
-        "前瞻 EPS 是模型估算，不是公司已公告 EPS；需至少六個連續 TTM 觀測點，並以同業 P/E 與 Ke 折現",
-        "近端 EPS 為營收錨定 nowcast（2026-Q2），尚非已公告季報 EPS；假設最新財報季度利潤率維持"
+        "景氣反轉類停用低谷同業 P/E 及其衍生前瞻模型；以 Residual Income 與 P/B 估值，避免低谷分母製造假性高估",
+        "前瞻 EPS 是模型估算，不是公司已公告 EPS；需至少六個連續 TTM 觀測點，並以同業 P/E 與 Ke 折現"
       ],
       "market_implied": {
-        "current_pe_on_valuation_eps": 18.6176,
-        "price_to_fair_value": 1.0142,
+        "current_pe_on_valuation_eps": 10.5217,
+        "price_to_fair_value": 0.7465,
         "interpretation": "現價包含高於模型基本面價值的成長或溢價；此欄位不回饋公允價模型",
-        "required_2028_eps_at_peer_pe": 0.8618
+        "required_2028_eps_at_peer_pe": 0.8565
       },
       "forward_eps": {
         "type": "weighted_linear_ttm_eps_plus_revenue_anchor",
-        "latest_period": "2026-Q1",
-        "latest_ttm_eps": 0.73,
+        "latest_period": "2026-Q2",
+        "latest_ttm_eps": 0.81,
         "ttm_points": [
           {
             "period": "2024-Q4",
@@ -104269,49 +104217,53 @@
           {
             "period": "2026-Q1",
             "ttm_eps": 0.73
+          },
+          {
+            "period": "2026-Q2",
+            "ttm_eps": 0.81
           }
         ],
-        "trend_points": 6,
-        "trend_slope_per_quarter": 0.034571,
+        "trend_points": 7,
+        "trend_slope_per_quarter": 0.041905,
         "revenue_points": 8,
-        "eps_revenue_intensity": 2.024e-07,
+        "eps_revenue_intensity": 2.443e-07,
         "targets": {
           "2027": {
             "period": "2027-Q4",
-            "horizon_quarters": 7,
+            "horizon_quarters": 6,
             "trend_eps": {
-              "bear": 0.94,
-              "base": 0.9734,
-              "bull": 1.08
+              "bear": 1.005,
+              "base": 1.0431,
+              "bull": 1.245
             },
             "revenue_anchor_eps": {
-              "bear": 0.3244,
-              "base": 0.3244,
-              "bull": 0.3244
+              "bear": 0.3916,
+              "base": 0.3916,
+              "bull": 0.3916
             },
             "eps": {
-              "bear": 0.6322,
-              "base": 0.6489,
-              "bull": 0.7022
+              "bear": 0.6983,
+              "base": 0.7173,
+              "bull": 0.8183
             }
           },
           "2028": {
             "period": "2028-Q4",
-            "horizon_quarters": 11,
+            "horizon_quarters": 10,
             "trend_eps": {
-              "bear": 1.06,
-              "base": 1.1117,
-              "bull": 1.28
+              "bear": 1.135,
+              "base": 1.2107,
+              "bull": 1.535
             },
             "revenue_anchor_eps": {
-              "bear": 0.3551,
-              "base": 0.3551,
-              "bull": 0.3551
+              "bear": 0.4286,
+              "base": 0.4286,
+              "bull": 0.4286
             },
             "eps": {
-              "bear": 0.7075,
-              "base": 0.7334,
-              "bull": 0.8175
+              "bear": 0.7818,
+              "base": 0.8196,
+              "bull": 0.9818
             }
           }
         },
@@ -104322,13 +104274,6 @@
           "cap": "每一情境 EPS 不超過最新 TTM EPS 的 2.5 倍，避免短期線性斜率外推成無限本夢比",
           "target": "2027-Q4 與 2028-Q4 EPS，未來版本使用 2028-Q4 目標價折現回估值日"
         }
-      },
-      "forecast": {
-        "type": "revenue_anchored_eps_nowcast",
-        "reference_period": "2026-Q1",
-        "forecast_period": "2026-Q2",
-        "formula": "最新已公告季度 EPS × 下一完整季度營收 / 最新財報季度營收；以此替換 TTM 最舊季度",
-        "assumption": "最新已公告季度 EPS 利潤率維持不變；下一季 EPS 尚未視為官方實際值"
       }
     },
     "2838": {
@@ -104375,12 +104320,12 @@
         "relative_pe": {
           "bear": 17.21,
           "base": 19.38,
-          "bull": 19.67
+          "bull": 21.33
         },
         "forward_eps": {
           "bear": 9.62,
           "base": 19.65,
-          "bull": 18.83
+          "bull": 20.43
         }
       },
       "diagnostic_flags": [],
@@ -104591,12 +104536,12 @@
         "relative_pe": {
           "bear": 9.93,
           "base": 11.18,
-          "bull": 11.35
+          "bull": 12.31
         },
         "forward_eps": {
           "bear": 3.37,
           "base": 10.53,
-          "bull": 9.67
+          "bull": 10.49
         }
       },
       "diagnostic_flags": [],
@@ -104768,16 +104713,16 @@
       "data_status": "provisional/forward_eps_trend",
       "name": "安泰銀",
       "market_price": 14.5,
-      "fair_value": 14.58,
-      "base_fair_value": 14.58,
+      "fair_value": 14.3,
+      "base_fair_value": 14.3,
       "growth_fair_value": null,
       "bull_fair_value": null,
       "range": {
         "bear": 11.69,
-        "base": 14.58,
-        "bull": 19.71
+        "base": 14.3,
+        "bull": 18.9
       },
-      "upside": 0.0055,
+      "upside": -0.0138,
       "model": "ensemble",
       "valuation_signal": "fair_value_range",
       "valuation_signal_label": "合理區間",
@@ -104792,7 +104737,7 @@
         "relative_pe": 0.21447892900599858,
         "forward_eps": 0.10965261933733239
       },
-      "model_spread": 0.5505,
+      "model_spread": 0.5044,
       "excluded_models": [],
       "range_basis": "weighted_model_base_percentiles",
       "confidence": 0.97,
@@ -104801,7 +104746,7 @@
       "models": {
         "relative_pb": {
           "bear": 16.7,
-          "base": 19.71,
+          "base": 18.9,
           "bull": 24.52
         },
         "relative_pe": {
@@ -104841,7 +104786,7 @@
         "cost_of_equity": 0.021981,
         "terminal_growth": 0.03,
         "peer_median_pe": 14.7157,
-        "peer_median_pb": 1.0571,
+        "peer_median_pb": 1.0132,
         "forward_eps_2027": 0.7662,
         "forward_eps_2028": 0.8674,
         "forward_trend_slope_per_quarter": 0.037429,
@@ -104884,7 +104829,7 @@
       ],
       "market_implied": {
         "current_pe_on_valuation_eps": 18.2593,
-        "price_to_fair_value": 0.9945,
+        "price_to_fair_value": 1.014,
         "interpretation": "現價包含高於模型基本面價值的成長或溢價；此欄位不回饋公允價模型",
         "required_2028_eps_at_peer_pe": 1.0461
       },
@@ -104983,16 +104928,16 @@
       "data_status": "provisional/forward_eps_trend",
       "name": "新產",
       "market_price": 168.5,
-      "fair_value": 138.34,
-      "base_fair_value": 138.34,
+      "fair_value": 137.73,
+      "base_fair_value": 137.73,
       "growth_fair_value": null,
       "bull_fair_value": null,
       "range": {
-        "bear": 138.34,
-        "base": 138.34,
+        "bear": 137.73,
+        "base": 137.73,
         "bull": 167.76
       },
-      "upside": -0.179,
+      "upside": -0.1826,
       "model": "ensemble",
       "valuation_signal": "overvalued",
       "valuation_signal_label": "高估",
@@ -105007,7 +104952,7 @@
         "relative_pe": 0.26,
         "forward_eps": 0.14
       },
-      "model_spread": 0.2127,
+      "model_spread": 0.218,
       "excluded_models": [],
       "range_basis": "weighted_model_base_percentiles",
       "confidence": 0.97,
@@ -105016,7 +104961,7 @@
       "models": {
         "relative_pb": {
           "bear": 61.88,
-          "base": 73.07,
+          "base": 70.03,
           "bull": 90.86
         },
         "relative_pe": {
@@ -105056,7 +105001,7 @@
         "cost_of_equity": 0.026784,
         "terminal_growth": 0.03,
         "peer_median_pe": 14.7157,
-        "peer_median_pb": 1.0571,
+        "peer_median_pb": 1.0132,
         "forward_eps_2027": 11.7589,
         "forward_eps_2028": 12.2594,
         "forward_trend_slope_per_quarter": 0.125143,
@@ -105093,7 +105038,7 @@
       ],
       "market_implied": {
         "current_pe_on_valuation_eps": 16.7996,
-        "price_to_fair_value": 1.218,
+        "price_to_fair_value": 1.2234,
         "interpretation": "現價包含高於模型基本面價值的成長或溢價；此欄位不回饋公允價模型",
         "required_2028_eps_at_peer_pe": 12.3136
       },
@@ -105177,16 +105122,16 @@
       "data_status": "provisional/forward_eps_trend",
       "name": "中再保",
       "market_price": 47.1,
-      "fair_value": 39.77,
-      "base_fair_value": 39.77,
+      "fair_value": 39.34,
+      "base_fair_value": 39.34,
       "growth_fair_value": null,
       "bull_fair_value": null,
       "range": {
-        "bear": 34.74,
-        "base": 39.77,
+        "bear": 33.29,
+        "base": 39.34,
         "bull": 42.38
       },
-      "upside": -0.1556,
+      "upside": -0.1648,
       "model": "ensemble",
       "valuation_signal": "overvalued",
       "valuation_signal_label": "高估",
@@ -105201,7 +105146,7 @@
         "relative_pe": 0.23132414012779218,
         "forward_eps": 0.1208827600851948
       },
-      "model_spread": 0.1922,
+      "model_spread": 0.231,
       "excluded_models": [],
       "range_basis": "weighted_model_base_percentiles",
       "confidence": 0.97,
@@ -105210,7 +105155,7 @@
       "models": {
         "relative_pb": {
           "bear": 29.42,
-          "base": 34.74,
+          "base": 33.29,
           "bull": 43.19
         },
         "relative_pe": {
@@ -105250,7 +105195,7 @@
         "cost_of_equity": 0.035438,
         "terminal_growth": 0.03,
         "peer_median_pe": 14.7157,
-        "peer_median_pb": 1.0571,
+        "peer_median_pb": 1.0132,
         "forward_eps_2027": 2.7752,
         "forward_eps_2028": 3.0343,
         "forward_trend_slope_per_quarter": 0.064762,
@@ -105287,7 +105232,7 @@
       ],
       "market_implied": {
         "current_pe_on_valuation_eps": 16.3542,
-        "price_to_fair_value": 1.1843,
+        "price_to_fair_value": 1.1973,
         "interpretation": "現價包含高於模型基本面價值的成長或溢價；此欄位不回饋公允價模型",
         "required_2028_eps_at_peer_pe": 3.4918
       },
@@ -105375,16 +105320,16 @@
       "data_status": "partial_model_fallback",
       "name": "第一保",
       "market_price": 29.2,
-      "fair_value": 31.61,
-      "base_fair_value": 31.61,
+      "fair_value": 31.04,
+      "base_fair_value": 31.04,
       "growth_fair_value": null,
       "bull_fair_value": null,
       "range": {
         "bear": 30.61,
-        "base": 31.61,
-        "bull": 33.03
+        "base": 31.04,
+        "bull": 31.66
       },
-      "upside": 0.0825,
+      "upside": 0.063,
       "model": "ensemble",
       "valuation_signal": "undervalued",
       "valuation_signal_label": "低估",
@@ -105397,7 +105342,7 @@
         "relative_pb": 0.15804057292786,
         "relative_pe": 0.225175656243284
       },
-      "model_spread": 0.0767,
+      "model_spread": 0.0339,
       "excluded_models": [],
       "range_basis": "weighted_model_base_percentiles",
       "confidence": "low",
@@ -105406,7 +105351,7 @@
       "models": {
         "relative_pb": {
           "bear": 27.98,
-          "base": 33.03,
+          "base": 31.66,
           "bull": 41.08
         },
         "relative_pe": {
@@ -105441,7 +105386,7 @@
         "cost_of_equity": 0.024601,
         "terminal_growth": 0.03,
         "peer_median_pe": 14.7157,
-        "peer_median_pb": 1.0571,
+        "peer_median_pb": 1.0132,
         "forward_eps_2027": 1.1011,
         "forward_eps_2028": 0.3977,
         "forward_trend_slope_per_quarter": -0.175857,
@@ -105477,7 +105422,7 @@
       ],
       "market_implied": {
         "current_pe_on_valuation_eps": 14.0385,
-        "price_to_fair_value": 0.9238,
+        "price_to_fair_value": 0.9407,
         "interpretation": "現價包含高於模型基本面價值的成長或溢價；此欄位不回饋公允價模型",
         "required_2028_eps_at_peer_pe": 2.1214
       },
@@ -105771,16 +105716,16 @@
       "data_status": "provisional/forward_eps_trend",
       "name": "三商壽",
       "market_price": 9.7,
-      "fair_value": 12.43,
-      "base_fair_value": 12.43,
+      "fair_value": 12.08,
+      "base_fair_value": 12.08,
       "growth_fair_value": null,
       "bull_fair_value": null,
       "range": {
         "bear": 4.56,
-        "base": 12.43,
-        "bull": 21.5
+        "base": 12.08,
+        "bull": 20.61
       },
-      "upside": 0.2814,
+      "upside": 0.2454,
       "model": "ensemble",
       "valuation_signal": "fair_value_range",
       "valuation_signal_label": "合理區間",
@@ -105795,7 +105740,7 @@
         "relative_pe": 0.2,
         "forward_eps": 0.1
       },
-      "model_spread": 1.3623,
+      "model_spread": 1.3287,
       "excluded_models": [],
       "range_basis": "weighted_model_base_percentiles",
       "confidence": 0.97,
@@ -105804,7 +105749,7 @@
       "models": {
         "relative_pb": {
           "bear": 18.21,
-          "base": 21.5,
+          "base": 20.61,
           "bull": 26.74
         },
         "relative_pe": {
@@ -105846,7 +105791,7 @@
         "cost_of_equity": 0.02439,
         "terminal_growth": 0.03,
         "peer_median_pe": 14.7157,
-        "peer_median_pb": 1.0571,
+        "peer_median_pb": 1.0132,
         "forward_eps_2027": 0.725,
         "forward_eps_2028": 0.725,
         "forward_trend_slope_per_quarter": 0.248095,
@@ -105884,7 +105829,7 @@
       ],
       "market_implied": {
         "current_pe_on_valuation_eps": 31.2903,
-        "price_to_fair_value": 0.7804,
+        "price_to_fair_value": 0.803,
         "interpretation": "現價包含高於模型基本面價值的成長或溢價；此欄位不回饋公允價模型",
         "required_2028_eps_at_peer_pe": 0.7001
       },
@@ -107326,16 +107271,16 @@
       "data_status": "provisional/forward_eps_trend",
       "name": "王道銀行",
       "market_price": 10.25,
-      "fair_value": 10.95,
-      "base_fair_value": 10.95,
+      "fair_value": 10.73,
+      "base_fair_value": 10.73,
       "growth_fair_value": null,
       "bull_fair_value": null,
       "range": {
         "bear": 9.86,
-        "base": 10.95,
-        "bull": 15.56
+        "base": 10.73,
+        "bull": 14.91
       },
-      "upside": 0.0683,
+      "upside": 0.0468,
       "model": "ensemble",
       "valuation_signal": "fair_value_range",
       "valuation_signal_label": "合理區間",
@@ -107350,7 +107295,7 @@
         "relative_pe": 0.21487993502137387,
         "forward_eps": 0.10991995668091592
       },
-      "model_spread": 0.5203,
+      "model_spread": 0.4711,
       "excluded_models": [],
       "range_basis": "weighted_model_base_percentiles",
       "confidence": 0.97,
@@ -107359,7 +107304,7 @@
       "models": {
         "relative_pb": {
           "bear": 13.18,
-          "base": 15.56,
+          "base": 14.91,
           "bull": 19.35
         },
         "relative_pe": {
@@ -107399,7 +107344,7 @@
         "cost_of_equity": 0.022754,
         "terminal_growth": 0.03,
         "peer_median_pe": 14.7157,
-        "peer_median_pb": 1.0571,
+        "peer_median_pb": 1.0132,
         "forward_eps_2027": 0.4288,
         "forward_eps_2028": 0.4158,
         "forward_trend_slope_per_quarter": -0.024143,
@@ -107442,7 +107387,7 @@
       ],
       "market_implied": {
         "current_pe_on_valuation_eps": 15.297,
-        "price_to_fair_value": 0.9361,
+        "price_to_fair_value": 0.9553,
         "interpretation": "現價包含高於模型基本面價值的成長或溢價；此欄位不回饋公允價模型",
         "required_2028_eps_at_peer_pe": 0.741
       },
@@ -107974,7 +107919,7 @@
       "reported_period": "2026-H1",
       "models": {
         "relative_pb": {
-          "bear": 14.77,
+          "bear": 14.89,
           "base": 22.01,
           "bull": 36.01
         },
@@ -114934,12 +114879,12 @@
           "bull": 235.26
         },
         "relative_pe": {
-          "bear": 317.26,
+          "bear": 320.91,
           "base": 535.18,
           "bull": 1269.46
         },
         "forward_eps": {
-          "bear": 105.92,
+          "bear": 107.14,
           "base": 210.83,
           "bull": 658.48
         }
@@ -118158,7 +118103,7 @@
       "growth_fair_value": null,
       "bull_fair_value": null,
       "range": {
-        "bear": 20.26,
+        "bear": 20.42,
         "base": 30.19,
         "bull": 49.4
       },
@@ -118173,7 +118118,7 @@
       "model_weights": {
         "relative_pb": 0.2
       },
-      "model_spread": 0.965,
+      "model_spread": 0.9597,
       "excluded_models": [],
       "range_basis": "single_model_scenarios",
       "confidence": "low",
@@ -118181,7 +118126,7 @@
       "reported_period": "2026-Q2",
       "models": {
         "relative_pb": {
-          "bear": 20.26,
+          "bear": 20.42,
           "base": 30.19,
           "bull": 49.4
         }
@@ -118576,12 +118521,12 @@
           "bull": 161.07
         },
         "relative_pe": {
-          "bear": 128.86,
+          "bear": 130.34,
           "base": 217.37,
           "bull": 515.6
         },
         "forward_eps": {
-          "bear": 18.96,
+          "bear": 19.18,
           "base": 90.01,
           "bull": 320.41
         }
@@ -123078,7 +123023,7 @@
           "bull": 104.36
         },
         "relative_pe": {
-          "bear": 93.89,
+          "bear": 94.97,
           "base": 158.37,
           "bull": 375.67
         }
@@ -130703,7 +130648,7 @@
           "bull": 91.67
         },
         "relative_pe": {
-          "bear": 48.2,
+          "bear": 48.76,
           "base": 81.31,
           "bull": 192.88
         }
@@ -131691,12 +131636,12 @@
           "bull": 187.03
         },
         "relative_pe": {
-          "bear": 279.61,
+          "bear": 282.83,
           "base": 471.67,
           "bull": 1118.82
         },
         "forward_eps": {
-          "bear": 109.28,
+          "bear": 110.54,
           "base": 204.63,
           "bull": 665.69
         }
@@ -133292,12 +133237,12 @@
           "bull": 36.87
         },
         "relative_pe": {
-          "bear": 21.11,
+          "bear": 21.35,
           "base": 35.61,
           "bull": 84.46
         },
         "forward_eps": {
-          "bear": 7.85,
+          "bear": 7.94,
           "base": 68.29,
           "bull": 242.54
         }
@@ -136430,7 +136375,7 @@
       "reported_period": null,
       "models": {
         "relative_pb": {
-          "bear": 13.16,
+          "bear": 13.26,
           "base": 19.6,
           "bull": 32.07
         },
@@ -137026,7 +136971,7 @@
           "bull": 22.76
         },
         "forward_eps": {
-          "bear": 4.13,
+          "bear": 4.17,
           "base": 5.41,
           "bull": 16.51
         }
@@ -138605,7 +138550,7 @@
           "bull": 67.17
         },
         "relative_pe": {
-          "bear": 9.77,
+          "bear": 9.88,
           "base": 16.48,
           "bull": 39.08
         }
@@ -138806,12 +138751,12 @@
           "bull": 83.68
         },
         "relative_pe": {
-          "bear": 46.63,
+          "bear": 47.16,
           "base": 78.66,
           "bull": 186.57
         },
         "forward_eps": {
-          "bear": 6.39,
+          "bear": 6.47,
           "base": 10.79,
           "bull": 78.48
         }
@@ -143464,12 +143409,12 @@
           "bull": 293.65
         },
         "relative_pe": {
-          "bear": 69.16,
+          "bear": 69.95,
           "base": 116.65,
           "bull": 276.71
         },
         "forward_eps": {
-          "bear": 1.79,
+          "bear": 1.81,
           "base": 3.02,
           "bull": 7.17
         }
@@ -148633,12 +148578,12 @@
           "bull": 143.31
         },
         "relative_pe": {
-          "bear": 82.23,
+          "bear": 83.18,
           "base": 138.71,
           "bull": 329.03
         },
         "forward_eps": {
-          "bear": 8.37,
+          "bear": 8.47,
           "base": 26.47,
           "bull": 156.17
         }
@@ -149543,12 +149488,12 @@
           "bull": 62.9
         },
         "relative_pe": {
-          "bear": 31.66,
+          "bear": 32.03,
           "base": 53.41,
           "bull": 126.69
         },
         "forward_eps": {
-          "bear": 4.29,
+          "bear": 4.34,
           "base": 7.24,
           "bull": 102.29
         }
@@ -150306,8 +150251,8 @@
         "forward_eps"
       ],
       "model_weights": {
-        "relative_pb": 0.14968285838788056,
-        "relative_pe": 0.23019028496727167,
+        "relative_pb": 0.14968285838788054,
+        "relative_pe": 0.2301902849672717,
         "forward_eps": 0.12012685664484779
       },
       "model_spread": 0.3122,
@@ -150323,12 +150268,12 @@
           "bull": 206.66
         },
         "relative_pe": {
-          "bear": 71.83,
+          "bear": 72.66,
           "base": 121.17,
           "bull": 287.43
         },
         "forward_eps": {
-          "bear": 6.91,
+          "bear": 6.99,
           "base": 11.66,
           "bull": 27.65
         }
@@ -153902,12 +153847,12 @@
           "bull": 1266.4
         },
         "relative_pe": {
-          "bear": 1738.49,
+          "bear": 1758.49,
           "base": 2932.57,
           "bull": 6956.2
         },
         "forward_eps": {
-          "bear": 371.15,
+          "bear": 375.42,
           "base": 1368.36,
           "bull": 4638.87
         }
@@ -155709,7 +155654,7 @@
           "bull": 1.26
         },
         "forward_eps": {
-          "bear": 7.61,
+          "bear": 7.7,
           "base": 30.64,
           "bull": 72.68
         }
@@ -160370,7 +160315,7 @@
           "bull": 52.82
         },
         "relative_pe": {
-          "bear": 13.07,
+          "bear": 13.23,
           "base": 22.06,
           "bull": 52.32
         }
@@ -160577,12 +160522,12 @@
           "bull": 177.09
         },
         "relative_pe": {
-          "bear": 54.03,
+          "bear": 54.65,
           "base": 91.14,
           "bull": 216.2
         },
         "forward_eps": {
-          "bear": 15.24,
+          "bear": 15.41,
           "base": 36.93,
           "bull": 478.01
         }
@@ -160979,12 +160924,12 @@
           "bull": 40.59
         },
         "relative_pe": {
-          "bear": 13.47,
+          "bear": 13.62,
           "base": 22.72,
           "bull": 53.89
         },
         "forward_eps": {
-          "bear": 76.55,
+          "bear": 77.43,
           "base": 387.16,
           "bull": 575.14
         }
@@ -164560,33 +164505,29 @@
       "data_status": "provisional/forward_eps_trend",
       "name": "貿聯-KY",
       "market_price": 2275.0,
-      "fair_value": 955.31,
-      "base_fair_value": 723.19,
-      "growth_fair_value": 955.31,
-      "bull_fair_value": 1152.99,
+      "fair_value": 967.43,
+      "base_fair_value": 967.43,
+      "growth_fair_value": null,
+      "bull_fair_value": null,
       "range": {
-        "bear": 425.49,
-        "base": 955.31,
-        "bull": 1152.99
+        "bear": 967.43,
+        "base": 967.43,
+        "bull": 1038.32
       },
-      "upside": -0.5801,
+      "upside": -0.5748,
       "model": "ensemble",
       "valuation_signal": "overvalued",
       "valuation_signal_label": "高估",
-      "model_count": 4,
+      "model_count": 2,
       "models_used": [
         "residual_income",
-        "relative_pb",
-        "relative_pe",
-        "forward_eps"
+        "relative_pb"
       ],
       "model_weights": {
         "residual_income": 0.45,
-        "relative_pb": 0.12189525769007842,
-        "relative_pe": 0.24686284538595296,
-        "forward_eps": 0.13124189692396865
+        "relative_pb": 0.1
       },
-      "model_spread": 0.7412,
+      "model_spread": 0.0733,
       "excluded_models": [],
       "range_basis": "weighted_model_base_percentiles",
       "confidence": 0.97,
@@ -164594,49 +164535,38 @@
       "reported_period": "2026-H1",
       "models": {
         "residual_income": {
-          "bear": 425.49,
-          "base": 425.49,
-          "bull": 425.49
+          "bear": 1038.32,
+          "base": 1038.32,
+          "bull": 1038.32
         },
         "relative_pb": {
-          "bear": 377.03,
-          "base": 610.2,
-          "bull": 1080.09
-        },
-        "relative_pe": {
-          "bear": 460.49,
-          "base": 961.55,
-          "bull": 1490.25
-        },
-        "forward_eps": {
-          "bear": 598.37,
-          "base": 1400.56,
-          "bull": 3080.75
+          "bear": 400.67,
+          "base": 648.46,
+          "bull": 1147.81
         }
       },
       "diagnostic_flags": [
-        "structural_growth_scenario",
         "fair_value_below_half_of_price"
       ],
       "correction_action": "valuation_eps_bvps_roe_for_residual_income;terminal_convergence_and_forward_eps_gates",
       "inputs": {
-        "ttm_eps": 49.74,
-        "valuation_eps": 35.99,
-        "earnings_basis": "cycle_normalized_short_history",
+        "ttm_eps": 76.68,
+        "valuation_eps": 76.94,
+        "earnings_basis": "cycle_recovery_run_rate",
         "normalized_eps": 35.99,
         "normalized_years": 2,
         "normalized_volatility": 0.294,
-        "recovery_run_rate_eps": null,
-        "recovery_previous_period": null,
-        "recovery_latest_period": null,
-        "bvps": 239.08,
-        "roe": 0.208,
-        "ttm_roe": 0.208,
-        "valuation_roe": 0.1505,
-        "latest_quarter_roe": 0.0488,
+        "recovery_run_rate_eps": 77.2,
+        "recovery_previous_period": "2026-Q1",
+        "recovery_latest_period": "2026-Q2",
+        "bvps": 254.07,
+        "roe": 0.3018,
+        "ttm_roe": 0.3018,
+        "valuation_roe": 0.3028,
+        "latest_quarter_roe": 0.106,
         "roe_basis": "valuation_eps_divided_by_latest_bvps",
         "cash_dividend_per_share": 15.1849,
-        "payout_ratio": 0.4219,
+        "payout_ratio": 0.1974,
         "beta": 1.0964,
         "risk_free_rate": 0.0175,
         "market_erp": 0.0501,
@@ -164644,15 +164574,15 @@
         "terminal_growth": 0.03,
         "peer_median_pe": 26.7172,
         "peer_median_pb": 2.5523,
-        "forward_eps_2027": 53.1931,
-        "forward_eps_2028": 63.5367,
-        "forward_trend_slope_per_quarter": 4.164286,
-        "forward_trend_points": 6,
-        "forward_discount_years": 2.75
+        "forward_eps_2027": 54.0267,
+        "forward_eps_2028": 64.7212,
+        "forward_trend_slope_per_quarter": 4.339762,
+        "forward_trend_points": 7,
+        "forward_discount_years": 2.5
       },
       "source_dates": {
         "price": "2026-08-21",
-        "financials": "2026-03-31",
+        "financials": "2026-06-30",
         "earnings": "2026-08-21",
         "monthly_revenue": null,
         "risk_free": "2026-06-09",
@@ -164678,19 +164608,19 @@
         "同業群組（電子其他）P/B 納入估值集合",
         "同業群組（電子其他）P/E 納入估值集合",
         "FV-1.16 前瞻 EPS 納入低權重情境集合：最近 6–8 個 TTM EPS 加權線性趨勢，並以已公告季度營收／EPS 強度交叉檢查；2028-Q4 以同業 P/E 評價後折現",
-        "FV-1.16 結構性成長情境啟用：2028 EPS Base 高於估值 EPS 15% 以上、且估值 ROE 至少 15%；主公允價採前瞻模型 Bull EPS，其基準價與牛市價另行保留",
+        "景氣反轉類停用低谷同業 P/E 及其衍生前瞻模型；以 Residual Income 與 P/B 估值，避免低谷分母製造假性高估",
         "前瞻 EPS 是模型估算，不是公司已公告 EPS；需至少六個連續 TTM 觀測點，並以同業 P/E 與 Ke 折現"
       ],
       "market_implied": {
-        "current_pe_on_valuation_eps": 63.212,
-        "price_to_fair_value": 2.3814,
+        "current_pe_on_valuation_eps": 29.5685,
+        "price_to_fair_value": 2.3516,
         "interpretation": "現價包含高於模型基本面價值的成長或溢價；此欄位不回饋公允價模型",
-        "required_2028_eps_at_peer_pe": 103.2062
+        "required_2028_eps_at_peer_pe": 101.4176
       },
       "forward_eps": {
         "type": "weighted_linear_ttm_eps_plus_revenue_anchor",
-        "latest_period": "2026-Q1",
-        "latest_ttm_eps": 49.74,
+        "latest_period": "2026-Q2",
+        "latest_ttm_eps": 57.73,
         "ttm_points": [
           {
             "period": "2024-Q4",
@@ -164715,20 +164645,24 @@
           {
             "period": "2026-Q1",
             "ttm_eps": 49.74
+          },
+          {
+            "period": "2026-Q2",
+            "ttm_eps": 57.73
           }
         ],
-        "trend_points": 6,
-        "trend_slope_per_quarter": 4.164286,
+        "trend_points": 7,
+        "trend_slope_per_quarter": 4.339762,
         "revenue_points": 8,
         "eps_revenue_intensity": 8.493e-07,
         "targets": {
           "2027": {
             "period": "2027-Q4",
-            "horizon_quarters": 7,
+            "horizon_quarters": 6,
             "trend_eps": {
-              "bear": 71.93,
-              "base": 81.6629,
-              "bull": 114.56
+              "bear": 79.39,
+              "base": 83.3299,
+              "bull": 111.385
             },
             "revenue_anchor_eps": {
               "bear": 24.7234,
@@ -164736,18 +164670,18 @@
               "bull": 24.7234
             },
             "eps": {
-              "bear": 48.3267,
-              "base": 53.1931,
-              "bull": 69.6417
+              "bear": 52.0567,
+              "base": 54.0267,
+              "bull": 68.0542
             }
           },
           "2028": {
             "period": "2028-Q4",
-            "horizon_quarters": 11,
+            "horizon_quarters": 10,
             "trend_eps": {
-              "bear": 84.61,
-              "base": 98.32,
-              "bull": 151.6
+              "bear": 93.83,
+              "base": 100.6889,
+              "bull": 147.155
             },
             "revenue_anchor_eps": {
               "bear": 28.7534,
@@ -164755,9 +164689,9 @@
               "bull": 28.7534
             },
             "eps": {
-              "bear": 56.6817,
-              "base": 63.5367,
-              "bull": 90.1767
+              "bear": 61.2917,
+              "base": 64.7212,
+              "bull": 87.9542
             }
           }
         },
@@ -165590,12 +165524,12 @@
           "bull": 266.82
         },
         "relative_pe": {
-          "bear": 199.75,
+          "bear": 202.04,
           "base": 336.94,
           "bull": 799.24
         },
         "forward_eps": {
-          "bear": 18.04,
+          "bear": 18.25,
           "base": 128.38,
           "bull": 818.12
         }
@@ -172306,7 +172240,7 @@
       ],
       "model_weights": {
         "relative_pb": 0.16056337115588357,
-        "relative_pe": 0.2236619773064699
+        "relative_pe": 0.22366197730646986
       },
       "model_spread": 0.7347,
       "excluded_models": [],
@@ -175593,7 +175527,7 @@
       "growth_fair_value": null,
       "bull_fair_value": null,
       "range": {
-        "bear": 5.87,
+        "bear": 5.91,
         "base": 8.74,
         "bull": 14.3
       },
@@ -175608,7 +175542,7 @@
       "model_weights": {
         "relative_pb": 0.2
       },
-      "model_spread": 0.965,
+      "model_spread": 0.9597,
       "excluded_models": [],
       "range_basis": "single_model_scenarios",
       "confidence": 0.97,
@@ -175616,7 +175550,7 @@
       "reported_period": "2026-H1",
       "models": {
         "relative_pb": {
-          "bear": 5.87,
+          "bear": 5.91,
           "base": 8.74,
           "bull": 14.3
         }
@@ -182706,7 +182640,7 @@
       "reported_period": "2026-Q2",
       "models": {
         "relative_pb": {
-          "bear": 28.6,
+          "bear": 28.82,
           "base": 42.62,
           "bull": 69.72
         },
@@ -185925,7 +185859,7 @@
       "growth_fair_value": null,
       "bull_fair_value": null,
       "range": {
-        "bear": 2.3,
+        "bear": 2.31,
         "base": 3.42,
         "bull": 5.6
       },
@@ -185940,7 +185874,7 @@
       "model_weights": {
         "relative_pb": 0.2
       },
-      "model_spread": 0.965,
+      "model_spread": 0.9597,
       "excluded_models": [],
       "range_basis": "single_model_scenarios",
       "confidence": "low",
@@ -185948,7 +185882,7 @@
       "reported_period": "2026-Q2",
       "models": {
         "relative_pb": {
-          "bear": 2.3,
+          "bear": 2.31,
           "base": 3.42,
           "bull": 5.6
         }
@@ -188358,7 +188292,7 @@
           "bull": 87.68
         },
         "relative_pe": {
-          "bear": 20.01,
+          "bear": 20.24,
           "base": 33.75,
           "bull": 80.05
         }
@@ -189809,7 +189743,7 @@
           "bull": 22.08
         },
         "relative_pb": {
-          "bear": 18.0,
+          "bear": 18.15,
           "base": 26.83,
           "bull": 43.89
         }
@@ -190565,9 +190499,9 @@
       ],
       "model_weights": {
         "residual_income": 0.45,
-        "relative_pb": 0.18563785376981087,
+        "relative_pb": 0.18563785376981085,
         "relative_pe": 0.2086172877381135,
-        "forward_eps": 0.10574485849207566
+        "forward_eps": 0.10574485849207567
       },
       "model_spread": 0.3184,
       "excluded_models": [],
@@ -191560,9 +191494,9 @@
         "forward_eps"
       ],
       "model_weights": {
-        "relative_pb": 0.15571051257989582,
-        "relative_pe": 0.22657369245206252,
-        "forward_eps": 0.11771579496804167
+        "relative_pb": 0.15571051257989588,
+        "relative_pe": 0.2265736924520625,
+        "forward_eps": 0.11771579496804166
       },
       "model_spread": 0.4527,
       "excluded_models": [],
@@ -193514,8 +193448,8 @@
         "relative_pe"
       ],
       "model_weights": {
-        "relative_pb": 0.10823800307780146,
-        "relative_pe": 0.2550571981533191
+        "relative_pb": 0.10823800307780143,
+        "relative_pe": 0.2550571981533192
       },
       "model_spread": 0.3572,
       "excluded_models": [],
@@ -202826,12 +202760,12 @@
           "bull": 213.09
         },
         "relative_pe": {
-          "bear": 66.48,
+          "bear": 67.24,
           "base": 112.14,
           "bull": 265.99
         },
         "forward_eps": {
-          "bear": 16.65,
+          "bear": 16.84,
           "base": 28.08,
           "bull": 192.79
         }
@@ -203031,12 +202965,12 @@
           "bull": 150.33
         },
         "relative_pe": {
-          "bear": 125.24,
+          "bear": 126.68,
           "base": 211.25,
           "bull": 501.1
         },
         "forward_eps": {
-          "bear": 22.38,
+          "bear": 22.64,
           "base": 66.1,
           "bull": 310.63
         }
@@ -205396,12 +205330,12 @@
           "bull": 53.69
         },
         "relative_pe": {
-          "bear": 4.41,
+          "bear": 4.46,
           "base": 7.44,
           "bull": 17.65
         },
         "forward_eps": {
-          "bear": 2.9,
+          "bear": 2.94,
           "base": 39.95,
           "bull": 138.69
         }
@@ -207423,12 +207357,12 @@
           "bull": 483.49
         },
         "relative_pe": {
-          "bear": 175.33,
+          "bear": 177.35,
           "base": 295.76,
           "bull": 701.55
         },
         "forward_eps": {
-          "bear": 26.52,
+          "bear": 26.83,
           "base": 113.41,
           "bull": 406.64
         }
@@ -209252,7 +209186,7 @@
           "bull": 157.35
         },
         "relative_pe": {
-          "bear": 109.01,
+          "bear": 110.26,
           "base": 183.88,
           "bull": 436.18
         }
@@ -210197,16 +210131,16 @@
       "data_status": "provisional/forward_eps_trend",
       "name": "環宇-KY",
       "market_price": 481.0,
-      "fair_value": 68.19,
-      "base_fair_value": 68.19,
+      "fair_value": 123.87,
+      "base_fair_value": 123.87,
       "growth_fair_value": null,
       "bull_fair_value": null,
       "range": {
-        "bear": 26.7,
-        "base": 68.19,
-        "bull": 98.38
+        "bear": 44.48,
+        "base": 123.87,
+        "bull": 170.91
       },
-      "upside": -0.8582,
+      "upside": -0.7425,
       "model": "ensemble",
       "valuation_signal": "overvalued",
       "valuation_signal_label": "高估",
@@ -210219,36 +210153,36 @@
       ],
       "model_weights": {
         "residual_income": 0.45,
-        "relative_pb": 0.2,
-        "relative_pe": 0.2,
-        "forward_eps": 0.1
+        "relative_pb": 0.16220167059742274,
+        "relative_pe": 0.22267899764154636,
+        "forward_eps": 0.11511933176103091
       },
-      "model_spread": 1.0513,
+      "model_spread": 1.0207,
       "excluded_models": [],
       "range_basis": "weighted_model_base_percentiles",
       "confidence": "low",
       "source_url": null,
-      "reported_period": "2026-Q1",
+      "reported_period": "2026-Q2",
       "models": {
         "residual_income": {
-          "bear": 26.7,
-          "base": 26.7,
-          "bull": 26.7
+          "bear": 44.48,
+          "base": 44.48,
+          "bull": 44.48
         },
         "relative_pb": {
-          "bear": 65.04,
-          "base": 98.38,
-          "bull": 147.61
+          "bear": 67.73,
+          "base": 102.46,
+          "bull": 153.72
         },
         "relative_pe": {
-          "bear": 56.14,
-          "base": 84.45,
-          "bull": 164.5
+          "bear": 113.62,
+          "base": 170.91,
+          "bull": 332.91
         },
         "forward_eps": {
-          "bear": 107.7,
-          "base": 162.0,
-          "bull": 315.56
+          "bear": 248.23,
+          "base": 373.39,
+          "bull": 727.31
         }
       },
       "diagnostic_flags": [
@@ -210257,20 +210191,20 @@
       ],
       "correction_action": "ttm_roe_proxy_for_residual_income;terminal_convergence_and_forward_eps_gates",
       "inputs": {
-        "ttm_eps": 2.52,
-        "valuation_eps": 2.52,
+        "ttm_eps": 5.1,
+        "valuation_eps": 5.1,
         "earnings_basis": "ttm",
         "normalized_eps": -0.99,
         "normalized_years": 2,
         "normalized_volatility": 1.0,
-        "recovery_run_rate_eps": null,
-        "recovery_previous_period": null,
-        "recovery_latest_period": null,
-        "bvps": 35.26,
-        "roe": 0.0715,
-        "ttm_roe": 0.0715,
-        "valuation_roe": 0.0715,
-        "latest_quarter_roe": 0.046,
+        "recovery_run_rate_eps": 8.5,
+        "recovery_previous_period": "2026-Q1",
+        "recovery_latest_period": "2026-Q2",
+        "bvps": 36.72,
+        "roe": 0.1389,
+        "ttm_roe": 0.1389,
+        "valuation_roe": 0.1389,
+        "latest_quarter_roe": 0.0689,
         "roe_basis": "ttm_eps_divided_by_latest_bvps",
         "cash_dividend_per_share": 0.0,
         "payout_ratio": 0.0,
@@ -210281,15 +210215,15 @@
         "terminal_growth": 0.03,
         "peer_median_pe": 33.5118,
         "peer_median_pb": 2.7902,
-        "forward_eps_2027": 6.3,
-        "forward_eps_2028": 6.3,
-        "forward_trend_slope_per_quarter": 0.579571,
-        "forward_trend_points": 6,
-        "forward_discount_years": 2.75
+        "forward_eps_2027": 10.7773,
+        "forward_eps_2028": 14.175,
+        "forward_trend_slope_per_quarter": 1.045238,
+        "forward_trend_points": 7,
+        "forward_discount_years": 2.5
       },
       "source_dates": {
         "price": "2026-08-21",
-        "financials": "2026-03-31",
+        "financials": "2026-06-30",
         "earnings": null,
         "monthly_revenue": null,
         "risk_free": "2026-06-09",
@@ -210318,15 +210252,15 @@
         "前瞻 EPS 是模型估算，不是公司已公告 EPS；需至少六個連續 TTM 觀測點，並以同業 P/E 與 Ke 折現"
       ],
       "market_implied": {
-        "current_pe_on_valuation_eps": 190.873,
-        "price_to_fair_value": 7.0538,
+        "current_pe_on_valuation_eps": 94.3137,
+        "price_to_fair_value": 3.8831,
         "interpretation": "現價包含高於模型基本面價值的成長或溢價；此欄位不回饋公允價模型",
-        "required_2028_eps_at_peer_pe": 18.7051
+        "required_2028_eps_at_peer_pe": 18.2602
       },
       "forward_eps": {
         "type": "weighted_linear_ttm_eps_plus_revenue_anchor",
-        "latest_period": "2026-Q1",
-        "latest_ttm_eps": 2.52,
+        "latest_period": "2026-Q2",
+        "latest_ttm_eps": 5.67,
         "ttm_points": [
           {
             "period": "2024-Q4",
@@ -210351,41 +210285,45 @@
           {
             "period": "2026-Q1",
             "ttm_eps": 2.52
+          },
+          {
+            "period": "2026-Q2",
+            "ttm_eps": 5.67
           }
         ],
-        "trend_points": 6,
-        "trend_slope_per_quarter": 0.579571,
+        "trend_points": 7,
+        "trend_slope_per_quarter": 1.045238,
         "revenue_points": 8,
         "eps_revenue_intensity": null,
         "targets": {
           "2027": {
             "period": "2027-Q4",
-            "horizon_quarters": 7,
+            "horizon_quarters": 6,
             "trend_eps": {
-              "bear": 10.92,
-              "base": 6.3534,
-              "bull": 19.11
+              "bear": 12.945,
+              "base": 10.7773,
+              "bull": 20.52
             },
             "revenue_anchor_eps": null,
             "eps": {
-              "bear": 6.3,
-              "base": 6.3,
-              "bull": 6.3
+              "bear": 12.945,
+              "base": 10.7773,
+              "bull": 14.175
             }
           },
           "2028": {
             "period": "2028-Q4",
-            "horizon_quarters": 11,
+            "horizon_quarters": 10,
             "trend_eps": {
-              "bear": 15.72,
-              "base": 8.6717,
-              "bull": 28.59
+              "bear": 17.795,
+              "base": 14.9582,
+              "bull": 30.42
             },
             "revenue_anchor_eps": null,
             "eps": {
-              "bear": 6.3,
-              "base": 6.3,
-              "bull": 6.3
+              "bear": 14.175,
+              "base": 14.175,
+              "bull": 14.175
             }
           }
         },
@@ -213305,7 +213243,7 @@
       "growth_fair_value": null,
       "bull_fair_value": null,
       "range": {
-        "bear": 33.29,
+        "bear": 33.55,
         "base": 49.61,
         "bull": 81.16
       },
@@ -213320,7 +213258,7 @@
       "model_weights": {
         "relative_pb": 0.1
       },
-      "model_spread": 0.965,
+      "model_spread": 0.9597,
       "excluded_models": [],
       "range_basis": "single_model_scenarios",
       "confidence": "low",
@@ -213328,7 +213266,7 @@
       "reported_period": "2026-Q2",
       "models": {
         "relative_pb": {
-          "bear": 33.29,
+          "bear": 33.55,
           "base": 49.61,
           "bull": 81.16
         }
@@ -214308,9 +214246,9 @@
         "forward_eps"
       ],
       "model_weights": {
-        "relative_pb": 0.19139733355088767,
+        "relative_pb": 0.1913973335508877,
         "relative_pe": 0.20516159986946741,
-        "forward_eps": 0.10344106657964494
+        "forward_eps": 0.10344106657964493
       },
       "model_spread": 0.7535,
       "excluded_models": [],
@@ -215513,12 +215451,12 @@
           "bull": 52.96
         },
         "relative_pe": {
-          "bear": 42.38,
+          "bear": 42.86,
           "base": 71.48,
           "bull": 169.56
         },
         "forward_eps": {
-          "bear": 91.26,
+          "bear": 92.31,
           "base": 149.63,
           "bull": 420.28
         }
@@ -217840,7 +217778,7 @@
       "reported_period": "2026-H1",
       "models": {
         "relative_pb": {
-          "bear": 12.62,
+          "bear": 12.72,
           "base": 18.81,
           "bull": 30.78
         },
@@ -218445,7 +218383,7 @@
           "bull": 404.46
         },
         "relative_pb": {
-          "bear": 64.86,
+          "bear": 65.37,
           "base": 96.66,
           "bull": 158.14
         }
@@ -221281,7 +221219,7 @@
           "bull": 3.78
         },
         "relative_pb": {
-          "bear": 5.68,
+          "bear": 5.73,
           "base": 8.47,
           "bull": 13.86
         },
@@ -222644,7 +222582,7 @@
       "growth_fair_value": null,
       "bull_fair_value": null,
       "range": {
-        "bear": 5.17,
+        "bear": 5.21,
         "base": 7.7,
         "bull": 12.6
       },
@@ -222659,7 +222597,7 @@
       "model_weights": {
         "relative_pb": 0.2
       },
-      "model_spread": 0.965,
+      "model_spread": 0.9597,
       "excluded_models": [],
       "range_basis": "single_model_scenarios",
       "confidence": 0.97,
@@ -222667,7 +222605,7 @@
       "reported_period": "2026-H1",
       "models": {
         "relative_pb": {
-          "bear": 5.17,
+          "bear": 5.21,
           "base": 7.7,
           "bull": 12.6
         }
@@ -225275,7 +225213,7 @@
       "reported_period": "2026-Q2",
       "models": {
         "relative_pb": {
-          "bear": 9.63,
+          "bear": 9.71,
           "base": 14.35,
           "bull": 23.48
         },
@@ -227292,7 +227230,7 @@
       "reported_period": "2026-Q2",
       "models": {
         "relative_pb": {
-          "bear": 13.49,
+          "bear": 13.59,
           "base": 20.1,
           "bull": 32.88
         },
@@ -228089,7 +228027,7 @@
           "bull": 44.03
         },
         "relative_pe": {
-          "bear": 0.39,
+          "bear": 0.4,
           "base": 0.66,
           "bull": 1.58
         },
@@ -228885,12 +228823,12 @@
           "bull": 442.8
         },
         "relative_pe": {
-          "bear": 123.03,
+          "bear": 124.45,
           "base": 207.53,
           "bull": 492.28
         },
         "forward_eps": {
-          "bear": 24.95,
+          "bear": 25.23,
           "base": 74.26,
           "bull": 340.34
         }
@@ -229530,12 +229468,12 @@
           "bull": 29.78
         },
         "relative_pe": {
-          "bear": 22.37,
+          "bear": 22.63,
           "base": 37.73,
           "bull": 89.51
         },
         "forward_eps": {
-          "bear": 42.41,
+          "bear": 42.9,
           "base": 89.61,
           "bull": 216.28
         }
@@ -229903,7 +229841,7 @@
       "growth_fair_value": null,
       "bull_fair_value": null,
       "range": {
-        "bear": 16.2,
+        "bear": 16.33,
         "base": 24.15,
         "bull": 39.51
       },
@@ -229918,7 +229856,7 @@
       "model_weights": {
         "relative_pb": 0.2
       },
-      "model_spread": 0.965,
+      "model_spread": 0.9597,
       "excluded_models": [],
       "range_basis": "single_model_scenarios",
       "confidence": "low",
@@ -229926,7 +229864,7 @@
       "reported_period": "2026-Q2",
       "models": {
         "relative_pb": {
-          "bear": 16.2,
+          "bear": 16.33,
           "base": 24.15,
           "bull": 39.51
         }
@@ -230309,7 +230247,7 @@
       ],
       "model_weights": {
         "residual_income": 0.45,
-        "relative_pb": 0.10399522886186134,
+        "relative_pb": 0.10399522886186133,
         "relative_pe": 0.25760286268288324
       },
       "model_spread": 0.5181,
@@ -230726,12 +230664,12 @@
           "bull": 38.5
         },
         "relative_pe": {
-          "bear": 0.95,
+          "bear": 0.96,
           "base": 1.59,
           "bull": 3.78
         },
         "forward_eps": {
-          "bear": 0.66,
+          "bear": 0.67,
           "base": 1.78,
           "bull": 4.22
         }
@@ -230918,8 +230856,8 @@
         "forward_eps"
       ],
       "model_weights": {
-        "relative_pb": 0.12679399355903254,
-        "relative_pe": 0.2439236038645805,
+        "relative_pb": 0.12679399355903248,
+        "relative_pe": 0.24392360386458053,
         "forward_eps": 0.129282402576387
       },
       "model_spread": 0.8617,
@@ -231534,7 +231472,7 @@
           "bull": 39.34
         },
         "relative_pe": {
-          "bear": 4.73,
+          "bear": 4.78,
           "base": 7.97,
           "bull": 18.91
         },
@@ -234312,7 +234250,7 @@
       "reported_period": "2026-Q2",
       "models": {
         "relative_pb": {
-          "bear": 68.31,
+          "bear": 68.84,
           "base": 101.79,
           "bull": 166.53
         },
@@ -236585,7 +236523,7 @@
       "reported_period": "2026-Q2",
       "models": {
         "relative_pb": {
-          "bear": 16.49,
+          "bear": 16.62,
           "base": 24.57,
           "bull": 40.2
         },
@@ -238135,16 +238073,16 @@
       "data_status": "provisional/forward_eps_trend",
       "name": "致和證",
       "market_price": 34.3,
-      "fair_value": 213.7,
-      "base_fair_value": 213.7,
+      "fair_value": 213.55,
+      "base_fair_value": 213.55,
       "growth_fair_value": null,
       "bull_fair_value": null,
       "range": {
         "bear": 12.3,
-        "base": 213.7,
+        "base": 213.55,
         "bull": 366.42
       },
-      "upside": 5.2303,
+      "upside": 5.2259,
       "model": "ensemble",
       "valuation_signal": "fair_value_range",
       "valuation_signal_label": "合理區間",
@@ -238159,7 +238097,7 @@
         "dividend_discount": 0.25,
         "relative_pb": 0.1
       },
-      "model_spread": 1.657,
+      "model_spread": 1.6582,
       "excluded_models": [],
       "range_basis": "weighted_model_base_percentiles",
       "confidence": "low",
@@ -238178,7 +238116,7 @@
         },
         "relative_pb": {
           "bear": 25.4,
-          "base": 29.99,
+          "base": 28.74,
           "bull": 37.29
         }
       },
@@ -238211,7 +238149,7 @@
         "cost_of_equity": 0.087942,
         "terminal_growth": 0.03,
         "peer_median_pe": 14.7157,
-        "peer_median_pb": 1.0571,
+        "peer_median_pb": 1.0132,
         "forward_eps_2027": 23.0994,
         "forward_eps_2028": 32.3026,
         "forward_trend_slope_per_quarter": 3.761905,
@@ -238250,7 +238188,7 @@
       ],
       "market_implied": {
         "current_pe_on_valuation_eps": 1.5832,
-        "price_to_fair_value": 0.1605,
+        "price_to_fair_value": 0.1606,
         "interpretation": "現價包含高於模型基本面價值的成長或溢價；此欄位不回饋公允價模型",
         "required_2028_eps_at_peer_pe": 2.8776
       },
@@ -238378,7 +238316,7 @@
       "reported_period": "2026-Q1",
       "models": {
         "relative_pb": {
-          "bear": 93.92,
+          "bear": 94.66,
           "base": 139.96,
           "bull": 228.98
         },
@@ -238549,19 +238487,19 @@
       "data_status": "provisional/forward_eps_trend",
       "name": "上海商銀",
       "market_price": 44.15,
-      "fair_value": 39.26,
-      "base_fair_value": 39.26,
+      "fair_value": 38.7,
+      "base_fair_value": 38.7,
       "growth_fair_value": null,
       "bull_fair_value": null,
       "range": {
         "bear": 38.13,
-        "base": 39.26,
-        "bull": 45.43
+        "base": 38.7,
+        "bull": 43.55
       },
-      "upside": -0.1108,
+      "upside": -0.1234,
       "model": "ensemble",
-      "valuation_signal": "fair_value_range",
-      "valuation_signal_label": "合理區間",
+      "valuation_signal": "overvalued",
+      "valuation_signal_label": "高估",
       "model_count": 3,
       "models_used": [
         "relative_pb",
@@ -238573,7 +238511,7 @@
         "relative_pe": 0.23011361843095035,
         "forward_eps": 0.12007574562063357
       },
-      "model_spread": 0.1861,
+      "model_spread": 0.14,
       "excluded_models": [],
       "range_basis": "weighted_model_base_percentiles",
       "confidence": "low",
@@ -238582,7 +238520,7 @@
       "models": {
         "relative_pb": {
           "bear": 38.48,
-          "base": 45.43,
+          "base": 43.55,
           "bull": 56.5
         },
         "relative_pe": {
@@ -238622,7 +238560,7 @@
         "cost_of_equity": 0.023101,
         "terminal_growth": 0.03,
         "peer_median_pe": 14.7157,
-        "peer_median_pb": 1.0571,
+        "peer_median_pb": 1.0132,
         "forward_eps_2027": 2.3761,
         "forward_eps_2028": 2.4404,
         "forward_trend_slope_per_quarter": 0.026571,
@@ -238666,7 +238604,7 @@
       ],
       "market_implied": {
         "current_pe_on_valuation_eps": 17.0394,
-        "price_to_fair_value": 1.1246,
+        "price_to_fair_value": 1.1408,
         "interpretation": "現價包含高於模型基本面價值的成長或溢價；此欄位不回饋公允價模型",
         "required_2028_eps_at_peer_pe": 3.1947
       },
@@ -238765,16 +238703,16 @@
       "data_status": "provisional/forward_eps_trend",
       "name": "台名",
       "market_price": 38.55,
-      "fair_value": 32.56,
-      "base_fair_value": 32.56,
+      "fair_value": 32.37,
+      "base_fair_value": 32.37,
       "growth_fair_value": null,
       "bull_fair_value": null,
       "range": {
         "bear": 31.2,
-        "base": 32.56,
+        "base": 32.37,
         "bull": 37.38
       },
-      "upside": -0.1554,
+      "upside": -0.1603,
       "model": "ensemble",
       "valuation_signal": "overvalued",
       "valuation_signal_label": "高估",
@@ -238789,7 +238727,7 @@
         "relative_pe": 0.26,
         "forward_eps": 0.14
       },
-      "model_spread": 0.1898,
+      "model_spread": 0.1909,
       "excluded_models": [],
       "range_basis": "weighted_model_base_percentiles",
       "confidence": "low",
@@ -238798,7 +238736,7 @@
       "models": {
         "relative_pb": {
           "bear": 18.57,
-          "base": 21.92,
+          "base": 21.01,
           "bull": 27.26
         },
         "relative_pe": {
@@ -238838,7 +238776,7 @@
         "cost_of_equity": 0.018742,
         "terminal_growth": 0.03,
         "peer_median_pe": 14.7157,
-        "peer_median_pb": 1.0571,
+        "peer_median_pb": 1.0132,
         "forward_eps_2027": 2.1634,
         "forward_eps_2028": 2.2208,
         "forward_trend_slope_per_quarter": 0.022857,
@@ -238875,7 +238813,7 @@
       ],
       "market_implied": {
         "current_pe_on_valuation_eps": 15.1772,
-        "price_to_fair_value": 1.184,
+        "price_to_fair_value": 1.1909,
         "interpretation": "現價包含高於模型基本面價值的成長或溢價；此欄位不回饋公允價模型",
         "required_2028_eps_at_peer_pe": 2.7441
       },
@@ -240686,16 +240624,16 @@
       "data_status": "provisional/forward_eps_trend",
       "name": "康和證",
       "market_price": 19.6,
-      "fair_value": 23.54,
-      "base_fair_value": 23.54,
+      "fair_value": 23.38,
+      "base_fair_value": 23.38,
       "growth_fair_value": null,
       "bull_fair_value": null,
       "range": {
         "bear": 23.31,
-        "base": 23.54,
+        "base": 23.38,
         "bull": 27.44
       },
-      "upside": 0.201,
+      "upside": 0.1929,
       "model": "ensemble",
       "valuation_signal": "undervalued",
       "valuation_signal_label": "低估",
@@ -240710,7 +240648,7 @@
         "relative_pb": 0.1687149883934943,
         "relative_pe": 0.21877100696390345
       },
-      "model_spread": 0.1756,
+      "model_spread": 0.1767,
       "excluded_models": [
         "forward_eps"
       ],
@@ -240726,7 +240664,7 @@
         },
         "relative_pb": {
           "bear": 16.14,
-          "base": 19.06,
+          "base": 18.27,
           "bull": 23.7
         },
         "relative_pe": {
@@ -240768,7 +240706,7 @@
         "cost_of_equity": 0.072154,
         "terminal_growth": 0.03,
         "peer_median_pe": 14.7157,
-        "peer_median_pb": 1.0571,
+        "peer_median_pb": 1.0132,
         "forward_eps_2027": 10.7,
         "forward_eps_2028": 10.7,
         "forward_trend_slope_per_quarter": 1.180571,
@@ -240813,7 +240751,7 @@
       ],
       "market_implied": {
         "current_pe_on_valuation_eps": 10.5094,
-        "price_to_fair_value": 0.8326,
+        "price_to_fair_value": 0.8383,
         "interpretation": "現價包含高於模型基本面價值的成長或溢價；此欄位不回饋公允價模型",
         "required_2028_eps_at_peer_pe": 1.6132
       },
@@ -240904,105 +240842,86 @@
       "data_status": "provisional/forward_eps_trend",
       "name": "美好證",
       "market_price": 38.45,
-      "fair_value": 36.36,
-      "base_fair_value": 36.36,
+      "fair_value": 207.63,
+      "base_fair_value": 207.63,
       "growth_fair_value": null,
       "bull_fair_value": null,
       "range": {
-        "bear": 36.36,
-        "base": 36.36,
-        "bull": 38.26
+        "bear": 207.63,
+        "base": 207.63,
+        "bull": 244.47
       },
-      "upside": -0.0544,
+      "upside": 4.4,
       "model": "ensemble",
-      "valuation_signal": "overvalued",
-      "valuation_signal_label": "高估",
-      "model_count": 3,
+      "valuation_signal": "undervalued",
+      "valuation_signal_label": "低估",
+      "model_count": 2,
       "models_used": [
         "residual_income",
-        "relative_pb",
-        "relative_pe"
+        "relative_pb"
       ],
       "model_weights": {
         "residual_income": 0.45,
-        "relative_pb": 0.1810787006411646,
-        "relative_pe": 0.21135277961530125
+        "relative_pb": 0.1
       },
-      "model_spread": 0.0522,
-      "excluded_models": [
-        "forward_eps"
-      ],
+      "model_spread": 0.1775,
+      "excluded_models": [],
       "range_basis": "weighted_model_base_percentiles",
       "confidence": 0.97,
       "source_url": "https://www.tpex.org.tw/openapi/v1/mopsfin_t187ap04_O",
       "reported_period": "2026-H1",
       "models": {
         "residual_income": {
-          "bear": 36.95,
-          "base": 36.95,
-          "bull": 36.95
+          "bear": 244.47,
+          "base": 244.47,
+          "bull": 244.47
         },
         "relative_pb": {
-          "bear": 27.7,
-          "base": 32.71,
-          "bull": 40.67
-        },
-        "relative_pe": {
-          "bear": 27.87,
-          "base": 38.26,
-          "bull": 42.81
-        },
-        "forward_eps": {
-          "bear": null,
-          "base": 179.7,
-          "bull": 201.07
+          "bear": 36.94,
+          "base": 41.81,
+          "bull": 54.25
         }
       },
       "diagnostic_flags": [
-        "model_outlier_excluded"
+        "fair_value_above_double_price"
       ],
       "correction_action": "valuation_eps_bvps_roe_for_residual_income;terminal_convergence_and_forward_eps_gates",
       "inputs": {
-        "ttm_eps": 5.81,
-        "valuation_eps": 2.6,
-        "earnings_basis": "cycle_normalized_short_history",
+        "ttm_eps": 12.86,
+        "valuation_eps": 14.31,
+        "earnings_basis": "cycle_recovery_run_rate",
         "normalized_eps": 2.6,
         "normalized_years": 2,
         "normalized_volatility": 0.4462,
-        "recovery_run_rate_eps": null,
-        "recovery_previous_period": null,
-        "recovery_latest_period": null,
-        "bvps": 30.94,
-        "roe": 0.1878,
-        "ttm_roe": 0.1878,
-        "valuation_roe": 0.084,
+        "recovery_run_rate_eps": 15.76,
+        "recovery_previous_period": "2026-Q1",
+        "recovery_latest_period": "2026-Q2",
+        "bvps": 41.27,
+        "roe": 0.3116,
+        "ttm_roe": 0.3116,
+        "valuation_roe": 0.3467,
         "latest_quarter_roe": 0.0,
         "roe_basis": "valuation_eps_divided_by_latest_bvps",
         "cash_dividend_per_share": 2.001,
-        "payout_ratio": 0.7696,
+        "payout_ratio": 0.1398,
         "beta": 0.9503,
         "risk_free_rate": 0.0175,
         "market_erp": 0.0501,
         "cost_of_equity": 0.065112,
         "terminal_growth": 0.03,
         "peer_median_pe": 14.7157,
-        "peer_median_pb": 1.0571,
-        "forward_eps_2027": 14.525,
-        "forward_eps_2028": 14.525,
-        "forward_trend_slope_per_quarter": 1.684143,
-        "forward_trend_points": 6,
-        "forward_discount_years": 2.75,
-        "reported_ttm_eps": 5.81,
-        "forecast_eps": 3.2501,
-        "revenue_ratio": 3.9158,
-        "reference_revenue": 603200.0,
-        "forecast_revenue": 2362017.0
+        "peer_median_pb": 1.0132,
+        "forward_eps_2027": 17.506,
+        "forward_eps_2028": 24.3056,
+        "forward_trend_slope_per_quarter": 2.830238,
+        "forward_trend_points": 7,
+        "forward_discount_years": 2.5
       },
       "source_dates": {
         "price": "2026-08-21",
-        "financials": "2026-03-31",
+        "financials": "2026-06-30",
         "earnings": "2026-08-20",
-        "monthly_revenue": "2026-07",
+        "monthly_revenue": null,
         "risk_free": "2026-06-09",
         "erp": "2026-01-05",
         "terminal_growth": "2026-08-25"
@@ -241023,21 +240942,21 @@
         "Residual Income 使用與估值 EPS 同基準的 EPS / 最新 BVPS 推導 ROE；季度 ROE 僅作觀察，不作長期 ROE",
         "估值使用週期正常化 EPS；不把低迷季度的衰退率延伸為永久成長，Residual Income Base 改採 0% 中性過渡",
         "同業群組（銀行保險）P/B 納入估值集合",
-        "同業群組（銀行保險）P/E 納入估值集合；分母含營收錨定 EPS nowcast",
+        "同業群組（銀行保險）P/E 納入估值集合",
         "FV-1.16 前瞻 EPS 納入低權重情境集合：最近 6–8 個 TTM EPS 加權線性趨勢，並以已公告季度營收／EPS 強度交叉檢查；2028-Q4 以同業 P/E 評價後折現",
-        "前瞻 EPS 是模型估算，不是公司已公告 EPS；需至少六個連續 TTM 觀測點，並以同業 P/E 與 Ke 折現",
-        "近端 EPS 為營收錨定 nowcast（2026-Q2），尚非已公告季報 EPS；假設最新財報季度利潤率維持"
+        "景氣反轉類停用低谷同業 P/E 及其衍生前瞻模型；以 Residual Income 與 P/B 估值，避免低谷分母製造假性高估",
+        "前瞻 EPS 是模型估算，不是公司已公告 EPS；需至少六個連續 TTM 觀測點，並以同業 P/E 與 Ke 折現"
       ],
       "market_implied": {
-        "current_pe_on_valuation_eps": 14.7885,
-        "price_to_fair_value": 1.0575,
+        "current_pe_on_valuation_eps": 2.6869,
+        "price_to_fair_value": 0.1852,
         "interpretation": "現價包含高於模型基本面價值的成長或溢價；此欄位不回饋公允價模型",
-        "required_2028_eps_at_peer_pe": 3.1078
+        "required_2028_eps_at_peer_pe": 3.0592
       },
       "forward_eps": {
         "type": "weighted_linear_ttm_eps_plus_revenue_anchor",
-        "latest_period": "2026-Q1",
-        "latest_ttm_eps": 5.81,
+        "latest_period": "2026-Q2",
+        "latest_ttm_eps": 13.44,
         "ttm_points": [
           {
             "period": "2024-Q4",
@@ -241062,41 +240981,53 @@
           {
             "period": "2026-Q1",
             "ttm_eps": 5.81
+          },
+          {
+            "period": "2026-Q2",
+            "ttm_eps": 13.44
           }
         ],
-        "trend_points": 6,
-        "trend_slope_per_quarter": 1.684143,
+        "trend_points": 7,
+        "trend_slope_per_quarter": 2.830238,
         "revenue_points": 8,
-        "eps_revenue_intensity": null,
+        "eps_revenue_intensity": 2.5387e-06,
         "targets": {
           "2027": {
             "period": "2027-Q4",
-            "horizon_quarters": 7,
+            "horizon_quarters": 6,
             "trend_eps": {
-              "bear": 0.0,
-              "base": 16.6683,
-              "bull": 20.16
+              "bear": 7.41,
+              "base": 27.5562,
+              "bull": 37.575
             },
-            "revenue_anchor_eps": null,
+            "revenue_anchor_eps": {
+              "bear": 7.4558,
+              "base": 7.4558,
+              "bull": 7.4558
+            },
             "eps": {
-              "bear": 0.0,
-              "base": 14.525,
-              "bull": 14.525
+              "bear": 7.4329,
+              "base": 17.506,
+              "bull": 22.5154
             }
           },
           "2028": {
             "period": "2028-Q4",
-            "horizon_quarters": 11,
+            "horizon_quarters": 10,
             "trend_eps": {
-              "bear": 0.0,
-              "base": 23.4049,
-              "bull": 28.36
+              "bear": 3.39,
+              "base": 38.8771,
+              "bull": 53.665
             },
-            "revenue_anchor_eps": null,
+            "revenue_anchor_eps": {
+              "bear": 9.734,
+              "base": 9.734,
+              "bull": 9.734
+            },
             "eps": {
-              "bear": 0.0,
-              "base": 14.525,
-              "bull": 14.525
+              "bear": 6.562,
+              "base": 24.3056,
+              "bull": 31.6995
             }
           }
         },
@@ -241107,13 +241038,6 @@
           "cap": "每一情境 EPS 不超過最新 TTM EPS 的 2.5 倍，避免短期線性斜率外推成無限本夢比",
           "target": "2027-Q4 與 2028-Q4 EPS，未來版本使用 2028-Q4 目標價折現回估值日"
         }
-      },
-      "forecast": {
-        "type": "revenue_anchored_eps_nowcast",
-        "reference_period": "2026-Q1",
-        "forecast_period": "2026-Q2",
-        "formula": "最新已公告季度 EPS × 下一完整季度營收 / 最新財報季度營收；以此替換 TTM 最舊季度",
-        "assumption": "最新已公告季度 EPS 利潤率維持不變；下一季 EPS 尚未視為官方實際值"
       }
     },
     "6023": {
@@ -241530,16 +241454,16 @@
       "data_status": "provisional/forward_eps_trend",
       "name": "福邦證",
       "market_price": 14.8,
-      "fair_value": 32.5,
-      "base_fair_value": 32.5,
+      "fair_value": 32.41,
+      "base_fair_value": 32.41,
       "growth_fair_value": null,
       "bull_fair_value": null,
       "range": {
         "bear": 24.51,
-        "base": 32.5,
+        "base": 32.41,
         "bull": 40.41
       },
-      "upside": 1.1959,
+      "upside": 1.1899,
       "model": "ensemble",
       "valuation_signal": "undervalued",
       "valuation_signal_label": "低估",
@@ -241554,7 +241478,7 @@
         "dividend_discount": 0.25,
         "relative_pb": 0.1
       },
-      "model_spread": 0.4894,
+      "model_spread": 0.4907,
       "excluded_models": [],
       "range_basis": "weighted_model_base_percentiles",
       "confidence": "low",
@@ -241573,7 +241497,7 @@
         },
         "relative_pb": {
           "bear": 14.24,
-          "base": 16.82,
+          "base": 16.12,
           "bull": 20.91
         }
       },
@@ -241605,7 +241529,7 @@
         "cost_of_equity": 0.055653,
         "terminal_growth": 0.03,
         "peer_median_pe": 14.7157,
-        "peer_median_pb": 1.0571,
+        "peer_median_pb": 1.0132,
         "forward_eps_2027": 3.2562,
         "forward_eps_2028": 4.448,
         "forward_trend_slope_per_quarter": 0.520476,
@@ -241644,7 +241568,7 @@
       ],
       "market_implied": {
         "current_pe_on_valuation_eps": 5.8268,
-        "price_to_fair_value": 0.4554,
+        "price_to_fair_value": 0.4566,
         "interpretation": "現價包含高於模型基本面價值的成長或溢價；此欄位不回饋公允價模型",
         "required_2028_eps_at_peer_pe": 1.1516
       },
@@ -241740,16 +241664,16 @@
       "data_status": "provisional",
       "name": "公勝保經",
       "market_price": 98.1,
-      "fair_value": 260.5,
-      "base_fair_value": 260.5,
+      "fair_value": 260.06,
+      "base_fair_value": 260.06,
       "growth_fair_value": null,
       "bull_fair_value": null,
       "range": {
-        "bear": 38.68,
-        "base": 260.5,
+        "bear": 37.07,
+        "base": 260.06,
         "bull": 345.82
       },
-      "upside": 1.6555,
+      "upside": 1.651,
       "model": "ensemble",
       "valuation_signal": "fair_value_range",
       "valuation_signal_label": "合理區間",
@@ -241762,7 +241686,7 @@
         "relative_pb": 0.1,
         "relative_pe": 0.26
       },
-      "model_spread": 1.179,
+      "model_spread": 1.1872,
       "excluded_models": [],
       "range_basis": "weighted_model_base_percentiles",
       "confidence": 0.97,
@@ -241771,7 +241695,7 @@
       "models": {
         "relative_pb": {
           "bear": 32.76,
-          "base": 38.68,
+          "base": 37.07,
           "bull": 48.1
         },
         "relative_pe": {
@@ -241809,7 +241733,7 @@
         "cost_of_equity": 0.023066,
         "terminal_growth": 0.03,
         "peer_median_pe": 14.7157,
-        "peer_median_pb": 1.0571
+        "peer_median_pb": 1.0132
       },
       "source_dates": {
         "price": "2026-08-21",
@@ -241839,7 +241763,7 @@
       ],
       "market_implied": {
         "current_pe_on_valuation_eps": 4.1745,
-        "price_to_fair_value": 0.3766,
+        "price_to_fair_value": 0.3772,
         "interpretation": "現價包含高於模型基本面價值的成長或溢價；此欄位不回饋公允價模型"
       }
     },
@@ -243214,7 +243138,7 @@
           "bull": 127.26
         },
         "relative_pe": {
-          "bear": 40.8,
+          "bear": 41.27,
           "base": 68.82,
           "bull": 163.25
         }
@@ -243416,12 +243340,12 @@
           "bull": 94.87
         },
         "relative_pe": {
-          "bear": 68.05,
+          "bear": 68.84,
           "base": 114.79,
           "bull": 272.3
         },
         "forward_eps": {
-          "bear": 9.09,
+          "bear": 9.2,
           "base": 62.52,
           "bull": 266.21
         }
@@ -246767,9 +246691,9 @@
       "model_spread": 0.0855,
       "excluded_models": [],
       "range_basis": "weighted_model_base_percentiles",
-      "confidence": 0.97,
+      "confidence": "low",
       "source_url": "https://www.tpex.org.tw/openapi/v1/mopsfin_t187ap04_O",
-      "reported_period": "2026-H1",
+      "reported_period": null,
       "models": {
         "residual_income": {
           "bear": 248.53,
@@ -246818,7 +246742,7 @@
       "source_dates": {
         "price": "2026-08-21",
         "financials": "2026-06-30",
-        "earnings": "2026-08-13",
+        "earnings": "2026-08-24",
         "monthly_revenue": null,
         "risk_free": "2026-06-09",
         "erp": "2026-01-05",
@@ -252912,12 +252836,12 @@
           "bull": 98.1
         },
         "relative_pe": {
-          "bear": 69.16,
+          "bear": 69.95,
           "base": 116.65,
           "bull": 276.71
         },
         "forward_eps": {
-          "bear": 22.97,
+          "bear": 23.23,
           "base": 56.18,
           "bull": 187.93
         }
@@ -253479,7 +253403,7 @@
       "growth_fair_value": null,
       "bull_fair_value": null,
       "range": {
-        "bear": 19.42,
+        "bear": 19.57,
         "base": 28.94,
         "bull": 47.34
       },
@@ -253494,7 +253418,7 @@
       "model_weights": {
         "relative_pb": 0.1443475396025724
       },
-      "model_spread": 0.965,
+      "model_spread": 0.9597,
       "excluded_models": [],
       "range_basis": "single_model_scenarios",
       "confidence": 0.97,
@@ -253502,7 +253426,7 @@
       "reported_period": "2026-H1",
       "models": {
         "relative_pb": {
-          "bear": 19.42,
+          "bear": 19.57,
           "base": 28.94,
           "bull": 47.34
         }
@@ -254292,7 +254216,7 @@
       "reported_period": "2026-Q2",
       "models": {
         "relative_pb": {
-          "bear": 28.53,
+          "bear": 28.75,
           "base": 42.51,
           "bull": 69.54
         },
@@ -254505,7 +254429,7 @@
           "bull": 49.62
         },
         "relative_pe": {
-          "bear": 2.21,
+          "bear": 2.23,
           "base": 3.72,
           "bull": 8.82
         },
@@ -255758,12 +255682,12 @@
           "bull": 255.87
         },
         "relative_pe": {
-          "bear": 140.04,
+          "bear": 141.65,
           "base": 236.23,
           "bull": 560.35
         },
         "forward_eps": {
-          "bear": 74.97,
+          "bear": 75.83,
           "base": 124.68,
           "bull": 337.74
         }
@@ -256172,7 +256096,7 @@
           "bull": 141.3
         },
         "relative_pe": {
-          "bear": 49.94,
+          "bear": 50.51,
           "base": 84.24,
           "bull": 199.81
         }
@@ -257139,7 +257063,7 @@
       "growth_fair_value": null,
       "bull_fair_value": null,
       "range": {
-        "bear": 15.75,
+        "bear": 15.88,
         "base": 23.48,
         "bull": 38.41
       },
@@ -257154,7 +257078,7 @@
       "model_weights": {
         "relative_pb": 0.1
       },
-      "model_spread": 0.965,
+      "model_spread": 0.9597,
       "excluded_models": [],
       "range_basis": "single_model_scenarios",
       "confidence": 0.97,
@@ -257162,7 +257086,7 @@
       "reported_period": "2026-H1",
       "models": {
         "relative_pb": {
-          "bear": 15.75,
+          "bear": 15.88,
           "base": 23.48,
           "bull": 38.41
         }
@@ -257768,12 +257692,12 @@
           "bull": 124.13
         },
         "relative_pe": {
-          "bear": 70.97,
+          "bear": 71.78,
           "base": 119.71,
           "bull": 283.96
         },
         "forward_eps": {
-          "bear": 24.21,
+          "bear": 24.48,
           "base": 174.88,
           "bull": 477.58
         }
@@ -257981,7 +257905,7 @@
           "bull": 54.07
         },
         "relative_pe": {
-          "bear": 23.0,
+          "bear": 23.26,
           "base": 38.8,
           "bull": 92.03
         }
@@ -258191,12 +258115,12 @@
           "bull": 112.87
         },
         "relative_pe": {
-          "bear": 44.74,
+          "bear": 45.25,
           "base": 75.47,
           "bull": 179.01
         },
         "forward_eps": {
-          "bear": 4.76,
+          "bear": 4.81,
           "base": 18.04,
           "bull": 130.37
         }
@@ -260998,7 +260922,7 @@
           "bull": 75.76
         },
         "relative_pe": {
-          "bear": 11.97,
+          "bear": 12.11,
           "base": 20.2,
           "bull": 47.9
         }
@@ -267325,12 +267249,12 @@
           "bull": 55.36
         },
         "relative_pe": {
-          "bear": 42.53,
+          "bear": 43.02,
           "base": 71.75,
           "bull": 170.19
         },
         "forward_eps": {
-          "bear": 5.81,
+          "bear": 5.88,
           "base": 13.4,
           "bull": 72.21
         }
@@ -268136,7 +268060,7 @@
           "bull": 78.75
         },
         "relative_pe": {
-          "bear": 44.58,
+          "bear": 45.09,
           "base": 75.2,
           "bull": 178.38
         }
@@ -269253,12 +269177,12 @@
           "bull": 264.52
         },
         "relative_pe": {
-          "bear": 214.08,
+          "bear": 216.54,
           "base": 361.12,
           "bull": 856.6
         },
         "forward_eps": {
-          "bear": 35.01,
+          "bear": 35.41,
           "base": 131.72,
           "bull": 522.06
         }
@@ -270062,7 +269986,7 @@
           "bull": 203.05
         },
         "relative_pe": {
-          "bear": 63.64,
+          "bear": 64.37,
           "base": 107.35,
           "bull": 254.65
         }
@@ -271691,7 +271615,7 @@
       "excluded_models": [],
       "range_basis": "weighted_model_base_percentiles",
       "confidence": "low",
-      "source_url": null,
+      "source_url": "https://www.tpex.org.tw/openapi/v1/mopsfin_t187ap04_O",
       "reported_period": "2026-Q2",
       "models": {
         "residual_income": {
@@ -271756,7 +271680,7 @@
       "source_dates": {
         "price": "2026-08-21",
         "financials": "2026-06-30",
-        "earnings": null,
+        "earnings": "2026-08-24",
         "monthly_revenue": null,
         "risk_free": "2026-06-09",
         "erp": "2026-01-05",
@@ -272947,12 +272871,12 @@
           "bull": 51.85
         },
         "relative_pe": {
-          "bear": 12.76,
+          "bear": 12.91,
           "base": 21.52,
           "bull": 51.06
         },
         "forward_eps": {
-          "bear": 3.96,
+          "bear": 4.01,
           "base": 6.68,
           "bull": 15.85
         }
@@ -276270,7 +276194,7 @@
       "reported_period": null,
       "models": {
         "relative_pb": {
-          "bear": 59.48,
+          "bear": 59.95,
           "base": 88.64,
           "bull": 145.02
         },
@@ -279473,7 +279397,7 @@
       "reported_period": "2026-Q2",
       "models": {
         "relative_pb": {
-          "bear": 43.91,
+          "bear": 44.26,
           "base": 65.44,
           "bull": 107.06
         },
@@ -283421,7 +283345,7 @@
           "bull": 179.0
         },
         "relative_pe": {
-          "bear": 81.76,
+          "bear": 82.7,
           "base": 137.91,
           "bull": 327.14
         }
@@ -288130,7 +288054,7 @@
       "growth_fair_value": null,
       "bull_fair_value": null,
       "range": {
-        "bear": 49.94,
+        "bear": 50.33,
         "base": 74.41,
         "bull": 121.74
       },
@@ -288145,7 +288069,7 @@
       "model_weights": {
         "relative_pb": 0.1
       },
-      "model_spread": 0.965,
+      "model_spread": 0.9597,
       "excluded_models": [],
       "range_basis": "single_model_scenarios",
       "confidence": "low",
@@ -288153,7 +288077,7 @@
       "reported_period": "2026-Q2",
       "models": {
         "relative_pb": {
-          "bear": 49.94,
+          "bear": 50.33,
           "base": 74.41,
           "bull": 121.74
         }
@@ -289136,7 +289060,7 @@
       "reported_period": "2026-Q2",
       "models": {
         "relative_pb": {
-          "bear": 48.09,
+          "bear": 48.47,
           "base": 71.66,
           "bull": 117.24
         },
@@ -289720,7 +289644,7 @@
           "bull": 91.53
         },
         "relative_pe": {
-          "bear": 5.67,
+          "bear": 5.74,
           "base": 9.57,
           "bull": 22.69
         }
@@ -291783,7 +291707,7 @@
       ],
       "model_weights": {
         "relative_pb": 0.19970975576005995,
-        "relative_pe": 0.20017414654396404
+        "relative_pe": 0.20017414654396407
       },
       "model_spread": 1.331,
       "excluded_models": [],
@@ -291969,7 +291893,7 @@
       "growth_fair_value": null,
       "bull_fair_value": null,
       "range": {
-        "bear": 29.97,
+        "bear": 30.2,
         "base": 44.65,
         "bull": 73.06
       },
@@ -291984,7 +291908,7 @@
       "model_weights": {
         "relative_pb": 0.1
       },
-      "model_spread": 0.965,
+      "model_spread": 0.9597,
       "excluded_models": [],
       "range_basis": "single_model_scenarios",
       "confidence": "low",
@@ -291992,7 +291916,7 @@
       "reported_period": "2026-Q2",
       "models": {
         "relative_pb": {
-          "bear": 29.97,
+          "bear": 30.2,
           "base": 44.65,
           "bull": 73.06
         }
@@ -294143,7 +294067,7 @@
       "growth_fair_value": null,
       "bull_fair_value": null,
       "range": {
-        "bear": 38.24,
+        "bear": 38.54,
         "base": 56.98,
         "bull": 93.23
       },
@@ -294158,7 +294082,7 @@
       "model_weights": {
         "relative_pb": 0.1
       },
-      "model_spread": 0.965,
+      "model_spread": 0.9597,
       "excluded_models": [],
       "range_basis": "single_model_scenarios",
       "confidence": "low",
@@ -294166,7 +294090,7 @@
       "reported_period": "2026-Q2",
       "models": {
         "relative_pb": {
-          "bear": 38.24,
+          "bear": 38.54,
           "base": 56.98,
           "bull": 93.23
         }
@@ -295143,12 +295067,12 @@
           "bull": 237.87
         },
         "relative_pe": {
-          "bear": 344.04,
+          "bear": 348.0,
           "base": 580.35,
           "bull": 1376.62
         },
         "forward_eps": {
-          "bear": 109.68,
+          "bear": 110.94,
           "base": 279.41,
           "bull": 929.8
         }
@@ -299906,7 +299830,7 @@
           "bull": 188.25
         },
         "relative_pe": {
-          "bear": 55.61,
+          "bear": 56.25,
           "base": 93.8,
           "bull": 222.5
         }
@@ -300687,7 +300611,7 @@
       "growth_fair_value": null,
       "bull_fair_value": null,
       "range": {
-        "bear": 26.54,
+        "bear": 26.75,
         "base": 39.55,
         "bull": 64.71
       },
@@ -300702,7 +300626,7 @@
       "model_weights": {
         "relative_pb": 0.1
       },
-      "model_spread": 0.965,
+      "model_spread": 0.9597,
       "excluded_models": [],
       "range_basis": "single_model_scenarios",
       "confidence": "low",
@@ -300710,7 +300634,7 @@
       "reported_period": "2026-Q2",
       "models": {
         "relative_pb": {
-          "bear": 26.54,
+          "bear": 26.75,
           "base": 39.55,
           "bull": 64.71
         }
@@ -303037,9 +302961,9 @@
         "forward_eps"
       ],
       "model_weights": {
-        "relative_pb": 0.16013230014992105,
-        "relative_pe": 0.22392061991004739,
-        "forward_eps": 0.11594707994003159
+        "relative_pb": 0.16013230014992103,
+        "relative_pe": 0.2239206199100474,
+        "forward_eps": 0.1159470799400316
       },
       "model_spread": 0.6303,
       "excluded_models": [],
@@ -304281,12 +304205,12 @@
           "bull": 170.35
         },
         "relative_pe": {
-          "bear": 166.04,
+          "bear": 167.95,
           "base": 280.08,
           "bull": 664.36
         },
         "forward_eps": {
-          "bear": 43.66,
+          "bear": 44.16,
           "base": 93.59,
           "bull": 292.74
         }
@@ -305712,12 +305636,12 @@
           "bull": 736.06
         },
         "relative_pe": {
-          "bear": 616.57,
+          "bear": 623.66,
           "base": 1040.06,
           "bull": 2467.07
         },
         "forward_eps": {
-          "bear": 516.13,
+          "bear": 522.07,
           "base": 980.34,
           "bull": 4242.38
         }
@@ -311920,16 +311844,16 @@
       "data_status": "complete",
       "name": "三集瑞-KY",
       "market_price": 137.0,
-      "fair_value": 136.52,
-      "base_fair_value": 136.52,
+      "fair_value": 105.56,
+      "base_fair_value": 105.56,
       "growth_fair_value": null,
       "bull_fair_value": null,
       "range": {
-        "bear": 108.14,
-        "base": 136.52,
-        "bull": 136.52
+        "bear": 69.84,
+        "base": 105.56,
+        "bull": 123.4
       },
-      "upside": -0.0035,
+      "upside": -0.2295,
       "model": "ensemble",
       "valuation_signal": "overvalued",
       "valuation_signal_label": "高估",
@@ -311943,20 +311867,20 @@
       "model_weights": {
         "residual_income": 0.45,
         "dividend_discount": 0.25,
-        "relative_pb": 0.11964607657561266,
-        "relative_pe": 0.24821235405463243
+        "relative_pb": 0.1428644218847508,
+        "relative_pe": 0.23428134686914953
       },
-      "model_spread": 0.2078,
+      "model_spread": 0.5074,
       "excluded_models": [],
       "range_basis": "weighted_model_base_percentiles",
       "confidence": "low",
       "source_url": null,
-      "reported_period": "2026-Q1",
+      "reported_period": "2026-Q2",
       "models": {
         "residual_income": {
-          "bear": 108.14,
-          "base": 108.14,
-          "bull": 108.14
+          "bear": 66.85,
+          "base": 69.84,
+          "bull": 73.71
         },
         "dividend_discount": {
           "bear": 64.86,
@@ -311964,36 +311888,36 @@
           "bull": 64.86
         },
         "relative_pb": {
-          "bear": 80.0,
-          "base": 133.2,
-          "bull": 217.4
+          "bear": 74.11,
+          "base": 123.4,
+          "bull": 201.42
         },
         "relative_pe": {
-          "bear": 155.17,
-          "base": 261.74,
-          "bull": 620.86
+          "bear": 123.97,
+          "base": 206.74,
+          "bull": 490.39
         }
       },
       "diagnostic_flags": [],
-      "correction_action": "valuation_eps_bvps_roe_for_residual_income;terminal_convergence_and_forward_eps_gates",
+      "correction_action": "ttm_roe_proxy_for_residual_income;terminal_convergence_and_forward_eps_gates",
       "inputs": {
-        "ttm_eps": 6.1,
-        "valuation_eps": 9.85,
-        "earnings_basis": "cycle_normalized_short_history",
+        "ttm_eps": 7.78,
+        "valuation_eps": 7.78,
+        "earnings_basis": "ttm",
         "normalized_eps": 9.85,
         "normalized_years": 2,
         "normalized_volatility": 0.1584,
         "recovery_run_rate_eps": null,
         "recovery_previous_period": null,
         "recovery_latest_period": null,
-        "bvps": 62.56,
-        "roe": 0.0975,
-        "ttm_roe": 0.0975,
-        "valuation_roe": 0.1574,
-        "latest_quarter_roe": 0.016,
-        "roe_basis": "valuation_eps_divided_by_latest_bvps",
+        "bvps": 57.96,
+        "roe": 0.1342,
+        "ttm_roe": 0.1342,
+        "valuation_roe": 0.1342,
+        "latest_quarter_roe": 0.029,
+        "roe_basis": "ttm_eps_divided_by_latest_bvps",
         "cash_dividend_per_share": 5.0,
-        "payout_ratio": 0.5076,
+        "payout_ratio": 0.6427,
         "beta": 1.1895,
         "risk_free_rate": 0.0175,
         "market_erp": 0.0501,
@@ -312003,13 +311927,13 @@
         "peer_median_pb": 2.1291,
         "forward_eps_2027": 0.5922,
         "forward_eps_2028": 0.247,
-        "forward_trend_slope_per_quarter": -0.933857,
-        "forward_trend_points": 6,
-        "forward_discount_years": 2.75
+        "forward_trend_slope_per_quarter": -1.032619,
+        "forward_trend_points": 7,
+        "forward_discount_years": 2.5
       },
       "source_dates": {
         "price": "2026-08-21",
-        "financials": "2026-03-31",
+        "financials": "2026-06-30",
         "earnings": null,
         "monthly_revenue": null,
         "risk_free": "2026-06-09",
@@ -312030,22 +311954,21 @@
         "World Bank GDP API 沒有足夠的名目 GDP 序列，使用透明 fallback",
         "Damodaran 國家風險溢酬表未找到 Taiwan，使用已標示版本 fallback",
         "Residual Income 使用與估值 EPS 同基準的 EPS / 最新 BVPS 推導 ROE；季度 ROE 僅作觀察，不作長期 ROE",
-        "估值使用週期正常化 EPS；不把低迷季度的衰退率延伸為永久成長，Residual Income Base 改採 0% 中性過渡",
         "現金股利成長樣本不足，DDM 採用 0% 成長",
         "同業群組（電子元件）P/B 納入估值集合",
         "同業群組（電子元件）P/E 納入估值集合",
         "前瞻 EPS 是模型估算，不是公司已公告 EPS；需至少六個連續 TTM 觀測點，並以同業 P/E 與 Ke 折現"
       ],
       "market_implied": {
-        "current_pe_on_valuation_eps": 13.9086,
-        "price_to_fair_value": 1.0035,
+        "current_pe_on_valuation_eps": 17.6093,
+        "price_to_fair_value": 1.2978,
         "interpretation": "現價包含高於模型基本面價值的成長或溢價；此欄位不回饋公允價模型",
-        "required_2028_eps_at_peer_pe": 6.3239
+        "required_2028_eps_at_peer_pe": 6.2075
       },
       "forward_eps": {
         "type": "weighted_linear_ttm_eps_plus_revenue_anchor",
-        "latest_period": "2026-Q1",
-        "latest_ttm_eps": 6.1,
+        "latest_period": "2026-Q2",
+        "latest_ttm_eps": 4.58,
         "ttm_points": [
           {
             "period": "2024-Q4",
@@ -312070,20 +311993,24 @@
           {
             "period": "2026-Q1",
             "ttm_eps": 6.1
+          },
+          {
+            "period": "2026-Q2",
+            "ttm_eps": 4.58
           }
         ],
-        "trend_points": 6,
-        "trend_slope_per_quarter": -0.933857,
+        "trend_points": 7,
+        "trend_slope_per_quarter": -1.032619,
         "revenue_points": 6,
         "eps_revenue_intensity": 5.0783e-06,
         "targets": {
           "2027": {
             "period": "2027-Q4",
-            "horizon_quarters": 7,
+            "horizon_quarters": 6,
             "trend_eps": {
               "bear": 0.0,
               "base": 0.0,
-              "bull": 5.26
+              "bull": 1.76
             },
             "revenue_anchor_eps": {
               "bear": 1.1843,
@@ -312093,16 +312020,16 @@
             "eps": {
               "bear": 0.5922,
               "base": 0.5922,
-              "bull": 3.2222
+              "bull": 1.4722
             }
           },
           "2028": {
             "period": "2028-Q4",
-            "horizon_quarters": 11,
+            "horizon_quarters": 10,
             "trend_eps": {
               "bear": 0.0,
               "base": 0.0,
-              "bull": 4.78
+              "bull": 0.0
             },
             "revenue_anchor_eps": {
               "bear": 0.494,
@@ -312112,7 +312039,7 @@
             "eps": {
               "bear": 0.247,
               "base": 0.247,
-              "bull": 2.637
+              "bull": 0.247
             }
           }
         },
@@ -313878,7 +313805,7 @@
       "growth_fair_value": null,
       "bull_fair_value": null,
       "range": {
-        "bear": 47.05,
+        "bear": 47.42,
         "base": 70.12,
         "bull": 114.71
       },
@@ -313893,7 +313820,7 @@
       "model_weights": {
         "relative_pb": 0.1
       },
-      "model_spread": 0.965,
+      "model_spread": 0.9597,
       "excluded_models": [],
       "range_basis": "single_model_scenarios",
       "confidence": 0.97,
@@ -313901,7 +313828,7 @@
       "reported_period": "2026-H1",
       "models": {
         "relative_pb": {
-          "bear": 47.05,
+          "bear": 47.42,
           "base": 70.12,
           "bull": 114.71
         }
@@ -314862,7 +314789,7 @@
       "reported_period": "2026-Q2",
       "models": {
         "relative_pb": {
-          "bear": 13.25,
+          "bear": 13.35,
           "base": 19.74,
           "bull": 32.3
         },
@@ -315465,7 +315392,7 @@
       "reported_period": "2026-Q2",
       "models": {
         "relative_pb": {
-          "bear": 50.02,
+          "bear": 50.41,
           "base": 74.53,
           "bull": 121.94
         },
@@ -315849,7 +315776,7 @@
         "relative_pe"
       ],
       "model_weights": {
-        "relative_pb": 0.1421558117723858,
+        "relative_pb": 0.14215581177238576,
         "relative_pe": 0.23470651293656855
       },
       "model_spread": 0.0238,
@@ -316378,7 +316305,7 @@
       "growth_fair_value": null,
       "bull_fair_value": null,
       "range": {
-        "bear": 50.01,
+        "bear": 50.4,
         "base": 74.52,
         "bull": 121.92
       },
@@ -316393,7 +316320,7 @@
       "model_weights": {
         "relative_pb": 0.1
       },
-      "model_spread": 0.965,
+      "model_spread": 0.9597,
       "excluded_models": [],
       "range_basis": "single_model_scenarios",
       "confidence": "low",
@@ -316401,7 +316328,7 @@
       "reported_period": "2026-Q2",
       "models": {
         "relative_pb": {
-          "bear": 50.01,
+          "bear": 50.4,
           "base": 74.52,
           "bull": 121.92
         }
@@ -317583,7 +317510,7 @@
           "bull": 93.86
         },
         "relative_pe": {
-          "bear": 172.18,
+          "bear": 174.16,
           "base": 290.44,
           "bull": 688.94
         }
@@ -319720,7 +319647,7 @@
       "growth_fair_value": null,
       "bull_fair_value": null,
       "range": {
-        "bear": 19.96,
+        "bear": 20.12,
         "base": 29.74,
         "bull": 48.66
       },
@@ -319735,7 +319662,7 @@
       "model_weights": {
         "relative_pb": 0.1563194533785851
       },
-      "model_spread": 0.965,
+      "model_spread": 0.9597,
       "excluded_models": [],
       "range_basis": "single_model_scenarios",
       "confidence": "low",
@@ -319743,7 +319670,7 @@
       "reported_period": "2026-Q2",
       "models": {
         "relative_pb": {
-          "bear": 19.96,
+          "bear": 20.12,
           "base": 29.74,
           "bull": 48.66
         }
@@ -320337,7 +320264,7 @@
       "reported_period": "2026-Q1",
       "models": {
         "relative_pb": {
-          "bear": 38.12,
+          "bear": 38.42,
           "base": 56.8,
           "bull": 92.93
         },
@@ -320512,7 +320439,7 @@
       "growth_fair_value": null,
       "bull_fair_value": null,
       "range": {
-        "bear": 21.94,
+        "bear": 22.11,
         "base": 32.7,
         "bull": 53.5
       },
@@ -320527,7 +320454,7 @@
       "model_weights": {
         "relative_pb": 0.2
       },
-      "model_spread": 0.965,
+      "model_spread": 0.9597,
       "excluded_models": [],
       "range_basis": "single_model_scenarios",
       "confidence": 0.97,
@@ -320535,7 +320462,7 @@
       "reported_period": "2026-H1",
       "models": {
         "relative_pb": {
-          "bear": 21.94,
+          "bear": 22.11,
           "base": 32.7,
           "bull": 53.5
         }
@@ -327222,7 +327149,7 @@
           "bull": 293.47
         },
         "relative_pe": {
-          "bear": 494.64,
+          "bear": 500.33,
           "base": 834.39,
           "bull": 1979.2
         }
@@ -328756,7 +328683,7 @@
           "bull": 128.79
         },
         "relative_pb": {
-          "bear": 11.49,
+          "bear": 11.58,
           "base": 17.11,
           "bull": 28.0
         },
@@ -329170,7 +329097,7 @@
           "bull": 272.34
         },
         "relative_pe": {
-          "bear": 147.76,
+          "bear": 149.46,
           "base": 249.25,
           "bull": 591.24
         }
@@ -329616,7 +329543,7 @@
           "bull": 125.28
         },
         "relative_pe": {
-          "bear": 97.67,
+          "bear": 98.79,
           "base": 164.75,
           "bull": 390.8
         }
@@ -332737,7 +332664,7 @@
           "bull": 11.55
         },
         "relative_pb": {
-          "bear": 18.63,
+          "bear": 18.67,
           "base": 27.75,
           "bull": 45.57
         },
@@ -333158,12 +333085,12 @@
           "bull": 26.93
         },
         "relative_pe": {
-          "bear": 21.58,
+          "bear": 21.83,
           "base": 36.4,
           "bull": 86.35
         },
         "forward_eps": {
-          "bear": 11.01,
+          "bear": 11.13,
           "base": 71.26,
           "bull": 174.49
         }
@@ -344909,7 +344836,7 @@
           "bull": 116.59
         },
         "relative_pe": {
-          "bear": 22.68,
+          "bear": 22.95,
           "base": 38.26,
           "bull": 90.77
         }
@@ -345716,12 +345643,12 @@
           "bull": 217.75
         },
         "relative_pe": {
-          "bear": 45.05,
+          "bear": 45.57,
           "base": 76.0,
           "bull": 180.27
         },
         "forward_eps": {
-          "bear": 7.78,
+          "bear": 7.87,
           "base": 13.13,
           "bull": 71.23
         }
@@ -346925,7 +346852,7 @@
           "bull": 178.38
         },
         "relative_pe": {
-          "bear": 62.38,
+          "bear": 63.1,
           "base": 105.23,
           "bull": 249.61
         }
@@ -349135,7 +349062,7 @@
       "reported_period": "2026-Q2",
       "models": {
         "relative_pb": {
-          "bear": 28.04,
+          "bear": 28.26,
           "base": 41.78,
           "bull": 68.36
         },
@@ -349515,7 +349442,7 @@
       "growth_fair_value": null,
       "bull_fair_value": null,
       "range": {
-        "bear": 25.58,
+        "bear": 25.78,
         "base": 38.12,
         "bull": 62.36
       },
@@ -349530,7 +349457,7 @@
       "model_weights": {
         "relative_pb": 0.13355492673328195
       },
-      "model_spread": 0.965,
+      "model_spread": 0.9597,
       "excluded_models": [],
       "range_basis": "single_model_scenarios",
       "confidence": "low",
@@ -349538,7 +349465,7 @@
       "reported_period": "2026-Q2",
       "models": {
         "relative_pb": {
-          "bear": 25.58,
+          "bear": 25.78,
           "base": 38.12,
           "bull": 62.36
         }
@@ -350763,7 +350690,7 @@
       "reported_period": "2026-Q2",
       "models": {
         "relative_pb": {
-          "bear": 15.65,
+          "bear": 15.78,
           "base": 23.33,
           "bull": 38.16
         },
@@ -351175,7 +351102,7 @@
       "reported_period": "2026-H1",
       "models": {
         "relative_pb": {
-          "bear": 15.87,
+          "bear": 16.0,
           "base": 23.65,
           "bull": 38.7
         },
@@ -351788,7 +351715,7 @@
       "reported_period": "2026-Q1",
       "models": {
         "relative_pb": {
-          "bear": 25.56,
+          "bear": 25.76,
           "base": 38.09,
           "bull": 62.31
         },
@@ -352369,7 +352296,7 @@
       "reported_period": "2026-H1",
       "models": {
         "relative_pb": {
-          "bear": 12.52,
+          "bear": 12.62,
           "base": 18.66,
           "bull": 30.53
         },
@@ -353120,19 +353047,19 @@
     },
     "8426": {
       "status": "ok",
-      "data_status": "partial_model_fallback",
+      "data_status": "provisional/forward_eps_trend",
       "name": "紅木-KY",
       "market_price": 21.15,
-      "fair_value": 34.48,
-      "base_fair_value": 34.48,
+      "fair_value": 31.6,
+      "base_fair_value": 31.6,
       "growth_fair_value": null,
       "bull_fair_value": null,
       "range": {
-        "bear": 23.14,
-        "base": 34.48,
-        "bull": 56.41
+        "bear": 21.37,
+        "base": 31.6,
+        "bull": 51.7
       },
-      "upside": 0.6303,
+      "upside": 0.4941,
       "model": "relative_pb",
       "valuation_signal": "undervalued",
       "valuation_signal_label": "低估",
@@ -353143,24 +353070,24 @@
       "model_weights": {
         "relative_pb": 0.1
       },
-      "model_spread": 0.965,
+      "model_spread": 0.9597,
       "excluded_models": [],
       "range_basis": "single_model_scenarios",
       "confidence": "low",
       "source_url": null,
-      "reported_period": "2026-Q1",
+      "reported_period": "2026-Q2",
       "models": {
         "relative_pb": {
-          "bear": 23.14,
-          "base": 34.48,
-          "bull": 56.41
+          "bear": 21.37,
+          "base": 31.6,
+          "bull": 51.7
         }
       },
       "diagnostic_flags": [],
       "correction_action": "valuation_eps_bvps_roe_for_residual_income;terminal_convergence_and_forward_eps_gates",
       "inputs": {
-        "ttm_eps": 2.08,
-        "valuation_eps": 4.92,
+        "ttm_eps": 0.98,
+        "valuation_eps": 4.37,
         "earnings_basis": "cycle_recovery_run_rate",
         "normalized_eps": 3.44,
         "normalized_years": 2,
@@ -353168,14 +353095,14 @@
         "recovery_run_rate_eps": 7.76,
         "recovery_previous_period": "2025-Q3",
         "recovery_latest_period": "2025-Q4",
-        "bvps": 25.2,
-        "roe": 0.0825,
-        "ttm_roe": 0.0825,
-        "valuation_roe": 0.1952,
-        "latest_quarter_roe": -0.0168,
+        "bvps": 23.1,
+        "roe": 0.0424,
+        "ttm_roe": 0.0424,
+        "valuation_roe": 0.1892,
+        "latest_quarter_roe": -0.0475,
         "roe_basis": "valuation_eps_divided_by_latest_bvps",
         "cash_dividend_per_share": 0.8,
-        "payout_ratio": 0.1626,
+        "payout_ratio": 0.1831,
         "beta": 0.0453,
         "risk_free_rate": 0.0175,
         "market_erp": 0.0501,
@@ -353183,15 +353110,15 @@
         "terminal_growth": 0.03,
         "peer_median_pe": 13.7181,
         "peer_median_pb": 1.3681,
-        "forward_eps_2027": 0.0,
-        "forward_eps_2028": 0.0,
-        "forward_trend_slope_per_quarter": -0.258143,
-        "forward_trend_points": 6,
-        "forward_discount_years": 2.75
+        "forward_eps_2027": 1.5721,
+        "forward_eps_2028": 1.4093,
+        "forward_trend_slope_per_quarter": -0.040714,
+        "forward_trend_points": 7,
+        "forward_discount_years": 2.5
       },
       "source_dates": {
         "price": "2026-08-21",
-        "financials": "2026-03-31",
+        "financials": "2026-06-30",
         "earnings": null,
         "monthly_revenue": null,
         "risk_free": "2026-06-09",
@@ -353214,19 +353141,20 @@
         "Residual Income 使用與估值 EPS 同基準的 EPS / 最新 BVPS 推導 ROE；季度 ROE 僅作觀察，不作長期 ROE",
         "同業群組（其他服務）P/B 納入估值集合",
         "同業群組（其他服務）P/E 納入估值集合",
+        "FV-1.16 前瞻 EPS 納入低權重情境集合：最近 6–8 個 TTM EPS 加權線性趨勢，並以已公告季度營收／EPS 強度交叉檢查；2028-Q4 以同業 P/E 評價後折現",
         "景氣反轉類停用低谷同業 P/E 及其衍生前瞻模型；以 Residual Income 與 P/B 估值，避免低谷分母製造假性高估",
         "前瞻 EPS 是模型估算，不是公司已公告 EPS；需至少六個連續 TTM 觀測點，並以同業 P/E 與 Ke 折現"
       ],
       "market_implied": {
-        "current_pe_on_valuation_eps": 4.2988,
-        "price_to_fair_value": 0.6134,
+        "current_pe_on_valuation_eps": 4.8398,
+        "price_to_fair_value": 0.6693,
         "interpretation": "現價包含高於模型基本面價值的成長或溢價；此欄位不回饋公允價模型",
-        "required_2028_eps_at_peer_pe": 1.627
+        "required_2028_eps_at_peer_pe": 1.6191
       },
       "forward_eps": {
         "type": "weighted_linear_ttm_eps_plus_revenue_anchor",
-        "latest_period": "2026-Q1",
-        "latest_ttm_eps": 2.08,
+        "latest_period": "2026-Q2",
+        "latest_ttm_eps": 2.36,
         "ttm_points": [
           {
             "period": "2024-Q4",
@@ -353251,41 +353179,45 @@
           {
             "period": "2026-Q1",
             "ttm_eps": 2.08
+          },
+          {
+            "period": "2026-Q2",
+            "ttm_eps": 2.36
           }
         ],
-        "trend_points": 6,
-        "trend_slope_per_quarter": -0.258143,
+        "trend_points": 7,
+        "trend_slope_per_quarter": -0.040714,
         "revenue_points": 8,
         "eps_revenue_intensity": null,
         "targets": {
           "2027": {
             "period": "2027-Q4",
-            "horizon_quarters": 7,
+            "horizon_quarters": 6,
             "trend_eps": {
               "bear": 0.0,
-              "base": 0.0,
-              "bull": 3.69
+              "base": 1.5721,
+              "bull": 3.965
             },
             "revenue_anchor_eps": null,
             "eps": {
               "bear": 0.0,
-              "base": 0.0,
-              "bull": 3.69
+              "base": 1.5721,
+              "bull": 3.965
             }
           },
           "2028": {
             "period": "2028-Q4",
-            "horizon_quarters": 11,
+            "horizon_quarters": 10,
             "trend_eps": {
               "bear": 0.0,
-              "base": 0.0,
-              "bull": 4.61
+              "base": 1.4093,
+              "bull": 5.035
             },
             "revenue_anchor_eps": null,
             "eps": {
               "bear": 0.0,
-              "base": 0.0,
-              "bull": 4.61
+              "base": 1.4093,
+              "bull": 5.035
             }
           }
         },
@@ -353300,76 +353232,61 @@
     },
     "8429": {
       "status": "ok",
-      "data_status": "provisional/forward_eps_trend",
+      "data_status": "partial_model_fallback",
       "name": "金麗-KY",
       "market_price": 6.06,
-      "fair_value": 12.81,
-      "base_fair_value": 12.81,
+      "fair_value": 30.81,
+      "base_fair_value": 30.81,
       "growth_fair_value": null,
       "bull_fair_value": null,
       "range": {
-        "bear": 0.93,
-        "base": 12.81,
-        "bull": 30.36
+        "bear": 14.69,
+        "base": 30.81,
+        "bull": 55.71
       },
-      "upside": 1.1139,
-      "model": "ensemble",
-      "valuation_signal": "fair_value_range",
-      "valuation_signal_label": "合理區間",
-      "model_count": 3,
+      "upside": 4.0842,
+      "model": "relative_pb",
+      "valuation_signal": "undervalued",
+      "valuation_signal_label": "低估",
+      "model_count": 1,
       "models_used": [
-        "relative_pb",
-        "relative_pe",
-        "forward_eps"
+        "relative_pb"
       ],
       "model_weights": {
-        "relative_pb": 0.2,
-        "relative_pe": 0.2,
-        "forward_eps": 0.1
+        "relative_pb": 0.2
       },
-      "model_spread": 2.2968,
+      "model_spread": 1.3315,
       "excluded_models": [],
-      "range_basis": "weighted_model_base_percentiles",
+      "range_basis": "single_model_scenarios",
       "confidence": "low",
       "source_url": null,
-      "reported_period": "2026-Q1",
+      "reported_period": "2026-Q2",
       "models": {
         "relative_pb": {
-          "bear": 14.47,
-          "base": 30.36,
-          "bull": 54.89
-        },
-        "relative_pe": {
-          "bear": 0.44,
-          "base": 0.93,
-          "bull": 1.32
-        },
-        "forward_eps": {
-          "bear": 0.08,
-          "base": 1.51,
-          "bull": 6.74
+          "bear": 14.69,
+          "base": 30.81,
+          "bull": 55.71
         }
       },
       "diagnostic_flags": [
-        "fair_value_above_double_price",
-        "model_spread_over_100pct"
+        "fair_value_above_double_price"
       ],
       "correction_action": "valuation_eps_bvps_roe_for_residual_income;terminal_convergence_and_forward_eps_gates",
       "inputs": {
-        "ttm_eps": 0.11,
-        "valuation_eps": 0.05,
-        "earnings_basis": "cycle_normalized_short_history",
+        "ttm_eps": 0.14,
+        "valuation_eps": 0.12,
+        "earnings_basis": "cycle_recovery_run_rate",
         "normalized_eps": 0.05,
         "normalized_years": 2,
         "normalized_volatility": 1.0,
-        "recovery_run_rate_eps": null,
-        "recovery_previous_period": null,
-        "recovery_latest_period": null,
-        "bvps": 35.47,
-        "roe": 0.0031,
-        "ttm_roe": 0.0031,
-        "valuation_roe": 0.0014,
-        "latest_quarter_roe": 0.0005,
+        "recovery_run_rate_eps": 0.1,
+        "recovery_previous_period": "2026-Q1",
+        "recovery_latest_period": "2026-Q2",
+        "bvps": 36.0,
+        "roe": 0.0039,
+        "ttm_roe": 0.0039,
+        "valuation_roe": 0.0033,
+        "latest_quarter_roe": 0.0007,
         "roe_basis": "valuation_eps_divided_by_latest_bvps",
         "cash_dividend_per_share": 0.0,
         "payout_ratio": 0.0,
@@ -353380,15 +353297,15 @@
         "terminal_growth": 0.03,
         "peer_median_pe": 18.5012,
         "peer_median_pb": 0.8558,
-        "forward_eps_2027": 0.09,
-        "forward_eps_2028": 0.0875,
-        "forward_trend_slope_per_quarter": 0.001143,
-        "forward_trend_points": 6,
-        "forward_discount_years": 2.75
+        "forward_eps_2027": 0.0382,
+        "forward_eps_2028": 0.0139,
+        "forward_trend_slope_per_quarter": -0.009762,
+        "forward_trend_points": 7,
+        "forward_discount_years": 2.5
       },
       "source_dates": {
         "price": "2026-08-21",
-        "financials": "2026-03-31",
+        "financials": "2026-06-30",
         "earnings": null,
         "monthly_revenue": null,
         "risk_free": "2026-06-09",
@@ -353412,19 +353329,19 @@
         "近一年沒有現金股利資料，留存率按 100% 計算",
         "同業群組（百貨零售）P/B 納入估值集合",
         "同業群組（百貨零售）P/E 納入估值集合",
-        "FV-1.16 前瞻 EPS 納入低權重情境集合：最近 6–8 個 TTM EPS 加權線性趨勢，並以已公告季度營收／EPS 強度交叉檢查；2028-Q4 以同業 P/E 評價後折現",
+        "景氣反轉類停用低谷同業 P/E 及其衍生前瞻模型；以 Residual Income 與 P/B 估值，避免低谷分母製造假性高估",
         "前瞻 EPS 是模型估算，不是公司已公告 EPS；需至少六個連續 TTM 觀測點，並以同業 P/E 與 Ke 折現"
       ],
       "market_implied": {
-        "current_pe_on_valuation_eps": 121.2,
-        "price_to_fair_value": 0.4731,
+        "current_pe_on_valuation_eps": 50.5,
+        "price_to_fair_value": 0.1967,
         "interpretation": "現價包含高於模型基本面價值的成長或溢價；此欄位不回饋公允價模型",
-        "required_2028_eps_at_peer_pe": 0.3516
+        "required_2028_eps_at_peer_pe": 0.3493
       },
       "forward_eps": {
         "type": "weighted_linear_ttm_eps_plus_revenue_anchor",
-        "latest_period": "2026-Q1",
-        "latest_ttm_eps": 0.11,
+        "latest_period": "2026-Q2",
+        "latest_ttm_eps": 0.08,
         "ttm_points": [
           {
             "period": "2024-Q4",
@@ -353449,20 +353366,24 @@
           {
             "period": "2026-Q1",
             "ttm_eps": 0.11
+          },
+          {
+            "period": "2026-Q2",
+            "ttm_eps": 0.08
           }
         ],
-        "trend_points": 6,
-        "trend_slope_per_quarter": 0.001143,
+        "trend_points": 7,
+        "trend_slope_per_quarter": -0.009762,
         "revenue_points": 8,
         "eps_revenue_intensity": 1.4221e-06,
         "targets": {
           "2027": {
             "period": "2027-Q4",
-            "horizon_quarters": 7,
+            "horizon_quarters": 6,
             "trend_eps": {
-              "bear": 0.04,
-              "base": 0.1523,
-              "bull": 0.81
+              "bear": 0.0,
+              "base": 0.0487,
+              "bull": 0.62
             },
             "revenue_anchor_eps": {
               "bear": 0.0277,
@@ -353470,18 +353391,18 @@
               "bull": 0.0277
             },
             "eps": {
-              "bear": 0.0338,
-              "base": 0.09,
-              "bull": 0.275
+              "bear": 0.0138,
+              "base": 0.0382,
+              "bull": 0.2
             }
           },
           "2028": {
             "period": "2028-Q4",
-            "horizon_quarters": 11,
+            "horizon_quarters": 10,
             "trend_eps": {
               "bear": 0.0,
-              "base": 0.1569,
-              "bull": 1.21
+              "base": 0.0096,
+              "bull": 0.98
             },
             "revenue_anchor_eps": {
               "bear": 0.0181,
@@ -353490,8 +353411,8 @@
             },
             "eps": {
               "bear": 0.0091,
-              "base": 0.0875,
-              "bull": 0.275
+              "base": 0.0139,
+              "bull": 0.2
             }
           }
         },
@@ -354095,7 +354016,7 @@
       "growth_fair_value": null,
       "bull_fair_value": null,
       "range": {
-        "bear": 24.52,
+        "bear": 24.71,
         "base": 36.54,
         "bull": 59.78
       },
@@ -354110,7 +354031,7 @@
       "model_weights": {
         "relative_pb": 0.1
       },
-      "model_spread": 0.965,
+      "model_spread": 0.9597,
       "excluded_models": [],
       "range_basis": "single_model_scenarios",
       "confidence": "low",
@@ -354118,7 +354039,7 @@
       "reported_period": "2026-Q2",
       "models": {
         "relative_pb": {
-          "bear": 24.52,
+          "bear": 24.71,
           "base": 36.54,
           "bull": 59.78
         }
@@ -354494,7 +354415,7 @@
       "growth_fair_value": null,
       "bull_fair_value": null,
       "range": {
-        "bear": 46.5,
+        "bear": 46.87,
         "base": 69.29,
         "bull": 113.37
       },
@@ -354509,7 +354430,7 @@
       "model_weights": {
         "relative_pb": 0.2
       },
-      "model_spread": 0.965,
+      "model_spread": 0.9597,
       "excluded_models": [],
       "range_basis": "single_model_scenarios",
       "confidence": 0.97,
@@ -354517,7 +354438,7 @@
       "reported_period": "2026-H1",
       "models": {
         "relative_pb": {
-          "bear": 46.5,
+          "bear": 46.87,
           "base": 69.29,
           "bull": 113.37
         }
@@ -355105,7 +355026,7 @@
       "reported_period": "2026-H1",
       "models": {
         "relative_pb": {
-          "bear": 47.47,
+          "bear": 47.85,
           "base": 70.74,
           "bull": 115.74
         },
@@ -356483,7 +356404,7 @@
       "growth_fair_value": null,
       "bull_fair_value": null,
       "range": {
-        "bear": 15.19,
+        "bear": 15.31,
         "base": 22.64,
         "bull": 37.04
       },
@@ -356498,7 +356419,7 @@
       "model_weights": {
         "relative_pb": 0.1
       },
-      "model_spread": 0.965,
+      "model_spread": 0.9597,
       "excluded_models": [],
       "range_basis": "single_model_scenarios",
       "confidence": 0.97,
@@ -356506,7 +356427,7 @@
       "reported_period": "2026-H1",
       "models": {
         "relative_pb": {
-          "bear": 15.19,
+          "bear": 15.31,
           "base": 22.64,
           "bull": 37.04
         }
@@ -356882,7 +356803,7 @@
       "growth_fair_value": null,
       "bull_fair_value": null,
       "range": {
-        "bear": 35.11,
+        "bear": 35.38,
         "base": 52.32,
         "bull": 85.59
       },
@@ -356897,7 +356818,7 @@
       "model_weights": {
         "relative_pb": 0.2
       },
-      "model_spread": 0.965,
+      "model_spread": 0.9597,
       "excluded_models": [],
       "range_basis": "single_model_scenarios",
       "confidence": "low",
@@ -356905,7 +356826,7 @@
       "reported_period": "2026-Q1",
       "models": {
         "relative_pb": {
-          "bear": 35.11,
+          "bear": 35.38,
           "base": 52.32,
           "bull": 85.59
         }
@@ -358266,7 +358187,7 @@
       "reported_period": "2026-Q2",
       "models": {
         "relative_pb": {
-          "bear": 23.38,
+          "bear": 23.57,
           "base": 34.85,
           "bull": 57.01
         },
@@ -358832,7 +358753,7 @@
       "growth_fair_value": null,
       "bull_fair_value": null,
       "range": {
-        "bear": 30.67,
+        "bear": 30.91,
         "base": 45.71,
         "bull": 74.78
       },
@@ -358847,7 +358768,7 @@
       "model_weights": {
         "relative_pb": 0.2
       },
-      "model_spread": 0.965,
+      "model_spread": 0.9597,
       "excluded_models": [],
       "range_basis": "single_model_scenarios",
       "confidence": 0.97,
@@ -358855,7 +358776,7 @@
       "reported_period": "2026-Q2",
       "models": {
         "relative_pb": {
-          "bear": 30.67,
+          "bear": 30.91,
           "base": 45.71,
           "bull": 74.78
         }
@@ -359043,7 +358964,7 @@
       "reported_period": "2026-Q2",
       "models": {
         "relative_pb": {
-          "bear": 14.57,
+          "bear": 14.68,
           "base": 21.71,
           "bull": 35.52
         },
@@ -359432,7 +359353,7 @@
       "growth_fair_value": null,
       "bull_fair_value": null,
       "range": {
-        "bear": 21.82,
+        "bear": 21.99,
         "base": 32.52,
         "bull": 53.2
       },
@@ -359447,7 +359368,7 @@
       "model_weights": {
         "relative_pb": 0.17352227935193132
       },
-      "model_spread": 0.965,
+      "model_spread": 0.9597,
       "excluded_models": [],
       "range_basis": "single_model_scenarios",
       "confidence": 0.97,
@@ -359455,7 +359376,7 @@
       "reported_period": "2026-H1",
       "models": {
         "relative_pb": {
-          "bear": 21.82,
+          "bear": 21.99,
           "base": 32.52,
           "bull": 53.2
         }
@@ -359625,7 +359546,7 @@
       "growth_fair_value": null,
       "bull_fair_value": null,
       "range": {
-        "bear": 10.16,
+        "bear": 10.24,
         "base": 15.14,
         "bull": 24.78
       },
@@ -359640,7 +359561,7 @@
       "model_weights": {
         "relative_pb": 0.2
       },
-      "model_spread": 0.965,
+      "model_spread": 0.9597,
       "excluded_models": [],
       "range_basis": "single_model_scenarios",
       "confidence": "low",
@@ -359648,7 +359569,7 @@
       "reported_period": "2026-Q2",
       "models": {
         "relative_pb": {
-          "bear": 10.16,
+          "bear": 10.24,
           "base": 15.14,
           "bull": 24.78
         }
@@ -360040,7 +359961,7 @@
       "reported_period": "2026-Q2",
       "models": {
         "relative_pb": {
-          "bear": 31.08,
+          "bear": 31.32,
           "base": 46.31,
           "bull": 75.77
         },
@@ -360412,7 +360333,7 @@
       "growth_fair_value": null,
       "bull_fair_value": null,
       "range": {
-        "bear": 22.45,
+        "bear": 22.62,
         "base": 33.45,
         "bull": 54.73
       },
@@ -360427,7 +360348,7 @@
       "model_weights": {
         "relative_pb": 0.2
       },
-      "model_spread": 0.965,
+      "model_spread": 0.9597,
       "excluded_models": [],
       "range_basis": "single_model_scenarios",
       "confidence": 0.97,
@@ -360435,7 +360356,7 @@
       "reported_period": "2026-H1",
       "models": {
         "relative_pb": {
-          "bear": 22.45,
+          "bear": 22.62,
           "base": 33.45,
           "bull": 54.73
         }
@@ -361617,7 +361538,7 @@
       "reported_period": "2026-Q2",
       "models": {
         "relative_pb": {
-          "bear": 14.63,
+          "bear": 14.74,
           "base": 21.79,
           "bull": 35.66
         },
@@ -362594,7 +362515,7 @@
       "growth_fair_value": null,
       "bull_fair_value": null,
       "range": {
-        "bear": 7.01,
+        "bear": 7.07,
         "base": 10.45,
         "bull": 17.1
       },
@@ -362609,7 +362530,7 @@
       "model_weights": {
         "relative_pb": 0.2
       },
-      "model_spread": 0.965,
+      "model_spread": 0.9597,
       "excluded_models": [],
       "range_basis": "single_model_scenarios",
       "confidence": "low",
@@ -362617,7 +362538,7 @@
       "reported_period": "2026-Q2",
       "models": {
         "relative_pb": {
-          "bear": 7.01,
+          "bear": 7.07,
           "base": 10.45,
           "bull": 17.1
         }
@@ -362776,7 +362697,7 @@
       "growth_fair_value": null,
       "bull_fair_value": null,
       "range": {
-        "bear": 23.44,
+        "bear": 23.62,
         "base": 34.93,
         "bull": 57.14
       },
@@ -362791,7 +362712,7 @@
       "model_weights": {
         "relative_pb": 0.1
       },
-      "model_spread": 0.965,
+      "model_spread": 0.9597,
       "excluded_models": [],
       "range_basis": "single_model_scenarios",
       "confidence": "low",
@@ -362799,7 +362720,7 @@
       "reported_period": "2026-Q2",
       "models": {
         "relative_pb": {
-          "bear": 23.44,
+          "bear": 23.62,
           "base": 34.93,
           "bull": 57.14
         }
@@ -362994,7 +362915,7 @@
       "reported_period": "2026-Q2",
       "models": {
         "relative_pb": {
-          "bear": 5.09,
+          "bear": 5.13,
           "base": 7.58,
           "bull": 12.4
         },
@@ -363771,7 +363692,7 @@
       "growth_fair_value": null,
       "bull_fair_value": null,
       "range": {
-        "bear": 47.47,
+        "bear": 47.84,
         "base": 70.73,
         "bull": 115.72
       },
@@ -363786,7 +363707,7 @@
       "model_weights": {
         "relative_pb": 0.1
       },
-      "model_spread": 0.965,
+      "model_spread": 0.9597,
       "excluded_models": [],
       "range_basis": "single_model_scenarios",
       "confidence": 0.97,
@@ -363794,7 +363715,7 @@
       "reported_period": "2026-H1",
       "models": {
         "relative_pb": {
-          "bear": 47.47,
+          "bear": 47.84,
           "base": 70.73,
           "bull": 115.72
         }
@@ -364463,7 +364384,7 @@
       "growth_fair_value": null,
       "bull_fair_value": null,
       "range": {
-        "bear": 12.17,
+        "bear": 12.27,
         "base": 18.14,
         "bull": 29.68
       },
@@ -364478,7 +364399,7 @@
       "model_weights": {
         "relative_pb": 0.1168518526804607
       },
-      "model_spread": 0.965,
+      "model_spread": 0.9597,
       "excluded_models": [],
       "range_basis": "single_model_scenarios",
       "confidence": "low",
@@ -364486,7 +364407,7 @@
       "reported_period": "2026-Q2",
       "models": {
         "relative_pb": {
-          "bear": 12.17,
+          "bear": 12.27,
           "base": 18.14,
           "bull": 29.68
         }
@@ -364857,7 +364778,7 @@
       "growth_fair_value": null,
       "bull_fair_value": null,
       "range": {
-        "bear": 25.79,
+        "bear": 25.99,
         "base": 38.43,
         "bull": 62.87
       },
@@ -364872,7 +364793,7 @@
       "model_weights": {
         "relative_pb": 0.13682986587200402
       },
-      "model_spread": 0.965,
+      "model_spread": 0.9597,
       "excluded_models": [],
       "range_basis": "single_model_scenarios",
       "confidence": "low",
@@ -364880,7 +364801,7 @@
       "reported_period": "2026-Q2",
       "models": {
         "relative_pb": {
-          "bear": 25.79,
+          "bear": 25.99,
           "base": 38.43,
           "bull": 62.87
         }
@@ -365281,7 +365202,7 @@
       "reported_period": "2026-Q2",
       "models": {
         "relative_pb": {
-          "bear": 12.14,
+          "bear": 12.23,
           "base": 18.09,
           "bull": 29.59
         },
@@ -366423,7 +366344,7 @@
       "growth_fair_value": null,
       "bull_fair_value": null,
       "range": {
-        "bear": 25.97,
+        "bear": 26.18,
         "base": 38.7,
         "bull": 63.32
       },
@@ -366438,7 +366359,7 @@
       "model_weights": {
         "relative_pb": 0.1
       },
-      "model_spread": 0.965,
+      "model_spread": 0.9597,
       "excluded_models": [],
       "range_basis": "single_model_scenarios",
       "confidence": 0.97,
@@ -366446,7 +366367,7 @@
       "reported_period": "2026-H1",
       "models": {
         "relative_pb": {
-          "bear": 25.97,
+          "bear": 26.18,
           "base": 38.7,
           "bull": 63.32
         }
@@ -366811,7 +366732,7 @@
       "growth_fair_value": null,
       "bull_fair_value": null,
       "range": {
-        "bear": 8.75,
+        "bear": 8.82,
         "base": 13.04,
         "bull": 21.33
       },
@@ -366826,7 +366747,7 @@
       "model_weights": {
         "relative_pb": 0.2
       },
-      "model_spread": 0.965,
+      "model_spread": 0.9597,
       "excluded_models": [],
       "range_basis": "single_model_scenarios",
       "confidence": 0.97,
@@ -366834,7 +366755,7 @@
       "reported_period": "2026-H1",
       "models": {
         "relative_pb": {
-          "bear": 8.75,
+          "bear": 8.82,
           "base": 13.04,
           "bull": 21.33
         }
@@ -367217,9 +367138,9 @@
         "forward_eps"
       ],
       "model_weights": {
-        "relative_pb": 0.1355707544488608,
+        "relative_pb": 0.13557075444886074,
         "relative_pe": 0.23865754733068356,
-        "forward_eps": 0.1257716982204557
+        "forward_eps": 0.12577169822045572
       },
       "model_spread": 1.4261,
       "excluded_models": [],
@@ -367410,7 +367331,7 @@
       "growth_fair_value": null,
       "bull_fair_value": null,
       "range": {
-        "bear": 34.65,
+        "bear": 34.92,
         "base": 51.63,
         "bull": 84.47
       },
@@ -367425,7 +367346,7 @@
       "model_weights": {
         "relative_pb": 0.1
       },
-      "model_spread": 0.965,
+      "model_spread": 0.9597,
       "excluded_models": [],
       "range_basis": "single_model_scenarios",
       "confidence": "low",
@@ -367433,7 +367354,7 @@
       "reported_period": "2026-Q2",
       "models": {
         "relative_pb": {
-          "bear": 34.65,
+          "bear": 34.92,
           "base": 51.63,
           "bull": 84.47
         }
@@ -367823,7 +367744,7 @@
       "reported_period": "2026-Q2",
       "models": {
         "relative_pb": {
-          "bear": 40.56,
+          "bear": 40.88,
           "base": 60.44,
           "bull": 98.89
         },
@@ -368002,7 +367923,7 @@
       "growth_fair_value": null,
       "bull_fair_value": null,
       "range": {
-        "bear": 27.06,
+        "bear": 27.27,
         "base": 40.32,
         "bull": 65.96
       },
@@ -368017,7 +367938,7 @@
       "model_weights": {
         "relative_pb": 0.2
       },
-      "model_spread": 0.965,
+      "model_spread": 0.9597,
       "excluded_models": [],
       "range_basis": "single_model_scenarios",
       "confidence": "low",
@@ -368025,7 +367946,7 @@
       "reported_period": "2026-Q2",
       "models": {
         "relative_pb": {
-          "bear": 27.06,
+          "bear": 27.27,
           "base": 40.32,
           "bull": 65.96
         }
@@ -368213,7 +368134,7 @@
       "reported_period": "2026-Q2",
       "models": {
         "relative_pb": {
-          "bear": 7.74,
+          "bear": 7.8,
           "base": 11.53,
           "bull": 18.87
         },
@@ -368805,7 +368726,7 @@
       "growth_fair_value": null,
       "bull_fair_value": null,
       "range": {
-        "bear": 23.31,
+        "bear": 23.49,
         "base": 34.74,
         "bull": 56.83
       },
@@ -368820,7 +368741,7 @@
       "model_weights": {
         "relative_pb": 0.1
       },
-      "model_spread": 0.965,
+      "model_spread": 0.9597,
       "excluded_models": [],
       "range_basis": "single_model_scenarios",
       "confidence": "low",
@@ -368828,7 +368749,7 @@
       "reported_period": "2026-Q2",
       "models": {
         "relative_pb": {
-          "bear": 23.31,
+          "bear": 23.49,
           "base": 34.74,
           "bull": 56.83
         }
@@ -369613,7 +369534,7 @@
       "reported_period": "2026-Q2",
       "models": {
         "relative_pb": {
-          "bear": 40.19,
+          "bear": 40.51,
           "base": 59.9,
           "bull": 97.99
         },
@@ -369794,7 +369715,7 @@
       "growth_fair_value": null,
       "bull_fair_value": null,
       "range": {
-        "bear": 61.38,
+        "bear": 61.87,
         "base": 91.47,
         "bull": 149.65
       },
@@ -369809,7 +369730,7 @@
       "model_weights": {
         "relative_pb": 0.1
       },
-      "model_spread": 0.965,
+      "model_spread": 0.9597,
       "excluded_models": [],
       "range_basis": "single_model_scenarios",
       "confidence": "low",
@@ -369817,7 +369738,7 @@
       "reported_period": "2026-Q2",
       "models": {
         "relative_pb": {
-          "bear": 61.38,
+          "bear": 61.87,
           "base": 91.47,
           "bull": 149.65
         }
@@ -370014,7 +369935,7 @@
       "reported_period": "2026-Q2",
       "models": {
         "relative_pb": {
-          "bear": 16.53,
+          "bear": 16.66,
           "base": 24.64,
           "bull": 40.31
         },
@@ -370220,7 +370141,7 @@
       "reported_period": "2026-Q2",
       "models": {
         "relative_pb": {
-          "bear": 54.95,
+          "bear": 55.38,
           "base": 81.88,
           "bull": 133.96
         },
@@ -370400,7 +370321,7 @@
       "growth_fair_value": null,
       "bull_fair_value": null,
       "range": {
-        "bear": 46.1,
+        "bear": 46.46,
         "base": 68.69,
         "bull": 112.39
       },
@@ -370415,7 +370336,7 @@
       "model_weights": {
         "relative_pb": 0.1
       },
-      "model_spread": 0.965,
+      "model_spread": 0.9597,
       "excluded_models": [],
       "range_basis": "single_model_scenarios",
       "confidence": "low",
@@ -370423,7 +370344,7 @@
       "reported_period": "2026-Q2",
       "models": {
         "relative_pb": {
-          "bear": 46.1,
+          "bear": 46.46,
           "base": 68.69,
           "bull": 112.39
         }
@@ -370826,7 +370747,7 @@
       "reported_period": "2026-Q2",
       "models": {
         "relative_pb": {
-          "bear": 30.24,
+          "bear": 30.48,
           "base": 45.07,
           "bull": 73.73
         },
@@ -371034,7 +370955,7 @@
       "reported_period": "2026-H1",
       "models": {
         "relative_pb": {
-          "bear": 52.19,
+          "bear": 52.6,
           "base": 77.78,
           "bull": 127.25
         },
