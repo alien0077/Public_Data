@@ -1274,6 +1274,12 @@ export const TrendHunter = {
 
             try {
                 const rotationData = await api.fetchLocalJson('quant/theme_rotation.json');
+                const rotationHistory = await api.fetchLocalJson('quant/theme_rotation_history.json').catch(() => null);
+                const rotationFrames = [...new Map(
+                    [...(rotationHistory?.frames || []), rotationData]
+                        .filter(frame => frame?.date)
+                        .map(frame => [frame.date, frame])
+                ).values()].sort((a, b) => a.date.localeCompare(b.date)).slice(-5);
 
                 if (!rotationData.themes || rotationData.themes.length === 0) {
                     container.innerHTML = `<div class="text-center text-gray-500 py-8">無資金輪動數據</div>`;
@@ -1378,6 +1384,20 @@ export const TrendHunter = {
                 `;
                 container.insertAdjacentHTML('beforeend', toggleHtml);
 
+                const playbackHtml = `
+                    <div class="flex items-center gap-3 mb-2 px-1" data-rotation-playback>
+                        <button type="button" data-rotation-play-toggle aria-label="播放資金輪動回放" class="w-8 h-7 rounded-full bg-blue-500/15 text-blue-600 dark:text-blue-400 text-xs font-bold disabled:opacity-40" ${rotationFrames.length <= 1 ? 'disabled' : ''}>▶</button>
+                        <div class="min-w-0 flex-1">
+                            <div class="flex items-center justify-between gap-2 mb-1">
+                                <span data-rotation-play-date class="font-mono text-xs font-bold">${rotationFrames[0]?.date || rotationData.date}</span>
+                                <span data-rotation-play-count class="text-[10px] whitespace-nowrap" style="color:${textSec}">${rotationFrames.length > 1 ? `一週回放 · 1/${rotationFrames.length}` : '歷史資料同步後可播放一週移動'}</span>
+                            </div>
+                            <input data-rotation-play-progress aria-label="資金輪動回放進度" type="range" min="0" max="${Math.max(rotationFrames.length - 1, 0)}" value="0" step="1" class="w-full accent-blue-500 disabled:opacity-40" ${rotationFrames.length <= 1 ? 'disabled' : ''}>
+                        </div>
+                    </div>
+                `;
+                container.insertAdjacentHTML('beforeend', playbackHtml);
+
                 const chartDom = document.createElement('div');
                 chartDom.style.width = '100%';
                 chartDom.style.height = isMobile ? '320px' : '400px';
@@ -1458,20 +1478,36 @@ export const TrendHunter = {
                     // Scatter chart (象限圖)
                     const myChart = echarts.init(chartDom, isDark ? 'dark' : null);
 
-                    function getActiveData(view) {
-                        return getRotationViewData(rotationData, view);
+                    let currentView = 'all';
+                    let currentFrameIndex = 0;
+                    let playbackTimer = null;
+                    const playbackToggle = container.querySelector('[data-rotation-play-toggle]');
+                    const playbackProgress = container.querySelector('[data-rotation-play-progress]');
+                    const playbackDate = container.querySelector('[data-rotation-play-date]');
+                    const playbackCount = container.querySelector('[data-rotation-play-count]');
+
+                    function getActiveData(view, frameIndex = currentFrameIndex) {
+                        return getRotationViewData(rotationFrames[frameIndex] || rotationData, view);
                     }
 
-                    function buildOption(data) {
+                    function rotationBounds(view) {
+                        const points = rotationFrames.flatMap(frame => getRotationViewData(frame, view));
+                        const flow = Math.max(...points.map(point => Math.abs(Number(point.net_flow) || 0)), 5);
+                        const pct = Math.max(...points.map(point => Math.abs(Number(point.avg_pct) || 0)), 3);
+                        return { flow: Math.ceil(flow) + 2, pct: Math.ceil(pct) + 1 };
+                    }
+
+                    function buildOption(data, view) {
                         if (!data.length) {
                             data = [{ name: '無資料', net_flow: 0, avg_pct: 0, trend: 'FLAT', flow_ratio: 1 }];
                         }
-                        const netFlows = data.map(t => t.net_flow || 0);
-                        const bound = Math.max(...netFlows.map(Math.abs), 5);
+                        const bounds = rotationBounds(view);
                         const seriesData = data.map(t => [t.net_flow || 0, t.avg_pct, canonicalGroupName(t.name), t.trend, t.flow_ratio]);
 
                         return {
                             backgroundColor: 'transparent',
+                            animationDurationUpdate: 550,
+                            animationEasingUpdate: 'cubicInOut',
                             tooltip: {
                                 trigger: 'item',
                                 formatter: function (params) {
@@ -1493,8 +1529,8 @@ export const TrendHunter = {
                                 nameGap: isMobile ? 35 : 60,
                                 splitLine: { show: false },
                                 axisLabel: { color: isDark ? '#888' : '#666', fontSize: isMobile ? 8 : 10 },
-                                min: -bound - 2,
-                                max: bound + 2
+                                min: -bounds.flow,
+                                max: bounds.flow
                             },
                             yAxis: {
                                 name: '平均漲跌幅 (%)',
@@ -1505,14 +1541,8 @@ export const TrendHunter = {
                                     lineStyle: { color: isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)' }
                                 },
                                 axisLabel: { color: isDark ? '#888' : '#666', fontSize: isMobile ? 8 : 10 },
-                                min: function(value) {
-                                    const absMax = Math.max(Math.abs(value.min), Math.abs(value.max), 3);
-                                    return -absMax - 0.5;
-                                },
-                                max: function(value) {
-                                    const absMax = Math.max(Math.abs(value.min), Math.abs(value.max), 3);
-                                    return absMax + 0.5;
-                                }
+                                min: -bounds.pct,
+                                max: bounds.pct
                             },
                             graphic: isMobile ? [] : [
                                 {
@@ -1610,9 +1640,45 @@ export const TrendHunter = {
                         };
                     }
 
-                    let currentView = 'all';
-                    let option = buildOption(getActiveData(currentView));
-                    myChart.setOption(option);
+                    function renderRotationFrame() {
+                        const frame = rotationFrames[currentFrameIndex] || rotationData;
+                        if (playbackProgress) playbackProgress.value = String(currentFrameIndex);
+                        if (playbackDate) playbackDate.textContent = frame.date || '--';
+                        if (playbackCount) playbackCount.textContent = rotationFrames.length > 1
+                            ? `一週回放 · ${currentFrameIndex + 1}/${rotationFrames.length}`
+                            : '歷史資料同步後可播放一週移動';
+                        myChart.setOption(buildOption(getActiveData(currentView), currentView), true);
+                    }
+
+                    function stopPlayback() {
+                        if (playbackTimer) window.clearInterval(playbackTimer);
+                        playbackTimer = null;
+                        if (playbackToggle) {
+                            playbackToggle.textContent = '▶';
+                            playbackToggle.setAttribute('aria-label', '播放資金輪動回放');
+                        }
+                    }
+
+                    function startPlayback() {
+                        if (rotationFrames.length <= 1) return;
+                        stopPlayback();
+                        if (currentFrameIndex >= rotationFrames.length - 1) currentFrameIndex = 0;
+                        if (playbackToggle) {
+                            playbackToggle.textContent = 'Ⅱ';
+                            playbackToggle.setAttribute('aria-label', '暫停資金輪動回放');
+                        }
+                        playbackTimer = window.setInterval(() => {
+                            if (!container.isConnected || currentFrameIndex >= rotationFrames.length - 1) {
+                                stopPlayback();
+                                return;
+                            }
+                            currentFrameIndex += 1;
+                            renderRotationFrame();
+                            if (currentFrameIndex >= rotationFrames.length - 1) stopPlayback();
+                        }, 850);
+                    }
+
+                    renderRotationFrame();
                     myChart.on('click', params => openGroupList(params?.value?.[2] || params?.name));
                     myChart.resize();
                     window.addEventListener('resize', () => {
@@ -1631,11 +1697,23 @@ export const TrendHunter = {
                             });
                             this.className = 'view-toggle px-3 py-1 text-xs rounded-md font-bold bg-white dark:bg-gray-700 text-blue-600 dark:text-blue-400 shadow-sm';
                             const activeData = getActiveData(view);
-                            treemapChart.setOption(buildTreemapOption(activeData), true);
-                            option = buildOption(activeData);
-                            myChart.setOption(option, true);
+                            treemapChart.setOption(buildTreemapOption(getRotationViewData(rotationData, view)), true);
+                            myChart.setOption(buildOption(activeData, view), true);
                         });
                     });
+
+                    playbackToggle?.addEventListener('click', () => {
+                        if (playbackTimer) stopPlayback();
+                        else startPlayback();
+                    });
+                    playbackProgress?.addEventListener('input', event => {
+                        stopPlayback();
+                        currentFrameIndex = Number(event.target.value);
+                        renderRotationFrame();
+                    });
+
+                    // 首次進入自最早交易日播放一次，結束時停在最新日期。
+                    if (rotationFrames.length > 1) window.setTimeout(startPlayback, 450);
                 }, 50);
 
                 // === 4. 📈 族群月曲線 (Monthly Curve) ===
