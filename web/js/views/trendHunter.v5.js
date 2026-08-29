@@ -1400,7 +1400,7 @@ export const TrendHunter = {
 
                 const chartDom = document.createElement('div');
                 chartDom.style.width = '100%';
-                chartDom.style.height = isMobile ? '320px' : '400px';
+                chartDom.style.height = isMobile ? '390px' : '460px';
                 container.appendChild(chartDom);
 
                 if (isMobile) {
@@ -1601,8 +1601,21 @@ export const TrendHunter = {
                                 type: 'scatter',
                                 data: seriesData,
                                 symbolSize: function (value) {
-                                    const flow = (value && value[4]) || 0;
-                                    return Math.max(10, Math.min(50, flow * 1.5 + 8));
+                                    const flow = Math.max(Number(value && value[4]) || 0, 1);
+                                    const minimum = isMobile ? 34 : 46;
+                                    const maximum = isMobile ? 82 : 104;
+                                    return Math.max(minimum, Math.min(maximum, Math.sqrt(flow) * 9 + 22));
+                                },
+                                label: {
+                                    show: true,
+                                    position: 'inside',
+                                    fontSize: isMobile ? 10 : 12,
+                                    fontWeight: 'bold',
+                                    color: '#fff',
+                                    textShadowBlur: 3,
+                                    textShadowColor: 'rgba(0,0,0,0.7)',
+                                    overflow: 'truncate',
+                                    formatter: params => params.value[2]
                                 },
                                 itemStyle: {
                                     color: function(params) {
@@ -1616,7 +1629,9 @@ export const TrendHunter = {
                                     },
                                     shadowBlur: 8,
                                     shadowColor: 'rgba(0, 0, 0, 0.15)',
-                                    opacity: 0.85
+                                    opacity: 0.88,
+                                    borderColor: 'rgba(255,255,255,0.45)',
+                                    borderWidth: 1
                                 },
                                 markLine: {
                                     silent: true,
@@ -1628,13 +1643,19 @@ export const TrendHunter = {
                                         { xAxis: 0, name: '零軸線', label: { position: 'start', distance: 25, color: isDark ? '#aaa' : '#666' } },
                                         { yAxis: 0, name: '平盤線', label: { position: 'end', color: isDark ? '#aaa' : '#666' } }
                                     ],
-                                    label: {
-                                        show: true,
-                                        fontSize: isMobile ? 9 : 11,
-                                        formatter: function(p) {
-                                            return p.name;
-                                        }
+                                label: {
+                                    show: true,
+                                    position: 'inside',
+                                    fontSize: isMobile ? 10 : 12,
+                                    fontWeight: 'bold',
+                                    color: '#fff',
+                                    textShadowBlur: 3,
+                                    textShadowColor: 'rgba(0,0,0,0.65)',
+                                    overflow: 'truncate',
+                                    formatter: function(p) {
+                                        return p.name;
                                     }
+                                }
                                 }
                             }]
                         };
