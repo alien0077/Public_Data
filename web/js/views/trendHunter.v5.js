@@ -1502,7 +1502,10 @@ export const TrendHunter = {
                             data = [{ name: '無資料', net_flow: 0, avg_pct: 0, trend: 'FLAT', flow_ratio: 1 }];
                         }
                         const bounds = rotationBounds(view);
-                        const seriesData = data.map(t => [t.net_flow || 0, t.avg_pct, canonicalGroupName(t.name), t.trend, t.flow_ratio]);
+                        const seriesData = [...data]
+                            .sort((a, b) => Math.abs(Number(b.net_flow) || 0) - Math.abs(Number(a.net_flow) || 0))
+                            .slice(0, 25)
+                            .map(t => [t.net_flow || 0, t.avg_pct, canonicalGroupName(t.name), t.trend, t.flow_ratio]);
 
                         return {
                             backgroundColor: 'transparent',
@@ -1601,10 +1604,10 @@ export const TrendHunter = {
                                 type: 'scatter',
                                 data: seriesData,
                                 symbolSize: function (value) {
-                                    const flow = Math.max(Number(value && value[4]) || 0, 1);
+                                    const flow = Math.max(Math.abs(Number(value && value[0]) || 0), 0.1);
                                     const minimum = isMobile ? 34 : 46;
-                                    const maximum = isMobile ? 82 : 104;
-                                    return Math.max(minimum, Math.min(maximum, Math.sqrt(flow) * 9 + 22));
+                                    const maximum = isMobile ? 88 : 112;
+                                    return Math.max(minimum, Math.min(maximum, Math.sqrt(flow) * 10 + 26));
                                 },
                                 label: {
                                     show: true,
