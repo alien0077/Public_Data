@@ -1,6 +1,6 @@
 {
   "schema_version": "macro-v2.1-backtest-audit-v1",
-  "status": "ready_for_enabled_comparison",
+  "status": "insufficient_pit_history",
   "point_in_time": true,
   "period": {
     "from": "2016-01-01",
@@ -27,43 +27,69 @@
   "raw_macro_release_at_ratio": 0.746200152991652,
   "configured_factor_series": 29,
   "configured_factor_series_with_pit": 29,
+  "pit_history_min_records": 12,
+  "configured_factor_series_with_pit_history": 20,
   "configured_factor_series_pit_ratio": 1.0,
   "factor_pit_coverage": {
     "growth_score": {
       "configured_series": 9,
       "pit_series": 9,
       "coverage": 1.0,
-      "missing_series": []
+      "missing_series": [],
+      "pit_history_series": 3,
+      "missing_pit_history": [
+        "TW_COINCIDENT_INDEX_LEVEL",
+        "TW_EXPORT_ORDERS_YOY",
+        "TW_LEADING_INDEX_LEVEL",
+        "TW_LEADING_INDEX_MOM",
+        "US_ISM_MFG_NEW_ORDERS",
+        "US_ISM_MFG_PMI"
+      ]
     },
     "inflation_score": {
       "configured_series": 5,
       "pit_series": 5,
       "coverage": 1.0,
-      "missing_series": []
+      "missing_series": [],
+      "pit_history_series": 3,
+      "missing_pit_history": [
+        "US_CORE_CPI_YOY",
+        "US_CPI_YOY"
+      ]
     },
     "liquidity_score": {
       "configured_series": 5,
       "pit_series": 5,
       "coverage": 1.0,
-      "missing_series": []
+      "missing_series": [],
+      "pit_history_series": 5,
+      "missing_pit_history": []
     },
     "rates_score": {
       "configured_series": 4,
       "pit_series": 4,
       "coverage": 1.0,
-      "missing_series": []
+      "missing_series": [],
+      "pit_history_series": 4,
+      "missing_pit_history": []
     },
     "fx_score": {
       "configured_series": 4,
       "pit_series": 4,
       "coverage": 1.0,
-      "missing_series": []
+      "missing_series": [],
+      "pit_history_series": 4,
+      "missing_pit_history": []
     },
     "risk_score": {
       "configured_series": 5,
       "pit_series": 5,
       "coverage": 1.0,
-      "missing_series": []
+      "missing_series": [],
+      "pit_history_series": 4,
+      "missing_pit_history": [
+        "TW_MONITORING_SCORE"
+      ]
     }
   },
   "macro_series": {
@@ -403,23 +429,6 @@
       "known_release_at": 177
     }
   },
-  "enabled_comparison": {
-    "status": "complete",
-    "decision_frequency": "monthly_first_trading_day",
-    "point_in_time": true,
-    "metrics": {
-      "observations": 2602,
-      "cagr": 0.13729864534906855,
-      "sharpe": 1.0667668925905696,
-      "max_drawdown": -0.22305919187809886,
-      "win_rate": 0.5555555555555556,
-      "profit_factor": 1.2191095891358337,
-      "turnover": 4.400000000000001,
-      "average_exposure": 0.7244713571703191,
-      "regime_transitions": 22,
-      "number_of_trades": 23
-    },
-    "decision_count": 129
-  },
-  "reason": "Monthly PIT macro exposure replay completed; geopolitical narrative events are not backfilled without timestamped evidence."
+  "enabled_comparison": null,
+  "reason": "Configured factor series without sufficient traceable PIT history remain excluded; no macro-enabled equity curve is fabricated."
 }
