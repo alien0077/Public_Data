@@ -10,24 +10,24 @@
   "baseline": {
     "observations": 2602,
     "cagr": 0.17794868502350258,
-    "sharpe": 1.017727629937225,
+    "sharpe": 1.0177276299372258,
     "max_drawdown": -0.316318648843404,
     "win_rate": 0.5555555555555556,
-    "profit_factor": 1.2060415298476126,
+    "profit_factor": 1.2060415298476135,
     "turnover": 0.0,
     "average_exposure": 1.0,
     "regime_transitions": 0,
     "number_of_trades": 1
   },
-  "macro_release_records": 29104,
-  "macro_records_with_release_at": 12243,
-  "macro_release_at_ratio": 0.42066382627817483,
-  "raw_macro_release_records": 18725,
-  "raw_macro_records_with_release_at": 8491,
-  "raw_macro_release_at_ratio": 0.45345794392523364,
+  "macro_release_records": 103882,
+  "macro_records_with_release_at": 47588,
+  "macro_release_at_ratio": 0.45809668662520936,
+  "raw_macro_release_records": 42332,
+  "raw_macro_records_with_release_at": 32098,
+  "raw_macro_release_at_ratio": 0.7582443541528867,
   "configured_factor_series": 29,
-  "configured_factor_series_with_pit": 14,
-  "configured_factor_series_pit_ratio": 0.4827586206896552,
+  "configured_factor_series_with_pit": 19,
+  "configured_factor_series_pit_ratio": 0.6551724137931034,
   "factor_pit_coverage": {
     "growth_score": {
       "configured_series": 9,
@@ -47,51 +47,72 @@
     },
     "liquidity_score": {
       "configured_series": 5,
-      "pit_series": 0,
-      "coverage": 0.0,
+      "pit_series": 3,
+      "coverage": 0.6,
       "missing_series": [
         "TW_M1B_YOY",
-        "TW_M2_YOY",
-        "US10Y_CHANGE_20D",
-        "US2Y_CHANGE_20D",
-        "US_BROAD_DOLLAR_INDEX"
+        "TW_M2_YOY"
       ]
     },
     "rates_score": {
       "configured_series": 4,
-      "pit_series": 0,
-      "coverage": 0.0,
+      "pit_series": 1,
+      "coverage": 0.25,
       "missing_series": [
         "TW10Y_CHANGE_20D",
         "TW_POLICY_RATE",
-        "US10Y_CHANGE_20D",
         "US10Y_MINUS_US2Y"
       ]
     },
     "fx_score": {
       "configured_series": 4,
-      "pit_series": 1,
-      "coverage": 0.25,
+      "pit_series": 2,
+      "coverage": 0.5,
       "missing_series": [
         "DXY_CHANGE_20D",
-        "USD_TWD_CHANGE_20D",
-        "US_BROAD_DOLLAR_INDEX"
+        "USD_TWD_CHANGE_20D"
       ]
     },
     "risk_score": {
       "configured_series": 5,
-      "pit_series": 2,
-      "coverage": 0.4,
-      "missing_series": [
-        "US_BROAD_DOLLAR_INDEX",
-        "VIX",
-        "WTI_CHANGE_20D"
-      ]
+      "pit_series": 5,
+      "coverage": 1.0,
+      "missing_series": []
     }
   },
   "macro_series": {
+    "US_2Y_YIELD": {
+      "records": 7840,
+      "pit_eligible_at_end": 3920,
+      "known_release_at": 3920
+    },
     "US_10Y_YIELD": {
-      "records": 6,
+      "records": 7840,
+      "pit_eligible_at_end": 3920,
+      "known_release_at": 3920
+    },
+    "VIX": {
+      "records": 7946,
+      "pit_eligible_at_end": 3973,
+      "known_release_at": 3973
+    },
+    "US_BROAD_DOLLAR_INDEX": {
+      "records": 7804,
+      "pit_eligible_at_end": 3902,
+      "known_release_at": 3902
+    },
+    "WTI": {
+      "records": 7856,
+      "pit_eligible_at_end": 3928,
+      "known_release_at": 3928
+    },
+    "BRENT": {
+      "records": 7928,
+      "pit_eligible_at_end": 3964,
+      "known_release_at": 3964
+    },
+    "US_FEDFUNDS": {
+      "records": 188,
       "pit_eligible_at_end": 0,
       "known_release_at": 0
     },
@@ -105,18 +126,13 @@
       "pit_eligible_at_end": 0,
       "known_release_at": 0
     },
-    "VIX": {
-      "records": 7,
-      "pit_eligible_at_end": 0,
-      "known_release_at": 0
-    },
-    "WTI": {
-      "records": 7,
-      "pit_eligible_at_end": 0,
-      "known_release_at": 0
-    },
     "COPPER": {
       "records": 7,
+      "pit_eligible_at_end": 0,
+      "known_release_at": 0
+    },
+    "US10Y_MINUS_US2Y": {
+      "records": 3920,
       "pit_eligible_at_end": 0,
       "known_release_at": 0
     },
@@ -360,10 +376,25 @@
       "pit_eligible_at_end": 7,
       "known_release_at": 7
     },
+    "US2Y_CHANGE_20D": {
+      "records": 7820,
+      "pit_eligible_at_end": 3910,
+      "known_release_at": 3910
+    },
+    "US10Y_CHANGE_20D": {
+      "records": 7820,
+      "pit_eligible_at_end": 3910,
+      "known_release_at": 3910
+    },
     "USD_TWD_CBC_CHANGE_20D": {
       "records": 7420,
       "pit_eligible_at_end": 3710,
       "known_release_at": 3710
+    },
+    "WTI_CHANGE_20D": {
+      "records": 7836,
+      "pit_eligible_at_end": 3918,
+      "known_release_at": 3918
     }
   },
   "enabled_comparison": null,

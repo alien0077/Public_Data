@@ -1,15 +1,16 @@
 {
   "schema_version": "macro-dashboard-v2",
-  "as_of": "2026-09-07T12:43:54.578705+00:00",
+  "as_of": "2026-09-07T12:46:41.604234+00:00",
   "formula_version": "macro-factors-v1",
   "trading_regime": {
     "state": "DEFENSIVE",
-    "score": 0.320973,
-    "confidence": 0.3333,
+    "score": 0.09441539999999998,
+    "confidence": 1.0,
     "target_equity_exposure": 0.55,
     "reason": "hybrid_score",
     "contributors": [
-      "macro"
+      "macro",
+      "liquidity"
     ],
     "hysteresis_reason": "hysteresis_hold"
   },
@@ -17,16 +18,16 @@
     "state": "GOLDILOCKS",
     "growth_score": 0.502146,
     "inflation_score": 0.101764,
-    "liquidity_score": null,
-    "rates_score": null,
-    "fx_score": null,
-    "risk_score": null,
+    "liquidity_score": -0.041648,
+    "rates_score": -0.045128,
+    "fx_score": -0.188662,
+    "risk_score": 0.110384,
     "growth": 0.502146,
     "inflation": 0.101764,
-    "liquidity": null,
-    "rates": null,
-    "fx": null,
-    "risk": null
+    "liquidity": -0.041648,
+    "rates": -0.045128,
+    "fx": -0.188662,
+    "risk": 0.110384
   },
   "factors": {
     "growth_score": {
@@ -80,59 +81,77 @@
       "formula_version": "macro-factors-v1"
     },
     "liquidity_score": {
-      "value": null,
-      "confidence": 0.4,
-      "coverage": 0.4,
+      "value": -0.041648,
+      "confidence": 1.0,
+      "coverage": 1.0,
       "contributing_inputs": [
+        "US2Y_CHANGE_20D",
+        "US10Y_CHANGE_20D",
+        "US_BROAD_DOLLAR_INDEX",
         "TW_M1B_YOY",
         "TW_M2_YOY"
       ],
       "source_dates": [
+        "2026-09",
+        "2026-09",
+        "2026-08",
         "2026-07",
         "2026-07"
       ],
-      "stale": true,
+      "stale": false,
       "formula_version": "macro-factors-v1"
     },
     "rates_score": {
-      "value": null,
-      "confidence": 0.25,
-      "coverage": 0.25,
+      "value": -0.045128,
+      "confidence": 0.75,
+      "coverage": 0.75,
       "contributing_inputs": [
+        "US10Y_MINUS_US2Y",
+        "US10Y_CHANGE_20D",
         "TW_POLICY_RATE"
       ],
       "source_dates": [
+        "2026-09",
+        "2026-09",
         "2026-07"
       ],
-      "stale": true,
+      "stale": false,
       "formula_version": "macro-factors-v1"
     },
     "fx_score": {
-      "value": null,
-      "confidence": 0.25,
-      "coverage": 0.25,
+      "value": -0.188662,
+      "confidence": 0.5,
+      "coverage": 0.5,
       "contributing_inputs": [
-        "USD_TWD_CBC_CHANGE_20D"
+        "USD_TWD_CBC_CHANGE_20D",
+        "US_BROAD_DOLLAR_INDEX"
       ],
       "source_dates": [
-        "2025-12-31"
+        "2025-12-31",
+        "2026-08"
       ],
-      "stale": true,
+      "stale": false,
       "formula_version": "macro-factors-v1"
     },
     "risk_score": {
-      "value": null,
-      "confidence": 0.4,
-      "coverage": 0.4,
+      "value": 0.110384,
+      "confidence": 1.0,
+      "coverage": 1.0,
       "contributing_inputs": [
+        "VIX",
+        "US_BROAD_DOLLAR_INDEX",
         "TW_MONITORING_SCORE",
+        "WTI_CHANGE_20D",
         "TW_UNEMPLOYMENT_RATE"
       ],
       "source_dates": [
+        "2026-09",
+        "2026-08",
         "2026-07",
+        "2026-09",
         "2026-07"
       ],
-      "stale": true,
+      "stale": false,
       "formula_version": "macro-factors-v1"
     }
   },
@@ -140,14 +159,29 @@
   "indicators": [],
   "sector_scores": {
     "半導體": {
-      "score": 0.502146,
-      "confidence": 0.25,
+      "score": 0.180285,
+      "confidence": 1.0,
       "tailwind": true,
       "contributors": [
         {
           "factor": "growth_score",
           "value": 0.502146,
           "sensitivity": 0.35
+        },
+        {
+          "factor": "liquidity_score",
+          "value": -0.041648,
+          "sensitivity": 0.25
+        },
+        {
+          "factor": "rates_score",
+          "value": -0.045128,
+          "sensitivity": -0.15
+        },
+        {
+          "factor": "fx_score",
+          "value": -0.188662,
+          "sensitivity": 0.1
         }
       ],
       "geopolitical_context": {
@@ -162,14 +196,29 @@
       }
     },
     "AI伺服器代工": {
-      "score": 0.502146,
-      "confidence": 0.25,
+      "score": 0.180285,
+      "confidence": 1.0,
       "tailwind": true,
       "contributors": [
         {
           "factor": "growth_score",
           "value": 0.502146,
           "sensitivity": 0.35
+        },
+        {
+          "factor": "liquidity_score",
+          "value": -0.041648,
+          "sensitivity": 0.25
+        },
+        {
+          "factor": "rates_score",
+          "value": -0.045128,
+          "sensitivity": -0.15
+        },
+        {
+          "factor": "fx_score",
+          "value": -0.188662,
+          "sensitivity": 0.1
         }
       ],
       "geopolitical_context": {
@@ -184,10 +233,26 @@
       }
     },
     "金融": {
-      "score": null,
-      "confidence": 0.0,
+      "score": -0.065952,
+      "confidence": 1.0,
       "tailwind": false,
-      "contributors": [],
+      "contributors": [
+        {
+          "factor": "rates_score",
+          "value": -0.045128,
+          "sensitivity": 0.3
+        },
+        {
+          "factor": "risk_score",
+          "value": 0.110384,
+          "sensitivity": -0.25
+        },
+        {
+          "factor": "liquidity_score",
+          "value": -0.041648,
+          "sensitivity": 0.2
+        }
+      ],
       "geopolitical_context": {
         "risk_score": 0.1844,
         "influence_cap": 0.1,
@@ -199,14 +264,24 @@
       }
     },
     "貨櫃航運": {
-      "score": 0.502146,
-      "confidence": 0.333333,
+      "score": 0.265175,
+      "confidence": 1.0,
       "tailwind": true,
       "contributors": [
         {
           "factor": "growth_score",
           "value": 0.502146,
           "sensitivity": 0.35
+        },
+        {
+          "factor": "risk_score",
+          "value": 0.110384,
+          "sensitivity": -0.1
+        },
+        {
+          "factor": "fx_score",
+          "value": -0.188662,
+          "sensitivity": 0.1
         }
       ],
       "geopolitical_context": {
@@ -220,10 +295,21 @@
       }
     },
     "營建": {
-      "score": null,
-      "confidence": 0.0,
+      "score": 0.008971,
+      "confidence": 1.0,
       "tailwind": false,
-      "contributors": [],
+      "contributors": [
+        {
+          "factor": "rates_score",
+          "value": -0.045128,
+          "sensitivity": -0.35
+        },
+        {
+          "factor": "liquidity_score",
+          "value": -0.041648,
+          "sensitivity": 0.25
+        }
+      ],
       "geopolitical_context": {
         "risk_score": 0.08928,
         "influence_cap": 0.1,
@@ -234,10 +320,21 @@
       }
     },
     "高股息防禦": {
-      "score": null,
-      "confidence": 0.0,
+      "score": 0.090807,
+      "confidence": 1.0,
       "tailwind": false,
-      "contributors": [],
+      "contributors": [
+        {
+          "factor": "risk_score",
+          "value": 0.110384,
+          "sensitivity": 0.35
+        },
+        {
+          "factor": "rates_score",
+          "value": -0.045128,
+          "sensitivity": -0.15
+        }
+      ],
       "geopolitical_context": {
         "risk_score": 0.17856,
         "influence_cap": 0.1,
@@ -250,15 +347,62 @@
   },
   "sector_tailwinds": [
     {
-      "name": "半導體",
-      "score": 0.502146,
-      "confidence": 0.25,
+      "name": "貨櫃航運",
+      "score": 0.265175,
+      "confidence": 1.0,
       "tailwind": true,
       "contributors": [
         {
           "factor": "growth_score",
           "value": 0.502146,
           "sensitivity": 0.35
+        },
+        {
+          "factor": "risk_score",
+          "value": 0.110384,
+          "sensitivity": -0.1
+        },
+        {
+          "factor": "fx_score",
+          "value": -0.188662,
+          "sensitivity": 0.1
+        }
+      ],
+      "geopolitical_context": {
+        "risk_score": 1.0,
+        "influence_cap": 0.1,
+        "contributors": [
+          "energy",
+          "trade",
+          "supply_chain"
+        ]
+      }
+    },
+    {
+      "name": "半導體",
+      "score": 0.180285,
+      "confidence": 1.0,
+      "tailwind": true,
+      "contributors": [
+        {
+          "factor": "growth_score",
+          "value": 0.502146,
+          "sensitivity": 0.35
+        },
+        {
+          "factor": "liquidity_score",
+          "value": -0.041648,
+          "sensitivity": 0.25
+        },
+        {
+          "factor": "rates_score",
+          "value": -0.045128,
+          "sensitivity": -0.15
+        },
+        {
+          "factor": "fx_score",
+          "value": -0.188662,
+          "sensitivity": 0.1
         }
       ],
       "geopolitical_context": {
@@ -274,14 +418,29 @@
     },
     {
       "name": "AI伺服器代工",
-      "score": 0.502146,
-      "confidence": 0.25,
+      "score": 0.180285,
+      "confidence": 1.0,
       "tailwind": true,
       "contributors": [
         {
           "factor": "growth_score",
           "value": 0.502146,
           "sensitivity": 0.35
+        },
+        {
+          "factor": "liquidity_score",
+          "value": -0.041648,
+          "sensitivity": 0.25
+        },
+        {
+          "factor": "rates_score",
+          "value": -0.045128,
+          "sensitivity": -0.15
+        },
+        {
+          "factor": "fx_score",
+          "value": -0.188662,
+          "sensitivity": 0.1
         }
       ],
       "geopolitical_context": {
@@ -296,61 +455,168 @@
       }
     },
     {
-      "name": "貨櫃航運",
-      "score": 0.502146,
-      "confidence": 0.333333,
-      "tailwind": true,
+      "name": "高股息防禦",
+      "score": 0.090807,
+      "confidence": 1.0,
+      "tailwind": false,
       "contributors": [
         {
-          "factor": "growth_score",
-          "value": 0.502146,
+          "factor": "risk_score",
+          "value": 0.110384,
           "sensitivity": 0.35
+        },
+        {
+          "factor": "rates_score",
+          "value": -0.045128,
+          "sensitivity": -0.15
         }
       ],
       "geopolitical_context": {
-        "risk_score": 1.0,
+        "risk_score": 0.17856,
         "influence_cap": 0.1,
         "contributors": [
           "energy",
-          "trade",
-          "supply_chain"
+          "security"
+        ]
+      }
+    },
+    {
+      "name": "營建",
+      "score": 0.008971,
+      "confidence": 1.0,
+      "tailwind": false,
+      "contributors": [
+        {
+          "factor": "rates_score",
+          "value": -0.045128,
+          "sensitivity": -0.35
+        },
+        {
+          "factor": "liquidity_score",
+          "value": -0.041648,
+          "sensitivity": 0.25
+        }
+      ],
+      "geopolitical_context": {
+        "risk_score": 0.08928,
+        "influence_cap": 0.1,
+        "contributors": [
+          "energy",
+          "security"
         ]
       }
     }
   ],
   "sector_headwinds": [
     {
-      "name": "貨櫃航運",
-      "score": 0.502146,
-      "confidence": 0.333333,
-      "tailwind": true,
+      "name": "金融",
+      "score": -0.065952,
+      "confidence": 1.0,
+      "tailwind": false,
       "contributors": [
         {
-          "factor": "growth_score",
-          "value": 0.502146,
-          "sensitivity": 0.35
+          "factor": "rates_score",
+          "value": -0.045128,
+          "sensitivity": 0.3
+        },
+        {
+          "factor": "risk_score",
+          "value": 0.110384,
+          "sensitivity": -0.25
+        },
+        {
+          "factor": "liquidity_score",
+          "value": -0.041648,
+          "sensitivity": 0.2
         }
       ],
       "geopolitical_context": {
-        "risk_score": 1.0,
+        "risk_score": 0.1844,
         "influence_cap": 0.1,
         "contributors": [
           "energy",
           "trade",
-          "supply_chain"
+          "security"
+        ]
+      }
+    },
+    {
+      "name": "營建",
+      "score": 0.008971,
+      "confidence": 1.0,
+      "tailwind": false,
+      "contributors": [
+        {
+          "factor": "rates_score",
+          "value": -0.045128,
+          "sensitivity": -0.35
+        },
+        {
+          "factor": "liquidity_score",
+          "value": -0.041648,
+          "sensitivity": 0.25
+        }
+      ],
+      "geopolitical_context": {
+        "risk_score": 0.08928,
+        "influence_cap": 0.1,
+        "contributors": [
+          "energy",
+          "security"
+        ]
+      }
+    },
+    {
+      "name": "高股息防禦",
+      "score": 0.090807,
+      "confidence": 1.0,
+      "tailwind": false,
+      "contributors": [
+        {
+          "factor": "risk_score",
+          "value": 0.110384,
+          "sensitivity": 0.35
+        },
+        {
+          "factor": "rates_score",
+          "value": -0.045128,
+          "sensitivity": -0.15
+        }
+      ],
+      "geopolitical_context": {
+        "risk_score": 0.17856,
+        "influence_cap": 0.1,
+        "contributors": [
+          "energy",
+          "security"
         ]
       }
     },
     {
       "name": "AI伺服器代工",
-      "score": 0.502146,
-      "confidence": 0.25,
+      "score": 0.180285,
+      "confidence": 1.0,
       "tailwind": true,
       "contributors": [
         {
           "factor": "growth_score",
           "value": 0.502146,
           "sensitivity": 0.35
+        },
+        {
+          "factor": "liquidity_score",
+          "value": -0.041648,
+          "sensitivity": 0.25
+        },
+        {
+          "factor": "rates_score",
+          "value": -0.045128,
+          "sensitivity": -0.15
+        },
+        {
+          "factor": "fx_score",
+          "value": -0.188662,
+          "sensitivity": 0.1
         }
       ],
       "geopolitical_context": {
@@ -366,14 +632,29 @@
     },
     {
       "name": "半導體",
-      "score": 0.502146,
-      "confidence": 0.25,
+      "score": 0.180285,
+      "confidence": 1.0,
       "tailwind": true,
       "contributors": [
         {
           "factor": "growth_score",
           "value": 0.502146,
           "sensitivity": 0.35
+        },
+        {
+          "factor": "liquidity_score",
+          "value": -0.041648,
+          "sensitivity": 0.25
+        },
+        {
+          "factor": "rates_score",
+          "value": -0.045128,
+          "sensitivity": -0.15
+        },
+        {
+          "factor": "fx_score",
+          "value": -0.188662,
+          "sensitivity": 0.1
         }
       ],
       "geopolitical_context": {
@@ -694,8 +975,8 @@
     ]
   },
   "quality": {
-    "confidence": 0.3333,
-    "stale": true,
+    "confidence": 1.0,
+    "stale": false,
     "guardrail": "hybrid_score"
   }
 }
