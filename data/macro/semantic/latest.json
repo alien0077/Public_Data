@@ -1,8 +1,8 @@
 {
-  "schema_version": "1.1",
-  "generated_at": "2026-09-07T16:52:00+08:00",
+  "schema_version": "1.2",
+  "generated_at": "2026-09-07T20:32:42+08:00",
   "month": "2026-09",
-  "summary": "Taiwan manufacturing momentum remains strong and U.S. activity is still expansionary, but the macro backdrop is now materially constrained by a high geopolitical energy/shipping shock. Renewed U.S.-Iran escalation around the Strait of Hormuz has kept tanker traffic impaired and oil prices near six-week highs, raising inflation and rates risk for Taiwan equities. Russia-Ukraine remains a persistent secondary energy/supply risk, while U.S.-China semiconductor and tariff policy remains a structural risk for Taiwan technology supply chains.",
+  "summary": "Taiwan manufacturing momentum remains strong and U.S. activity is still expansionary, but the global-risk overlay deteriorated further on September 7. Brent and WTI rose to about $97.47 and $92.26 per barrel, a reported attack on Saudi Aramco's Jazan refinery added refinery-supply risk, Hormuz commodity-ship traffic remained near its lowest since May, and a separate bunker-fuel squeeze is now materially raising the risk of higher Asian freight and imported inflation. No newer official CPI/PCE/NFP/PMI/Taiwan-export release superseded the existing macro observations in this run.",
   "key_drivers": [
     {
       "name": "Taiwan Manufacturing PMI",
@@ -32,36 +32,50 @@
     {
       "name": "Hormuz / U.S.-Iran energy-shipping shock",
       "signal": "high_negative_global_risk",
+      "observed": {
+        "brent_usd_per_bbl": 97.47,
+        "wti_usd_per_bbl": 92.26,
+        "hormuz_commodity_ship_transits_per_day_10d_avg": 10,
+        "jazan_refinery_attack_reported": true
+      },
       "source_url": "https://www.reuters.com/business/energy/oil-extends-gains-after-us-iran-strike-ships-2026-09-07/"
+    },
+    {
+      "name": "Asia bunker-fuel / shipping-cost shock",
+      "signal": "new_material_negative_inflation_and_margin_risk",
+      "observed": {
+        "singapore_vlsfo_change_since_iran_war_pct": 76.0,
+        "q3_fuel_oil_deficit_bpd_forecast": 218000,
+        "middle_east_fuel_oil_exports_mar_aug_yoy_pct": -45.0
+      },
+      "source_url": "https://www.reuters.com/business/energy/ship-fuel-shortage-looms-refiners-strained-by-war-favour-other-products-2026-09-07/"
     }
   ],
   "geopolitical_global_risk": {
     "level": "HIGH",
     "latest_path": "data/macro/semantic/geopolitical/latest.json",
     "dominant_event": "2026-09-07-us-iran-hormuz",
-    "dominant_transmission_channels": ["energy", "shipping", "inflation", "rates", "global_risk"],
-    "summary": "Renewed U.S.-Iran attacks involving tankers and vessels in/around the Strait of Hormuz have converted geopolitical tension into a direct commercial-shipping and energy-supply shock. Reuters reported Brent near $96.19/bbl and WTI near $91.03/bbl, with roughly 8% and 10% weekly gains respectively, while Kpler data cited by Reuters showed an average of 10 commodity ships per day through Hormuz over the prior 10 days, the lowest since May.",
-    "secondary_events": [
-      "2026-09-russia-ukraine-energy-risk",
-      "2026-09-us-china-semiconductor-trade-risk"
-    ]
+    "new_event": "2026-09-07-asia-bunker-fuel-tightness",
+    "dominant_transmission_channels": ["energy", "refining", "bunker_fuel", "shipping", "freight", "inflation", "rates", "global_risk"],
+    "summary": "The Middle East shock broadened from crude-oil and tanker disruption into refinery and bunker-fuel scarcity. Reuters reported Brent near $97.47 and WTI near $92.26, a reported attack on Saudi Aramco's Jazan refinery, and Hormuz traffic averaging about 10 commodity ships per day over the prior 10 days. Separately, Singapore very-low-sulphur fuel oil was reported up about 76% since the Iran war began, with Middle East fuel-oil exports down 45% year on year in March-August and a third-quarter deficit forecast. This makes higher freight/import-cost transmission to Taiwan more immediate."
   },
   "key_risks": [
-    "Strait of Hormuz disruption and renewed U.S.-Iran attacks are a high-severity energy/shipping shock.",
-    "Higher oil and freight costs can re-accelerate inflation and reduce the probability/speed of monetary easing.",
-    "U.S. August PPI is due on 2026-09-10 and CPI on 2026-09-11, making the oil shock particularly relevant to rates expectations.",
+    "Strait of Hormuz disruption and renewed U.S.-Iran attacks remain a high-severity energy/shipping shock.",
+    "A reported attack on the Jazan refinery broadens the risk from shipping disruption into refinery infrastructure.",
+    "Bunker-fuel scarcity in Asia can lift freight costs and imported inflation even if crude prices stabilize.",
+    "U.S. August PPI is due on 2026-09-10 and CPI on 2026-09-11, so energy and freight shocks are especially relevant to rate expectations.",
     "The FOMC meets on 2026-09-15 and 2026-09-16 with a Summary of Economic Projections.",
-    "Russia-Ukraine remains a persistent energy/refined-products and European-demand risk.",
+    "Russia-Ukraine refinery disruptions remain a persistent refined-product risk, although renewed diplomacy modestly lowers near-term escalation probability.",
     "U.S.-China semiconductor tariffs/export-control policy remains a structural market-access and capex-geography risk for Taiwan technology companies."
   ],
   "policy_tone": {
-    "fed": "event_risk_pending_september_fomc_with_energy_inflation_pressure",
+    "fed": "event_risk_pending_september_fomc_with_energy_and_freight_inflation_pressure",
     "taiwan_central_bank": "no_new_material_policy_signal_in_this_snapshot"
   },
   "affected_factors": {
-    "growth": "positive_domestic_manufacturing_but_geopolitical_downside_risk",
-    "inflation": "negative_risk_from_energy_and_shipping",
-    "liquidity": "watch_for_tighter_policy_expectations",
+    "growth": "positive_domestic_manufacturing_but_cost_shock_downside_risk",
+    "inflation": "negative_risk_from_energy_bunker_fuel_and_shipping",
+    "liquidity": "watch_for_delayed_easing_or_tighter_policy_expectations",
     "rates": "negative_event_sensitive",
     "fx": "risk_sensitive",
     "risk": "negative_high_geopolitical_risk"
@@ -69,9 +83,9 @@
   "affected_taiwan_sectors": {
     "tailwind": ["軍工_航太", "無人機_UAV", "部分航運", "能源相關"],
     "mixed": ["貨櫃航運", "散裝航運", "鋼鐵", "Financial"],
-    "headwind": ["航空運輸", "塑膠", "工具機", "旅遊_餐飲", "AI伺服器代工", "半導體"]
+    "headwind": ["航空運輸", "塑膠", "工具機", "旅遊_餐飲", "出口製造", "AI伺服器代工", "半導體"]
   },
-  "confidence": 0.91,
+  "confidence": 0.94,
   "monthly_snapshot_path": "data/macro/semantic/monthly/2026-09.json",
   "fair_value_policy": {
     "baseline": "V2.1",
@@ -87,6 +101,8 @@
     "https://www.bls.gov/news.release/archives/empsit_09042026.htm",
     "https://www.reuters.com/business/energy/oil-extends-gains-after-us-iran-strike-ships-2026-09-07/",
     "https://www.reuters.com/world/middle-east/iran-says-announce-new-restricted-zone-gulf-coming-days-2026-09-07/",
+    "https://www.reuters.com/business/energy/ship-fuel-shortage-looms-refiners-strained-by-war-favour-other-products-2026-09-07/",
+    "https://www.reuters.com/business/aerospace-defense/us-envoys-make-first-kyiv-visit-amid-ukraine-war-peace-push-2026-09-06/",
     "https://www.reuters.com/world/china/taiwan-flexes-chip-diplomacy-muscles-it-faces-pressure-share-ai-wealth-with-2026-09-07/"
   ]
 }
