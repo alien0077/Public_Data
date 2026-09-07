@@ -1,6 +1,6 @@
 {
   "schema_version": "macro-v2.1-backtest-audit-v1",
-  "status": "insufficient_pit_history",
+  "status": "ready_for_enabled_comparison",
   "point_in_time": true,
   "period": {
     "from": "2016-01-01",
@@ -19,23 +19,21 @@
     "regime_transitions": 0,
     "number_of_trades": 1
   },
-  "macro_release_records": 158600,
-  "macro_records_with_release_at": 66026,
-  "macro_release_at_ratio": 0.41630517023959646,
-  "raw_macro_release_records": 60136,
-  "raw_macro_records_with_release_at": 44873,
-  "raw_macro_release_at_ratio": 0.7461919648796063,
+  "macro_release_records": 158598,
+  "macro_records_with_release_at": 66027,
+  "macro_release_at_ratio": 0.41631672530548935,
+  "raw_macro_release_records": 60134,
+  "raw_macro_records_with_release_at": 44872,
+  "raw_macro_release_at_ratio": 0.746200152991652,
   "configured_factor_series": 29,
-  "configured_factor_series_with_pit": 28,
-  "configured_factor_series_pit_ratio": 0.9655172413793104,
+  "configured_factor_series_with_pit": 29,
+  "configured_factor_series_pit_ratio": 1.0,
   "factor_pit_coverage": {
     "growth_score": {
       "configured_series": 9,
-      "pit_series": 8,
-      "coverage": 0.8888888888888888,
-      "missing_series": [
-        "TW_EXPORT_ORDERS_YOY"
-      ]
+      "pit_series": 9,
+      "coverage": 1.0,
+      "missing_series": []
     },
     "inflation_score": {
       "configured_series": 5,
@@ -130,14 +128,14 @@
       "known_release_at": 3720
     },
     "TW_M1B_YOY": {
-      "records": 747,
-      "pit_eligible_at_end": 186,
-      "known_release_at": 186
+      "records": 746,
+      "pit_eligible_at_end": 185,
+      "known_release_at": 185
     },
     "TW_M2_YOY": {
-      "records": 747,
-      "pit_eligible_at_end": 186,
-      "known_release_at": 186
+      "records": 746,
+      "pit_eligible_at_end": 185,
+      "known_release_at": 185
     },
     "TW_POLICY_RATE": {
       "records": 386,
@@ -181,8 +179,8 @@
     },
     "TW_EXPORT_ORDERS_USD": {
       "records": 374,
-      "pit_eligible_at_end": 0,
-      "known_release_at": 0
+      "pit_eligible_at_end": 1,
+      "known_release_at": 1
     },
     "TW_INDUSTRIAL_PRODUCTION_INDEX": {
       "records": 187,
@@ -331,13 +329,13 @@
     },
     "TW_EXPORT_ORDERS_MOM": {
       "records": 372,
-      "pit_eligible_at_end": 0,
-      "known_release_at": 0
+      "pit_eligible_at_end": 1,
+      "known_release_at": 1
     },
     "TW_EXPORT_ORDERS_YOY": {
       "records": 350,
-      "pit_eligible_at_end": 0,
-      "known_release_at": 0
+      "pit_eligible_at_end": 1,
+      "known_release_at": 1
     },
     "TW_LEADING_INDEX_MOM": {
       "records": 193,
@@ -405,6 +403,23 @@
       "known_release_at": 177
     }
   },
-  "enabled_comparison": null,
-  "reason": "Configured factor series without traceable PIT release_at remain excluded; no macro-enabled equity curve is fabricated."
+  "enabled_comparison": {
+    "status": "complete",
+    "decision_frequency": "monthly_first_trading_day",
+    "point_in_time": true,
+    "metrics": {
+      "observations": 2602,
+      "cagr": 0.13729864534906855,
+      "sharpe": 1.0667668925905696,
+      "max_drawdown": -0.22305919187809886,
+      "win_rate": 0.5555555555555556,
+      "profit_factor": 1.2191095891358337,
+      "turnover": 4.400000000000001,
+      "average_exposure": 0.7244713571703191,
+      "regime_transitions": 22,
+      "number_of_trades": 23
+    },
+    "decision_count": 129
+  },
+  "reason": "Monthly PIT macro exposure replay completed; geopolitical narrative events are not backfilled without timestamped evidence."
 }
