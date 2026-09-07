@@ -1,10 +1,10 @@
 {
   "schema_version": "macro-dashboard-v2",
-  "as_of": "2026-09-07T14:16:11.253696+00:00",
+  "as_of": "2026-09-07T14:21:46.642008+00:00",
   "formula_version": "macro-factors-v1",
   "trading_regime": {
     "state": "DEFENSIVE",
-    "score": 0.08046433333333333,
+    "score": 0.07699983333333332,
     "confidence": 1.0,
     "target_equity_exposure": 0.55,
     "reason": "hybrid_score",
@@ -19,13 +19,13 @@
     "growth_score": 0.489663,
     "inflation_score": 0.101598,
     "liquidity_score": -0.057683,
-    "rates_score": -0.08686,
+    "rates_score": -0.121505,
     "fx_score": -0.058566,
     "risk_score": 0.049125,
     "growth": 0.489663,
     "inflation": 0.101598,
     "liquidity": -0.057683,
-    "rates": -0.08686,
+    "rates": -0.121505,
     "fx": -0.058566,
     "risk": 0.049125
   },
@@ -102,17 +102,19 @@
       "formula_version": "macro-factors-v1"
     },
     "rates_score": {
-      "value": -0.08686,
-      "confidence": 0.75,
-      "coverage": 0.75,
+      "value": -0.121505,
+      "confidence": 1.0,
+      "coverage": 1.0,
       "contributing_inputs": [
         "US10Y_MINUS_US2Y",
         "US10Y_CHANGE_20D",
-        "TW_POLICY_RATE"
+        "TW_POLICY_RATE",
+        "TW10Y_CHANGE_20D"
       ],
       "source_dates": [
         "2026-09",
         "2026-09-04",
+        "2026-07",
         "2026-07"
       ],
       "stale": false,
@@ -163,7 +165,7 @@
   "indicators": [],
   "sector_scores": {
     "半導體": {
-      "score": 0.193098,
+      "score": 0.199212,
       "confidence": 1.0,
       "tailwind": true,
       "contributors": [
@@ -179,7 +181,7 @@
         },
         {
           "factor": "rates_score",
-          "value": -0.08686,
+          "value": -0.121505,
           "sensitivity": -0.15
         },
         {
@@ -200,7 +202,7 @@
       }
     },
     "AI伺服器代工": {
-      "score": 0.193098,
+      "score": 0.199212,
       "confidence": 1.0,
       "tailwind": true,
       "contributors": [
@@ -216,7 +218,7 @@
         },
         {
           "factor": "rates_score",
-          "value": -0.08686,
+          "value": -0.121505,
           "sensitivity": -0.15
         },
         {
@@ -237,13 +239,13 @@
       }
     },
     "金融": {
-      "score": -0.066501,
+      "score": -0.080359,
       "confidence": 1.0,
       "tailwind": false,
       "contributors": [
         {
           "factor": "rates_score",
-          "value": -0.08686,
+          "value": -0.121505,
           "sensitivity": 0.3
         },
         {
@@ -299,13 +301,13 @@
       }
     },
     "營建": {
-      "score": 0.026634,
+      "score": 0.046843,
       "confidence": 1.0,
       "tailwind": false,
       "contributors": [
         {
           "factor": "rates_score",
-          "value": -0.08686,
+          "value": -0.121505,
           "sensitivity": -0.35
         },
         {
@@ -324,7 +326,7 @@
       }
     },
     "高股息防禦": {
-      "score": 0.060445,
+      "score": 0.070839,
       "confidence": 1.0,
       "tailwind": false,
       "contributors": [
@@ -335,7 +337,7 @@
         },
         {
           "factor": "rates_score",
-          "value": -0.08686,
+          "value": -0.121505,
           "sensitivity": -0.15
         }
       ],
@@ -384,7 +386,7 @@
     },
     {
       "name": "半導體",
-      "score": 0.193098,
+      "score": 0.199212,
       "confidence": 1.0,
       "tailwind": true,
       "contributors": [
@@ -400,7 +402,7 @@
         },
         {
           "factor": "rates_score",
-          "value": -0.08686,
+          "value": -0.121505,
           "sensitivity": -0.15
         },
         {
@@ -422,7 +424,7 @@
     },
     {
       "name": "AI伺服器代工",
-      "score": 0.193098,
+      "score": 0.199212,
       "confidence": 1.0,
       "tailwind": true,
       "contributors": [
@@ -438,7 +440,7 @@
         },
         {
           "factor": "rates_score",
-          "value": -0.08686,
+          "value": -0.121505,
           "sensitivity": -0.15
         },
         {
@@ -460,7 +462,7 @@
     },
     {
       "name": "高股息防禦",
-      "score": 0.060445,
+      "score": 0.070839,
       "confidence": 1.0,
       "tailwind": false,
       "contributors": [
@@ -471,7 +473,7 @@
         },
         {
           "factor": "rates_score",
-          "value": -0.08686,
+          "value": -0.121505,
           "sensitivity": -0.15
         }
       ],
@@ -486,13 +488,13 @@
     },
     {
       "name": "營建",
-      "score": 0.026634,
+      "score": 0.046843,
       "confidence": 1.0,
       "tailwind": false,
       "contributors": [
         {
           "factor": "rates_score",
-          "value": -0.08686,
+          "value": -0.121505,
           "sensitivity": -0.35
         },
         {
@@ -514,13 +516,13 @@
   "sector_headwinds": [
     {
       "name": "金融",
-      "score": -0.066501,
+      "score": -0.080359,
       "confidence": 1.0,
       "tailwind": false,
       "contributors": [
         {
           "factor": "rates_score",
-          "value": -0.08686,
+          "value": -0.121505,
           "sensitivity": 0.3
         },
         {
@@ -546,13 +548,13 @@
     },
     {
       "name": "營建",
-      "score": 0.026634,
+      "score": 0.046843,
       "confidence": 1.0,
       "tailwind": false,
       "contributors": [
         {
           "factor": "rates_score",
-          "value": -0.08686,
+          "value": -0.121505,
           "sensitivity": -0.35
         },
         {
@@ -572,7 +574,7 @@
     },
     {
       "name": "高股息防禦",
-      "score": 0.060445,
+      "score": 0.070839,
       "confidence": 1.0,
       "tailwind": false,
       "contributors": [
@@ -583,7 +585,7 @@
         },
         {
           "factor": "rates_score",
-          "value": -0.08686,
+          "value": -0.121505,
           "sensitivity": -0.15
         }
       ],
@@ -598,7 +600,7 @@
     },
     {
       "name": "AI伺服器代工",
-      "score": 0.193098,
+      "score": 0.199212,
       "confidence": 1.0,
       "tailwind": true,
       "contributors": [
@@ -614,7 +616,7 @@
         },
         {
           "factor": "rates_score",
-          "value": -0.08686,
+          "value": -0.121505,
           "sensitivity": -0.15
         },
         {
@@ -636,7 +638,7 @@
     },
     {
       "name": "半導體",
-      "score": 0.193098,
+      "score": 0.199212,
       "confidence": 1.0,
       "tailwind": true,
       "contributors": [
@@ -652,7 +654,7 @@
         },
         {
           "factor": "rates_score",
-          "value": -0.08686,
+          "value": -0.121505,
           "sensitivity": -0.15
         },
         {
