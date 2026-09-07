@@ -19,27 +19,30 @@
     "regime_transitions": 0,
     "number_of_trades": 1
   },
-  "macro_release_records": 158598,
-  "macro_records_with_release_at": 66027,
-  "macro_release_at_ratio": 0.41631672530548935,
-  "raw_macro_release_records": 60134,
-  "raw_macro_records_with_release_at": 44872,
-  "raw_macro_release_at_ratio": 0.746200152991652,
+  "macro_release_records": 144277,
+  "macro_records_with_release_at": 66201,
+  "macro_release_at_ratio": 0.45884652439404755,
+  "raw_macro_release_records": 57526,
+  "raw_macro_records_with_release_at": 44991,
+  "raw_macro_release_at_ratio": 0.782098529360637,
   "configured_factor_series": 29,
-  "configured_factor_series_with_pit": 29,
+  "configured_factor_series_with_pit": 25,
   "pit_history_min_records": 12,
-  "configured_factor_series_with_pit_history": 20,
-  "configured_factor_series_pit_ratio": 1.0,
+  "configured_factor_series_with_pit_history": 23,
+  "configured_factor_series_pit_ratio": 0.8620689655172413,
   "factor_pit_coverage": {
     "growth_score": {
       "configured_series": 9,
-      "pit_series": 9,
-      "coverage": 1.0,
-      "missing_series": [],
-      "pit_history_series": 3,
+      "pit_series": 6,
+      "coverage": 0.6666666666666666,
+      "missing_series": [
+        "TW_COINCIDENT_INDEX_LEVEL",
+        "TW_LEADING_INDEX_LEVEL",
+        "TW_LEADING_INDEX_MOM"
+      ],
+      "pit_history_series": 4,
       "missing_pit_history": [
         "TW_COINCIDENT_INDEX_LEVEL",
-        "TW_EXPORT_ORDERS_YOY",
         "TW_LEADING_INDEX_LEVEL",
         "TW_LEADING_INDEX_MOM",
         "US_ISM_MFG_NEW_ORDERS",
@@ -51,11 +54,8 @@
       "pit_series": 5,
       "coverage": 1.0,
       "missing_series": [],
-      "pit_history_series": 3,
-      "missing_pit_history": [
-        "US_CORE_CPI_YOY",
-        "US_CPI_YOY"
-      ]
+      "pit_history_series": 5,
+      "missing_pit_history": []
     },
     "liquidity_score": {
       "configured_series": 5,
@@ -83,9 +83,11 @@
     },
     "risk_score": {
       "configured_series": 5,
-      "pit_series": 5,
-      "coverage": 1.0,
-      "missing_series": [],
+      "pit_series": 4,
+      "coverage": 0.8,
+      "missing_series": [
+        "TW_MONITORING_SCORE"
+      ],
       "pit_history_series": 4,
       "missing_pit_history": [
         "TW_MONITORING_SCORE"
@@ -104,12 +106,12 @@
       "known_release_at": 3964
     },
     "US10Y_MINUS_US2Y": {
-      "records": 7840,
+      "records": 11760,
       "pit_eligible_at_end": 3920,
       "known_release_at": 3920
     },
     "US_10Y_YIELD": {
-      "records": 10541,
+      "records": 7876,
       "pit_eligible_at_end": 3938,
       "known_release_at": 3938
     },
@@ -124,12 +126,12 @@
       "known_release_at": 3902
     },
     "VIX": {
-      "records": 10634,
+      "records": 7950,
       "pit_eligible_at_end": 3975,
       "known_release_at": 3975
     },
     "WTI": {
-      "records": 10561,
+      "records": 7896,
       "pit_eligible_at_end": 3948,
       "known_release_at": 3948
     },
@@ -149,29 +151,29 @@
       "known_release_at": 2686
     },
     "USD_TWD_CBC": {
-      "records": 11160,
+      "records": 8670,
       "pit_eligible_at_end": 3720,
       "known_release_at": 3720
     },
     "TW_M1B_YOY": {
-      "records": 746,
-      "pit_eligible_at_end": 185,
-      "known_release_at": 185
+      "records": 627,
+      "pit_eligible_at_end": 186,
+      "known_release_at": 186
     },
     "TW_M2_YOY": {
-      "records": 746,
-      "pit_eligible_at_end": 185,
-      "known_release_at": 185
+      "records": 627,
+      "pit_eligible_at_end": 186,
+      "known_release_at": 186
     },
     "TW_POLICY_RATE": {
-      "records": 386,
+      "records": 266,
       "pit_eligible_at_end": 12,
       "known_release_at": 12
     },
     "TW10Y_YIELD": {
-      "records": 374,
-      "pit_eligible_at_end": 187,
-      "known_release_at": 187
+      "records": 254,
+      "pit_eligible_at_end": 127,
+      "known_release_at": 127
     },
     "TW_NMI": {
       "records": 204,
@@ -205,8 +207,13 @@
     },
     "TW_EXPORT_ORDERS_USD": {
       "records": 374,
-      "pit_eligible_at_end": 1,
-      "known_release_at": 1
+      "pit_eligible_at_end": 86,
+      "known_release_at": 86
+    },
+    "TW_EXPORT_ORDERS_YOY": {
+      "records": 436,
+      "pit_eligible_at_end": 172,
+      "known_release_at": 172
     },
     "TW_INDUSTRIAL_PRODUCTION_INDEX": {
       "records": 187,
@@ -233,25 +240,25 @@
       "pit_eligible_at_end": 162,
       "known_release_at": 162
     },
+    "TW_LEADING_INDEX_LEVEL": {
+      "records": 254,
+      "pit_eligible_at_end": 0,
+      "known_release_at": 0
+    },
     "TW_COINCIDENT_INDEX_LEVEL": {
-      "records": 194,
-      "pit_eligible_at_end": 7,
-      "known_release_at": 7
+      "records": 254,
+      "pit_eligible_at_end": 0,
+      "known_release_at": 0
     },
     "TW_LAGGING_INDEX_LEVEL": {
-      "records": 194,
-      "pit_eligible_at_end": 7,
-      "known_release_at": 7
-    },
-    "TW_LEADING_INDEX_LEVEL": {
-      "records": 194,
-      "pit_eligible_at_end": 7,
-      "known_release_at": 7
+      "records": 254,
+      "pit_eligible_at_end": 0,
+      "known_release_at": 0
     },
     "TW_MONITORING_SCORE": {
-      "records": 194,
-      "pit_eligible_at_end": 7,
-      "known_release_at": 7
+      "records": 254,
+      "pit_eligible_at_end": 0,
+      "known_release_at": 0
     },
     "US_CORE_PCE_YOY": {
       "records": 1491,
@@ -289,26 +296,26 @@
       "known_release_at": 0
     },
     "US_UNEMPLOYMENT_RATE": {
-      "records": 189,
-      "pit_eligible_at_end": 2,
-      "known_release_at": 2
+      "records": 190,
+      "pit_eligible_at_end": 3,
+      "known_release_at": 3
     },
     "US_CORE_CPI_YOY": {
-      "records": 356,
-      "pit_eligible_at_end": 8,
-      "known_release_at": 8
+      "records": 371,
+      "pit_eligible_at_end": 23,
+      "known_release_at": 23
     },
     "US_CPI_YOY": {
-      "records": 355,
-      "pit_eligible_at_end": 7,
-      "known_release_at": 7
+      "records": 373,
+      "pit_eligible_at_end": 25,
+      "known_release_at": 25
     },
-    "US_ISM_MFG_NEW_ORDERS": {
+    "US_ISM_MFG_PMI": {
       "records": 4,
       "pit_eligible_at_end": 2,
       "known_release_at": 2
     },
-    "US_ISM_MFG_PMI": {
+    "US_ISM_MFG_NEW_ORDERS": {
       "records": 4,
       "pit_eligible_at_end": 2,
       "known_release_at": 2
@@ -318,12 +325,12 @@
       "pit_eligible_at_end": 2,
       "known_release_at": 2
     },
-    "US_ISM_SERVICES_NEW_ORDERS": {
+    "US_ISM_SERVICES_PMI": {
       "records": 4,
       "pit_eligible_at_end": 2,
       "known_release_at": 2
     },
-    "US_ISM_SERVICES_PMI": {
+    "US_ISM_SERVICES_NEW_ORDERS": {
       "records": 4,
       "pit_eligible_at_end": 2,
       "known_release_at": 2
@@ -355,43 +362,38 @@
     },
     "TW_EXPORT_ORDERS_MOM": {
       "records": 372,
-      "pit_eligible_at_end": 1,
-      "known_release_at": 1
-    },
-    "TW_EXPORT_ORDERS_YOY": {
-      "records": 350,
-      "pit_eligible_at_end": 1,
-      "known_release_at": 1
+      "pit_eligible_at_end": 86,
+      "known_release_at": 86
     },
     "TW_LEADING_INDEX_MOM": {
-      "records": 193,
-      "pit_eligible_at_end": 7,
-      "known_release_at": 7
+      "records": 252,
+      "pit_eligible_at_end": 0,
+      "known_release_at": 0
     },
     "TW_LEADING_INDEX_YOY": {
-      "records": 182,
-      "pit_eligible_at_end": 7,
-      "known_release_at": 7
+      "records": 230,
+      "pit_eligible_at_end": 0,
+      "known_release_at": 0
     },
     "TW_COINCIDENT_INDEX_MOM": {
-      "records": 193,
-      "pit_eligible_at_end": 7,
-      "known_release_at": 7
+      "records": 252,
+      "pit_eligible_at_end": 0,
+      "known_release_at": 0
     },
     "TW_COINCIDENT_INDEX_YOY": {
-      "records": 182,
-      "pit_eligible_at_end": 7,
-      "known_release_at": 7
+      "records": 230,
+      "pit_eligible_at_end": 0,
+      "known_release_at": 0
     },
     "TW_LAGGING_INDEX_MOM": {
-      "records": 193,
-      "pit_eligible_at_end": 7,
-      "known_release_at": 7
+      "records": 252,
+      "pit_eligible_at_end": 0,
+      "known_release_at": 0
     },
     "TW_LAGGING_INDEX_YOY": {
-      "records": 182,
-      "pit_eligible_at_end": 7,
-      "known_release_at": 7
+      "records": 230,
+      "pit_eligible_at_end": 0,
+      "known_release_at": 0
     },
     "US2Y_CHANGE_20D": {
       "records": 7820,
@@ -399,7 +401,7 @@
       "known_release_at": 3910
     },
     "US10Y_CHANGE_20D": {
-      "records": 10521,
+      "records": 7856,
       "pit_eligible_at_end": 3928,
       "known_release_at": 3928
     },
@@ -409,9 +411,9 @@
       "known_release_at": 2769
     },
     "USD_TWD_CBC_CHANGE_20D": {
-      "records": 11140,
-      "pit_eligible_at_end": 3713,
-      "known_release_at": 3713
+      "records": 8650,
+      "pit_eligible_at_end": 3700,
+      "known_release_at": 3700
     },
     "DXY_CHANGE_20D": {
       "records": 5352,
@@ -419,14 +421,14 @@
       "known_release_at": 2676
     },
     "WTI_CHANGE_20D": {
-      "records": 10541,
+      "records": 7876,
       "pit_eligible_at_end": 3938,
       "known_release_at": 3938
     },
     "TW10Y_CHANGE_20D": {
-      "records": 354,
-      "pit_eligible_at_end": 177,
-      "known_release_at": 177
+      "records": 234,
+      "pit_eligible_at_end": 117,
+      "known_release_at": 117
     }
   },
   "enabled_comparison": null,
