@@ -1,6 +1,6 @@
 {
   "schema_version": "macro-dashboard-v2",
-  "as_of": "2026-09-07T07:45:01.311254+00:00",
+  "as_of": "2026-09-07T09:03:54.431346+00:00",
   "formula_version": "macro-factors-v1",
   "trading_regime": {
     "state": "DEFENSIVE",
@@ -12,28 +12,40 @@
   },
   "macro_regime": {
     "state": "INSUFFICIENT_DATA",
-    "growth_score": 0.644659,
+    "growth_score": 0.524814,
     "inflation_score": 0.068154,
     "liquidity_score": -0.002282,
     "rates_score": -0.027096,
     "fx_score": -0.1518,
-    "risk_score": 0.065079
+    "risk_score": 0.065079,
+    "growth": 0.524814,
+    "inflation": 0.068154,
+    "liquidity": -0.002282,
+    "rates": -0.027096,
+    "fx": -0.1518,
+    "risk": 0.065079
   },
   "factors": {
     "growth_score": {
-      "value": 0.644659,
-      "confidence": 0.666667,
-      "coverage": 0.666667,
+      "value": 0.524814,
+      "confidence": 1.0,
+      "coverage": 1.0,
       "contributing_inputs": [
+        "TW_EXPORT_ORDERS_YOY",
         "TW_EXPORTS_YOY",
         "TW_PMI",
+        "US_ISM_MFG_PMI",
+        "US_ISM_MFG_NEW_ORDERS",
         "TW_LEADING_INDEX_MOM",
         "TW_LEADING_INDEX_LEVEL",
         "TW_COINCIDENT_INDEX_LEVEL",
         "TW_REAL_GDP_GROWTH"
       ],
       "source_dates": [
+        "2026-07",
         "2026-06",
+        "2026-08",
+        "2026-08",
         "2026-08",
         "2026-07",
         "2026-07",
@@ -139,15 +151,17 @@
       "formula_version": "macro-factors-v1"
     }
   },
+  "key_indicators": [],
+  "indicators": [],
   "sector_scores": {
     "半導體": {
-      "score": 0.251699,
+      "score": 0.202352,
       "confidence": 1.0,
       "tailwind": true,
       "contributors": [
         {
           "factor": "growth_score",
-          "value": 0.644659,
+          "value": 0.524814,
           "sensitivity": 0.35
         },
         {
@@ -165,16 +179,26 @@
           "value": -0.1518,
           "sensitivity": 0.1
         }
-      ]
+      ],
+      "geopolitical_context": {
+        "risk_score": 0.0,
+        "influence_cap": 0.05,
+        "contributors": [
+          "energy",
+          "trade",
+          "supply_chain",
+          "security"
+        ]
+      }
     },
     "AI伺服器代工": {
-      "score": 0.251699,
+      "score": 0.202352,
       "confidence": 1.0,
       "tailwind": true,
       "contributors": [
         {
           "factor": "growth_score",
-          "value": 0.644659,
+          "value": 0.524814,
           "sensitivity": 0.35
         },
         {
@@ -192,7 +216,17 @@
           "value": -0.1518,
           "sensitivity": 0.1
         }
-      ]
+      ],
+      "geopolitical_context": {
+        "risk_score": 0.0,
+        "influence_cap": 0.05,
+        "contributors": [
+          "energy",
+          "trade",
+          "supply_chain",
+          "security"
+        ]
+      }
     },
     "金融": {
       "score": -0.03314,
@@ -214,16 +248,25 @@
           "value": -0.002282,
           "sensitivity": 0.2
         }
-      ]
+      ],
+      "geopolitical_context": {
+        "risk_score": 0.0,
+        "influence_cap": 0.05,
+        "contributors": [
+          "energy",
+          "trade",
+          "security"
+        ]
+      }
     },
     "貨櫃航運": {
-      "score": 0.370805,
+      "score": 0.29454,
       "confidence": 1.0,
       "tailwind": true,
       "contributors": [
         {
           "factor": "growth_score",
-          "value": 0.644659,
+          "value": 0.524814,
           "sensitivity": 0.35
         },
         {
@@ -236,7 +279,16 @@
           "value": -0.1518,
           "sensitivity": 0.1
         }
-      ]
+      ],
+      "geopolitical_context": {
+        "risk_score": 0.0,
+        "influence_cap": 0.05,
+        "contributors": [
+          "energy",
+          "trade",
+          "supply_chain"
+        ]
+      }
     },
     "營建": {
       "score": 0.014855,
@@ -253,7 +305,15 @@
           "value": -0.002282,
           "sensitivity": 0.25
         }
-      ]
+      ],
+      "geopolitical_context": {
+        "risk_score": 0.0,
+        "influence_cap": 0.05,
+        "contributors": [
+          "energy",
+          "security"
+        ]
+      }
     },
     "高股息防禦": {
       "score": 0.053684,
@@ -270,20 +330,27 @@
           "value": -0.027096,
           "sensitivity": -0.15
         }
-      ]
+      ],
+      "geopolitical_context": {
+        "risk_score": 0.0,
+        "influence_cap": 0.05,
+        "contributors": [
+          "energy",
+          "security"
+        ]
+      }
     }
   },
-  "key_indicators": [],
   "sector_tailwinds": [
     {
       "name": "貨櫃航運",
-      "score": 0.370805,
+      "score": 0.29454,
       "confidence": 1.0,
       "tailwind": true,
       "contributors": [
         {
           "factor": "growth_score",
-          "value": 0.644659,
+          "value": 0.524814,
           "sensitivity": 0.35
         },
         {
@@ -296,17 +363,26 @@
           "value": -0.1518,
           "sensitivity": 0.1
         }
-      ]
+      ],
+      "geopolitical_context": {
+        "risk_score": 0.0,
+        "influence_cap": 0.05,
+        "contributors": [
+          "energy",
+          "trade",
+          "supply_chain"
+        ]
+      }
     },
     {
       "name": "半導體",
-      "score": 0.251699,
+      "score": 0.202352,
       "confidence": 1.0,
       "tailwind": true,
       "contributors": [
         {
           "factor": "growth_score",
-          "value": 0.644659,
+          "value": 0.524814,
           "sensitivity": 0.35
         },
         {
@@ -324,17 +400,27 @@
           "value": -0.1518,
           "sensitivity": 0.1
         }
-      ]
+      ],
+      "geopolitical_context": {
+        "risk_score": 0.0,
+        "influence_cap": 0.05,
+        "contributors": [
+          "energy",
+          "trade",
+          "supply_chain",
+          "security"
+        ]
+      }
     },
     {
       "name": "AI伺服器代工",
-      "score": 0.251699,
+      "score": 0.202352,
       "confidence": 1.0,
       "tailwind": true,
       "contributors": [
         {
           "factor": "growth_score",
-          "value": 0.644659,
+          "value": 0.524814,
           "sensitivity": 0.35
         },
         {
@@ -352,7 +438,17 @@
           "value": -0.1518,
           "sensitivity": 0.1
         }
-      ]
+      ],
+      "geopolitical_context": {
+        "risk_score": 0.0,
+        "influence_cap": 0.05,
+        "contributors": [
+          "energy",
+          "trade",
+          "supply_chain",
+          "security"
+        ]
+      }
     },
     {
       "name": "高股息防禦",
@@ -370,7 +466,15 @@
           "value": -0.027096,
           "sensitivity": -0.15
         }
-      ]
+      ],
+      "geopolitical_context": {
+        "risk_score": 0.0,
+        "influence_cap": 0.05,
+        "contributors": [
+          "energy",
+          "security"
+        ]
+      }
     },
     {
       "name": "營建",
@@ -388,7 +492,15 @@
           "value": -0.002282,
           "sensitivity": 0.25
         }
-      ]
+      ],
+      "geopolitical_context": {
+        "risk_score": 0.0,
+        "influence_cap": 0.05,
+        "contributors": [
+          "energy",
+          "security"
+        ]
+      }
     }
   ],
   "sector_headwinds": [
@@ -413,7 +525,16 @@
           "value": -0.002282,
           "sensitivity": 0.2
         }
-      ]
+      ],
+      "geopolitical_context": {
+        "risk_score": 0.0,
+        "influence_cap": 0.05,
+        "contributors": [
+          "energy",
+          "trade",
+          "security"
+        ]
+      }
     },
     {
       "name": "營建",
@@ -431,7 +552,15 @@
           "value": -0.002282,
           "sensitivity": 0.25
         }
-      ]
+      ],
+      "geopolitical_context": {
+        "risk_score": 0.0,
+        "influence_cap": 0.05,
+        "contributors": [
+          "energy",
+          "security"
+        ]
+      }
     },
     {
       "name": "高股息防禦",
@@ -449,17 +578,25 @@
           "value": -0.027096,
           "sensitivity": -0.15
         }
-      ]
+      ],
+      "geopolitical_context": {
+        "risk_score": 0.0,
+        "influence_cap": 0.05,
+        "contributors": [
+          "energy",
+          "security"
+        ]
+      }
     },
     {
       "name": "AI伺服器代工",
-      "score": 0.251699,
+      "score": 0.202352,
       "confidence": 1.0,
       "tailwind": true,
       "contributors": [
         {
           "factor": "growth_score",
-          "value": 0.644659,
+          "value": 0.524814,
           "sensitivity": 0.35
         },
         {
@@ -477,17 +614,27 @@
           "value": -0.1518,
           "sensitivity": 0.1
         }
-      ]
+      ],
+      "geopolitical_context": {
+        "risk_score": 0.0,
+        "influence_cap": 0.05,
+        "contributors": [
+          "energy",
+          "trade",
+          "supply_chain",
+          "security"
+        ]
+      }
     },
     {
       "name": "半導體",
-      "score": 0.251699,
+      "score": 0.202352,
       "confidence": 1.0,
       "tailwind": true,
       "contributors": [
         {
           "factor": "growth_score",
-          "value": 0.644659,
+          "value": 0.524814,
           "sensitivity": 0.35
         },
         {
@@ -505,10 +652,32 @@
           "value": -0.1518,
           "sensitivity": 0.1
         }
-      ]
+      ],
+      "geopolitical_context": {
+        "risk_score": 0.0,
+        "influence_cap": 0.05,
+        "contributors": [
+          "energy",
+          "trade",
+          "supply_chain",
+          "security"
+        ]
+      }
     }
   ],
   "upcoming_events": [],
+  "global_risk": {
+    "active_events": [],
+    "severity": 0.0,
+    "confidence": 0.0,
+    "channels": {
+      "geopolitical_energy_score": 0.0,
+      "geopolitical_trade_score": 0.0,
+      "geopolitical_supply_chain_score": 0.0,
+      "geopolitical_security_score": 0.0,
+      "geopolitical_risk_score": 0.0
+    }
+  },
   "key_drivers": [
     {
       "name": "Taiwan Manufacturing PMI",

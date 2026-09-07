@@ -693,6 +693,7 @@ document.addEventListener('DOMContentLoaded', () => {
             '<div class="flex justify-between items-center mb-3"><span class="font-bold">' + (regime.state || '資料不足') + '</span><span class="text-xs text-gray-500">交易狀態：' + (trading.state || '資料不足') + (trading.target_equity_exposure == null ? '' : ' · 目標股票 ' + (trading.target_equity_exposure * 100).toFixed(0) + '%') + '</span></div>' +
             '<div class="grid grid-cols-2 md:grid-cols-6 gap-2">' + values.map(tile).join('') + '</div>' +
             '<div class="flex flex-wrap gap-2 mt-3">' + (tailwinds ? '<span class="text-xs text-gray-500">順風</span>' + tailwinds : '') + (headwinds ? '<span class="text-xs text-gray-500 ml-2">逆風</span>' + headwinds : '') + '</div>' +
+            '<div class="mt-3 p-3 rounded-xl bg-orange-500/5 border border-orange-500/20"><div class="text-xs font-bold">🌍 全球／地緣風險</div><div class="text-xs text-gray-500 mt-1">' + ((data.global_risk?.active_events || []).length ? '已驗證事件 ' + data.global_risk.active_events.length + ' 件' : '目前無已驗證事件') + ' · 分數 ' + format(data.global_risk?.severity) + ' · 語意內容不會直接觸發清倉</div></div>' +
             (data.analysis?.summary ? '<p class="text-xs text-gray-500 mt-3">' + data.analysis.summary + '</p>' : '') +
             '</div>';
         const date = document.getElementById('macro-dashboard-date');
