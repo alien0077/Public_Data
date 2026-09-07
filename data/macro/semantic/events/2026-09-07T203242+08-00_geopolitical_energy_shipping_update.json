@@ -1,0 +1,51 @@
+{
+  "schema_version": "1.0",
+  "generated_at": "2026-09-07T20:32:42+08:00",
+  "event_id": "2026-09-07-evening-energy-shipping-update",
+  "event_type": "geopolitical_energy_shipping_update",
+  "regions": ["Middle East", "Strait of Hormuz", "Saudi Arabia", "Asia", "Russia", "Ukraine"],
+  "observed_evidence": {
+    "brent_usd_per_bbl": 97.47,
+    "wti_usd_per_bbl": 92.26,
+    "hormuz_commodity_ship_transits_per_day_10d_avg": 10,
+    "jazan_refinery_attack_reported": true,
+    "singapore_vlsfo_change_since_iran_war_pct": 76.0,
+    "singapore_vlsfo_usd_per_metric_ton_approx": 825.0,
+    "q3_fuel_oil_deficit_bpd_forecast": 218000,
+    "middle_east_fuel_oil_exports_mar_aug_yoy_pct": -45.0,
+    "russia_august_fuel_oil_exports_bpd": 591000,
+    "russia_2025_average_fuel_oil_exports_bpd_gt": 860000
+  },
+  "semantic_interpretation": {
+    "severity": 0.91,
+    "confidence": 0.95,
+    "escalation_score": 0.90,
+    "persistence_score": 0.85,
+    "summary": "The global energy shock broadened from crude and Hormuz vessel traffic into refinery infrastructure and bunker-fuel scarcity. That increases the probability of higher freight and imported inflation in Asia, making the shock more directly relevant to Taiwan manufacturers and transport-sensitive sectors. Russia-Ukraine refinery disruptions remain a contributing refined-product constraint, partially offset by a modest diplomatic de-escalation signal from renewed U.S.-mediated talks."
+  },
+  "transmission_channels": ["crude_oil", "refining", "bunker_fuel", "shipping", "freight", "inflation", "rates", "industrial_margins", "global_risk"],
+  "affected_factors": {
+    "growth": "negative_if_cost_shock_persists",
+    "inflation": "negative",
+    "liquidity": "negative_if_policy_easing_is_delayed",
+    "rates": "negative",
+    "fx": "risk_sensitive",
+    "risk": "negative"
+  },
+  "affected_taiwan_sectors": {
+    "headwind": ["航空運輸", "塑膠", "工具機", "旅遊_餐飲", "出口製造", "AI伺服器代工", "半導體"],
+    "mixed": ["貨櫃航運", "散裝航運", "鋼鐵"],
+    "tailwind_or_hedge": ["能源相關", "部分航運", "軍工_航太", "無人機_UAV"]
+  },
+  "source_urls": [
+    "https://www.reuters.com/business/energy/oil-extends-gains-after-us-iran-strike-ships-2026-09-07/",
+    "https://www.reuters.com/world/middle-east/iran-says-announce-new-restricted-zone-gulf-coming-days-2026-09-07/",
+    "https://www.reuters.com/business/energy/ship-fuel-shortage-looms-refiners-strained-by-war-favour-other-products-2026-09-07/",
+    "https://www.reuters.com/business/aerospace-defense/us-envoys-make-first-kyiv-visit-amid-ukraine-war-peace-push-2026-09-06/"
+  ],
+  "fair_value_policy": {
+    "baseline": "V2.1",
+    "direct_semantic_adjustment_allowed": false,
+    "direct_geopolitical_multiplier_allowed": false
+  }
+}
