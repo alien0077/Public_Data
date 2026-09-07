@@ -1,17 +1,21 @@
 {
   "schema_version": "macro-dashboard-v2",
-  "as_of": "2026-09-07T09:10:00+00:00",
+  "as_of": "2026-09-07T09:47:32.373026+00:00",
   "formula_version": "macro-factors-v1",
   "trading_regime": {
     "state": "DEFENSIVE",
-    "score": null,
-    "confidence": 0.0,
+    "score": 0.11289743333333331,
+    "confidence": 1.0,
     "target_equity_exposure": 0.55,
-    "reason": "insufficient_macro_or_market_inputs",
-    "contributors": []
+    "reason": "hybrid_score",
+    "contributors": [
+      "macro",
+      "liquidity"
+    ],
+    "hysteresis_reason": "hysteresis_hold"
   },
   "macro_regime": {
-    "state": "INSUFFICIENT_DATA",
+    "state": "GOLDILOCKS",
     "growth_score": 0.524814,
     "inflation_score": 0.068154,
     "liquidity_score": -0.002282,
@@ -841,8 +845,8 @@
     ]
   },
   "quality": {
-    "confidence": 0.0,
-    "stale": true,
-    "guardrail": "insufficient_macro_or_market_inputs"
+    "confidence": 1.0,
+    "stale": false,
+    "guardrail": "hybrid_score"
   }
 }
