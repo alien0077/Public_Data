@@ -14,9 +14,9 @@
     "state": "INSUFFICIENT_DATA",
     "growth_score": null,
     "inflation_score": 0.068154,
-    "liquidity_score": -0.095179,
-    "rates_score": -0.146927,
-    "fx_score": null,
+    "liquidity_score": -0.002282,
+    "rates_score": -0.027096,
+    "fx_score": -0.1518,
     "risk_score": -0.048346
   },
   "factors": {
@@ -59,48 +59,56 @@
       "formula_version": "macro-factors-v1"
     },
     "liquidity_score": {
-      "value": -0.095179,
-      "confidence": 0.75,
-      "coverage": 0.75,
+      "value": -0.002282,
+      "confidence": 1.0,
+      "coverage": 1.0,
       "contributing_inputs": [
         "US2Y_CHANGE_20D",
         "US10Y_CHANGE_20D",
-        "US_BROAD_DOLLAR_INDEX"
+        "US_BROAD_DOLLAR_INDEX",
+        "TW_M1B_YOY",
+        "TW_M2_YOY"
       ],
       "source_dates": [
         "2026-09",
         "2026-09",
-        "2026-08"
+        "2026-08",
+        "2026-07",
+        "2026-07"
       ],
       "stale": false,
       "formula_version": "macro-factors-v1"
     },
     "rates_score": {
-      "value": -0.146927,
-      "confidence": 0.5,
-      "coverage": 0.5,
+      "value": -0.027096,
+      "confidence": 0.75,
+      "coverage": 0.75,
       "contributing_inputs": [
         "US10Y_MINUS_US2Y",
-        "US10Y_CHANGE_20D"
+        "US10Y_CHANGE_20D",
+        "TW_POLICY_RATE"
       ],
       "source_dates": [
         "2026-09",
-        "2026-09"
+        "2026-09",
+        "2026-07"
       ],
       "stale": false,
       "formula_version": "macro-factors-v1"
     },
     "fx_score": {
-      "value": null,
-      "confidence": 0.333333,
-      "coverage": 0.333333,
+      "value": -0.1518,
+      "confidence": 0.5,
+      "coverage": 0.5,
       "contributing_inputs": [
+        "USD_TWD_CBC_CHANGE_20D",
         "US_BROAD_DOLLAR_INDEX"
       ],
       "source_dates": [
+        "2025-12-31",
         "2026-08"
       ],
-      "stale": true,
+      "stale": false,
       "formula_version": "macro-factors-v1"
     },
     "risk_score": {
@@ -125,47 +133,57 @@
   },
   "sector_scores": {
     "半導體": {
-      "score": -0.004389,
-      "confidence": 0.5,
+      "score": -0.023372,
+      "confidence": 0.75,
       "tailwind": false,
       "contributors": [
         {
           "factor": "liquidity_score",
-          "value": -0.095179,
+          "value": -0.002282,
           "sensitivity": 0.25
         },
         {
           "factor": "rates_score",
-          "value": -0.146927,
+          "value": -0.027096,
           "sensitivity": -0.15
+        },
+        {
+          "factor": "fx_score",
+          "value": -0.1518,
+          "sensitivity": 0.1
         }
       ]
     },
     "AI伺服器代工": {
-      "score": -0.004389,
-      "confidence": 0.5,
+      "score": -0.023372,
+      "confidence": 0.75,
       "tailwind": false,
       "contributors": [
         {
           "factor": "liquidity_score",
-          "value": -0.095179,
+          "value": -0.002282,
           "sensitivity": 0.25
         },
         {
           "factor": "rates_score",
-          "value": -0.146927,
+          "value": -0.027096,
           "sensitivity": -0.15
+        },
+        {
+          "factor": "fx_score",
+          "value": -0.1518,
+          "sensitivity": 0.1
         }
       ]
     },
     "金融": {
-      "score": -0.068037,
+      "score": 0.004668,
       "confidence": 1.0,
       "tailwind": false,
       "contributors": [
         {
           "factor": "rates_score",
-          "value": -0.146927,
+          "value": -0.027096,
           "sensitivity": 0.3
         },
         {
@@ -175,42 +193,47 @@
         },
         {
           "factor": "liquidity_score",
-          "value": -0.095179,
+          "value": -0.002282,
           "sensitivity": 0.2
         }
       ]
     },
     "貨櫃航運": {
-      "score": 0.048346,
-      "confidence": 0.333333,
+      "score": -0.051727,
+      "confidence": 0.666667,
       "tailwind": false,
       "contributors": [
         {
           "factor": "risk_score",
           "value": -0.048346,
           "sensitivity": -0.1
+        },
+        {
+          "factor": "fx_score",
+          "value": -0.1518,
+          "sensitivity": 0.1
         }
       ]
     },
     "營建": {
-      "score": 0.046049,
+      "score": 0.014855,
       "confidence": 1.0,
       "tailwind": false,
       "contributors": [
         {
           "factor": "rates_score",
-          "value": -0.146927,
+          "value": -0.027096,
           "sensitivity": -0.35
         },
         {
           "factor": "liquidity_score",
-          "value": -0.095179,
+          "value": -0.002282,
           "sensitivity": 0.25
         }
       ]
     },
     "高股息防禦": {
-      "score": 0.010236,
+      "score": -0.025713,
       "confidence": 1.0,
       "tailwind": false,
       "contributors": [
@@ -221,7 +244,7 @@
         },
         {
           "factor": "rates_score",
-          "value": -0.146927,
+          "value": -0.027096,
           "sensitivity": -0.15
         }
       ]
@@ -230,101 +253,32 @@
   "key_indicators": [],
   "sector_tailwinds": [
     {
-      "name": "貨櫃航運",
-      "score": 0.048346,
-      "confidence": 0.333333,
-      "tailwind": false,
-      "contributors": [
-        {
-          "factor": "risk_score",
-          "value": -0.048346,
-          "sensitivity": -0.1
-        }
-      ]
-    },
-    {
       "name": "營建",
-      "score": 0.046049,
+      "score": 0.014855,
       "confidence": 1.0,
       "tailwind": false,
       "contributors": [
         {
           "factor": "rates_score",
-          "value": -0.146927,
+          "value": -0.027096,
           "sensitivity": -0.35
         },
         {
           "factor": "liquidity_score",
-          "value": -0.095179,
+          "value": -0.002282,
           "sensitivity": 0.25
         }
       ]
     },
-    {
-      "name": "高股息防禦",
-      "score": 0.010236,
-      "confidence": 1.0,
-      "tailwind": false,
-      "contributors": [
-        {
-          "factor": "risk_score",
-          "value": -0.048346,
-          "sensitivity": 0.35
-        },
-        {
-          "factor": "rates_score",
-          "value": -0.146927,
-          "sensitivity": -0.15
-        }
-      ]
-    },
-    {
-      "name": "半導體",
-      "score": -0.004389,
-      "confidence": 0.5,
-      "tailwind": false,
-      "contributors": [
-        {
-          "factor": "liquidity_score",
-          "value": -0.095179,
-          "sensitivity": 0.25
-        },
-        {
-          "factor": "rates_score",
-          "value": -0.146927,
-          "sensitivity": -0.15
-        }
-      ]
-    },
-    {
-      "name": "AI伺服器代工",
-      "score": -0.004389,
-      "confidence": 0.5,
-      "tailwind": false,
-      "contributors": [
-        {
-          "factor": "liquidity_score",
-          "value": -0.095179,
-          "sensitivity": 0.25
-        },
-        {
-          "factor": "rates_score",
-          "value": -0.146927,
-          "sensitivity": -0.15
-        }
-      ]
-    }
-  ],
-  "sector_headwinds": [
     {
       "name": "金融",
-      "score": -0.068037,
+      "score": 0.004668,
       "confidence": 1.0,
       "tailwind": false,
       "contributors": [
         {
           "factor": "rates_score",
-          "value": -0.146927,
+          "value": -0.027096,
           "sensitivity": 0.3
         },
         {
@@ -334,50 +288,60 @@
         },
         {
           "factor": "liquidity_score",
-          "value": -0.095179,
+          "value": -0.002282,
           "sensitivity": 0.2
         }
       ]
     },
     {
-      "name": "AI伺服器代工",
-      "score": -0.004389,
-      "confidence": 0.5,
+      "name": "半導體",
+      "score": -0.023372,
+      "confidence": 0.75,
       "tailwind": false,
       "contributors": [
         {
           "factor": "liquidity_score",
-          "value": -0.095179,
+          "value": -0.002282,
           "sensitivity": 0.25
         },
         {
           "factor": "rates_score",
-          "value": -0.146927,
+          "value": -0.027096,
           "sensitivity": -0.15
+        },
+        {
+          "factor": "fx_score",
+          "value": -0.1518,
+          "sensitivity": 0.1
         }
       ]
     },
     {
-      "name": "半導體",
-      "score": -0.004389,
-      "confidence": 0.5,
+      "name": "AI伺服器代工",
+      "score": -0.023372,
+      "confidence": 0.75,
       "tailwind": false,
       "contributors": [
         {
           "factor": "liquidity_score",
-          "value": -0.095179,
+          "value": -0.002282,
           "sensitivity": 0.25
         },
         {
           "factor": "rates_score",
-          "value": -0.146927,
+          "value": -0.027096,
           "sensitivity": -0.15
+        },
+        {
+          "factor": "fx_score",
+          "value": -0.1518,
+          "sensitivity": 0.1
         }
       ]
     },
     {
       "name": "高股息防禦",
-      "score": 0.010236,
+      "score": -0.025713,
       "confidence": 1.0,
       "tailwind": false,
       "contributors": [
@@ -388,26 +352,115 @@
         },
         {
           "factor": "rates_score",
-          "value": -0.146927,
+          "value": -0.027096,
+          "sensitivity": -0.15
+        }
+      ]
+    }
+  ],
+  "sector_headwinds": [
+    {
+      "name": "貨櫃航運",
+      "score": -0.051727,
+      "confidence": 0.666667,
+      "tailwind": false,
+      "contributors": [
+        {
+          "factor": "risk_score",
+          "value": -0.048346,
+          "sensitivity": -0.1
+        },
+        {
+          "factor": "fx_score",
+          "value": -0.1518,
+          "sensitivity": 0.1
+        }
+      ]
+    },
+    {
+      "name": "高股息防禦",
+      "score": -0.025713,
+      "confidence": 1.0,
+      "tailwind": false,
+      "contributors": [
+        {
+          "factor": "risk_score",
+          "value": -0.048346,
+          "sensitivity": 0.35
+        },
+        {
+          "factor": "rates_score",
+          "value": -0.027096,
           "sensitivity": -0.15
         }
       ]
     },
     {
-      "name": "營建",
-      "score": 0.046049,
+      "name": "AI伺服器代工",
+      "score": -0.023372,
+      "confidence": 0.75,
+      "tailwind": false,
+      "contributors": [
+        {
+          "factor": "liquidity_score",
+          "value": -0.002282,
+          "sensitivity": 0.25
+        },
+        {
+          "factor": "rates_score",
+          "value": -0.027096,
+          "sensitivity": -0.15
+        },
+        {
+          "factor": "fx_score",
+          "value": -0.1518,
+          "sensitivity": 0.1
+        }
+      ]
+    },
+    {
+      "name": "半導體",
+      "score": -0.023372,
+      "confidence": 0.75,
+      "tailwind": false,
+      "contributors": [
+        {
+          "factor": "liquidity_score",
+          "value": -0.002282,
+          "sensitivity": 0.25
+        },
+        {
+          "factor": "rates_score",
+          "value": -0.027096,
+          "sensitivity": -0.15
+        },
+        {
+          "factor": "fx_score",
+          "value": -0.1518,
+          "sensitivity": 0.1
+        }
+      ]
+    },
+    {
+      "name": "金融",
+      "score": 0.004668,
       "confidence": 1.0,
       "tailwind": false,
       "contributors": [
         {
           "factor": "rates_score",
-          "value": -0.146927,
-          "sensitivity": -0.35
+          "value": -0.027096,
+          "sensitivity": 0.3
+        },
+        {
+          "factor": "risk_score",
+          "value": -0.048346,
+          "sensitivity": -0.25
         },
         {
           "factor": "liquidity_score",
-          "value": -0.095179,
-          "sensitivity": 0.25
+          "value": -0.002282,
+          "sensitivity": 0.2
         }
       ]
     }
