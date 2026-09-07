@@ -449,6 +449,20 @@
         display: none !important;
     }
 
+    /* Favorites already renders a complete mobile card per stock.  Do not
+       force its desktop table onto a 390px viewport or clip fair-value/PE. */
+    #view-favorites [class~="overflow-x-auto"][class~="hidden"][class~="md:block"] {
+        display: none !important;
+        margin: 0;
+        padding: 0;
+    }
+
+    #view-favorites #favorites-cards {
+        display: block !important;
+        min-width: 0;
+        width: 100%;
+    }
+
     table {
         min-width: 600px;
     }

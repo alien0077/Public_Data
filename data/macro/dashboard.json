@@ -1,0 +1,455 @@
+{
+  "schema_version": "macro-dashboard-v2",
+  "as_of": "2026-09-07T06:07:13.587926+00:00",
+  "formula_version": "macro-factors-v1",
+  "trading_regime": {
+    "state": "DEFENSIVE",
+    "score": null,
+    "confidence": 0.0,
+    "target_equity_exposure": 0.55,
+    "reason": "insufficient_macro_or_market_inputs",
+    "contributors": []
+  },
+  "macro_regime": {
+    "state": "INSUFFICIENT_DATA",
+    "growth_score": null,
+    "inflation_score": 0.638127,
+    "liquidity_score": 0.164663,
+    "rates_score": 0.326225,
+    "fx_score": null,
+    "risk_score": 0.209918
+  },
+  "factors": {
+    "growth_score": {
+      "value": null,
+      "confidence": 0.0,
+      "coverage": 0.0,
+      "contributing_inputs": [],
+      "source_dates": [],
+      "stale": true,
+      "formula_version": "macro-factors-v1"
+    },
+    "inflation_score": {
+      "value": 0.638127,
+      "confidence": 0.5,
+      "coverage": 0.5,
+      "contributing_inputs": [
+        "US_CPI_YOY",
+        "US_CORE_CPI_YOY"
+      ],
+      "source_dates": [
+        "2012-01",
+        "2012-01"
+      ],
+      "stale": false,
+      "formula_version": "macro-factors-v1"
+    },
+    "liquidity_score": {
+      "value": 0.164663,
+      "confidence": 0.75,
+      "coverage": 0.75,
+      "contributing_inputs": [
+        "US2Y_CHANGE_20D",
+        "US10Y_CHANGE_20D",
+        "US_BROAD_DOLLAR_INDEX"
+      ],
+      "source_dates": [
+        "2011-02",
+        "2011-02",
+        "2011-01"
+      ],
+      "stale": false,
+      "formula_version": "macro-factors-v1"
+    },
+    "rates_score": {
+      "value": 0.326225,
+      "confidence": 0.5,
+      "coverage": 0.5,
+      "contributing_inputs": [
+        "US10Y_MINUS_US2Y",
+        "US10Y_CHANGE_20D"
+      ],
+      "source_dates": [
+        "2011-01",
+        "2011-02"
+      ],
+      "stale": false,
+      "formula_version": "macro-factors-v1"
+    },
+    "fx_score": {
+      "value": null,
+      "confidence": 0.333333,
+      "coverage": 0.333333,
+      "contributing_inputs": [
+        "US_BROAD_DOLLAR_INDEX"
+      ],
+      "source_dates": [
+        "2011-01"
+      ],
+      "stale": true,
+      "formula_version": "macro-factors-v1"
+    },
+    "risk_score": {
+      "value": 0.209918,
+      "confidence": 0.75,
+      "coverage": 0.75,
+      "contributing_inputs": [
+        "VIX",
+        "US_BROAD_DOLLAR_INDEX",
+        "WTI_CHANGE_20D"
+      ],
+      "source_dates": [
+        "2011-01",
+        "2011-01",
+        "2011-02"
+      ],
+      "stale": false,
+      "formula_version": "macro-factors-v1"
+    }
+  },
+  "sector_scores": {
+    "半導體": {
+      "score": -0.01942,
+      "confidence": 0.5,
+      "tailwind": false,
+      "contributors": [
+        {
+          "factor": "liquidity_score",
+          "value": 0.164663,
+          "sensitivity": 0.25
+        },
+        {
+          "factor": "rates_score",
+          "value": 0.326225,
+          "sensitivity": -0.15
+        }
+      ]
+    },
+    "AI伺服器代工": {
+      "score": -0.01942,
+      "confidence": 0.5,
+      "tailwind": false,
+      "contributors": [
+        {
+          "factor": "liquidity_score",
+          "value": 0.164663,
+          "sensitivity": 0.25
+        },
+        {
+          "factor": "rates_score",
+          "value": 0.326225,
+          "sensitivity": -0.15
+        }
+      ]
+    },
+    "金融": {
+      "score": 0.104427,
+      "confidence": 1.0,
+      "tailwind": false,
+      "contributors": [
+        {
+          "factor": "rates_score",
+          "value": 0.326225,
+          "sensitivity": 0.3
+        },
+        {
+          "factor": "risk_score",
+          "value": 0.209918,
+          "sensitivity": -0.25
+        },
+        {
+          "factor": "liquidity_score",
+          "value": 0.164663,
+          "sensitivity": 0.2
+        }
+      ]
+    },
+    "貨櫃航運": {
+      "score": -0.209918,
+      "confidence": 0.333333,
+      "tailwind": false,
+      "contributors": [
+        {
+          "factor": "risk_score",
+          "value": 0.209918,
+          "sensitivity": -0.1
+        }
+      ]
+    },
+    "營建": {
+      "score": -0.121688,
+      "confidence": 1.0,
+      "tailwind": false,
+      "contributors": [
+        {
+          "factor": "rates_score",
+          "value": 0.326225,
+          "sensitivity": -0.35
+        },
+        {
+          "factor": "liquidity_score",
+          "value": 0.164663,
+          "sensitivity": 0.25
+        }
+      ]
+    },
+    "高股息防禦": {
+      "score": 0.049075,
+      "confidence": 1.0,
+      "tailwind": false,
+      "contributors": [
+        {
+          "factor": "risk_score",
+          "value": 0.209918,
+          "sensitivity": 0.35
+        },
+        {
+          "factor": "rates_score",
+          "value": 0.326225,
+          "sensitivity": -0.15
+        }
+      ]
+    }
+  },
+  "key_indicators": [],
+  "sector_tailwinds": [
+    {
+      "name": "金融",
+      "score": 0.104427,
+      "confidence": 1.0,
+      "tailwind": false,
+      "contributors": [
+        {
+          "factor": "rates_score",
+          "value": 0.326225,
+          "sensitivity": 0.3
+        },
+        {
+          "factor": "risk_score",
+          "value": 0.209918,
+          "sensitivity": -0.25
+        },
+        {
+          "factor": "liquidity_score",
+          "value": 0.164663,
+          "sensitivity": 0.2
+        }
+      ]
+    },
+    {
+      "name": "高股息防禦",
+      "score": 0.049075,
+      "confidence": 1.0,
+      "tailwind": false,
+      "contributors": [
+        {
+          "factor": "risk_score",
+          "value": 0.209918,
+          "sensitivity": 0.35
+        },
+        {
+          "factor": "rates_score",
+          "value": 0.326225,
+          "sensitivity": -0.15
+        }
+      ]
+    },
+    {
+      "name": "半導體",
+      "score": -0.01942,
+      "confidence": 0.5,
+      "tailwind": false,
+      "contributors": [
+        {
+          "factor": "liquidity_score",
+          "value": 0.164663,
+          "sensitivity": 0.25
+        },
+        {
+          "factor": "rates_score",
+          "value": 0.326225,
+          "sensitivity": -0.15
+        }
+      ]
+    },
+    {
+      "name": "AI伺服器代工",
+      "score": -0.01942,
+      "confidence": 0.5,
+      "tailwind": false,
+      "contributors": [
+        {
+          "factor": "liquidity_score",
+          "value": 0.164663,
+          "sensitivity": 0.25
+        },
+        {
+          "factor": "rates_score",
+          "value": 0.326225,
+          "sensitivity": -0.15
+        }
+      ]
+    },
+    {
+      "name": "營建",
+      "score": -0.121688,
+      "confidence": 1.0,
+      "tailwind": false,
+      "contributors": [
+        {
+          "factor": "rates_score",
+          "value": 0.326225,
+          "sensitivity": -0.35
+        },
+        {
+          "factor": "liquidity_score",
+          "value": 0.164663,
+          "sensitivity": 0.25
+        }
+      ]
+    }
+  ],
+  "sector_headwinds": [
+    {
+      "name": "貨櫃航運",
+      "score": -0.209918,
+      "confidence": 0.333333,
+      "tailwind": false,
+      "contributors": [
+        {
+          "factor": "risk_score",
+          "value": 0.209918,
+          "sensitivity": -0.1
+        }
+      ]
+    },
+    {
+      "name": "營建",
+      "score": -0.121688,
+      "confidence": 1.0,
+      "tailwind": false,
+      "contributors": [
+        {
+          "factor": "rates_score",
+          "value": 0.326225,
+          "sensitivity": -0.35
+        },
+        {
+          "factor": "liquidity_score",
+          "value": 0.164663,
+          "sensitivity": 0.25
+        }
+      ]
+    },
+    {
+      "name": "AI伺服器代工",
+      "score": -0.01942,
+      "confidence": 0.5,
+      "tailwind": false,
+      "contributors": [
+        {
+          "factor": "liquidity_score",
+          "value": 0.164663,
+          "sensitivity": 0.25
+        },
+        {
+          "factor": "rates_score",
+          "value": 0.326225,
+          "sensitivity": -0.15
+        }
+      ]
+    },
+    {
+      "name": "半導體",
+      "score": -0.01942,
+      "confidence": 0.5,
+      "tailwind": false,
+      "contributors": [
+        {
+          "factor": "liquidity_score",
+          "value": 0.164663,
+          "sensitivity": 0.25
+        },
+        {
+          "factor": "rates_score",
+          "value": 0.326225,
+          "sensitivity": -0.15
+        }
+      ]
+    },
+    {
+      "name": "高股息防禦",
+      "score": 0.049075,
+      "confidence": 1.0,
+      "tailwind": false,
+      "contributors": [
+        {
+          "factor": "risk_score",
+          "value": 0.209918,
+          "sensitivity": 0.35
+        },
+        {
+          "factor": "rates_score",
+          "value": 0.326225,
+          "sensitivity": -0.15
+        }
+      ]
+    }
+  ],
+  "upcoming_events": [],
+  "key_drivers": [
+    {
+      "name": "Taiwan Manufacturing PMI",
+      "value": 62.5,
+      "previous": 61.5,
+      "signal": "strong_positive",
+      "source_url": "https://www.cier.edu.tw/eco_cat/pmi-ch/"
+    },
+    {
+      "name": "U.S. ISM Manufacturing PMI",
+      "value": 54.6,
+      "previous": 55.6,
+      "signal": "positive_but_cooling",
+      "source_url": "https://www.ismworld.org/supply-management-news-and-reports/reports/ism-pmi-reports/services/august/"
+    },
+    {
+      "name": "U.S. ISM Services PMI",
+      "value": 55.4,
+      "previous": 54.1,
+      "signal": "positive_growth_with_inflation_risk",
+      "source_url": "https://www.ismworld.org/supply-management-news-and-reports/reports/ism-pmi-reports/services/august/"
+    },
+    {
+      "name": "U.S. August nonfarm payrolls",
+      "value": 162000,
+      "signal": "resilient_labor",
+      "source_url": "https://www.bls.gov/news.release/archives/empsit_09042026.htm"
+    }
+  ],
+  "key_risks": [
+    "U.S. August PPI is due on 2026-09-10.",
+    "U.S. August CPI is due on 2026-09-11.",
+    "The FOMC meets on 2026-09-15 and 2026-09-16 with a Summary of Economic Projections.",
+    "Latest available U.S. PCE inflation remains elevated, and ISM price indices are high.",
+    "Taiwan manufacturing reports supply constraints and input-cost pressure."
+  ],
+  "analysis": {
+    "summary": "Taiwan manufacturing momentum is very strong, U.S. manufacturing and services remain expansionary, and the August U.S. labor report remains resilient. The current Taiwan-equity macro backdrop is constructive, but inflation and policy risk remain important because U.S. services prices are elevated and September PPI/CPI/FOMC releases are still ahead.",
+    "confidence": 0.86,
+    "source_urls": [
+      "https://www.cier.edu.tw/eco_cat/pmi-ch/",
+      "https://www.cier.edu.tw/eco_cat/nmi-ch/",
+      "https://www.ismworld.org/supply-management-news-and-reports/reports/ism-pmi-reports/services/august/",
+      "https://www.bls.gov/news.release/archives/empsit_09042026.htm",
+      "https://www.bls.gov/cpi/",
+      "https://www.bea.gov/news/2026/personal-income-and-outlays-july-2026",
+      "https://www.federalreserve.gov/monetarypolicy/fomccalendars.htm",
+      "https://www.ndc.gov.tw/nc_332_40404"
+    ]
+  },
+  "quality": {
+    "confidence": 0.0,
+    "stale": true,
+    "guardrail": "insufficient_macro_or_market_inputs"
+  }
+}

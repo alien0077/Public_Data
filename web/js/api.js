@@ -15,6 +15,15 @@ export const api = {
     _quantMetricsCache: null,
     _marginMaintenanceCache: null,
     _stockMetricsCache: null,
+    _macroDashboardCache: null,
+
+    async getMacroDashboard() {
+        if (!this._macroDashboardCache) {
+            try { this._macroDashboardCache = await this.fetchLocalJson('macro/dashboard.json'); }
+            catch(e) { this._macroDashboardCache = null; }
+        }
+        return this._macroDashboardCache;
+    },
 
     async getStocksMeta() {
         if (!this._stocksMetaCache) {
@@ -218,9 +227,14 @@ export const api = {
     async fetchFinancials(symbol, type = 'quarterly') { try { return await this.fetchLocalJson(`${type}/${symbol.split('.')[0]}.json`); } catch (e) { return null; } },
     async fetchFairValue(symbol) {
         try {
-            const data = await this.fetchLocalJson('valuation/fair_value.json');
+            const data = await this.fetchLocalJson('valuation/fair_value_v2_1.json');
             return data?.stocks?.[symbol.split('.')[0]] || null;
-        } catch (e) { return null; }
+        } catch (e) {
+            try {
+                const data = await this.fetchLocalJson('valuation/fair_value.json');
+                return data?.stocks?.[symbol.split('.')[0]] || null;
+            } catch (fallbackError) { return null; }
+        }
     },
     async fetchFairValueMap() {
         if (!this._fairValueMap) {
@@ -239,6 +253,12 @@ export const api = {
                     model: row.valuation_model,
                     confidence: row.valuation_confidence,
                     source_dates: row.source_dates
+                    ,valuation_group: row.valuation_group
+                    ,core: row.valuation_core
+                    ,future: row.valuation_future
+                    ,market_implied: row.valuation_market_implied
+                    ,input_hash: row.valuation_input_hash
+                    ,model_version: row.valuation_model_version
                 }]));
             } catch (e) {
                 try {

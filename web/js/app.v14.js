@@ -278,6 +278,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 renderAssetRow2(trades, h, {});
                 renderExchangeRates();
                 renderMarketSummary({});
+                renderMacroDashboard();
                 renderBetaWarning(h);
                 renderMarketHealth();
                 renderMarketDivergence();
@@ -288,6 +289,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 await renderPortfolio([], {});
                 await renderExchangeRates();
                 await renderMarketSummary({});
+                await renderMacroDashboard();
                 await renderMarketHealth();
                 await loadAndRenderLiar();
                 await renderMarketDivergence();
@@ -326,6 +328,7 @@ document.addEventListener('DOMContentLoaded', () => {
             renderBetaWarning(h);
             renderExchangeRates();
             renderMarketSummary(q);
+            renderMacroDashboard();
             renderMarketHealth();
             renderMarketDivergence();
             loadAndRenderLiar();
@@ -670,6 +673,30 @@ document.addEventListener('DOMContentLoaded', () => {
                 idxItem('台積ADR', getDateBadge(tsm), formatIdx(tsm.price), tsm.changePercent) +
                 '</div></div>';
         } catch(e) { console.error('renderMarketSummary error:', e); }
+    }
+
+    async function renderMacroDashboard() {
+        const section = document.getElementById('macro-dashboard-section');
+        const content = document.getElementById('macro-dashboard-content');
+        if (!section || !content) return;
+        const data = await api.getMacroDashboard();
+        if (!data || !data.macro_regime) { section.classList.add('hidden'); return; }
+        section.classList.remove('hidden');
+        const regime = data.macro_regime;
+        const trading = data.trading_regime || {};
+        const values = [['成長', regime.growth_score], ['通膨', regime.inflation_score], ['流動性', regime.liquidity_score], ['利率', regime.rates_score], ['匯率', regime.fx_score], ['風險', regime.risk_score]];
+        const format = value => value === null || value === undefined ? '資料不足' : Number(value).toFixed(2);
+        const tile = ([label, value]) => '<div class="bg-gray-50 dark:bg-gray-900/60 rounded-xl p-3"><div class="text-[10px] text-gray-500">' + label + '</div><div class="font-mono font-bold">' + format(value) + '</div></div>';
+        const tailwinds = (data.sector_tailwinds || []).slice(0, 3).map(item => '<span class="px-2 py-1 rounded bg-green-500/10 text-green-600 text-xs">' + item.name + '</span>').join('');
+        const headwinds = (data.sector_headwinds || []).slice(0, 3).map(item => '<span class="px-2 py-1 rounded bg-red-500/10 text-red-600 text-xs">' + item.name + '</span>').join('');
+        content.innerHTML = '<div class="bg-white dark:bg-[#161b22] p-4 rounded-2xl border border-gray-200 dark:border-gray-800 shadow-sm">' +
+            '<div class="flex justify-between items-center mb-3"><span class="font-bold">' + (regime.state || '資料不足') + '</span><span class="text-xs text-gray-500">交易狀態：' + (trading.state || '資料不足') + (trading.target_equity_exposure == null ? '' : ' · 目標股票 ' + (trading.target_equity_exposure * 100).toFixed(0) + '%') + '</span></div>' +
+            '<div class="grid grid-cols-2 md:grid-cols-6 gap-2">' + values.map(tile).join('') + '</div>' +
+            '<div class="flex flex-wrap gap-2 mt-3">' + (tailwinds ? '<span class="text-xs text-gray-500">順風</span>' + tailwinds : '') + (headwinds ? '<span class="text-xs text-gray-500 ml-2">逆風</span>' + headwinds : '') + '</div>' +
+            (data.analysis?.summary ? '<p class="text-xs text-gray-500 mt-3">' + data.analysis.summary + '</p>' : '') +
+            '</div>';
+        const date = document.getElementById('macro-dashboard-date');
+        if (date) date.textContent = data.as_of ? '更新: ' + data.as_of : '資料不足';
     }
 
     async function loadAndRenderLiar() {

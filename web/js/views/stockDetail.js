@@ -305,6 +305,14 @@ export const StockDetail = {
         const signalLabel = fairValue.valuation_signal_label || (upside >= 0 ? '低估' : '高估');
         const signalClass = signalLabel === '低估' ? 'text-red-500' : signalLabel === '高估' ? 'text-green-500' : 'text-orange-500';
         const reasonLines = this.fairValueReasonLines(fairValue, upside);
+        const v21 = fairValue.model_version === 'v2.1' || fairValue.fair_value_v2_1 != null;
+        const v21Analyst = fairValue.analyst || {};
+        const v21Divergence = fairValue.divergence || {};
+        const v2 = fairValue.core || {};
+        const future = fairValue.future || {};
+        const marketImplied = fairValue.market_implied || {};
+        const v2Number = value => Number.isFinite(Number(value)) ? Number(value).toFixed(1) : '--';
+        const catalystEvents = Array.isArray(future.events) ? future.events : [];
         return `
             <div class="bg-orange-50 dark:bg-orange-950/20 rounded-2xl border border-orange-200 dark:border-orange-800/40 p-5" data-testid="fair-value-detail">
                 <div class="flex items-center justify-between gap-3 mb-4">
@@ -316,7 +324,15 @@ export const StockDetail = {
                 </div>
                 <div class="mt-4 grid grid-cols-2 md:grid-cols-3 gap-2">${inputRows.map(([label, value, decimals]) => `<div class="bg-white/60 dark:bg-gray-900/40 rounded-lg px-3 py-2"><div class="text-[10px] text-gray-500">${label}</div><div class="text-xs font-mono font-bold">${typeof value === 'number' ? formatInput(value, decimals) : (value || '--')}</div></div>`).join('')}</div>
                 <div class="mt-3 text-[10px] text-gray-500">財報：${this.escapeHtml(fairValue.source_dates?.financials || '--')} · 價格：${this.escapeHtml(fairValue.source_dates?.price || '--')} · 結果為模型估計，不代表保證價格</div>
+                <div class="mt-4 rounded-xl border border-blue-200/70 dark:border-blue-800/40 bg-blue-50/40 dark:bg-blue-950/20 p-3" data-testid="fair-value-v2-summary">
+                    <div class="text-xs font-bold text-blue-700 dark:text-blue-300 mb-2">Fair Value V2 分層</div>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
+                        ${[['Core', v2.fair_value, 'text-orange-600'], ['Catalyst', future.catalyst_value, 'text-blue-600'], ['Optionality', future.optionality_value, 'text-purple-600'], ['市場隱含 Catalyst', marketImplied.implied_catalyst_value, 'text-teal-600']].map(([label, value, cls]) => `<div class="bg-white/70 dark:bg-gray-900/50 rounded-lg p-2"><div class="text-[10px] text-gray-500">${label}</div><div class="text-sm font-bold font-mono ${cls}">${v2Number(value)}</div></div>`).join('')}
+                    </div>
+                    <div class="text-[10px] text-gray-500 mt-2">${catalystEvents.length ? `Catalyst ${catalystEvents.length} 件；只有未納入 Core forward 且具備 evidence 的事件才獨立計值。` : '目前沒有具備可計值 revenue／margin evidence 的 Catalyst。'}</div>
+                </div>
                 <div class="mt-4 rounded-xl border border-orange-200/70 dark:border-orange-800/40 bg-white/50 dark:bg-gray-900/30 p-3" data-testid="fair-value-reason"><div class="text-xs font-bold text-orange-700 dark:text-orange-300 mb-2">為什麼和現價不同？</div><ul class="list-disc pl-5 space-y-1 text-[11px] leading-relaxed text-gray-600 dark:text-gray-300">${reasonLines.map(line => `<li>${this.escapeHtml(line)}</li>`).join('')}</ul></div>
+                ${v21 ? `<div class="mt-3 rounded-xl border border-indigo-200/70 dark:border-indigo-800/40 bg-indigo-50/40 dark:bg-indigo-950/20 p-3" data-testid="fair-value-v21-explanation"><div class="text-xs font-bold text-indigo-700 dark:text-indigo-300 mb-1">V2.1 為什麼是這個值？</div><p class="text-[11px] leading-relaxed text-gray-600 dark:text-gray-300">先以公開財報、現金流、同業群組與 Catalyst 建立獨立估值，再把公開分析師目標價／預估作為共識參考；目前分析師權重固定為 0，不會改寫獨立公允值。</p><p class="text-[11px] leading-relaxed text-gray-600 dark:text-gray-300 mt-1">${Number(v21Analyst.report_count || 0) > 0 ? `參考 ${v21Analyst.unique_brokers || 0} 家券商、${v21Analyst.report_count || 0} 份報告；新鮮度 ${Number(v21Analyst.freshness_score || 0) * 100}%` : '目前沒有足夠且可回溯的公開分析師共識，因此不把缺少的共識當成 0，也不將它混入公允值。'}${v21Divergence.severity && v21Divergence.severity !== 'NORMAL' ? `；差異等級 ${this.escapeHtml(v21Divergence.severity)}，需要複核。` : ''}</p></div>` : ''}
                 <details class="mt-4 border-t border-orange-200/70 dark:border-orange-800/40 pt-3">
                     <summary class="cursor-pointer text-xs font-bold text-orange-700 dark:text-orange-300">算法說明</summary>
                     <div class="mt-3 space-y-2 text-[11px] leading-relaxed text-gray-600 dark:text-gray-300">
@@ -340,6 +356,12 @@ export const StockDetail = {
         const percent = Number.isFinite(upside) ? `${Math.abs(upside * 100).toFixed(1)}%` : '目前差距';
         if (Number.isFinite(upside)) {
             lines.push(upside >= 0 ? `模型公允價比現價高 ${percent}，表示模型認為市場價格尚未反映估值條件。` : `模型公允價比現價低 ${percent}，表示目前股價包含模型尚未支持的市場溢價或成長預期。`);
+        }
+        const coreValue = Number(fairValue?.core?.fair_value);
+        const catalystValue = Number(fairValue?.future?.catalyst_value);
+        const optionalityValue = Number(fairValue?.future?.optionality_value);
+        if (Number.isFinite(coreValue) || Number.isFinite(catalystValue) || Number.isFinite(optionalityValue)) {
+            lines.push(`本檔 V2 分層：Core ${Number.isFinite(coreValue) ? coreValue.toFixed(1) : '--'}、Catalyst ${Number.isFinite(catalystValue) ? catalystValue.toFixed(1) : '--'}、Optionality ${Number.isFinite(optionalityValue) ? optionalityValue.toFixed(1) : '--'}；未具 evidence 或已納入 Core forward 的事件不會重複計值。`);
         }
         const basis = input.earnings_basis;
         if (basis === 'cycle_recovery_run_rate') {
