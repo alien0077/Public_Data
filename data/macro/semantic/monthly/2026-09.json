@@ -1,0 +1,262 @@
+{
+  "schema_version": "1.0",
+  "month": "2026-09",
+  "generated_at": "2026-09-07T12:00:00+08:00",
+  "scope": "Macroeconomic releases and market-relevant events available during September 2026 through the generated_at timestamp",
+  "valuation_policy": {
+    "fair_value_baseline": "V2.1",
+    "semantic_data_may_modify_fair_value_directly": false,
+    "note": "This file is research/semantic input only. Deterministic GitHub Actions must validate and transform it before any downstream use. Fair Value V2.1 remains the sole valuation baseline."
+  },
+  "released_this_month": [
+    {
+      "id": "TW_PMI_2026_08",
+      "country": "TW",
+      "category": "growth",
+      "release_date": "2026-09-01",
+      "reference_period": "2026-08",
+      "name": "Taiwan Manufacturing PMI",
+      "actual": 62.5,
+      "previous": 61.5,
+      "unit": "index",
+      "direction": "expansion_accelerating",
+      "details": {
+        "new_orders": 66.5,
+        "electronics_optical_pmi": 65.2,
+        "electrical_machinery_pmi": 61.1,
+        "future_6m_electronics_optical": 69.3,
+        "future_6m_electrical_machinery": 68.4
+      },
+      "tw_equity_readthrough": "Strong positive growth impulse for Taiwan manufacturing, especially electronics/optical and electrical machinery. Supply constraints and input-cost pressure are the main offset.",
+      "affected_sectors": ["Semiconductor", "AI_Ecosystem", "PCB_CCL_ABF", "重電_強韌電網", "電源供應器"],
+      "confidence": 0.98,
+      "source_url": "https://www.cier.edu.tw/eco_cat/pmi-ch/"
+    },
+    {
+      "id": "TW_NMI_2026_08",
+      "country": "TW",
+      "category": "growth",
+      "release_date": "2026-09-01",
+      "reference_period": "2026-08",
+      "name": "Taiwan Non-Manufacturing Index",
+      "actual": 55.6,
+      "previous": 57.3,
+      "unit": "index",
+      "direction": "expansion_decelerating",
+      "tw_equity_readthrough": "Services remain in expansion, but momentum slowed. Broad industry expansion remains supportive while export-oriented service activity softened.",
+      "confidence": 0.98,
+      "source_url": "https://www.cier.edu.tw/eco_cat/nmi-ch/"
+    },
+    {
+      "id": "US_ISM_MFG_2026_08",
+      "country": "US",
+      "category": "growth",
+      "release_date": "2026-09-01",
+      "reference_period": "2026-08",
+      "name": "ISM Manufacturing PMI",
+      "actual": 54.6,
+      "previous": 55.6,
+      "unit": "index",
+      "direction": "expansion_decelerating",
+      "details": {
+        "new_orders": 53.7,
+        "new_orders_previous": 56.7,
+        "production": 58.3,
+        "prices": 71.1
+      },
+      "tw_equity_readthrough": "U.S. manufacturing remains expansionary but new-order momentum cooled. Positive for Taiwan export cyclicals overall, with a caution flag from elevated prices and softer new orders.",
+      "affected_sectors": ["Semiconductor", "AI_Ecosystem", "PCB_CCL_ABF", "工具機"],
+      "confidence": 0.98,
+      "source_url": "https://www.ismworld.org/supply-management-news-and-reports/reports/ism-pmi-reports/services/august/"
+    },
+    {
+      "id": "US_ISM_SERVICES_2026_08",
+      "country": "US",
+      "category": "growth_inflation",
+      "release_date": "2026-09-03",
+      "reference_period": "2026-08",
+      "name": "ISM Services PMI",
+      "actual": 55.4,
+      "previous": 54.1,
+      "unit": "index",
+      "direction": "expansion_accelerating",
+      "details": {
+        "business_activity": 61.7,
+        "new_orders": 60.9,
+        "employment": 47.8,
+        "prices": 72.6
+      },
+      "tw_equity_readthrough": "U.S. demand remains firm, but services prices are elevated and employment is contracting. This is growth-positive but creates inflation/rate sensitivity for high-duration equities.",
+      "confidence": 0.98,
+      "source_url": "https://www.ismworld.org/supply-management-news-and-reports/reports/ism-pmi-reports/services/august/"
+    },
+    {
+      "id": "US_NFP_2026_08",
+      "country": "US",
+      "category": "labor_growth",
+      "release_date": "2026-09-04",
+      "reference_period": "2026-08",
+      "name": "U.S. Employment Situation",
+      "actual": {
+        "nonfarm_payroll_change": 162000,
+        "unemployment_rate": 4.1,
+        "average_hourly_earnings_mom": 0.3,
+        "average_hourly_earnings_yoy": 3.1
+      },
+      "previous_revisions": {
+        "june_payroll_revised_to": 31000,
+        "july_payroll_revised_to": 21000,
+        "combined_revision": 55000
+      },
+      "unit": "mixed",
+      "direction": "labor_resilient",
+      "tw_equity_readthrough": "Employment remains supportive of U.S. demand. Wage growth is not extreme, but the data do not signal an abrupt demand collapse. This is supportive for Taiwan export demand while keeping Fed-path sensitivity relevant.",
+      "confidence": 0.99,
+      "source_url": "https://www.bls.gov/news.release/archives/empsit_09042026.htm"
+    },
+    {
+      "id": "US_VIX_2026_09_04",
+      "country": "US",
+      "category": "risk",
+      "release_date": "2026-09-04",
+      "reference_period": "2026-09-04",
+      "name": "Cboe VIX",
+      "actual": 14.32,
+      "unit": "index_prev_close",
+      "direction": "low_volatility",
+      "tw_equity_readthrough": "Low implied volatility is consistent with a benign risk backdrop, but this should be treated as a market-state input rather than a standalone timing signal.",
+      "confidence": 0.97,
+      "source_url": "https://www.cboe.com/tradable-products/vix/"
+    }
+  ],
+  "latest_available_prior_month_data": [
+    {
+      "id": "TW_EXPORTS_2026_07",
+      "release_date": "2026-08-07",
+      "reference_period": "2026-07",
+      "actual_usd_billion": 75.30,
+      "yoy_pct": 32.9,
+      "note": "August 2026 exports are scheduled for release on 2026-09-09; July remains the latest official value as of this snapshot.",
+      "source_url": "https://www.mof.gov.tw/%20/singlehtml/384fb3077bb349ea973e7fc6f13b6974?cntId=77ae31130e3f4024a69d5f89bd109bdc"
+    },
+    {
+      "id": "TW_EXPORT_ORDERS_2026_07",
+      "release_date": "2026-08-20",
+      "reference_period": "2026-07",
+      "actual_usd_billion": 97.939,
+      "yoy_pct": 61.85,
+      "note": "August 2026 export orders have not yet been released as of this snapshot.",
+      "source_url": "https://service.moea.gov.tw/EE520/common/CommonQuery.aspx?pcode=B"
+    },
+    {
+      "id": "TW_BUSINESS_CYCLE_2026_07",
+      "release_date": "2026-08-27",
+      "reference_period": "2026-07",
+      "signal": "red",
+      "score": 41,
+      "leading_index_mom_pct": 0.72,
+      "coincident_index_mom_pct": 0.36,
+      "note": "August business-cycle release is scheduled for 2026-09-29.",
+      "source_url": "https://www.ndc.gov.tw/nc_332_40404"
+    },
+    {
+      "id": "US_PCE_2026_07",
+      "release_date": "2026-08-26",
+      "reference_period": "2026-07",
+      "pce_price_mom_pct": 0.2,
+      "pce_price_yoy_pct": 3.7,
+      "core_pce_mom_pct": 0.2,
+      "core_pce_yoy_pct": 3.3,
+      "real_pce_mom_pct": 0.0,
+      "note": "August 2026 PCE is scheduled for 2026-09-30.",
+      "source_url": "https://www.bea.gov/news/2026/personal-income-and-outlays-july-2026"
+    },
+    {
+      "id": "US_CPI_2026_07",
+      "release_date": "2026-08-12",
+      "reference_period": "2026-07",
+      "cpi_mom_pct": 0.1,
+      "cpi_yoy_pct": 3.4,
+      "core_cpi_mom_pct": 0.2,
+      "core_cpi_yoy_pct": 2.5,
+      "note": "August 2026 CPI is scheduled for 2026-09-11.",
+      "source_url": "https://www.bls.gov/cpi/"
+    }
+  ],
+  "upcoming_this_month": [
+    {
+      "date": "2026-09-09T16:00:00+08:00",
+      "event": "Taiwan August exports",
+      "importance": "high",
+      "source_url": "https://www.mof.gov.tw/%20/singlehtml/384fb3077bb349ea973e7fc6f13b6974?cntId=77ae31130e3f4024a69d5f89bd109bdc"
+    },
+    {
+      "date": "2026-09-10T08:30:00-04:00",
+      "event": "U.S. August PPI",
+      "importance": "high",
+      "source_url": "https://www.bls.gov/schedule/2026/09_sched.htm"
+    },
+    {
+      "date": "2026-09-11T08:30:00-04:00",
+      "event": "U.S. August CPI and Real Earnings",
+      "importance": "very_high",
+      "source_url": "https://www.bls.gov/schedule/2026/09_sched.htm"
+    },
+    {
+      "date": "2026-09-15/2026-09-16",
+      "event": "FOMC meeting and September SEP",
+      "importance": "very_high",
+      "source_url": "https://www.federalreserve.gov/monetarypolicy/fomccalendars.htm"
+    },
+    {
+      "date": "2026-09-29T16:00:00+08:00",
+      "event": "Taiwan August business-cycle indicators",
+      "importance": "high",
+      "source_url": "https://www.ndc.gov.tw/nc_332_40404"
+    },
+    {
+      "date": "2026-09-30T08:30:00-04:00",
+      "event": "U.S. August PCE / Core PCE and GDP third estimate",
+      "importance": "very_high",
+      "source_url": "https://www.bea.gov/news/schedule/full"
+    }
+  ],
+  "semantic_assessment": {
+    "growth": {
+      "state": "positive",
+      "confidence": 0.87,
+      "reason": "Taiwan PMI is exceptionally strong and U.S. ISM readings remain expansionary; U.S. labor data remain resilient."
+    },
+    "inflation": {
+      "state": "watch",
+      "confidence": 0.78,
+      "reason": "Latest available PCE inflation remains elevated and ISM services/manufacturing price indices are high; September CPI/PPI releases are pending."
+    },
+    "risk": {
+      "state": "benign_but_event_risk_ahead",
+      "confidence": 0.82,
+      "reason": "VIX remains low, but CPI/PPI and the September FOMC are major near-term event risks."
+    },
+    "taiwan_equity_bias": {
+      "state": "constructive_with_rate_sensitivity",
+      "confidence": 0.86,
+      "tailwinds": ["Taiwan manufacturing acceleration", "strong electronics/optical PMI", "resilient U.S. demand", "latest Taiwan exports and export orders remain very strong"],
+      "headwinds": ["input-cost pressure", "U.S. services inflation pressure", "pending CPI/PPI/FOMC event risk"]
+    }
+  },
+  "source_urls": [
+    "https://www.cier.edu.tw/eco_cat/pmi-ch/",
+    "https://www.cier.edu.tw/eco_cat/nmi-ch/",
+    "https://www.ismworld.org/supply-management-news-and-reports/reports/ism-pmi-reports/services/august/",
+    "https://www.bls.gov/news.release/archives/empsit_09042026.htm",
+    "https://www.bls.gov/cpi/",
+    "https://www.bls.gov/schedule/2026/09_sched.htm",
+    "https://www.bea.gov/news/2026/personal-income-and-outlays-july-2026",
+    "https://www.bea.gov/news/schedule/full",
+    "https://www.federalreserve.gov/monetarypolicy/fomccalendars.htm",
+    "https://www.mof.gov.tw/%20/singlehtml/384fb3077bb349ea973e7fc6f13b6974?cntId=77ae31130e3f4024a69d5f89bd109bdc",
+    "https://service.moea.gov.tw/EE520/common/CommonQuery.aspx?pcode=B",
+    "https://www.ndc.gov.tw/nc_332_40404",
+    "https://www.cboe.com/tradable-products/vix/"
+  ]
+}
