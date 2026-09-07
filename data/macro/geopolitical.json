@@ -1,29 +1,31 @@
 {
   "schema_version": "macro-geopolitical-v1",
-  "as_of": "2026-09-07T12:33:41.321504+00:00",
+  "as_of": "2026-09-07T12:35:35.337634+00:00",
   "observed_events": [
     {
       "event_id": "2026-09-07-us-iran-hormuz",
-      "event_type": "energy_shipping_disruption",
+      "event_type": "energy_shipping_refinery_disruption",
       "regions": [
         "Middle East",
-        "Strait of Hormuz"
+        "Strait of Hormuz",
+        "Saudi Arabia"
       ],
-      "severity": 0.9,
-      "confidence": 0.95,
+      "severity": 0.93,
+      "confidence": 0.96,
       "observed": {
-        "brent_usd_per_bbl": 96.19,
-        "wti_usd_per_bbl": 91.03,
+        "brent_usd_per_bbl": 97.47,
+        "wti_usd_per_bbl": 92.26,
         "brent_weekly_change_pct_approx": 8.0,
         "wti_weekly_change_pct_approx": 10.0,
         "commodity_ship_transits_per_day_10d_avg": 10,
         "traffic_context": "lowest since May according to Kpler data cited by Reuters",
+        "jazan_refinery_attack_reported": true,
         "opec_plus_october_policy": "unchanged"
       },
       "semantic": {
-        "escalation_score": 0.91,
-        "persistence_score": 0.8,
-        "interpretation": "Tit-for-tat attacks on tankers and vessels have moved the conflict from political risk into direct commercial-shipping and energy-supply risk. Iran also announced plans for a new restricted maritime zone and new Hormuz passage corridors, implying elevated near-term uncertainty even if some oil flows continue."
+        "escalation_score": 0.94,
+        "persistence_score": 0.84,
+        "interpretation": "The shock has broadened from vessel attacks and impaired Hormuz traffic into potential refinery infrastructure risk. Commercial shipping remains directly exposed, while Iran's planned restricted Gulf zone and new Hormuz passage arrangements keep near-term route uncertainty elevated."
       },
       "transmission_channels": [
         "energy"
@@ -33,7 +35,7 @@
         "rates": "negative",
         "liquidity": "negative_if_central_banks_reprice_inflation",
         "risk": "negative",
-        "growth": "negative_if_energy_shock_persists"
+        "growth": "negative_if_energy_and_shipping_shock_persists"
       },
       "affected_taiwan_sectors": {
         "headwind": [
@@ -51,7 +53,9 @@
         ],
         "tailwind_or_hedge": [
           "能源相關",
-          "部分航運"
+          "部分航運",
+          "軍工_航太",
+          "無人機_UAV"
         ]
       },
       "source_urls": [
@@ -59,7 +63,114 @@
         "https://www.reuters.com/world/middle-east/iran-says-announce-new-restricted-zone-gulf-coming-days-2026-09-07/"
       ],
       "first_seen_at": "2026-09-07T08:00:00+08:00",
-      "updated_at": "2026-09-07T16:52:00+08:00",
+      "updated_at": "2026-09-07T20:32:42+08:00",
+      "market_confirmed": true
+    },
+    {
+      "event_id": "2026-09-07-asia-bunker-fuel-tightness",
+      "event_type": "refined_product_shipping_cost_shock",
+      "regions": [
+        "Asia",
+        "Middle East",
+        "Singapore",
+        "Russia"
+      ],
+      "severity": 0.82,
+      "confidence": 0.94,
+      "observed": {
+        "singapore_vlsfo_change_since_iran_war_pct": 76.0,
+        "singapore_vlsfo_usd_per_metric_ton_approx": 825.0,
+        "q3_fuel_oil_deficit_bpd_forecast": 218000,
+        "middle_east_fuel_oil_exports_mar_aug_yoy_pct": -45.0,
+        "russia_august_fuel_oil_exports_bpd": 591000,
+        "russia_2025_average_fuel_oil_exports_bpd_gt": 860000,
+        "major_hub_fuel_oil_stocks_vs_3y_seasonal_avg_pct_approx": -30.0
+      },
+      "semantic": {
+        "escalation_score": 0.79,
+        "persistence_score": 0.86,
+        "interpretation": "The energy shock is transmitting into bunker fuel and shipping costs rather than remaining only a crude-oil story. Asia is especially exposed because Singapore depends heavily on Gulf fuel-oil flows. Higher bunker costs can feed directly into container/bulk freight and indirectly into imported inflation for Taiwan."
+      },
+      "transmission_channels": [],
+      "affected_factors": {
+        "inflation": "negative",
+        "growth": "negative_if_freight_costs_persist",
+        "risk": "negative",
+        "rates": "negative_if_second_round_inflation_effects_build"
+      },
+      "affected_taiwan_sectors": {
+        "headwind": [
+          "航空運輸",
+          "塑膠",
+          "工具機",
+          "零售_消費",
+          "出口製造"
+        ],
+        "mixed": [
+          "貨櫃航運",
+          "散裝航運"
+        ],
+        "tailwind_or_hedge": [
+          "航運運價受益者",
+          "能源相關"
+        ]
+      },
+      "source_urls": [
+        "https://www.reuters.com/business/energy/ship-fuel-shortage-looms-refiners-strained-by-war-favour-other-products-2026-09-07/"
+      ],
+      "first_seen_at": "2026-09-07T20:32:42+08:00",
+      "updated_at": "2026-09-07T20:32:42+08:00",
+      "market_confirmed": true
+    },
+    {
+      "event_id": "2026-09-russia-ukraine-energy-risk",
+      "event_type": "war_energy_supply_risk",
+      "regions": [
+        "Russia",
+        "Ukraine",
+        "Europe"
+      ],
+      "severity": 0.64,
+      "confidence": 0.88,
+      "observed": {
+        "russia_august_fuel_oil_exports_bpd": 591000,
+        "russia_2025_average_fuel_oil_exports_bpd_gt": 860000,
+        "diplomacy_update": "U.S. envoys reported possible new trilateral talks after Moscow and Kyiv visits; no breakthrough confirmed."
+      },
+      "semantic": {
+        "escalation_score": 0.58,
+        "persistence_score": 0.83,
+        "interpretation": "Refinery damage is already visible in Russian fuel-oil exports, so the energy impact remains real. Renewed U.S.-mediated diplomacy is a modest de-escalation signal, but no settlement has been reached and winter energy infrastructure risk remains."
+      },
+      "transmission_channels": [
+        "energy"
+      ],
+      "affected_factors": {
+        "inflation": "negative_if_energy_supply_tightens",
+        "growth": "negative_for_european_demand",
+        "risk": "negative_but_diplomacy_is_partial_offset"
+      },
+      "affected_taiwan_sectors": {
+        "headwind": [
+          "工具機",
+          "塑膠",
+          "歐洲曝險製造"
+        ],
+        "mixed": [
+          "航運",
+          "鋼鐵"
+        ],
+        "tailwind_or_hedge": [
+          "軍工_航太",
+          "無人機_UAV"
+        ]
+      },
+      "source_urls": [
+        "https://www.reuters.com/business/energy/ship-fuel-shortage-looms-refiners-strained-by-war-favour-other-products-2026-09-07/",
+        "https://www.reuters.com/business/aerospace-defense/us-envoys-make-first-kyiv-visit-amid-ukraine-war-peace-push-2026-09-06/"
+      ],
+      "first_seen_at": "2026-09-01T00:00:00+08:00",
+      "updated_at": "2026-09-07T20:32:42+08:00",
       "market_confirmed": true
     },
     {
@@ -78,7 +189,7 @@
       "semantic": {
         "escalation_score": 0.51,
         "persistence_score": 0.88,
-        "interpretation": "This is a structural rather than sudden shock: U.S. tariff and export-control policy can change Taiwan semiconductor capex geography, customer access, costs and supply-chain strategy."
+        "interpretation": "This remains a structural rather than sudden shock: U.S. tariff and export-control policy can change Taiwan semiconductor capex geography, customer access, costs and supply-chain strategy."
       },
       "transmission_channels": [
         "trade",
@@ -108,21 +219,19 @@
         "https://www.reuters.com/world/china/taiwan-flexes-chip-diplomacy-muscles-it-faces-pressure-share-ai-wealth-with-2026-09-07/"
       ],
       "first_seen_at": "2026-09-07T10:00:00+08:00",
-      "updated_at": "2026-09-07T16:52:00+08:00",
+      "updated_at": "2026-09-07T20:32:42+08:00",
       "market_confirmed": true
     }
   ],
-  "rejected_event_ids": [
-    "2026-09-russia-ukraine-energy-risk"
-  ],
-  "active_event_count": 2,
-  "geopolitical_energy_score": 0.855,
+  "rejected_event_ids": [],
+  "active_event_count": 4,
+  "geopolitical_energy_score": 0.8928,
   "geopolitical_trade_score": 0.4756,
   "geopolitical_supply_chain_score": 0.4756,
   "geopolitical_security_score": 0.0,
-  "geopolitical_risk_score": 0.855,
+  "geopolitical_risk_score": 0.8928,
   "influence": {
-    "signed": -0.0855,
+    "signed": -0.08928,
     "cap": 0.1,
     "guardrail": null,
     "semantic_cannot_liquidate": true
