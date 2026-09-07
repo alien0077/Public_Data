@@ -1,0 +1,231 @@
+{
+  "schema_version": "1.0",
+  "as_of": "2026-08-31",
+  "horizons_months": [
+    6,
+    12,
+    18
+  ],
+  "observations": 32501,
+  "coverage": 0.506886,
+  "metrics": {
+    "6": {
+      "observations": 14538,
+      "mae": 61.110832,
+      "mape": 0.455741,
+      "direction_accuracy": 0.596712,
+      "rank_correlation": 0.086227,
+      "confidence_calibration": [
+        {
+          "range": [
+            0.0,
+            0.25
+          ],
+          "count": 151,
+          "mean_confidence": 0.156623,
+          "direction_accuracy": 0.602649
+        },
+        {
+          "range": [
+            0.25,
+            0.5
+          ],
+          "count": 3453,
+          "mean_confidence": 0.309398,
+          "direction_accuracy": 0.571098
+        },
+        {
+          "range": [
+            0.5,
+            0.75
+          ],
+          "count": 10934,
+          "mean_confidence": 0.512394,
+          "direction_accuracy": 0.604719
+        },
+        {
+          "range": [
+            0.75,
+            1.0
+          ],
+          "count": 0,
+          "mean_confidence": null,
+          "direction_accuracy": null
+        }
+      ],
+      "coverage": 14538,
+      "median_absolute_error": 15.55465,
+      "direction_positive_rate": 0.596712
+    },
+    "12": {
+      "observations": 10811,
+      "mae": 65.912835,
+      "mape": 0.486986,
+      "direction_accuracy": 0.610859,
+      "rank_correlation": 0.067407,
+      "confidence_calibration": [
+        {
+          "range": [
+            0.0,
+            0.25
+          ],
+          "count": 112,
+          "mean_confidence": 0.156696,
+          "direction_accuracy": 0.580357
+        },
+        {
+          "range": [
+            0.25,
+            0.5
+          ],
+          "count": 2437,
+          "mean_confidence": 0.307489,
+          "direction_accuracy": 0.572835
+        },
+        {
+          "range": [
+            0.5,
+            0.75
+          ],
+          "count": 8262,
+          "mean_confidence": 0.512411,
+          "direction_accuracy": 0.622489
+        },
+        {
+          "range": [
+            0.75,
+            1.0
+          ],
+          "count": 0,
+          "mean_confidence": null,
+          "direction_accuracy": null
+        }
+      ],
+      "coverage": 10811,
+      "median_absolute_error": 15.5056,
+      "direction_positive_rate": 0.610859
+    },
+    "18": {
+      "observations": 7152,
+      "mae": 77.196741,
+      "mape": 0.51506,
+      "direction_accuracy": 0.619128,
+      "rank_correlation": 0.052481,
+      "confidence_calibration": [
+        {
+          "range": [
+            0.0,
+            0.25
+          ],
+          "count": 72,
+          "mean_confidence": 0.156944,
+          "direction_accuracy": 0.652778
+        },
+        {
+          "range": [
+            0.25,
+            0.5
+          ],
+          "count": 1591,
+          "mean_confidence": 0.306694,
+          "direction_accuracy": 0.598366
+        },
+        {
+          "range": [
+            0.5,
+            0.75
+          ],
+          "count": 5489,
+          "mean_confidence": 0.512366,
+          "direction_accuracy": 0.624704
+        },
+        {
+          "range": [
+            0.75,
+            1.0
+          ],
+          "count": 0,
+          "mean_confidence": null,
+          "direction_accuracy": null
+        }
+      ],
+      "coverage": 7152,
+      "median_absolute_error": 15.6398,
+      "direction_positive_rate": 0.619128
+    }
+  },
+  "rank_correlation": 0.002174,
+  "bucket_hit_rate": 0.606351,
+  "upside_buckets": [
+    {
+      "bucket": "< -15%",
+      "count": 7656,
+      "hit_rate": 0.664446
+    },
+    {
+      "bucket": "-15~0%",
+      "count": 1210,
+      "hit_rate": 0.642975
+    },
+    {
+      "bucket": "0~15%",
+      "count": 728,
+      "hit_rate": 0.449176
+    },
+    {
+      "bucket": "15~30%",
+      "count": 344,
+      "hit_rate": 0.383721
+    },
+    {
+      "bucket": "> 30%",
+      "count": 873,
+      "hit_rate": 0.320733
+    }
+  ],
+  "confidence_calibration": {
+    "method": "confidence_bucket_mean_direction",
+    "horizon": 12,
+    "buckets": [
+      {
+        "range": [
+          0.0,
+          0.25
+        ],
+        "count": 112,
+        "mean_confidence": 0.156696,
+        "direction_accuracy": 0.580357
+      },
+      {
+        "range": [
+          0.25,
+          0.5
+        ],
+        "count": 2437,
+        "mean_confidence": 0.307489,
+        "direction_accuracy": 0.572835
+      },
+      {
+        "range": [
+          0.5,
+          0.75
+        ],
+        "count": 8262,
+        "mean_confidence": 0.512411,
+        "direction_accuracy": 0.622489
+      },
+      {
+        "range": [
+          0.75,
+          1.0
+        ],
+        "count": 0,
+        "mean_confidence": null,
+        "direction_accuracy": null
+      }
+    ]
+  },
+  "status": "ok",
+  "snapshots": 11,
+  "lookahead_policy": "only facts with effective_available_at <= valuation cutoff may be used"
+}
