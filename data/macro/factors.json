@@ -1,38 +1,48 @@
 {
   "schema_version": "macro-artifact-v1",
-  "as_of": "2026-09-07T06:41:05.825861+00:00",
+  "as_of": "2026-09-07T23:59:59+00:00",
   "formula_version": "macro-factors-v1",
   "factors": {
     "growth_score": {
       "value": null,
-      "confidence": 0.166667,
-      "coverage": 0.166667,
+      "confidence": 0.428571,
+      "coverage": 0.428571,
       "contributing_inputs": [
-        "TW_EXPORTS_YOY"
+        "TW_EXPORTS_YOY",
+        "TW_PMI",
+        "TW_REAL_GDP_GROWTH"
       ],
       "source_dates": [
-        "2025-03"
+        "2026-06",
+        "2026-08",
+        "2026-Q2"
       ],
       "stale": true,
       "formula_version": "macro-factors-v1"
     },
     "inflation_score": {
-      "value": 0.638127,
-      "confidence": 0.5,
-      "coverage": 0.5,
+      "value": 0.068154,
+      "confidence": 1.0,
+      "coverage": 1.0,
       "contributing_inputs": [
         "US_CPI_YOY",
-        "US_CORE_CPI_YOY"
+        "US_CORE_CPI_YOY",
+        "US_PCE_YOY",
+        "US_CORE_PCE_YOY",
+        "TW_CPI_YOY"
       ],
       "source_dates": [
-        "2012-01",
-        "2012-01"
+        "2026-07",
+        "2026-07",
+        "2026-07",
+        "2026-07",
+        "2026-07"
       ],
       "stale": false,
       "formula_version": "macro-factors-v1"
     },
     "liquidity_score": {
-      "value": 0.164663,
+      "value": -0.095179,
       "confidence": 0.75,
       "coverage": 0.75,
       "contributing_inputs": [
@@ -41,15 +51,15 @@
         "US_BROAD_DOLLAR_INDEX"
       ],
       "source_dates": [
-        "2011-02",
-        "2011-02",
-        "2011-01"
+        "2026-09",
+        "2026-09",
+        "2026-08"
       ],
       "stale": false,
       "formula_version": "macro-factors-v1"
     },
     "rates_score": {
-      "value": 0.326225,
+      "value": -0.146927,
       "confidence": 0.5,
       "coverage": 0.5,
       "contributing_inputs": [
@@ -57,8 +67,8 @@
         "US10Y_CHANGE_20D"
       ],
       "source_dates": [
-        "2011-01",
-        "2011-02"
+        "2026-09",
+        "2026-09"
       ],
       "stale": false,
       "formula_version": "macro-factors-v1"
@@ -71,24 +81,26 @@
         "US_BROAD_DOLLAR_INDEX"
       ],
       "source_dates": [
-        "2011-01"
+        "2026-08"
       ],
       "stale": true,
       "formula_version": "macro-factors-v1"
     },
     "risk_score": {
-      "value": 0.209918,
-      "confidence": 0.75,
-      "coverage": 0.75,
+      "value": -0.048346,
+      "confidence": 0.8,
+      "coverage": 0.8,
       "contributing_inputs": [
         "VIX",
         "US_BROAD_DOLLAR_INDEX",
-        "WTI_CHANGE_20D"
+        "WTI_CHANGE_20D",
+        "TW_UNEMPLOYMENT_RATE"
       ],
       "source_dates": [
-        "2011-01",
-        "2011-01",
-        "2011-02"
+        "2026-09",
+        "2026-08",
+        "2026-09",
+        "2026-07"
       ],
       "stale": false,
       "formula_version": "macro-factors-v1"
