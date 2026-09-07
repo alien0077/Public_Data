@@ -1,17 +1,129 @@
 {
   "schema_version": "macro-geopolitical-v1",
-  "as_of": "2026-09-07T09:03:54.431346+00:00",
-  "observed_events": [],
-  "rejected_event_ids": [],
-  "active_event_count": 0,
-  "geopolitical_energy_score": 0.0,
-  "geopolitical_trade_score": 0.0,
-  "geopolitical_supply_chain_score": 0.0,
+  "as_of": "2026-09-07T09:10:00+00:00",
+  "observed_events": [
+    {
+      "event_id": "2026-09-07-us-iran-hormuz",
+      "event_type": "energy_shipping_disruption",
+      "regions": [
+        "Middle East",
+        "Strait of Hormuz"
+      ],
+      "severity": 0.9,
+      "confidence": 0.95,
+      "observed": {
+        "brent_usd_per_bbl": 96.19,
+        "wti_usd_per_bbl": 91.03,
+        "brent_weekly_change_pct_approx": 8.0,
+        "wti_weekly_change_pct_approx": 10.0,
+        "commodity_ship_transits_per_day_10d_avg": 10,
+        "traffic_context": "lowest since May according to Kpler data cited by Reuters",
+        "opec_plus_october_policy": "unchanged"
+      },
+      "semantic": {
+        "escalation_score": 0.91,
+        "persistence_score": 0.8,
+        "interpretation": "Tit-for-tat attacks on tankers and vessels have moved the conflict from political risk into direct commercial-shipping and energy-supply risk. Iran also announced plans for a new restricted maritime zone and new Hormuz passage corridors, implying elevated near-term uncertainty even if some oil flows continue."
+      },
+      "transmission_channels": [
+        "energy"
+      ],
+      "affected_factors": {
+        "inflation": "negative",
+        "rates": "negative",
+        "liquidity": "negative_if_central_banks_reprice_inflation",
+        "risk": "negative",
+        "growth": "negative_if_energy_shock_persists"
+      },
+      "affected_taiwan_sectors": {
+        "headwind": [
+          "航空運輸",
+          "塑膠",
+          "工具機",
+          "旅遊_餐飲",
+          "AI伺服器代工",
+          "半導體"
+        ],
+        "mixed": [
+          "貨櫃航運",
+          "散裝航運",
+          "鋼鐵"
+        ],
+        "tailwind_or_hedge": [
+          "能源相關",
+          "部分航運"
+        ]
+      },
+      "source_urls": [
+        "https://www.reuters.com/business/energy/oil-extends-gains-after-us-iran-strike-ships-2026-09-07/",
+        "https://www.reuters.com/world/middle-east/iran-says-announce-new-restricted-zone-gulf-coming-days-2026-09-07/"
+      ],
+      "first_seen_at": "2026-09-07T08:00:00+08:00",
+      "updated_at": "2026-09-07T16:52:00+08:00",
+      "market_confirmed": true
+    },
+    {
+      "event_id": "2026-09-us-china-semiconductor-trade-risk",
+      "event_type": "trade_export_control_supply_chain",
+      "regions": [
+        "United States",
+        "China",
+        "Taiwan"
+      ],
+      "severity": 0.58,
+      "confidence": 0.82,
+      "observed": {
+        "taiwan_us_chip_policy_context": "Taiwan manufacturers continue expanding U.S. investment while semiconductor tariff/export-control uncertainty remains material."
+      },
+      "semantic": {
+        "escalation_score": 0.51,
+        "persistence_score": 0.88,
+        "interpretation": "This is a structural rather than sudden shock: U.S. tariff and export-control policy can change Taiwan semiconductor capex geography, customer access, costs and supply-chain strategy."
+      },
+      "transmission_channels": [
+        "trade",
+        "supply_chain"
+      ],
+      "affected_factors": {
+        "growth": "mixed",
+        "risk": "negative",
+        "fx": "mixed"
+      },
+      "affected_taiwan_sectors": {
+        "headwind": [
+          "晶圓代工",
+          "ASIC_IP",
+          "IC設計_HPC_存儲"
+        ],
+        "mixed": [
+          "AI伺服器代工",
+          "封測_材料",
+          "半導體設備_CoWoS"
+        ],
+        "tailwind_or_hedge": [
+          "美國在地化供應鏈受益者"
+        ]
+      },
+      "source_urls": [
+        "https://www.reuters.com/world/china/taiwan-flexes-chip-diplomacy-muscles-it-faces-pressure-share-ai-wealth-with-2026-09-07/"
+      ],
+      "first_seen_at": "2026-09-07T10:00:00+08:00",
+      "updated_at": "2026-09-07T16:52:00+08:00",
+      "market_confirmed": true
+    }
+  ],
+  "rejected_event_ids": [
+    "2026-09-russia-ukraine-energy-risk"
+  ],
+  "active_event_count": 2,
+  "geopolitical_energy_score": 0.855,
+  "geopolitical_trade_score": 0.4756,
+  "geopolitical_supply_chain_score": 0.4756,
   "geopolitical_security_score": 0.0,
-  "geopolitical_risk_score": 0.0,
+  "geopolitical_risk_score": 0.855,
   "influence": {
-    "signed": -0.0,
-    "cap": 0.05,
+    "signed": -0.0855,
+    "cap": 0.1,
     "guardrail": null,
     "semantic_cannot_liquidate": true
   },
