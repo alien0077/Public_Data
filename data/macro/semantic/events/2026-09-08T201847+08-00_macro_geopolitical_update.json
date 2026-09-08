@@ -1,0 +1,93 @@
+{
+  "schema_version": "1.2",
+  "generated_at": "2026-09-08T20:18:47+08:00",
+  "event_group_id": "2026-09-08-macro-geopolitical-update",
+  "macro_changes": [
+    {
+      "event_id": "2026-09-08-china-august-trade",
+      "event_type": "global_growth_trade_data",
+      "regions": ["China", "Asia", "Global"],
+      "observed": {
+        "exports_yoy_pct": 25.0,
+        "exports_previous_yoy_pct": 23.9,
+        "exports_consensus_yoy_pct": 25.0,
+        "imports_yoy_pct": 28.2,
+        "imports_previous_yoy_pct": 27.5,
+        "imports_consensus_yoy_pct": 30.0,
+        "trade_surplus_usd_bn": 119.09,
+        "trade_surplus_previous_usd_bn": 112.5,
+        "high_tech_exports_ytd_yoy_pct": 42.9
+      },
+      "interpretation": "External demand and AI/high-tech trade remain a strong regional growth support, but the divergence from weak Chinese domestic demand persists. For Taiwan equities this is supportive for AI/semiconductor and export supply-chain demand while also reinforcing trade-friction risk.",
+      "affected_factors": ["growth", "trade", "semiconductor_demand", "China_demand"],
+      "affected_taiwan_sectors": ["半導體", "AI伺服器代工", "IC設計_HPC_存儲", "電子零組件", "工具機"],
+      "confidence": 0.96,
+      "source_urls": [
+        "https://www.reuters.com/world/asia-pacific/chinas-exports-up-25-yy-august-imports-surge-282-2026-09-08/"
+      ],
+      "first_seen_at": "2026-09-08T10:45:00+08:00",
+      "updated_at": "2026-09-08T20:18:47+08:00"
+    }
+  ],
+  "geopolitical_events": [
+    {
+      "event_id": "2026-09-08-houthi-saudi-energy-escalation",
+      "event_type": "energy_infrastructure_attack_and_shipping_disruption",
+      "regions": ["Saudi Arabia", "Yemen", "Iran", "Strait of Hormuz", "Middle East"],
+      "severity": 0.97,
+      "confidence": 0.97,
+      "escalation_score": 0.97,
+      "persistence_score": 0.89,
+      "observed": {
+        "houthi_attacks_on_saudi_energy_facilities": true,
+        "reported_injured": 73,
+        "some_saudi_energy_facilities_halted": true,
+        "brent_intraday_high_usd_per_bbl": 99.46,
+        "wti_intraday_high_usd_per_bbl": 94.73,
+        "hormuz_traffic_below_normal": true,
+        "global_oil_lng_share_through_hormuz_pre_conflict_approx": 0.2
+      },
+      "semantic_interpretation": "Observed attacks have broadened the Middle East shock from contested shipping and tanker strikes into direct Saudi energy-infrastructure disruption. The risk to Taiwan is primarily through crude/refined-product costs, freight, imported inflation, global rates and risk appetite; the semantic score must not overwrite official macro series.",
+      "transmission_channels": ["energy", "refining", "shipping", "freight", "inflation", "rates", "fx", "global_risk"],
+      "affected_factors": ["inflation", "rates", "liquidity", "risk", "growth", "fx"],
+      "affected_taiwan_sectors": ["航空運輸", "貨櫃航運", "散裝航運", "塑膠", "工具機", "半導體", "AI伺服器代工", "軍工_航太", "能源相關"],
+      "source_urls": [
+        "https://www.reuters.com/business/energy/oil-rises-risks-prolonged-mideast-conflict-heighten-supply-worries-2026-09-08/",
+        "https://www.reuters.com/world/middle-east/iran-says-it-plans-new-gulf-exclusion-zone-threatens-us-with-new-missiles-2026-09-08/"
+      ],
+      "first_seen_at": "2026-09-08T08:50:00+08:00",
+      "updated_at": "2026-09-08T20:18:47+08:00"
+    },
+    {
+      "event_id": "2026-09-08-russia-kyiv-strikes-resume",
+      "event_type": "war_escalation_after_diplomatic_pause",
+      "regions": ["Russia", "Ukraine", "Europe"],
+      "severity": 0.68,
+      "confidence": 0.94,
+      "escalation_score": 0.67,
+      "persistence_score": 0.86,
+      "observed": {
+        "russian_air_attacks_on_kyiv_resumed": true,
+        "reported_killed": 3,
+        "reported_wounded": 19,
+        "temporary_three_day_capital_strike_pause_ended": true,
+        "long_range_strikes_by_both_sides_increased": true
+      },
+      "semantic_interpretation": "The resumption of major strikes after the diplomatic pause reduces the near-term de-escalation signal from U.S.-mediated talks. Taiwan transmission remains secondary and is mainly through European growth, refined-product supply, sanctions and global risk sentiment.",
+      "transmission_channels": ["energy", "refined_products", "european_growth", "sanctions", "global_risk"],
+      "affected_factors": ["risk", "inflation", "growth"],
+      "affected_taiwan_sectors": ["工具機", "歐洲曝險製造", "塑膠", "航運", "軍工_航太", "無人機_UAV"],
+      "source_urls": [
+        "https://www.reuters.com/world/europe/russian-ballistic-missiles-hit-kyiv-us-envoys-leave-2026-09-08/"
+      ],
+      "first_seen_at": "2026-09-08T10:57:00+08:00",
+      "updated_at": "2026-09-08T20:18:47+08:00"
+    }
+  ],
+  "fair_value_policy": {
+    "baseline": "V2.1",
+    "semantic_only": true,
+    "direct_fair_value_modification": false,
+    "official_numeric_series_override": false
+  }
+}
