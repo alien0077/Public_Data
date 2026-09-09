@@ -1,0 +1,63 @@
+{
+  "schema_version": "1.0",
+  "generated_at": "2026-09-09T08:04:52+08:00",
+  "window_start": "2026-09-07T20:00:00+08:00",
+  "window_end": "2026-09-09T08:04:52+08:00",
+  "event_file": "data/ingestion/discovery/events/2026/09/2026-09-09T000452Z.json",
+  "production_verified": false,
+  "new_event_count": 9,
+  "counts_by_source_type": {
+    "company_ir": 1,
+    "mops_material_announcement": 1,
+    "mops_monthly_revenue": 2,
+    "analyst": 3,
+    "mops_investor_conference": 2
+  },
+  "counts_by_event_type": {
+    "technology_partnership": 1,
+    "capital_raise_gdr_pricing": 1,
+    "monthly_revenue": 2,
+    "target_price_revision": 2,
+    "consensus_estimate_revision": 1,
+    "investor_conference": 2
+  },
+  "high_priority_stock_ids": ["1303", "2330", "2344", "3231"],
+  "fetch_queue": {
+    "pending": 9,
+    "verified": 0,
+    "rule": "production_verified remains false until deterministic evidence fetch saves raw bytes, canonical URL, published_at and SHA-256"
+  },
+  "notable_candidates": [
+    {
+      "event_id": "2330_20260908_asml_high_na_12in_mask_initiative",
+      "stock_id": "2330",
+      "summary": "Primary TSMC/ASML initiative for 12-inch High-NA EUV photomasks; 2031 pilot line and 2033 system-readiness targets."
+    },
+    {
+      "event_id": "3231_20260907_gdr_pricing_25m_units",
+      "stock_id": "3231",
+      "summary": "Wistron GDR priced at US$58.88 per unit; 25m GDRs represent 250m common shares and US$1.472bn gross proceeds."
+    },
+    {
+      "event_id": "1303_20260908_aug_revenue_30601161k",
+      "stock_id": "1303",
+      "summary": "August revenue discovery: NTD30.601bn, +46.75% YoY; current Public_Data monthly file still ends at July."
+    },
+    {
+      "event_id": "1303_20260908_macquarie_outperform_target_424",
+      "stock_id": "1303",
+      "summary": "Public named-broker reference: Macquarie outperform, target TWD424; original report timestamp remains unresolved."
+    },
+    {
+      "event_id": "2344_20260908_factset_eps_consensus_25_37",
+      "stock_id": "2344",
+      "summary": "FactSet 10-analyst survey raises 2026 EPS median to TWD25.37; reported target price TWD233."
+    }
+  ],
+  "notes": [
+    "This is discovery only; no Fair Value, analyst consensus, catalyst probability, normalized fundamental or PIT production file was modified.",
+    "Secondary MOPS mirrors are queued for primary-source resolution by the deterministic fetcher.",
+    "Investor-conference notices do not imply new guidance; fetcher must check MOPS/company IR attachments before materializing facts.",
+    "No paywall/login bypass or copyrighted broker-report full text was accessed or stored."
+  ]
+}
