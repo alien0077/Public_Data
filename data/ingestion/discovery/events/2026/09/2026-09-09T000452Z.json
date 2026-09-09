@@ -1,0 +1,328 @@
+{
+  "schema_version": "1.0",
+  "generated_at": "2026-09-09T08:04:52+08:00",
+  "window_start": "2026-09-07T20:00:00+08:00",
+  "window_end": "2026-09-09T08:04:52+08:00",
+  "mode": "incremental_discovery",
+  "production_verified": false,
+  "events": [
+    {
+      "event_id": "2330_20260908_asml_high_na_12in_mask_initiative",
+      "stock_ids": ["2330"],
+      "company_name": "台積電",
+      "source_type": "company_ir",
+      "event_type": "technology_partnership",
+      "title": "ASML and TSMC announce initiative for 12-inch photomasks for High NA EUV",
+      "canonical_url": "https://pr.cld.tsmc.com/english/news/3338",
+      "publisher": "TSMC / ASML",
+      "broker": null,
+      "analyst": null,
+      "published_at": "2026-09-08",
+      "discovered_at": "2026-09-09T08:04:52+08:00",
+      "facts": {
+        "initiative_announced": true,
+        "pilot_line_target_year": 2031,
+        "full_system_readiness_target_year": 2033,
+        "photomask_format": "12-inch",
+        "technology": "High NA EUV"
+      },
+      "interpretation": {
+        "summary": "Long-horizon advanced-node manufacturing technology and cost/productivity catalyst; not an immediate earnings estimate."
+      },
+      "evidence_summary": "Primary TSMC/ASML release states the joint initiative, 12-inch photomask transition, 2031 pilot-line target and 2033 advanced-node system readiness target.",
+      "confidence": 0.99,
+      "priority": "high",
+      "requires_raw_fetch": true,
+      "raw_fetch_reason": "Save primary TSMC press-release HTML bytes, publication metadata and SHA-256.",
+      "production_verified": false,
+      "tags": ["catalyst", "technology", "advanced_node", "company_ir"],
+      "source_urls": [
+        "https://pr.cld.tsmc.com/english/news/3338",
+        "https://www.reuters.com/world/asia-pacific/asml-work-with-major-chipmakers-to-use-latest-tools-larger-chips-2026-09-08/"
+      ]
+    },
+    {
+      "event_id": "3231_20260907_gdr_pricing_25m_units",
+      "stock_ids": ["3231"],
+      "company_name": "緯創",
+      "source_type": "mops_material_announcement",
+      "event_type": "capital_raise_gdr_pricing",
+      "title": "緯創完成115年度GDR訂價",
+      "canonical_url": "https://tw.stock.yahoo.com/quote/3231.TW/announcement",
+      "publisher": "MOPS announcement mirrored by Yahoo Taiwan",
+      "broker": null,
+      "analyst": null,
+      "published_at": "2026-09-07T23:18:56+08:00",
+      "discovered_at": "2026-09-09T08:04:52+08:00",
+      "facts": {
+        "gdr_units": 25000000,
+        "common_shares_represented": 250000000,
+        "gdr_price_usd": 58.88,
+        "gross_proceeds_usd": 1472000000,
+        "shares_per_gdr": 10,
+        "implied_share_price_twd": 186.24,
+        "expected_issue_date": "2026-09-10",
+        "use_of_proceeds": "foreign-currency raw-material purchases"
+      },
+      "interpretation": {
+        "summary": "Material financing event with dilution and working-capital/capacity implications; deterministic fetcher should resolve the primary MOPS record rather than treating the mirror as final evidence."
+      },
+      "evidence_summary": "Public MOPS-derived announcement states GDR pricing terms; Reuters independently reported approximately US$1.47bn raised and 250m common shares represented.",
+      "confidence": 0.98,
+      "priority": "high",
+      "requires_raw_fetch": true,
+      "raw_fetch_reason": "Resolve and save the primary MOPS material-announcement raw page/JSON plus SHA-256; secondary mirror is discovery evidence only.",
+      "production_verified": false,
+      "tags": ["mops", "capital_raise", "gdr", "ai_server"],
+      "source_urls": [
+        "https://tw.stock.yahoo.com/quote/3231.TW/announcement",
+        "https://www.reuters.com/world/asia-pacific/taiwans-wistron-launches-up-15-billion-gds-sale-term-sheet-shows-2026-09-07/"
+      ]
+    },
+    {
+      "event_id": "1303_20260908_aug_revenue_30601161k",
+      "stock_ids": ["1303"],
+      "company_name": "南亞",
+      "source_type": "mops_monthly_revenue",
+      "event_type": "monthly_revenue",
+      "title": "南亞2026年8月合併營收306.01億元，年增46.75%",
+      "canonical_url": "https://tw.finance.yahoo.com/quote/1303",
+      "publisher": "MOPS announcement mirrored by Yahoo Taiwan",
+      "broker": null,
+      "analyst": null,
+      "published_at": "2026-09-08",
+      "discovered_at": "2026-09-09T08:04:52+08:00",
+      "facts": {
+        "period": "2026-08",
+        "revenue_thousand_twd": 30601161,
+        "prior_year_revenue_thousand_twd": 20853020,
+        "yoy_percent": 46.75,
+        "ytd_revenue_thousand_twd": 213417020,
+        "ytd_yoy_percent": 23.17
+      },
+      "interpretation": {
+        "summary": "New monthly revenue observation; current Public_Data monthly/1303.json still ends at 2026-07, so this should be queued for the existing deterministic monthly-revenue pipeline rather than written directly here."
+      },
+      "evidence_summary": "A public MOPS-derived announcement mirror reports August revenue; the company IR monthly-revenue page had not yet exposed the August figure when checked.",
+      "confidence": 0.95,
+      "priority": "high",
+      "requires_raw_fetch": true,
+      "raw_fetch_reason": "Resolve primary MOPS/TWSE monthly-revenue evidence and update through the normal deterministic revenue pipeline with raw provenance/SHA.",
+      "production_verified": false,
+      "tags": ["fundamental", "monthly_revenue", "mops", "electronic_materials"],
+      "source_urls": [
+        "https://tw.finance.yahoo.com/quote/1303",
+        "https://www.npc.com.tw/j2npc/zhtw/investor/Monthly%20Revenue"
+      ]
+    },
+    {
+      "event_id": "1303_20260908_macquarie_outperform_target_424",
+      "stock_ids": ["1303"],
+      "company_name": "南亞",
+      "source_type": "analyst",
+      "event_type": "target_price_revision",
+      "title": "麥格理給予南亞優於大盤評等，目標價424元",
+      "canonical_url": "https://ec.ltn.com.tw/article/breakingnews/5565412",
+      "publisher": "自由財經",
+      "broker": "Macquarie / 麥格理證券",
+      "analyst": null,
+      "published_at": "2026-09-07T09:57:00+08:00",
+      "discovered_at": "2026-09-09T08:04:52+08:00",
+      "facts": {
+        "rating": "outperform",
+        "target_price_twd": 424,
+        "broker_report_published_at": null,
+        "stated_drivers": ["AI infrastructure", "high-end CCL", "PTFE", "electronic materials"]
+      },
+      "interpretation": {
+        "summary": "Named-broker public reference suitable for analyst discovery/reference corpus only; report publication timestamp and original report evidence remain unresolved."
+      },
+      "evidence_summary": "Multiple public reports identify Macquarie, outperform rating and TWD424 target price. No broker-report full text was accessed or stored.",
+      "confidence": 0.9,
+      "priority": "high",
+      "requires_raw_fetch": true,
+      "raw_fetch_reason": "Preserve legally public source metadata, cross-check named-broker fact, and search for an official/public broker summary without bypassing access controls.",
+      "production_verified": false,
+      "tags": ["analyst", "foreign_broker", "target_price", "electronic_materials"],
+      "source_urls": [
+        "https://ec.ltn.com.tw/article/breakingnews/5565412",
+        "https://news.ebc.net.tw/news/business/570256"
+      ]
+    },
+    {
+      "event_id": "1303_20260907_jpm_outperform_target_350",
+      "stock_ids": ["1303"],
+      "company_name": "南亞",
+      "source_type": "analyst",
+      "event_type": "target_price_revision",
+      "title": "摩根大通給予南亞優於大盤評等，目標價350元",
+      "canonical_url": "https://ec.ltn.com.tw/article/breakingnews/5565412",
+      "publisher": "自由財經",
+      "broker": "JPMorgan / 摩根大通",
+      "analyst": null,
+      "published_at": "2026-09-07T09:57:00+08:00",
+      "discovered_at": "2026-09-09T08:04:52+08:00",
+      "facts": {
+        "rating": "outperform",
+        "target_price_twd": 350,
+        "broker_report_published_at": null,
+        "stated_drivers": ["high-end products", "PTFE CCL technology"]
+      },
+      "interpretation": {
+        "summary": "Separate named-broker analyst reference from Macquarie; do not merge the two targets before an analyst consensus materializer validates provenance and PIT dates."
+      },
+      "evidence_summary": "Public financial-media report names JPMorgan and states outperform/TWD350 target. Original broker-report timestamp is not public in the retrieved evidence.",
+      "confidence": 0.88,
+      "priority": "medium",
+      "requires_raw_fetch": true,
+      "raw_fetch_reason": "Cross-check named-broker target/rating and seek a legally public primary/official summary; do not infer missing EPS/multiple assumptions.",
+      "production_verified": false,
+      "tags": ["analyst", "foreign_broker", "target_price", "ptfe"],
+      "source_urls": [
+        "https://ec.ltn.com.tw/article/breakingnews/5565412"
+      ]
+    },
+    {
+      "event_id": "2344_20260908_factset_eps_consensus_25_37",
+      "stock_ids": ["2344"],
+      "company_name": "華邦電",
+      "source_type": "analyst",
+      "event_type": "consensus_estimate_revision",
+      "title": "FactSet調查：華邦電2026年EPS中位數上修至25.37元，預估目標價233元",
+      "canonical_url": "https://news.cnyes.com/news/id/6600446",
+      "publisher": "鉅亨網 / FactSet survey",
+      "broker": null,
+      "analyst": "10-analyst aggregate",
+      "published_at": "2026-09-08T16:10:00+08:00",
+      "discovered_at": "2026-09-09T08:04:52+08:00",
+      "facts": {
+        "analyst_count": 10,
+        "eps_2026_median": 25.37,
+        "eps_2026_previous_median": 24.87,
+        "eps_2027_median": 50.05,
+        "eps_2028_median": 48.73,
+        "target_price_twd": 233,
+        "revenue_2026_median_thousand_twd": 268145000,
+        "revenue_2027_median_thousand_twd": 479777000,
+        "revenue_2028_median_thousand_twd": 499726800
+      },
+      "interpretation": {
+        "summary": "Useful external consensus reference, but not a named-broker report and not production analyst consensus until provenance/freshness and PIT handling are materialized."
+      },
+      "evidence_summary": "Public report attributes the aggregate estimates to FactSet and provides analyst count, EPS medians, revenue medians and target price.",
+      "confidence": 0.94,
+      "priority": "high",
+      "requires_raw_fetch": true,
+      "raw_fetch_reason": "Save public article evidence metadata/hash and materialize as external aggregate consensus reference with explicit provider provenance.",
+      "production_verified": false,
+      "tags": ["analyst", "consensus", "eps_revision", "memory"],
+      "source_urls": [
+        "https://news.cnyes.com/news/id/6600446"
+      ]
+    },
+    {
+      "event_id": "4585_20260908_yuanta_online_investor_conference",
+      "stock_ids": ["4585"],
+      "company_name": "達明",
+      "source_type": "mops_investor_conference",
+      "event_type": "investor_conference",
+      "title": "達明受邀參加元大證券線上法人說明會，說明2026年第2季營運成果與展望",
+      "canonical_url": "https://tw.stock.yahoo.com/quote/4585.TW/announcement",
+      "publisher": "MOPS announcement mirrored by Yahoo Taiwan",
+      "broker": "Yuanta Securities / 元大證券",
+      "analyst": null,
+      "published_at": "2026-09-07",
+      "discovered_at": "2026-09-09T08:04:52+08:00",
+      "facts": {
+        "conference_date": "2026-09-08",
+        "conference_time": "14:30",
+        "format": "online",
+        "topic": "2026 Q2 operating results and outlook"
+      },
+      "interpretation": {
+        "summary": "Conference occurred inside the incremental window; deterministic fetcher should check MOPS/company IR for any newly uploaded presentation or guidance changes rather than assuming new facts from the notice alone."
+      },
+      "evidence_summary": "MOPS-derived public announcement names Yuanta, conference date/time and purpose; no new guidance numbers are inferred from the notice.",
+      "confidence": 0.96,
+      "priority": "medium",
+      "requires_raw_fetch": true,
+      "raw_fetch_reason": "Fetch primary MOPS notice and check company IR/MOPS conference attachments for presentation bytes and material new facts.",
+      "production_verified": false,
+      "tags": ["mops", "investor_conference", "ir", "robotics"],
+      "source_urls": [
+        "https://tw.stock.yahoo.com/quote/4585.TW/announcement",
+        "https://www2.tm-robot.com/en/investor-conference-presentation/"
+      ]
+    },
+    {
+      "event_id": "4585_20260908_aug_revenue_152564k",
+      "stock_ids": ["4585"],
+      "company_name": "達明",
+      "source_type": "mops_monthly_revenue",
+      "event_type": "monthly_revenue",
+      "title": "達明2026年8月合併營收1.53億元，年減6.11%",
+      "canonical_url": "https://tw.stock.yahoo.com/quote/4585.TW/announcement",
+      "publisher": "MOPS announcement mirrored by Yahoo Taiwan",
+      "broker": null,
+      "analyst": null,
+      "published_at": "2026-09-08",
+      "discovered_at": "2026-09-09T08:04:52+08:00",
+      "facts": {
+        "period": "2026-08",
+        "revenue_thousand_twd": 152564,
+        "prior_year_revenue_thousand_twd": 162491,
+        "yoy_percent": -6.11,
+        "ytd_revenue_thousand_twd": 1290672,
+        "prior_year_ytd_revenue_thousand_twd": 1168897,
+        "ytd_yoy_percent": 10.42
+      },
+      "interpretation": {
+        "summary": "New monthly fundamental observation; queue for deterministic official monthly-revenue ingestion, independent from conference semantics."
+      },
+      "evidence_summary": "MOPS-derived public announcement mirror reports August and YTD revenue values.",
+      "confidence": 0.96,
+      "priority": "medium",
+      "requires_raw_fetch": true,
+      "raw_fetch_reason": "Resolve primary MOPS/TWSE monthly-revenue evidence and ingest through the existing deterministic monthly pipeline.",
+      "production_verified": false,
+      "tags": ["fundamental", "monthly_revenue", "mops", "robotics"],
+      "source_urls": [
+        "https://tw.stock.yahoo.com/quote/4585.TW/announcement"
+      ]
+    },
+    {
+      "event_id": "8299_20260908_horizon_investment_forum",
+      "stock_ids": ["8299"],
+      "company_name": "群聯",
+      "source_type": "mops_investor_conference",
+      "event_type": "investor_conference",
+      "title": "群聯受邀參加Horizon宏遠證券投資論壇",
+      "canonical_url": "https://news.cnyes.com/news/id/6596393",
+      "publisher": "MOPS announcement mirrored by 鉅亨網",
+      "broker": "Horizon Securities / 宏遠證券",
+      "analyst": null,
+      "published_at": "2026-09-03T14:37:41+08:00",
+      "discovered_at": "2026-09-09T08:04:52+08:00",
+      "facts": {
+        "conference_date": "2026-09-08",
+        "conference_time": "14:00",
+        "format": "physical",
+        "topic": "operating performance"
+      },
+      "interpretation": {
+        "summary": "Announcement predates the discovery window, but the conference occurred inside the window; fetch only to determine whether a new presentation/material update was posted."
+      },
+      "evidence_summary": "Public MOPS-derived notice identifies the 2026-09-08 Horizon Securities forum. No fresh operational numbers are inferred from the notice.",
+      "confidence": 0.95,
+      "priority": "medium",
+      "requires_raw_fetch": true,
+      "raw_fetch_reason": "Resolve primary MOPS event and check Phison IR/MOPS attachments for any new presentation uploaded for the event.",
+      "production_verified": false,
+      "tags": ["mops", "investor_conference", "ir", "storage"],
+      "source_urls": [
+        "https://news.cnyes.com/news/id/6596393",
+        "https://www.phison.com/investor-relations/"
+      ]
+    }
+  ]
+}
