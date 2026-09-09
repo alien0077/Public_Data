@@ -1,14 +1,15 @@
 {
   "schema_version": "1.2",
-  "generated_at": "2026-09-08T20:18:47+08:00",
+  "generated_at": "2026-09-09T09:18:00+08:00",
   "month": "2026-09",
-  "summary": "The deterministic macro backdrop remains growth-positive but risk-sensitive. No newer official U.S. CPI/Core CPI, PCE/Core PCE, NFP/unemployment, ISM, Taiwan PMI/NMI, export-orders, leading-indicator or central-bank release superseded the repository observations in this run. Material new information came from two directions: China's August exports accelerated to 25.0% y/y, supporting regional AI/high-tech demand, while the Middle East conflict escalated into direct attacks on Saudi energy facilities, pushing Brent briefly to $99.46 and WTI to $94.73 and increasing the probability that energy, refined-product and freight inflation remain persistent. Russia also resumed major strikes on Kyiv after a temporary diplomatic pause.",
+  "summary": "No newer official U.S. CPI/Core CPI, PCE/Core PCE, NFP/unemployment, initial-claims, ISM, Taiwan PMI/NMI, export-orders, leading-indicator or central-bank release superseded the repository observations as of this run. The material changes since the prior snapshot are geopolitical: the U.S. Treasury broadened sanctions against Iran into commercial aviation and logistics; U.S. officials publicly accused six Chinese AI companies of industrial-scale model distillation without announcing a new export-control rule; and Iran said it captured a U.S. uncrewed submarine at the entrance to the Strait of Hormuz while the Pentagon confirmed the loss but attributed it to malfunction. These developments raise persistence of Middle East transport/sanctions risk and U.S.-China AI-policy risk, but semantic scores remain research context only and do not overwrite official numeric macro series or Fair Value V2.1.",
   "macro_summary": {
     "deterministic_repository_regime": "GOLDILOCKS",
     "deterministic_trading_regime": "DEFENSIVE",
     "new_official_us_macro_release": false,
     "new_official_taiwan_macro_release": false,
-    "new_global_growth_data": {
+    "new_global_growth_data": false,
+    "latest_global_growth_context": {
       "name": "China August trade",
       "exports_yoy_pct": 25.0,
       "exports_previous_yoy_pct": 23.9,
@@ -64,14 +65,17 @@
       "name": "Middle East energy and shipping shock",
       "signal": "high_negative_global_risk",
       "observed": {
-        "brent_intraday_high_usd_per_bbl": 99.46,
-        "wti_intraday_high_usd_per_bbl": 94.73,
         "saudi_energy_facilities_attacked": true,
         "some_saudi_energy_facilities_halted": true,
-        "reported_injured": 73,
-        "hormuz_traffic_below_normal": true
+        "hormuz_traffic_below_normal": true,
+        "us_iran_aviation_sanctions_expanded": true,
+        "us_uncrewed_submarine_lost_at_hormuz_entrance": true
       },
-      "source_url": "https://www.reuters.com/business/energy/oil-rises-risks-prolonged-mideast-conflict-heighten-supply-worries-2026-09-08/"
+      "source_urls": [
+        "https://www.reuters.com/business/energy/oil-rises-risks-prolonged-mideast-conflict-heighten-supply-worries-2026-09-08/",
+        "https://home.treasury.gov/news/press-releases/sb0623/",
+        "https://www.reuters.com/world/middle-east/iran-says-it-captured-us-submarine-drone-strait-hormuz-2026-09-08/"
+      ]
     }
   ],
   "market_cross_asset": {
@@ -80,33 +84,38 @@
     "copper_lme_3m_intraday_record_usd_per_ton": 14694,
     "brent_intraday_high_usd_per_bbl": 99.46,
     "wti_intraday_high_usd_per_bbl": 94.73,
-    "interpretation": "Higher oil, record copper and elevated long yields increase the inflation/rates sensitivity of Taiwan growth and technology valuations. These observations are semantic context only and do not overwrite deterministic market series.",
+    "interpretation": "The prior snapshot's elevated oil, copper and long-yield observations remain relevant semantic context. No later cross-asset observation was written in this run because this task preserves only information already published by the run cutoff. These values do not overwrite deterministic market series.",
     "source_url": "https://www.reuters.com/world/china/global-markets-wrapup-1-2026-09-08/"
   },
   "monitored_series_status": {
     "US_CPI_CORE_CPI": "no_new_release_since_repository_snapshot; August CPI scheduled for 2026-09-11",
     "US_PCE_CORE_PCE": "no_new_release_in_this_run",
     "US_NFP_UNEMPLOYMENT": "August release remains latest: +162000 payrolls, 4.1% unemployment",
-    "US_INITIAL_CLAIMS": "no_material_new_release_verified_in_this_run",
+    "US_INITIAL_CLAIMS": "no_new_release_in_this_run",
     "US_ISM_MANUFACTURING_NEW_ORDERS_SERVICES": "no_new_release_in_this_run",
-    "FED": "no material new decision/minutes/speech superseding current September meeting risk; inflation data remains key",
-    "US_2Y_10Y_CURVE": "repository deterministic series preserved; Reuters observed 10Y near 4.8% on 2026-09-08",
+    "FED": "no new FOMC decision, minutes or material policy speech in this run; a closed Board meeting on discount rates was scheduled for 2026-09-09 and is not treated here as an FOMC policy decision",
+    "US_2Y_10Y_CURVE": "repository deterministic series preserved; no semantic overwrite",
     "DXY_VIX_USD_TWD": "repository deterministic market series preserved; no semantic overwrite",
-    "WTI_BRENT": "material intraday rise from Middle East escalation",
-    "COPPER": "material new record high",
-    "TW_PMI_NMI": "no new release in this run",
-    "TW_EXPORTS": "no new official release in this run",
-    "TW_EXPORT_ORDERS": "no new release in this run",
-    "TW_LEADING_BUSINESS_CYCLE": "no new release in this run",
-    "TW_CENTRAL_BANK": "no new material policy decision or statement in this run",
-    "CHINA_PMI": "no new PMI release in this run; new August trade data added separately"
+    "WTI_BRENT": "prior Middle East shock observation preserved; no later price observation written before this run cutoff",
+    "COPPER": "prior record-high observation preserved",
+    "TW_PMI_NMI": "August PMI/NMI remain latest; no new release in this run",
+    "TW_EXPORTS": "no new official release verified before this run cutoff",
+    "TW_EXPORT_ORDERS": "August release scheduled for 2026-09-22; no new release in this run",
+    "TW_LEADING_BUSINESS_CYCLE": "July remains latest; next publication scheduled for 2026-09-29",
+    "TW_CENTRAL_BANK": "no new policy decision; next scheduled monetary-policy meeting is 2026-09-17",
+    "CHINA_PMI": "no new PMI release in this run; August trade remains latest material growth update"
   },
   "geopolitical_global_risk": {
     "level": "VERY_HIGH",
     "dominant_event": "2026-09-08-houthi-saudi-energy-escalation",
-    "secondary_event": "2026-09-08-russia-kyiv-strikes-resume",
-    "dominant_transmission_channels": ["energy", "refining", "shipping", "freight", "inflation", "rates", "fx", "global_risk"],
-    "summary": "Observed evidence worsened materially from September 7: Iran-backed Houthis attacked Saudi energy facilities and cities, Saudi authorities reported 73 wounded, some energy operations were halted, and Hormuz traffic remained below normal. Brent reached $99.46 intraday and WTI $94.73. Separately, Russia resumed large-scale attacks on Kyiv after the temporary pause surrounding U.S.-mediated talks. Semantic interpretation: the Middle East shock now carries a higher probability of persistent imported-inflation, freight and rate pressure for Taiwan, while the Russia-Ukraine channel remains a secondary refined-product and European-demand risk.",
+    "secondary_events": [
+      "2026-09-08-russia-kyiv-strikes-resume",
+      "2026-09-08-us-iran-aviation-sanctions-expansion",
+      "2026-09-09-us-china-ai-distillation-accusation",
+      "2026-09-09-iran-us-underwater-drone-hormuz"
+    ],
+    "dominant_transmission_channels": ["energy", "refining", "shipping", "freight", "inflation", "rates", "sanctions", "technology_policy", "fx", "global_risk"],
+    "summary": "The dominant shock remains direct Middle East energy and shipping disruption. Since the previous snapshot, U.S. sanctions expanded into Iran's commercial aviation and logistics network, increasing persistence of economic and transport pressure. Iran also reported taking possession of a U.S. uncrewed submarine at the entrance to Hormuz; the Pentagon confirmed the loss but said the vehicle malfunctioned and carried no classified systems, so this is evidence of continued military operating risk rather than proof of a new closure or supply loss. Separately, U.S. officials accused six Chinese AI companies of industrial-scale model distillation; no new export-control rule was announced, so the event is monitored as elevated U.S.-China AI-policy and semiconductor-supply-chain risk rather than a deterministic trade restriction.",
     "events": [
       {
         "event_id": "2026-09-08-houthi-saudi-energy-escalation",
@@ -142,36 +151,91 @@
         ],
         "first_seen_at": "2026-09-08T10:57:00+08:00",
         "updated_at": "2026-09-08T20:18:47+08:00"
+      },
+      {
+        "event_id": "2026-09-08-us-iran-aviation-sanctions-expansion",
+        "event_type": "sanctions_and_transport_restrictions",
+        "regions": ["United States", "Iran", "Middle East", "Global"],
+        "severity": 0.78,
+        "confidence": 0.99,
+        "escalation_score": 0.82,
+        "persistence_score": 0.93,
+        "transmission_channels": ["sanctions", "aviation", "logistics", "trade", "energy", "shipping", "global_risk"],
+        "affected_factors": ["risk", "inflation", "growth", "liquidity", "trade"],
+        "affected_taiwan_sectors": ["航空運輸", "貨櫃航運", "散裝航運", "半導體", "電子零組件", "工具機", "軍工_航太"],
+        "source_urls": [
+          "https://home.treasury.gov/news/press-releases/sb0623/",
+          "https://ofac.treasury.gov/recent-actions/20260908/",
+          "https://www.reuters.com/business/aerospace-defense/us-issues-fresh-iran-related-sanctions-treasury-website-shows-2026-09-08/"
+        ],
+        "first_seen_at": "2026-09-08T22:53:00+08:00",
+        "updated_at": "2026-09-09T09:18:00+08:00"
+      },
+      {
+        "event_id": "2026-09-09-us-china-ai-distillation-accusation",
+        "event_type": "us_china_ai_technology_tension",
+        "regions": ["United States", "China", "Taiwan", "Global"],
+        "severity": 0.57,
+        "confidence": 0.94,
+        "escalation_score": 0.61,
+        "persistence_score": 0.76,
+        "transmission_channels": ["technology_policy", "export_controls", "ai_supply_chain", "semiconductors", "trade", "global_risk"],
+        "affected_factors": ["risk", "trade", "semiconductor_demand", "growth"],
+        "affected_taiwan_sectors": ["半導體", "AI伺服器代工", "IC設計_HPC_存儲", "電子零組件", "網通", "伺服器ODM"],
+        "source_urls": [
+          "https://www.reuters.com/technology/us-accuses-chinese-ai-firms-industrial-scale-theft-ai-technology-2026-09-08/"
+        ],
+        "first_seen_at": "2026-09-09T01:47:00+08:00",
+        "updated_at": "2026-09-09T09:18:00+08:00"
+      },
+      {
+        "event_id": "2026-09-09-iran-us-underwater-drone-hormuz",
+        "event_type": "military_incident_at_hormuz",
+        "regions": ["Iran", "United States", "Strait of Hormuz", "Middle East"],
+        "severity": 0.65,
+        "confidence": 0.97,
+        "escalation_score": 0.69,
+        "persistence_score": 0.86,
+        "transmission_channels": ["shipping", "energy", "maritime_security", "insurance", "freight", "global_risk"],
+        "affected_factors": ["risk", "inflation", "growth", "fx"],
+        "affected_taiwan_sectors": ["航空運輸", "貨櫃航運", "散裝航運", "塑膠", "半導體", "AI伺服器代工", "軍工_航太"],
+        "source_urls": [
+          "https://www.reuters.com/world/middle-east/iran-says-it-captured-us-submarine-drone-strait-hormuz-2026-09-08/"
+        ],
+        "first_seen_at": "2026-09-09T06:31:00+08:00",
+        "updated_at": "2026-09-09T09:18:00+08:00"
       }
     ]
   },
   "key_risks": [
-    "Direct attacks on Saudi energy infrastructure increase the probability that the Middle East shock persists through crude, refined products and shipping rather than remaining a short-lived risk premium.",
-    "Brent near $100 and record-high diesel/gasoline conditions raise imported-inflation and margin pressure for Taiwan before the next U.S. inflation release and FOMC decision.",
-    "U.S. 10-year yields near 4.8% raise duration risk for technology and other long-duration equities.",
-    "China's export strength supports Taiwan's AI/high-tech demand channel but also raises the probability of additional trade barriers aimed at Chinese industrial surpluses.",
-    "Russia's renewed Kyiv strikes reduce the near-term de-escalation signal from recent diplomacy and keep refined-product/European-growth risk active.",
-    "U.S.-China semiconductor tariffs and export controls remain a persistent structural risk for Taiwan technology supply chains."
+    "Direct attacks on Saudi energy infrastructure and continuing military activity around the Strait of Hormuz keep crude, refined-product, freight and imported-inflation risk elevated.",
+    "The U.S. expansion of Iran sanctions into commercial aviation and logistics increases the probability that Middle East transport and compliance disruptions persist even if kinetic activity temporarily slows.",
+    "U.S.-China AI-policy tension has increased, but no new semiconductor export-control rule was announced in this run; the risk is prospective rather than a deterministic restriction.",
+    "Elevated long yields and energy costs remain a duration and margin risk for Taiwan technology and other growth equities.",
+    "China's strong export performance supports Taiwan's AI/high-tech external demand while preserving the risk of additional trade barriers targeting industrial surpluses.",
+    "Russia-Ukraine escalation remains a secondary refined-product, sanctions and European-demand risk."
   ],
   "policy_tone": {
-    "fed": "wait_for_inflation_data_with_market_repricing_toward_tighter_policy_risk",
-    "taiwan_central_bank": "no_new_material_policy_signal_in_this_snapshot",
-    "china": "strong_external_trade_reduces_immediate_pressure_for_large_scale_monetary_easing"
+    "fed": "wait_for_inflation_data_with_tighter_policy_risk_if_energy_inflation_persists",
+    "taiwan_central_bank": "no_new_material_policy_signal_ahead_of_2026_09_17_meeting",
+    "china": "strong_external_trade_reduces_immediate_pressure_for_large_scale_monetary_easing",
+    "us_china_technology": "rhetorical_and_enforcement_tension_higher_but_no_new_export_control_in_this_run"
   },
   "affected_factors": {
-    "growth": "positive_from_ai_export_demand_but_energy_cost_and_geopolitical_downside_risk",
-    "inflation": "negative_risk_from_crude_refined_products_and_shipping",
-    "liquidity": "negative_if_global_central_banks_reprice_tighter",
-    "rates": "negative_with_us_10y_near_4_8pct",
-    "fx": "risk_sensitive_carry_unwind_context",
-    "risk": "negative_very_high_geopolitical_risk"
+    "growth": "positive_from_ai_export_demand_but_energy_transport_and_geopolitical_downside_risk",
+    "inflation": "negative_risk_from_crude_refined_products_shipping_and_transport_disruption",
+    "liquidity": "negative_if_energy_inflation_forces_tighter_global_policy",
+    "rates": "negative_duration_risk_remains_elevated",
+    "fx": "risk_sensitive_carry_and_safe_haven_flows_remain_relevant",
+    "risk": "negative_very_high_geopolitical_risk_with_added_sanctions_and_ai_policy_tension",
+    "trade": "mixed_strong_asian_export_demand_but_higher_sanctions_and_technology_policy_friction"
   },
   "affected_taiwan_sectors": {
     "tailwind": ["軍工_航太", "無人機_UAV", "部分航運", "能源相關", "部分AI_半導體出口供應鏈"],
-    "mixed": ["貨櫃航運", "散裝航運", "鋼鐵", "金融", "半導體", "AI伺服器代工"],
+    "mixed": ["貨櫃航運", "散裝航運", "鋼鐵", "金融", "半導體", "AI伺服器代工", "IC設計_HPC_存儲", "網通"],
     "headwind": ["航空運輸", "塑膠", "工具機", "旅遊_餐飲", "出口製造_高能源運費曝險"]
   },
-  "confidence": 0.96,
+  "confidence": 0.97,
   "monthly_snapshot_path": "data/macro/semantic/monthly/2026-09.json",
   "fair_value_policy": {
     "baseline": "V2.1",
@@ -190,6 +254,15 @@
     "https://www.reuters.com/business/energy/oil-rises-risks-prolonged-mideast-conflict-heighten-supply-worries-2026-09-08/",
     "https://www.reuters.com/world/middle-east/iran-says-it-plans-new-gulf-exclusion-zone-threatens-us-with-new-missiles-2026-09-08/",
     "https://www.reuters.com/world/europe/russian-ballistic-missiles-hit-kyiv-us-envoys-leave-2026-09-08/",
-    "https://www.reuters.com/world/china/global-markets-wrapup-1-2026-09-08/"
+    "https://www.reuters.com/world/china/global-markets-wrapup-1-2026-09-08/",
+    "https://home.treasury.gov/news/press-releases/sb0623/",
+    "https://ofac.treasury.gov/recent-actions/20260908/",
+    "https://www.reuters.com/business/aerospace-defense/us-issues-fresh-iran-related-sanctions-treasury-website-shows-2026-09-08/",
+    "https://www.reuters.com/technology/us-accuses-chinese-ai-firms-industrial-scale-theft-ai-technology-2026-09-08/",
+    "https://www.reuters.com/world/middle-east/iran-says-it-captured-us-submarine-drone-strait-hormuz-2026-09-08/",
+    "https://www.federalreserve.gov/aboutthefed/boardmeetings/20260809closed.htm",
+    "https://www.moea.gov.tw/MNS/dos_e/content/Content.aspx?menu_id=6747",
+    "https://www.ndc.gov.tw/en/nc_199_40405",
+    "https://www.cbc.gov.tw/en/cp-448-189515-f1342-2.html"
   ]
 }
