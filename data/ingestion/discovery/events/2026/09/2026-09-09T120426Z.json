@@ -1,0 +1,165 @@
+{
+  "schema_version": "1.0",
+  "generated_at": "2026-09-09T20:04:26+08:00",
+  "window_start": "2026-09-09T08:04:52+08:00",
+  "window_end": "2026-09-09T20:04:26+08:00",
+  "production_verified": false,
+  "events": [
+    {
+      "event_id": "2492_20260909_aug_revenue_4568665k",
+      "stock_ids": ["2492"],
+      "company_name": "華新科",
+      "source_type": "mops_monthly_revenue",
+      "event_type": "monthly_revenue",
+      "title": "華新科 2026年8月合併營收45.69億元、年增45.54%",
+      "canonical_url": "https://www.cmoney.tw/forum/article/184482349",
+      "publisher": "臺灣證券交易所資料經中央社/公開市場鏡像轉載",
+      "broker": null,
+      "analyst": null,
+      "published_at": "2026-09-09T15:11:41+08:00",
+      "published_at_precision": "second",
+      "discovered_at": "2026-09-09T20:04:26+08:00",
+      "facts": {
+        "observation_period": "2026-08",
+        "revenue_twd_thousand": 4568665,
+        "prior_year_revenue_twd_thousand": 3139068,
+        "yoy_pct": 45.54,
+        "ytd_revenue_twd_thousand": 29941099,
+        "prior_year_ytd_revenue_twd_thousand": 24521213,
+        "ytd_yoy_pct": 22.1,
+        "source_claim": "mirror states data source is Taiwan Stock Exchange and timestamp 2026/09/09 15:11:41"
+      },
+      "observed_facts": {
+        "revenue_twd_thousand": 4568665,
+        "yoy_pct": 45.54,
+        "ytd_revenue_twd_thousand": 29941099,
+        "ytd_yoy_pct": 22.1
+      },
+      "interpretation": {
+        "materiality": "August revenue growth is strong enough to warrant deterministic primary-source fetch and monthly-series reconciliation."
+      },
+      "evidence_summary": "A same-day public mirror reports TWSE-sourced August revenue of NT$4,568,665 thousand, +45.54% YoY, with the TWSE source timestamp shown as 2026-09-09 15:11:41. Primary official raw evidence remains to be resolved by the deterministic fetcher.",
+      "confidence": 0.96,
+      "priority": "high",
+      "requires_raw_fetch": true,
+      "raw_fetch_reason": "Resolve the exact TWSE/MOPS official revenue record, persist official raw JSON/HTML, canonical official URL and SHA-256.",
+      "production_verified": false,
+      "tags": ["fundamental", "monthly_revenue"],
+      "source_urls": ["https://www.cmoney.tw/forum/article/184482349"]
+    },
+    {
+      "event_id": "3611_20260909_sinopac_2026q3_forum_notice",
+      "stock_ids": ["3611"],
+      "company_name": "鼎翰",
+      "source_type": "mops_investor_conference",
+      "event_type": "investor_conference",
+      "title": "鼎翰受邀參加永豐金證券2026Q3產業高峰論壇",
+      "canonical_url": "https://news.cnyes.com/news/id/6601732",
+      "publisher": "公開資訊觀測站公告鏡像 / 鉅亨網",
+      "broker": "永豐金證券",
+      "analyst": null,
+      "published_at": "2026-09-09T16:04:25+08:00",
+      "published_at_precision": "second",
+      "discovered_at": "2026-09-09T20:04:26+08:00",
+      "facts": {
+        "conference_date": "2026-09-16",
+        "conference_time": "10:00",
+        "location": "台北君悅酒店3樓",
+        "purpose": "說明公司財務與業務概況"
+      },
+      "observed_facts": {
+        "conference_date": "2026-09-16",
+        "broker": "永豐金證券"
+      },
+      "interpretation": {
+        "guidance_change": "not established"
+      },
+      "evidence_summary": "Same-day MOPS-style announcement says TSC Auto ID will attend SinoPac Securities' 2026Q3 industry forum on September 16. The notice itself does not establish new guidance or estimates.",
+      "confidence": 0.98,
+      "priority": "medium",
+      "requires_raw_fetch": true,
+      "raw_fetch_reason": "Resolve primary MOPS notice and check for newly posted presentation/attachments without inferring guidance from attendance alone.",
+      "production_verified": false,
+      "tags": ["investor_conference", "company_ir"],
+      "source_urls": ["https://news.cnyes.com/news/id/6601732"]
+    },
+    {
+      "event_id": "4991_20260909_ubs_taiwan_summit_2026_notice",
+      "stock_ids": ["4991"],
+      "company_name": "環宇-KY",
+      "source_type": "mops_investor_conference",
+      "event_type": "investor_conference",
+      "title": "環宇-KY受邀參加UBS Taiwan Summit 2026",
+      "canonical_url": "https://tw.stock.yahoo.com/quote/4991/announcement",
+      "publisher": "中央社財經 / 公開資訊觀測站公告鏡像",
+      "broker": "UBS證券",
+      "analyst": null,
+      "published_at": "2026-09-09",
+      "published_at_precision": "date",
+      "discovered_at": "2026-09-09T20:04:26+08:00",
+      "facts": {
+        "conference_start_date": "2026-09-14",
+        "conference_end_date": "2026-09-16",
+        "conference_time": "10:00",
+        "location": "W Taipei Hotel",
+        "purpose": "說明公司營運狀況"
+      },
+      "observed_facts": {
+        "conference_start_date": "2026-09-14",
+        "conference_end_date": "2026-09-16",
+        "broker": "UBS證券"
+      },
+      "interpretation": {
+        "guidance_change": "not established"
+      },
+      "evidence_summary": "A same-day announcement mirror reports Universal Microwave Technology will attend UBS Taiwan Summit 2026 during September 14-16 to discuss operations. Exact MOPS publication time is unresolved and is therefore not inferred.",
+      "confidence": 0.94,
+      "priority": "medium",
+      "requires_raw_fetch": true,
+      "raw_fetch_reason": "Fetch the primary MOPS notice and any presentation/attachments; resolve exact published_at if the official page exposes it.",
+      "production_verified": false,
+      "tags": ["investor_conference", "company_ir"],
+      "source_urls": ["https://tw.stock.yahoo.com/quote/4991/announcement"]
+    },
+    {
+      "event_id": "6669_20260909_ubs_taiwan_summit_2026_notice",
+      "stock_ids": ["6669"],
+      "company_name": "緯穎",
+      "source_type": "mops_investor_conference",
+      "event_type": "investor_conference",
+      "title": "緯穎受邀參加UBS Taiwan Summit 2026",
+      "canonical_url": "https://tw.finance.yahoo.com/quote/6669/announcement",
+      "publisher": "中央社財經 / 公開資訊觀測站公告鏡像",
+      "broker": "UBS Securities",
+      "analyst": null,
+      "published_at": "2026-09-09",
+      "published_at_precision": "date",
+      "discovered_at": "2026-09-09T20:04:26+08:00",
+      "facts": {
+        "conference_date": "2026-09-16",
+        "event_name": "UBS Taiwan Summit 2026"
+      },
+      "observed_facts": {
+        "conference_date": "2026-09-16",
+        "broker": "UBS Securities"
+      },
+      "interpretation": {
+        "guidance_change": "not established"
+      },
+      "evidence_summary": "A same-day announcement mirror reports Wiwynn will attend UBS Taiwan Summit 2026 on September 16. The available discovery result does not establish any new company guidance; exact MOPS publication time remains unresolved.",
+      "confidence": 0.91,
+      "priority": "medium",
+      "requires_raw_fetch": true,
+      "raw_fetch_reason": "Resolve the primary MOPS notice and fetch any attached investor presentation before extracting operational facts.",
+      "production_verified": false,
+      "tags": ["investor_conference", "company_ir"],
+      "source_urls": ["https://tw.finance.yahoo.com/quote/6669/announcement"]
+    }
+  ],
+  "notes": [
+    "Discovery only: no Fair Value, analyst consensus, catalyst probability, normalized fundamentals or production PIT series were modified.",
+    "Conference notices are not treated as guidance changes. The deterministic fetcher must resolve primary MOPS records and attachments.",
+    "Same-day news that only repeated already-known events without new verifiable facts was excluded from the queue.",
+    "No paywall/login bypass or copyrighted broker-report full text was accessed or stored."
+  ]
+}
