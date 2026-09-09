@@ -1,20 +1,22 @@
 {
   "schema_version": "1.0",
-  "generated_at": "2026-09-09T20:04:26+08:00",
-  "window_start": "2026-09-09T08:04:52+08:00",
-  "window_end": "2026-09-09T20:04:26+08:00",
-  "event_file": "data/ingestion/discovery/events/2026/09/2026-09-09T120426Z.json",
+  "generated_at": "2026-09-10T07:55:09+08:00",
+  "window_start": "2026-09-09T20:04:26+08:00",
+  "window_end": "2026-09-10T07:55:09+08:00",
+  "event_file": "data/ingestion/discovery/events/2026/09/2026-09-09T235509Z.json",
   "production_verified": false,
   "new_event_count": 4,
   "counts_by_source_type": {
-    "mops_monthly_revenue": 1,
-    "mops_investor_conference": 3
+    "company_news": 3,
+    "mops_monthly_revenue": 1
   },
   "counts_by_event_type": {
-    "monthly_revenue": 1,
-    "investor_conference": 3
+    "operational_update": 1,
+    "capacity_project_execution": 1,
+    "order_mix_and_customer_ramp": 1,
+    "monthly_revenue_structural_change": 1
   },
-  "high_priority_stock_ids": ["2492"],
+  "high_priority_stock_ids": ["4556", "6613", "7703", "8926"],
   "fetch_queue": {
     "pending": 4,
     "verified": 0,
@@ -22,30 +24,30 @@
   },
   "notable_candidates": [
     {
-      "event_id": "2492_20260909_aug_revenue_4568665k",
-      "stock_id": "2492",
-      "summary": "August revenue discovery: NT$4.568665bn, +45.54% YoY; primary TWSE/MOPS raw record must be materialized before verification."
+      "event_id": "6613_20260910_aug_revenue_project_execution_update",
+      "stock_id": "6613",
+      "summary": "August revenue reached a monthly second-high; company commentary says large projects are entering shipment/installation/commissioning and backlog remains at a historical high."
     },
     {
-      "event_id": "3611_20260909_sinopac_2026q3_forum_notice",
-      "stock_id": "3611",
-      "summary": "New September 9 notice for a September 16 SinoPac investor forum; no new guidance inferred."
+      "event_id": "7703_20260910_aug_revenue_us_japan_project_execution",
+      "stock_id": "7703",
+      "summary": "Record August revenue plus a material execution update that U.S. and Japan semiconductor projects are entering engineering execution and revenue recognition."
     },
     {
-      "event_id": "4991_20260909_ubs_taiwan_summit_2026_notice",
-      "stock_id": "4991",
-      "summary": "New same-day notice for UBS Taiwan Summit 2026 on September 14-16; exact MOPS publication time remains unresolved."
+      "event_id": "4556_20260910_semiconductor_order_mix_35pct",
+      "stock_id": "4556",
+      "summary": "Semiconductor-related orders are reported at about 35% of backlog while existing customer lines progress into pilot and mass production."
     },
     {
-      "event_id": "6669_20260909_ubs_taiwan_summit_2026_notice",
-      "stock_id": "6669",
-      "summary": "New same-day UBS Taiwan Summit notice for September 16; no guidance change inferred from conference attendance."
+      "event_id": "8926_20260910_aug_revenue_consolidation_effect",
+      "stock_id": "8926",
+      "summary": "August revenue +1,263.62% YoY is primarily a consolidation-driven structural break, requiring normalization rather than treatment as organic growth."
     }
   ],
   "notes": [
     "This is discovery only; no Fair Value, analyst consensus, catalyst probability, normalized fundamental or PIT production file was modified.",
-    "Conference notices require deterministic primary-source resolution and attachment checks before any operational facts are materialized.",
-    "Same-day articles that merely repeated already-known facts or lacked independently verifiable new facts were excluded.",
+    "No new named-broker target/rating revision with sufficiently verifiable post-window facts was materialized in this run.",
+    "All candidates remain production_verified=false until deterministic primary-source materialization and SHA-256.",
     "No paywall/login bypass or copyrighted broker-report full text was accessed or stored."
   ]
 }
