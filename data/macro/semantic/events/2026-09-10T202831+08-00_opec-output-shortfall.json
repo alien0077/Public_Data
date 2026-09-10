@@ -1,0 +1,34 @@
+{
+  "schema_version": "1.2",
+  "event_id": "2026-09-10-opec-august-conflict-output-shortfall",
+  "event_type": "oil_supply_disruption",
+  "regions": ["Middle East", "OPEC", "Saudi Arabia", "Iran", "Asia"],
+  "severity": 0.82,
+  "confidence": 0.93,
+  "escalation_score": 0.67,
+  "persistence_score": 0.84,
+  "observed_evidence": {
+    "summary": "A Reuters survey reported that crude output from 11 OPEC members fell by 640,000 barrels per day month-on-month in August 2026 to 19.71 million bpd. Saudi export disruption and the U.S. blockade restricting Iranian shipments were cited as major causes. Seven OPEC+ members had planned an August production increase, but conflict-related disruption prevented the intended increase from being realized.",
+    "actual": {
+      "opec_11_august_output_million_bpd": 19.71,
+      "month_on_month_change_thousand_bpd": -640
+    },
+    "previous": null,
+    "consensus": null,
+    "release_timestamp": "2026-09-10T10:35:36Z",
+    "notes": "The production estimate is a Reuters survey using flow data, tracker data and industry sources; it is not treated as an official deterministic OPEC macro series. OPEC's official September 6 statement independently confirms participating countries intended to maintain September required production into October, while the August conflict disrupted actual supply realization."
+  },
+  "semantic_interpretation": "The gap between intended OPEC+ supply policy and realized August output indicates that physical conflict disruption, rather than discretionary quota policy alone, is constraining supply. This reinforces oil-price, freight, imported-inflation and margin pressure risks for Taiwan while also increasing global-demand-destruction risk if high energy prices persist.",
+  "transmission_channels": ["oil_supply", "energy_prices", "shipping", "freight", "marine_insurance", "inflation", "rates", "fx", "global_growth", "risk_sentiment"],
+  "affected_factors": ["WTI", "Brent", "inflation", "US_yields", "USD_TWD", "shipping_costs", "global_growth", "risk"],
+  "affected_taiwan_sectors": ["航空運輸", "貨櫃航運", "散裝航運", "塑膠", "化工", "半導體", "AI伺服器代工", "電子零組件", "工具機", "能源相關"],
+  "source_urls": [
+    "https://www.reuters.com/business/energy/opec-oil-output-falls-august-reuters-survey-shows-2026-09-10/",
+    "https://www.opec.org/pr-detail/613-6-september-2026.html"
+  ],
+  "first_seen_at": "2026-09-10T20:28:31+08:00",
+  "updated_at": "2026-09-10T20:28:31+08:00",
+  "stale": false,
+  "scope": "semantic_research_only",
+  "fair_value_policy": "Fair Value V2.1 is the sole valuation baseline. This event must not directly overwrite official numeric macro series or Fair Value."
+}
