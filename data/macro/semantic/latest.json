@@ -1,287 +1,118 @@
 {
   "schema_version": "1.2",
-  "generated_at": "2026-09-10T08:19:00+08:00",
+  "generated_at": "2026-09-10T20:22:15+08:00",
   "month": "2026-09",
   "scope": "semantic_research_only",
   "fair_value_policy": "Fair Value V2.1 is the sole valuation baseline. Semantic scores in this file must not directly overwrite official numeric macro series or Fair Value.",
-  "summary": "Material changes since the prior semantic snapshot are a sharp escalation in U.S.-Iran maritime attacks around the Strait of Hormuz with Brent settling above $100, new China August CPI/PPI showing stronger energy-driven inflation pressure, and newly incorporated Taiwan August CPI/PPI. U.S. CPI/Core CPI, PCE/Core PCE, NFP/unemployment, initial claims, ISM and FOMC policy observations have not been superseded by a newer official release as of this cutoff.",
+  "summary": "Material change since the 2026-09-10 08:19 +08 snapshot: Iran temporarily suspended a 10% freight-fee charge on foreign energy vessels, reducing one transport-cost friction, but Hormuz oil flows remain far below pre-war levels and Brent remains above $100. OPEC also cut its 2026 global oil-demand-growth forecast to 380,000 bpd for a fifth consecutive downgrade, adding a global-growth/demand-destruction risk channel. This is partial operational adaptation, not normalization or a ceasefire.",
   "macro_summary": {
     "deterministic_repository_regime": "GOLDILOCKS",
     "deterministic_trading_regime": "DEFENSIVE",
-    "new_official_us_macro_release": false,
-    "new_official_taiwan_macro_release": true,
-    "new_global_growth_data": true,
-    "taiwan_inflation": {
-      "period": "2026-08",
-      "cpi_yoy_pct": 2.04,
-      "cpi_previous_yoy_pct": 2.54,
-      "ppi_yoy_pct": 16.75,
-      "ppi_previous_yoy_pct": 16.94,
-      "consensus": null,
-      "release_date": "2026-09-08",
-      "confidence": 0.99,
-      "stale": false,
-      "source_url": "https://www.dgbas.gov.tw/"
-    },
-    "china_inflation": {
-      "period": "2026-08",
-      "cpi_yoy_pct": 0.8,
-      "cpi_previous_yoy_pct": 0.5,
-      "core_cpi_yoy_pct": 1.0,
-      "ppi_yoy_pct": 3.8,
-      "ppi_previous_yoy_pct": 3.5,
-      "consensus": null,
-      "release_at": "2026-09-09T09:30:00+08:00",
-      "confidence": 0.99,
-      "stale": false,
-      "source_urls": [
-        "https://www.stats.gov.cn/sj/zxfb/202609/t20260909_1965263.html",
-        "https://www.stats.gov.cn/sj/zxfbhjd/202609/t20260909_1965262.html",
-        "https://www.stats.gov.cn/zwfwck/sjfb/202609/t20260909_1965261.html"
-      ]
-    }
+    "new_official_us_macro_release_since_prior_snapshot": false,
+    "new_official_taiwan_macro_release_since_prior_snapshot": false,
+    "new_material_global_growth_information": true,
+    "notes": "The repository deterministic macro series remains authoritative. This semantic refresh does not rewrite official macro observations."
+  },
+  "monitored_series_status": {
+    "US_CPI_CORE_CPI": "July remains latest official observation in the current repository snapshot; August CPI/Core CPI is scheduled for 2026-09-11 08:30 ET.",
+    "US_PCE_CORE_PCE": "July remains latest official observation; next scheduled release is 2026-09-30.",
+    "US_NFP_UNEMPLOYMENT": "August remains latest official observation: +162000 payrolls and 4.1% unemployment in the repository snapshot.",
+    "US_INITIAL_CLAIMS": "No newer official observation was incorporated before this run cutoff; no value fabricated.",
+    "US_ISM_MANUFACTURING_NEW_ORDERS_SERVICES": "August remains latest in the repository snapshot; Services PMI 55.4 and Services New Orders 60.9.",
+    "FED": "No new FOMC decision, minutes or material policy action superseded the prior snapshot during this run.",
+    "US_2Y_10Y_CURVE": "No semantic overwrite. Repository deterministic Treasury series remains authoritative.",
+    "DXY_VIX": "No semantic overwrite. Repository deterministic market series remains authoritative.",
+    "USD_TWD": "No semantic overwrite. Repository deterministic FX series remains authoritative.",
+    "WTI_BRENT": "Reuters observed Brent futures at $102.15/bbl and WTI at $97.50/bbl at 10:11 GMT on 2026-09-10; this is a market observation, not an official macro series or settlement value.",
+    "COPPER": "No newer sufficiently authoritative observation incorporated in this semantic run.",
+    "TW_PMI_NMI": "August remains latest in the repository snapshot; manufacturing PMI 62.5.",
+    "TW_EXPORTS": "No newer official release incorporated in this semantic run.",
+    "TW_EXPORT_ORDERS": "July remains latest in the prior semantic snapshot; August release scheduled for 2026-09-22.",
+    "TW_LEADING_BUSINESS_CYCLE": "July remains latest in the prior semantic snapshot; no semantic overwrite.",
+    "TW_CENTRAL_BANK": "No new policy decision; next scheduled meeting remains 2026-09-17.",
+    "CHINA_PMI": "No new PMI release since the prior snapshot.",
+    "CHINA_GLOBAL_GROWTH": "OPEC's fifth consecutive cut to 2026 global oil-demand growth, together with persistent Hormuz disruption, increases downside risk to energy-intensive Asian manufacturing and global demand."
+  },
+  "market_cross_asset": {
+    "observed_not_official_macro_series": true,
+    "brent_intraday_usd_per_bbl": 102.15,
+    "wti_intraday_usd_per_bbl": 97.50,
+    "observation_at": "2026-09-10T10:11:00Z",
+    "hormuz_flows": "far_below_prewar_levels",
+    "notes": "Only newly verified material observations are refreshed here; deterministic repository series should be used for factor calculation.",
+    "source_urls": [
+      "https://www.reuters.com/business/energy/brent-holds-above-100-tanker-attacks-deepen-supply-fear-2026-09-10/"
+    ]
   },
   "key_drivers": [
     {
-      "name": "Taiwan Manufacturing PMI",
-      "value": 62.5,
-      "previous": 61.5,
-      "signal": "strong_positive",
-      "stale": false,
-      "source_url": "https://www.cier.edu.tw/eco_cat/pmi-ch/"
+      "name": "Hormuz freight-fee partial relief",
+      "signal": "partial_operational_deescalation",
+      "observed": "Iran temporarily suspended a 10% freight-fee charge on foreign vessels carrying oil, gas and liquid petroleum products to or from Iran.",
+      "interpretation": "Reduces one transport-cost friction but does not restore normal shipping or remove military risk.",
+      "source_url": "https://www.reuters.com/business/energy/iran-suspends-freight-charge-foreign-vessels-carrying-energy-products-or-iran-2026-09-10/"
     },
     {
-      "name": "U.S. ISM Manufacturing PMI",
-      "value": 54.6,
-      "previous": 55.6,
-      "signal": "positive_but_cooling",
-      "stale": false
-    },
-    {
-      "name": "U.S. ISM Services PMI",
-      "value": 55.4,
-      "previous": 54.1,
-      "new_orders": 60.9,
-      "signal": "positive_growth_with_inflation_risk",
-      "stale": false,
-      "source_url": "https://www.ismworld.org/supply-management-news-and-reports/reports/ism-pmi-reports/services/august/"
-    },
-    {
-      "name": "U.S. August nonfarm payrolls",
-      "value": 162000,
-      "unemployment_rate_pct": 4.1,
-      "signal": "resilient_labor",
-      "stale": false,
-      "source_url": "https://www.bls.gov/news.release/archives/empsit_09042026.htm"
-    },
-    {
-      "name": "China August inflation",
-      "cpi_yoy_pct": 0.8,
-      "core_cpi_yoy_pct": 1.0,
-      "ppi_yoy_pct": 3.8,
-      "signal": "energy_pass_through_with_soft_underlying_demand",
-      "stale": false,
-      "source_urls": [
-        "https://www.stats.gov.cn/sj/zxfb/202609/t20260909_1965263.html",
-        "https://www.stats.gov.cn/sj/zxfbhjd/202609/t20260909_1965262.html"
-      ]
-    },
-    {
-      "name": "Middle East energy and shipping shock",
+      "name": "Persistent Middle East oil/shipping shock",
       "signal": "very_high_negative_global_risk",
-      "observed": {
-        "largest_shipping_attack_wave_since_current_war_began": true,
-        "iran_targeted_10_ships": true,
-        "us_sank_5_iranian_oil_tankers": true,
-        "hormuz_flows_below_prewar_levels": true,
-        "brent_settle_above_100": true
-      },
-      "source_urls": [
-        "https://www.reuters.com/world/middle-east/iran-attacks-us-base-jordan-ships-near-hormuz-after-tankers-sunk-2026-09-09/",
-        "https://www.reuters.com/business/energy/brent-crude-rises-above-100-barrel-middle-east-conflict-escalates-2026-09-09/",
-        "https://www.reuters.com/business/energy/one-third-gulf-oil-is-still-missing-despite-dark-crossings-data-shows-2026-09-09/"
-      ]
+      "observed": "Hormuz oil flows remain far below pre-war levels and Brent traded above $100.",
+      "interpretation": "Imported-energy inflation, freight and insurance costs remain material headwinds for Taiwan margins and rate-sensitive equities.",
+      "source_url": "https://www.reuters.com/business/energy/brent-holds-above-100-tanker-attacks-deepen-supply-fear-2026-09-10/"
+    },
+    {
+      "name": "OPEC 2026 demand downgrade",
+      "signal": "global_growth_downside",
+      "observed": "OPEC cut 2026 world oil-demand-growth forecast to 380000 bpd, its fifth consecutive downward revision.",
+      "interpretation": "Adds demand-destruction/global-growth downside to the existing supply-driven energy shock.",
+      "source_url": "https://www.reuters.com/business/energy/opec-further-lowers-2026-global-oil-demand-growth-forecast-2026-09-10/"
     }
   ],
-  "market_cross_asset": {
-    "observed_not_official_macro_series": true,
-    "us_10y_yield_pct": 4.8528,
-    "us_2y_yield_pct": null,
-    "curve_2s10s_bp": null,
-    "dxy": null,
-    "vix": null,
-    "usd_twd_close": 31.505,
-    "usd_twd_date": "2026-09-09",
-    "brent_settle_usd_per_bbl": 101.21,
-    "wti_settle_usd_per_bbl": 96.05,
-    "copper_lme_3m_latest_verified_usd_per_ton": 14694,
-    "notes": "Only values verified from authoritative or high-quality sources are populated. Missing current DXY, VIX and 2Y values are left null rather than fabricated. The repository deterministic market series remains authoritative for factor calculations.",
-    "source_urls": [
-      "https://www.reuters.com/world/us-treasury-buy-up-6-billion-sept-10-buyback-operation-2026-09-09/",
-      "https://www.cbc.gov.tw/tw/lp-645-1-1-60.html",
-      "https://www.reuters.com/business/energy/brent-crude-rises-above-100-barrel-middle-east-conflict-escalates-2026-09-09/"
-    ]
-  },
   "policy_tone": {
-    "fed": "No new FOMC decision or minutes supersede the current repository snapshot. Rising oil and long yields increase inflation-risk pressure ahead of the September 15-16 meeting; this is interpretation, not a policy decision.",
-    "taiwan_central_bank": "No new policy decision. The next scheduled monetary-policy meeting remains September 17, 2026.",
-    "energy_policy": "EIA's September STEO raised its 2026 Brent forecast to $91/bbl and expects Middle East production/export disruption to normalize only gradually.",
-    "source_urls": [
-      "https://www.eia.gov/pressroom/releases/press592.php",
-      "https://www.cbc.gov.tw/"
-    ]
-  },
-  "monitored_series_status": {
-    "US_CPI_CORE_CPI": "July remains latest official observation; August CPI/Core CPI scheduled for 2026-09-11 08:30 ET.",
-    "US_PCE_CORE_PCE": "July remains latest: headline PCE inflation 3.7% y/y and core PCE 3.3% y/y; next release 2026-09-30.",
-    "US_NFP_UNEMPLOYMENT": "August remains latest: +162000 payrolls and 4.1% unemployment.",
-    "US_INITIAL_CLAIMS": "No newer release verified before this run cutoff.",
-    "US_ISM_MANUFACTURING_NEW_ORDERS_SERVICES": "August remains latest; Services PMI 55.4 and Services New Orders 60.9.",
-    "FED": "No new FOMC decision, minutes or material policy action superseding the repository snapshot.",
-    "US_2Y_10Y_CURVE": "10Y observed at 4.8528% on September 9; a current 2Y value was not verified in this run, so curve is not recomputed here.",
-    "DXY_VIX": "No current value written because a sufficiently authoritative same-cutoff observation was not verified; deterministic repository series preserved.",
-    "USD_TWD": "Taiwan central bank published 31.505 NTD/USD close for 2026-09-09, versus 31.535 on 2026-09-08.",
-    "WTI_BRENT": "Brent settled at $101.21/bbl and WTI around $96.05/bbl on September 9 amid the maritime escalation.",
-    "COPPER": "Prior verified LME 3-month intraday record of $14694/t retained; no later authoritative value written in this run.",
-    "TW_PMI_NMI": "August PMI/NMI remain latest; manufacturing PMI 62.5.",
-    "TW_EXPORTS": "No newer official exports release verified in this run.",
-    "TW_EXPORT_ORDERS": "July remains latest official observation at $97.939bn; August release scheduled for 2026-09-22.",
-    "TW_LEADING_BUSINESS_CYCLE": "July remains latest: monitoring score 41 red, leading index 104.63, +0.72% m/m; next publication 2026-09-29.",
-    "TW_CENTRAL_BANK": "No new policy decision; next scheduled meeting 2026-09-17.",
-    "TW_CPI_PPI": "August CPI 2.04% y/y versus 2.54% prior; PPI 16.75% y/y versus 16.94% prior.",
-    "CHINA_PMI": "No new PMI release since the prior snapshot.",
-    "CHINA_INFLATION": "August CPI 0.8% y/y, core CPI 1.0%, PPI 3.8% y/y; released 2026-09-09.",
-    "CHINA_GLOBAL_GROWTH": "August trade remains supportive for external demand, while new inflation data show energy-driven producer-price pressure and softer underlying domestic demand."
+    "fed": "No new policy action in this run. Persistent oil above $100 is an inflation-risk input, not a statement of Fed policy.",
+    "taiwan_central_bank": "No new policy decision in this run.",
+    "energy": "Operational adaptation is emerging, but supply/shipping normalization has not occurred; OPEC demand expectations weakened further."
   },
   "geopolitical_global_risk": {
     "level": "VERY_HIGH",
     "dominant_event": "2026-09-09-us-iran-largest-maritime-wave",
-    "dominant_transmission_channels": ["energy", "shipping", "marine_insurance", "freight", "inflation", "rates", "fx", "global_risk"],
-    "summary": "The dominant risk shifted from persistent Hormuz disruption to a fresh material escalation: Reuters reported the largest wave of shipping attacks since the current U.S.-Iran war began, with Iran targeting 10 ships after U.S. forces sank five Iranian oil tankers. Brent settled above $100. This raises the probability that energy inflation, freight and insurance costs persist long enough to affect Asian margins and global rate expectations.",
+    "current_update_event": "2026-09-10-hormuz-operational-adaptation-demand-risk",
+    "summary": "The prior maritime escalation remains the dominant risk. The new information is mixed: Iran removed a 10% freight-fee charge for foreign energy vessels, but Hormuz flows remain severely impaired and oil remains above $100. OPEC's demand downgrade indicates the shock is increasingly transmitting from supply/inflation into global-growth expectations.",
     "events": [
       {
-        "event_id": "2026-09-09-us-iran-largest-maritime-wave",
-        "event_type": "military_shipping_energy_escalation",
-        "regions": ["United States", "Iran", "Strait of Hormuz", "Gulf of Oman", "Middle East"],
-        "severity": 0.98,
-        "confidence": 0.97,
-        "escalation_score": 0.99,
-        "persistence_score": 0.94,
-        "transmission_channels": ["oil", "lng", "shipping", "marine_insurance", "freight", "inflation", "rates", "fx", "global_risk"],
-        "affected_factors": ["inflation", "rates", "risk", "growth", "fx", "shipping_costs", "energy_costs"],
-        "affected_taiwan_sectors": ["航空運輸", "貨櫃航運", "散裝航運", "塑膠", "化工", "半導體", "AI伺服器代工", "電子零組件", "工具機", "軍工_航太", "能源相關"],
-        "observed_evidence": "Direct tanker attacks broadened materially and Brent settled above $100.",
-        "semantic_interpretation": "Higher imported-energy inflation, freight/insurance costs and long-rate pressure are the main negative Taiwan-equity channels; shipping revenue effects are mixed rather than uniformly positive.",
-        "source_urls": [
-          "https://www.reuters.com/world/middle-east/iran-attacks-us-base-jordan-ships-near-hormuz-after-tankers-sunk-2026-09-09/",
-          "https://www.reuters.com/business/energy/brent-crude-rises-above-100-barrel-middle-east-conflict-escalates-2026-09-09/",
-          "https://www.reuters.com/business/energy/one-third-gulf-oil-is-still-missing-despite-dark-crossings-data-shows-2026-09-09/"
-        ],
-        "first_seen_at": "2026-09-09T00:00:00Z",
-        "updated_at": "2026-09-10T08:19:00+08:00"
-      },
-      {
-        "event_id": "2026-09-08-houthi-saudi-energy-escalation",
-        "event_type": "energy_infrastructure_attack_and_shipping_disruption",
-        "regions": ["Saudi Arabia", "Yemen", "Iran", "Strait of Hormuz", "Middle East"],
-        "severity": 0.97,
-        "confidence": 0.97,
-        "escalation_score": 0.97,
+        "event_id": "2026-09-10-hormuz-operational-adaptation-demand-risk",
+        "event_type": "energy_shipping_partial_deescalation_with_persistent_supply_and_growth_risk",
+        "regions": ["Iran", "Strait of Hormuz", "Middle East", "Asia", "China"],
+        "severity": 0.86,
+        "confidence": 0.96,
+        "escalation_score": 0.58,
         "persistence_score": 0.91,
-        "transmission_channels": ["energy", "refining", "shipping", "freight", "inflation", "rates", "fx", "global_risk"],
-        "affected_factors": ["inflation", "rates", "liquidity", "risk", "growth", "fx"],
-        "affected_taiwan_sectors": ["航空運輸", "貨櫃航運", "散裝航運", "塑膠", "工具機", "半導體", "AI伺服器代工", "軍工_航太", "能源相關"],
-        "source_urls": ["https://www.reuters.com/business/energy/oil-rises-risks-prolonged-mideast-conflict-heighten-supply-worries-2026-09-08/"],
-        "first_seen_at": "2026-09-08T08:50:00+08:00",
-        "updated_at": "2026-09-10T08:19:00+08:00"
-      },
-      {
-        "event_id": "2026-09-08-russia-kyiv-strikes-resume",
-        "event_type": "war_escalation_after_diplomatic_pause",
-        "regions": ["Russia", "Ukraine", "Europe"],
-        "severity": 0.68,
-        "confidence": 0.94,
-        "escalation_score": 0.67,
-        "persistence_score": 0.86,
-        "transmission_channels": ["energy", "refined_products", "european_growth", "sanctions", "global_risk"],
-        "affected_factors": ["risk", "inflation", "growth"],
-        "affected_taiwan_sectors": ["工具機", "歐洲曝險製造", "塑膠", "航運", "軍工_航太", "無人機_UAV"],
-        "source_urls": ["https://www.reuters.com/world/europe/russian-ballistic-missiles-hit-kyiv-us-envoys-leave-2026-09-08/"],
-        "first_seen_at": "2026-09-08T10:57:00+08:00",
-        "updated_at": "2026-09-10T08:19:00+08:00"
-      },
-      {
-        "event_id": "2026-09-08-us-iran-aviation-sanctions-expansion",
-        "event_type": "sanctions_and_transport_restrictions",
-        "regions": ["United States", "Iran", "Middle East", "Global"],
-        "severity": 0.78,
-        "confidence": 0.99,
-        "escalation_score": 0.82,
-        "persistence_score": 0.93,
-        "transmission_channels": ["sanctions", "aviation", "logistics", "trade", "energy", "shipping", "global_risk"],
-        "affected_factors": ["risk", "inflation", "growth", "liquidity", "trade"],
-        "affected_taiwan_sectors": ["航空運輸", "貨櫃航運", "散裝航運", "半導體", "電子零組件", "工具機", "軍工_航太"],
-        "source_urls": ["https://home.treasury.gov/news/press-releases/sb0623/"],
-        "first_seen_at": "2026-09-08T22:53:00+08:00",
-        "updated_at": "2026-09-10T08:19:00+08:00"
-      },
-      {
-        "event_id": "2026-09-09-us-china-ai-distillation-accusation",
-        "event_type": "us_china_ai_technology_tension",
-        "regions": ["United States", "China", "Taiwan", "Global"],
-        "severity": 0.57,
-        "confidence": 0.94,
-        "escalation_score": 0.61,
-        "persistence_score": 0.76,
-        "transmission_channels": ["technology_policy", "export_controls", "ai_supply_chain", "semiconductors", "trade", "global_risk"],
-        "affected_factors": ["risk", "trade", "semiconductor_demand", "growth"],
-        "affected_taiwan_sectors": ["半導體", "AI伺服器代工", "IC設計_HPC_存儲", "電子零組件", "網通", "伺服器ODM"],
-        "source_urls": ["https://www.reuters.com/technology/us-accuses-chinese-ai-firms-industrial-scale-theft-ai-technology-2026-09-08/"],
-        "first_seen_at": "2026-09-09T01:47:00+08:00",
-        "updated_at": "2026-09-10T08:19:00+08:00"
-      },
-      {
-        "event_id": "2026-09-09-iran-us-underwater-drone-hormuz",
-        "event_type": "military_incident_at_hormuz",
-        "regions": ["Iran", "United States", "Strait of Hormuz", "Middle East"],
-        "severity": 0.65,
-        "confidence": 0.97,
-        "escalation_score": 0.69,
-        "persistence_score": 0.86,
-        "transmission_channels": ["shipping", "energy", "maritime_security", "insurance", "freight", "global_risk"],
-        "affected_factors": ["risk", "inflation", "growth", "fx"],
-        "affected_taiwan_sectors": ["航空運輸", "貨櫃航運", "散裝航運", "塑膠", "半導體", "AI伺服器代工", "軍工_航太"],
-        "source_urls": ["https://www.reuters.com/world/middle-east/iran-says-it-captured-us-submarine-drone-strait-hormuz-2026-09-08/"],
-        "first_seen_at": "2026-09-09T06:31:00+08:00",
-        "updated_at": "2026-09-10T08:19:00+08:00"
+        "transmission_channels": ["oil_supply", "shipping", "freight", "marine_insurance", "inflation", "rates", "fx", "global_growth", "risk_sentiment"],
+        "affected_factors": ["WTI", "Brent", "inflation", "US_yields", "USD_TWD", "global_growth", "shipping_costs", "risk"],
+        "affected_taiwan_sectors": ["航空運輸", "貨櫃航運", "散裝航運", "塑膠", "化工", "半導體", "AI伺服器代工", "電子零組件", "工具機", "能源相關"],
+        "observed_evidence": "Iran temporarily suspended the 10% freight charge; Hormuz flows remained far below pre-war levels; Brent remained above $100; OPEC reduced 2026 oil-demand-growth forecast to 380000 bpd.",
+        "semantic_interpretation": "Partial cost relief does not offset persistent military/shipping risk. Taiwan remains exposed through imported energy, freight, inflation, yields and global-demand channels.",
+        "source_urls": [
+          "https://www.reuters.com/business/energy/iran-suspends-freight-charge-foreign-vessels-carrying-energy-products-or-iran-2026-09-10/",
+          "https://www.reuters.com/business/energy/brent-holds-above-100-tanker-attacks-deepen-supply-fear-2026-09-10/",
+          "https://www.reuters.com/business/energy/opec-further-lowers-2026-global-oil-demand-growth-forecast-2026-09-10/"
+        ],
+        "first_seen_at": "2026-09-10T19:13:00+08:00",
+        "updated_at": "2026-09-10T20:22:15+08:00"
       }
-    ]
+    ],
+    "historical_events_preserved": true,
+    "historical_event_directory": "data/macro/semantic/events/"
   },
   "key_risks": [
-    "Direct tanker attacks around Hormuz and Gulf oil flows below pre-war levels can keep crude, diesel, LNG, freight and marine-insurance costs elevated.",
-    "Brent above $100 increases global inflation and long-rate risk, particularly for energy-importing Asian economies including Taiwan.",
-    "China's PPI acceleration is partly imported-energy driven; persistent input-cost pressure could compress margins even if headline regional demand remains strong.",
-    "U.S.-China AI policy risk remains elevated, but no new semiconductor export-control rule was verified in this run.",
-    "Russia-Ukraine escalation remains a secondary energy and European-growth risk."
+    "Further U.S.-Iran tanker or infrastructure attacks could reverse the limited freight-cost relief immediately.",
+    "Sustained oil above $100 can reinforce global inflation and long-rate pressure.",
+    "OPEC's repeated demand downgrades signal increasing risk of demand destruction and weaker global manufacturing growth.",
+    "Taiwan energy-import, airline, petrochemical and high-duration technology exposures remain sensitive to oil, freight, FX and yield transmission."
   ],
-  "affected_factors": ["inflation", "rates", "risk", "growth", "fx", "trade", "shipping_costs", "energy_costs", "semiconductor_demand", "margins"],
-  "affected_taiwan_sectors": ["半導體", "AI伺服器代工", "IC設計_HPC_存儲", "電子零組件", "網通", "航空運輸", "貨櫃航運", "散裝航運", "塑膠", "化工", "鋼鐵", "工具機", "軍工_航太", "能源相關"],
   "confidence": 0.96,
   "source_urls": [
-    "https://www.bls.gov/cpi/",
-    "https://www.bea.gov/news/2026/personal-income-and-outlays-july-2026",
-    "https://www.bea.gov/data/personal-consumption-expenditures-price-index-excluding-food-and-energy",
-    "https://www.ismworld.org/supply-management-news-and-reports/reports/ism-pmi-reports/services/august/",
-    "https://www.dgbas.gov.tw/",
-    "https://www.cier.edu.tw/eco_cat/pmi-ch/",
-    "https://www.ndc.gov.tw/en/nc_199_40405",
-    "https://www.cbc.gov.tw/tw/lp-645-1-1-60.html",
-    "https://www.stats.gov.cn/sj/zxfb/202609/t20260909_1965263.html",
-    "https://www.stats.gov.cn/sj/zxfbhjd/202609/t20260909_1965262.html",
-    "https://www.eia.gov/pressroom/releases/press592.php",
-    "https://www.reuters.com/world/middle-east/iran-attacks-us-base-jordan-ships-near-hormuz-after-tankers-sunk-2026-09-09/",
-    "https://www.reuters.com/business/energy/brent-crude-rises-above-100-barrel-middle-east-conflict-escalates-2026-09-09/",
-    "https://www.reuters.com/business/energy/one-third-gulf-oil-is-still-missing-despite-dark-crossings-data-shows-2026-09-09/",
-    "https://www.reuters.com/world/us-treasury-buy-up-6-billion-sept-10-buyback-operation-2026-09-09/"
+    "https://www.reuters.com/business/energy/iran-suspends-freight-charge-foreign-vessels-carrying-energy-products-or-iran-2026-09-10/",
+    "https://www.reuters.com/business/energy/brent-holds-above-100-tanker-attacks-deepen-supply-fear-2026-09-10/",
+    "https://www.reuters.com/business/energy/opec-further-lowers-2026-global-oil-demand-growth-forecast-2026-09-10/"
   ]
 }
