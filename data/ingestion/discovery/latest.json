@@ -1,53 +1,34 @@
 {
   "schema_version": "1.0",
-  "generated_at": "2026-09-10T07:55:09+08:00",
-  "window_start": "2026-09-09T20:04:26+08:00",
-  "window_end": "2026-09-10T07:55:09+08:00",
-  "event_file": "data/ingestion/discovery/events/2026/09/2026-09-09T235509Z.json",
+  "generated_at": "2026-09-10T19:56:02+08:00",
+  "window_start": "2026-09-10T07:55:09+08:00",
+  "window_end": "2026-09-10T19:56:02+08:00",
+  "event_file": "data/ingestion/discovery/events/2026/09/2026-09-10T115602Z.json",
   "production_verified": false,
-  "new_event_count": 4,
+  "new_event_count": 1,
   "counts_by_source_type": {
-    "company_news": 3,
-    "mops_monthly_revenue": 1
+    "analyst": 1
   },
   "counts_by_event_type": {
-    "operational_update": 1,
-    "capacity_project_execution": 1,
-    "order_mix_and_customer_ramp": 1,
-    "monthly_revenue_structural_change": 1
+    "analyst_consensus_revision": 1
   },
-  "high_priority_stock_ids": ["4556", "6613", "7703", "8926"],
+  "high_priority_stock_ids": ["5274"],
   "fetch_queue": {
-    "pending": 4,
+    "pending": 1,
     "verified": 0,
     "rule": "production_verified remains false until deterministic evidence fetch saves raw bytes, canonical URL, published_at and SHA-256"
   },
   "notable_candidates": [
     {
-      "event_id": "6613_20260910_aug_revenue_project_execution_update",
-      "stock_id": "6613",
-      "summary": "August revenue reached a monthly second-high; company commentary says large projects are entering shipment/installation/commissioning and backlog remains at a historical high."
-    },
-    {
-      "event_id": "7703_20260910_aug_revenue_us_japan_project_execution",
-      "stock_id": "7703",
-      "summary": "Record August revenue plus a material execution update that U.S. and Japan semiconductor projects are entering engineering execution and revenue recognition."
-    },
-    {
-      "event_id": "4556_20260910_semiconductor_order_mix_35pct",
-      "stock_id": "4556",
-      "summary": "Semiconductor-related orders are reported at about 35% of backlog while existing customer lines progress into pilot and mass production."
-    },
-    {
-      "event_id": "8926_20260910_aug_revenue_consolidation_effect",
-      "stock_id": "8926",
-      "summary": "August revenue +1,263.62% YoY is primarily a consolidation-driven structural break, requiring normalization rather than treatment as organic growth."
+      "event_id": "5274_20260910_factset_2026_eps_consensus_revision",
+      "stock_id": "5274",
+      "summary": "FactSet 17-analyst consensus raises 2026 EPS median from NT$189.62 to NT$194.98; the public source reports a NT$22,500 target price."
     }
   ],
   "notes": [
-    "This is discovery only; no Fair Value, analyst consensus, catalyst probability, normalized fundamental or PIT production file was modified.",
-    "No new named-broker target/rating revision with sufficiently verifiable post-window facts was materialized in this run.",
-    "All candidates remain production_verified=false until deterministic primary-source materialization and SHA-256.",
+    "This is discovery only; no Fair Value, analyst consensus production file, catalyst probability, normalized fundamental or PIT production file was modified.",
+    "Scheduled investor conferences that merely occurred today without sufficiently new official numerical guidance were not materialized as new candidates.",
+    "Search snippets and secondary pages remain discovery evidence only; production verification requires deterministic raw-byte materialization and SHA-256.",
     "No paywall/login bypass or copyrighted broker-report full text was accessed or stored."
   ]
 }
