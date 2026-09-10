@@ -1,0 +1,123 @@
+{
+  "schema_version": "1.2",
+  "generated_at": "2026-09-10T08:19:00+08:00",
+  "scope": "semantic_research_only",
+  "fair_value_policy": "Fair Value V2.1 remains the sole valuation baseline; this file does not calculate or modify Fair Value.",
+  "macro_updates": [
+    {
+      "series": "TW_CPI_YOY",
+      "period": "2026-08",
+      "release_date": "2026-09-08",
+      "actual": 2.04,
+      "previous": 2.54,
+      "consensus": null,
+      "unit": "percent_yoy",
+      "confidence": 0.99,
+      "stale": false,
+      "source_urls": ["https://www.dgbas.gov.tw/"]
+    },
+    {
+      "series": "TW_PPI_YOY",
+      "period": "2026-08",
+      "release_date": "2026-09-08",
+      "actual": 16.75,
+      "previous": 16.94,
+      "consensus": null,
+      "unit": "percent_yoy",
+      "confidence": 0.99,
+      "stale": false,
+      "source_urls": ["https://www.dgbas.gov.tw/"]
+    },
+    {
+      "series": "CN_CPI_YOY",
+      "period": "2026-08",
+      "release_at": "2026-09-09T09:30:00+08:00",
+      "actual": 0.8,
+      "previous": 0.5,
+      "consensus": null,
+      "unit": "percent_yoy",
+      "confidence": 0.99,
+      "stale": false,
+      "source_urls": ["https://www.stats.gov.cn/sj/zxfb/202609/t20260909_1965263.html", "https://www.reuters.com/world/asia-pacific/chinas-producer-inflation-regains-momentum-august-2026-09-09/"]
+    },
+    {
+      "series": "CN_CORE_CPI_YOY",
+      "period": "2026-08",
+      "release_at": "2026-09-09T09:30:00+08:00",
+      "actual": 1.0,
+      "previous": null,
+      "consensus": null,
+      "unit": "percent_yoy",
+      "confidence": 0.99,
+      "stale": false,
+      "source_urls": ["https://www.stats.gov.cn/zwfwck/sjfb/202609/t20260909_1965261.html"]
+    },
+    {
+      "series": "CN_PPI_YOY",
+      "period": "2026-08",
+      "release_at": "2026-09-09T09:30:00+08:00",
+      "actual": 3.8,
+      "previous": 3.5,
+      "consensus": null,
+      "unit": "percent_yoy",
+      "confidence": 0.99,
+      "stale": false,
+      "source_urls": ["https://www.stats.gov.cn/sj/zxfbhjd/202609/t20260909_1965262.html", "https://www.reuters.com/world/asia-pacific/chinas-producer-inflation-regains-momentum-august-2026-09-09/"]
+    }
+  ],
+  "events": [
+    {
+      "event_id": "2026-09-09-us-iran-largest-maritime-wave",
+      "event_type": "military_shipping_energy_escalation",
+      "regions": ["United States", "Iran", "Strait of Hormuz", "Gulf of Oman", "Middle East"],
+      "severity": 0.98,
+      "confidence": 0.97,
+      "escalation_score": 0.99,
+      "persistence_score": 0.94,
+      "observed_evidence": [
+        "Reuters reported the largest wave of attacks on shipping since the current war began, with Iran targeting 10 ships after U.S. forces sank five Iranian oil tankers.",
+        "Reuters reported tanker attacks and renewed military activity near the Strait of Hormuz, including an Iranian missile attack on a U.S. base in Jordan with no reported U.S. casualties.",
+        "Brent settled at $101.21 per barrel on September 9, above $100, while WTI settled around $96.05 per barrel.",
+        "Reuters reported Gulf oil exports remained materially below pre-war levels despite dark crossings."
+      ],
+      "semantic_interpretation": "This is a material escalation from the prior Hormuz-risk snapshot because direct attacks on tankers broadened and Brent closed above $100. The primary Taiwan-equity transmission is higher imported-energy inflation, freight/insurance costs, upward rate pressure and risk-off valuation pressure. Shipping names may have mixed exposure because higher freight rates can be offset by route and insurance disruption.",
+      "transmission_channels": ["oil", "lng", "shipping", "marine_insurance", "freight", "inflation", "rates", "fx", "global_risk"],
+      "affected_factors": ["inflation", "rates", "risk", "growth", "fx", "shipping_costs", "energy_costs"],
+      "affected_taiwan_sectors": ["航空運輸", "貨櫃航運", "散裝航運", "塑膠", "化工", "半導體", "AI伺服器代工", "電子零組件", "工具機", "軍工_航太", "能源相關"],
+      "source_urls": [
+        "https://www.reuters.com/world/middle-east/iran-attacks-us-base-jordan-ships-near-hormuz-after-tankers-sunk-2026-09-09/",
+        "https://www.reuters.com/business/energy/brent-crude-rises-above-100-barrel-middle-east-conflict-escalates-2026-09-09/",
+        "https://www.reuters.com/business/energy/one-third-gulf-oil-is-still-missing-despite-dark-crossings-data-shows-2026-09-09/"
+      ],
+      "first_seen_at": "2026-09-09T00:00:00Z",
+      "updated_at": "2026-09-10T08:19:00+08:00"
+    },
+    {
+      "event_id": "2026-09-09-china-energy-inflation-pass-through",
+      "event_type": "global_growth_inflation_shock",
+      "regions": ["China", "Asia", "Global"],
+      "severity": 0.63,
+      "confidence": 0.99,
+      "escalation_score": 0.58,
+      "persistence_score": 0.67,
+      "observed_evidence": [
+        "China August CPI rose 0.8% year on year and 0.4% month on month.",
+        "China August PPI rose 3.8% year on year and 0.4% month on month.",
+        "China core CPI rose 1.0% year on year.",
+        "China's statistics bureau attributed part of the acceleration to international commodity-price transmission, including a 7.2% monthly rise in domestic gasoline prices."
+      ],
+      "semantic_interpretation": "China is showing stronger imported energy and producer-price pressure while underlying domestic demand remains softer than headline producer inflation suggests. For Taiwan this is a mixed signal: stronger nominal pricing for upstream commodities and some regional demand support, but higher input costs and potentially tighter Asian financial conditions if energy inflation persists.",
+      "transmission_channels": ["energy", "commodities", "producer_prices", "regional_demand", "rates", "fx"],
+      "affected_factors": ["inflation", "growth", "margins", "rates", "commodities"],
+      "affected_taiwan_sectors": ["塑膠", "化工", "鋼鐵", "銅箔基板", "電子零組件", "工具機", "半導體", "航運"],
+      "source_urls": [
+        "https://www.stats.gov.cn/sj/zxfb/202609/t20260909_1965263.html",
+        "https://www.stats.gov.cn/sj/zxfbhjd/202609/t20260909_1965262.html",
+        "https://www.stats.gov.cn/zwfwck/sjfb/202609/t20260909_1965261.html",
+        "https://www.reuters.com/world/asia-pacific/chinas-producer-inflation-regains-momentum-august-2026-09-09/"
+      ],
+      "first_seen_at": "2026-09-09T09:30:00+08:00",
+      "updated_at": "2026-09-10T08:19:00+08:00"
+    }
+  ]
+}
