@@ -1,0 +1,104 @@
+{
+  "schema_version": "1.0",
+  "generated_at": "2026-09-11T20:05:07+08:00",
+  "window_start": "2026-09-10T19:56:02+08:00",
+  "window_end": "2026-09-11T20:05:07+08:00",
+  "production_verified": false,
+  "events": [
+    {
+      "event_id": "1560_20260911_factset_2026_eps_consensus_revision",
+      "stock_ids": ["1560"],
+      "company_name": "中砂",
+      "source_type": "analyst",
+      "event_type": "analyst_consensus_revision",
+      "title": "FactSet 10位分析師上修中砂2026 EPS中位數至14.95元，公開來源報導目標價860元",
+      "canonical_url": "https://news.cnyes.com/news/id/6604228",
+      "publisher": "鉅亨網",
+      "broker": null,
+      "analyst": "FactSet consensus (10 analysts)",
+      "published_at": "2026-09-11T08:10:00+08:00",
+      "discovered_at": "2026-09-11T20:05:07+08:00",
+      "facts": {
+        "analyst_count": 10,
+        "eps_2026_median": 14.95,
+        "eps_2026_median_previous": 14.84,
+        "eps_2026_high": 16.28,
+        "eps_2026_low": 13.3,
+        "eps_2027_median": 21.05,
+        "eps_2028_median": 27.02,
+        "revenue_2026_median_thousand_twd": 10364000,
+        "revenue_2027_median_thousand_twd": 12980000,
+        "revenue_2028_median_thousand_twd": 15270500,
+        "reported_target_price_twd": 860
+      },
+      "observed_facts": {
+        "summary": "鉅亨網引用FactSet最新調查，10位分析師對中砂2026 EPS預估中位數由14.84元上修至14.95元，並報導預估目標價860元。"
+      },
+      "interpretation": {
+        "summary": "可作V2.1 analyst reference與forward-estimate sanity check；在取得可追溯PIT analyst corpus及通過回測前不得直接影響Fair Value。"
+      },
+      "evidence_summary": "Secondary public source quoting FactSet consensus; suitable for discovery/reference candidate, not yet production evidence.",
+      "confidence": 0.88,
+      "priority": "high",
+      "requires_raw_fetch": true,
+      "raw_fetch_reason": "Persist the public article bytes and provenance; if possible cross-check against an independently accessible consensus source before analyst production materialization.",
+      "production_verified": false,
+      "tags": ["analyst", "forward_estimate", "target_price"],
+      "source_urls": ["https://news.cnyes.com/news/id/6604228"]
+    },
+    {
+      "event_id": "3441_20260911_mops_clarification_eps3_media_report",
+      "stock_ids": ["3441"],
+      "company_name": "聯一光電",
+      "source_type": "mops_material_announcement",
+      "event_type": "media_forecast_clarification",
+      "title": "聯一光電澄清媒體所稱全年EPS上看3元為法人預估，公司未提供預測性財務資訊",
+      "canonical_url": "https://news.cnyes.com/news/id/6604409",
+      "publisher": "公開資訊觀測站公告（鉅亨網鏡像）",
+      "broker": null,
+      "analyst": null,
+      "published_at": "2026-09-11T09:52:07+08:00",
+      "discovered_at": "2026-09-11T20:05:07+08:00",
+      "facts": {
+        "media_claim": "法人看好公司受惠無人機及機器人等應用，全年每股純益有望上看3元",
+        "company_response": "公司並未對外界提供任何預測性財務資訊，上述報導純屬法人預估",
+        "forecast_value_twd": 3,
+        "forecast_is_company_guidance": false
+      },
+      "observed_facts": {
+        "summary": "公司於2026-09-11發布重大訊息澄清，明確否認曾提供該EPS預測；相關數值只能視為外部法人預估。"
+      },
+      "interpretation": {
+        "summary": "下游forward-estimate/analyst/news parser必須把該3元標記為external analyst estimate，禁止分類為company guidance或官方forecast。"
+      },
+      "evidence_summary": "Material official-company clarification surfaced through a public MOPS mirror. Primary MOPS raw evidence should be resolved and hashed by the deterministic fetcher.",
+      "confidence": 0.98,
+      "priority": "high",
+      "requires_raw_fetch": true,
+      "raw_fetch_reason": "Resolve the corresponding primary MOPS announcement, save raw official bytes, canonical official URL/release timestamp and SHA-256; use the clarification to prevent forecast provenance contamination.",
+      "production_verified": false,
+      "tags": ["mops", "analyst", "forward_estimate", "provenance_guard", "clarification"],
+      "source_urls": ["https://news.cnyes.com/news/id/6604409"]
+    }
+  ],
+  "counts_by_source_type": {
+    "analyst": 1,
+    "mops_material_announcement": 1
+  },
+  "counts_by_event_type": {
+    "analyst_consensus_revision": 1,
+    "media_forecast_clarification": 1
+  },
+  "high_priority_stock_ids": ["1560", "3441"],
+  "fetch_queue": {
+    "pending": 2,
+    "verified": 0,
+    "rule": "production_verified remains false until deterministic evidence fetch saves raw bytes, canonical URL, published_at and SHA-256"
+  },
+  "notes": [
+    "Discovery only; no Fair Value, production analyst consensus, catalyst probability, normalized fundamentals or PIT production file was modified.",
+    "Scheduled investor conferences without newly published material facts were not added merely because the meeting occurred today.",
+    "Search snippets remain discovery evidence only.",
+    "No paywall/login bypass or copyrighted broker-report full text was accessed or stored."
+  ]
+}
