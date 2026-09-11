@@ -1,0 +1,50 @@
+{
+  "schema_version": "1.2",
+  "generated_at": "2026-09-11T20:09:39+08:00",
+  "scope": "semantic_research_only",
+  "fair_value_policy": "Fair Value V2.1 is the sole valuation baseline. Semantic scores must not directly overwrite official numeric macro series or Fair Value.",
+  "events": [
+    {
+      "event_id": "2026-09-11-iea-global-oil-supply-downgrade",
+      "event_type": "global_energy_supply_shock",
+      "regions": ["Global", "Middle East", "Russia", "Europe", "Asia"],
+      "severity": 0.91,
+      "confidence": 0.97,
+      "escalation_score": 0.88,
+      "persistence_score": 0.94,
+      "transmission_channels": ["oil_supply", "refined_products", "inflation", "rates", "fx", "global_growth", "freight"],
+      "affected_factors": ["WTI", "Brent", "inflation", "US_2Y", "US_10Y", "USD_TWD", "global_growth", "shipping_costs"],
+      "affected_taiwan_sectors": ["航空運輸", "貨櫃航運", "散裝航運", "塑膠", "化工", "鋼鐵", "工具機", "半導體", "AI伺服器代工", "電子零組件", "金融"],
+      "observed_evidence": "The IEA released its September 2026 Oil Market Report on September 11. Reuters, citing the report, said the IEA now expects global oil supply to decline by 5.7 million barrels/day in 2026, versus roughly a 4% decline previously, as normal Gulf flows are delayed. The IEA also cut its 2026 Russian crude-production forecast by 125,000 barrels/day to 8.7 million barrels/day; August Russian crude output was estimated at 8.36 million barrels/day, down 200,000 barrels/day from July.",
+      "semantic_interpretation": "This materially strengthens the persistence case for the energy shock. For Taiwan equities, the main negative channels are imported inflation, higher global yields, TWD pressure, freight/insurance costs and weaker non-AI global demand. Shipping-rate beneficiaries remain a partial offset, while energy-intensive and long-duration technology valuations face higher macro pressure.",
+      "source_urls": [
+        "https://www.iea.org/events/oil-market-report-september-2026",
+        "https://www.reuters.com/business/energy/global-2026-oil-supply-gap-deepen-delayed-return-normal-gulf-flows-iea-says-2026-09-11/",
+        "https://www.reuters.com/business/energy/iea-further-cuts-russian-oil-output-forecasts-ukrainian-attacks-2026-09-11/"
+      ],
+      "first_seen_at": "2026-09-11T20:09:39+08:00",
+      "updated_at": "2026-09-11T20:09:39+08:00"
+    },
+    {
+      "event_id": "2026-09-11-bab-el-mandeb-perim-island-escalation",
+      "event_type": "shipping_chokepoint_military_escalation",
+      "regions": ["Yemen", "Perim Island", "Bab el-Mandeb", "Red Sea", "Middle East"],
+      "severity": 0.9,
+      "confidence": 0.94,
+      "escalation_score": 0.92,
+      "persistence_score": 0.9,
+      "transmission_channels": ["shipping", "freight", "marine_insurance", "oil_supply", "global_trade", "risk_sentiment"],
+      "affected_factors": ["shipping_costs", "WTI", "Brent", "inflation", "global_growth", "risk"],
+      "affected_taiwan_sectors": ["貨櫃航運", "散裝航運", "航空運輸", "塑膠", "化工", "電子出口", "半導體", "機械"],
+      "observed_evidence": "Reuters reported on September 11 that Iran-aligned Houthi forces reached and captured strategic Perim Island and nearby Dhubab at the mouth of the Bab el-Mandeb shipping lane, after the prior capture of Mocha. Separately, Hormuz transits remained at seven vessels on September 10, far below pre-war traffic, while diplomatic efforts for a temporary Hormuz shipping arrangement were reported but not concluded.",
+      "semantic_interpretation": "Control near Perim materially increases the probability of persistent Red Sea routing disruption at the same time Hormuz remains severely impaired. This is a dual-chokepoint global-trade risk rather than a single-route incident. For Taiwan, freight, insurance and imported-energy risks rise; container and bulk shipping earnings may benefit from rerouting and tighter vessel supply, but the broader equity impact is negative through inflation and discount rates.",
+      "source_urls": [
+        "https://www.reuters.com/world/middle-east/yemens-houthis-reach-strategic-island-mouth-vital-shipping-lane-2026-09-11/",
+        "https://www.reuters.com/world/middle-east/hormuz-shipping-traffic-falls-single-digits-data-shows-2026-09-11/",
+        "https://www.reuters.com/business/energy/oil-prices-set-end-week-over-100-first-time-nearly-4-months-2026-09-11/"
+      ],
+      "first_seen_at": "2026-09-11T20:09:39+08:00",
+      "updated_at": "2026-09-11T20:09:39+08:00"
+    }
+  ]
+}
