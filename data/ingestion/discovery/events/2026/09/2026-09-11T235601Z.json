@@ -1,0 +1,69 @@
+{
+  "schema_version": "1.0",
+  "generated_at": "2026-09-12T07:56:01+08:00",
+  "window_start": "2026-09-11T20:05:07+08:00",
+  "window_end": "2026-09-12T07:56:01+08:00",
+  "production_verified": false,
+  "events": [
+    {
+      "event_id": "6805_20260911_factset_2026_eps_consensus_revision_6242",
+      "stock_ids": ["6805"],
+      "company_name": "富世達",
+      "source_type": "analyst",
+      "event_type": "analyst_consensus_revision",
+      "title": "FactSet 10位分析師再上修富世達2026 EPS中位數至62.42元，公開來源報導目標價2650元",
+      "canonical_url": "https://news.cnyes.com/news/id/6604806",
+      "publisher": "鉅亨網",
+      "broker": null,
+      "analyst": "FactSet consensus (10 analysts)",
+      "published_at": "2026-09-11T20:11:00+08:00",
+      "discovered_at": "2026-09-12T07:56:01+08:00",
+      "facts": {
+        "analyst_count": 10,
+        "eps_2026_median": 62.42,
+        "eps_2026_median_previous": 61.85,
+        "eps_2026_high": 67.54,
+        "eps_2026_low": 58.65,
+        "eps_2027_median": 94.41,
+        "eps_2028_median": 115.72,
+        "revenue_2026_median_thousand_twd": 18023000,
+        "revenue_2027_median_thousand_twd": 24793000,
+        "revenue_2028_median_thousand_twd": 30230000,
+        "reported_target_price_twd": 2650
+      },
+      "observed_facts": {
+        "summary": "鉅亨網引用FactSet最新調查，10位分析師對富世達2026 EPS預估中位數由61.85元再上修至62.42元；最高67.54元、最低58.65元，公開來源同時報導預估目標價2650元。"
+      },
+      "interpretation": {
+        "summary": "這是前一輪FactSet consensus的進一步上修，可作V2.1 analyst reference與model-forward sanity check；在PIT analyst corpus及回測通過前不得直接影響production Fair Value。"
+      },
+      "evidence_summary": "Public secondary source quoting FactSet consensus. The same publisher's prior 2026-09-09 observation reported a 61.85 median, supporting that this is a material subsequent revision; it remains discovery/reference evidence until deterministic materialization.",
+      "confidence": 0.9,
+      "priority": "high",
+      "requires_raw_fetch": true,
+      "raw_fetch_reason": "Persist the public article raw bytes, canonical URL, publication timestamp and SHA-256; retain as analyst-reference evidence and deduplicate against any later syndicated copies.",
+      "production_verified": false,
+      "tags": ["analyst", "forward_estimate", "target_price", "consensus_revision"],
+      "source_urls": ["https://news.cnyes.com/news/id/6604806"]
+    }
+  ],
+  "counts_by_source_type": {
+    "analyst": 1
+  },
+  "counts_by_event_type": {
+    "analyst_consensus_revision": 1
+  },
+  "high_priority_stock_ids": ["6805"],
+  "fetch_queue": {
+    "pending": 1,
+    "verified": 0,
+    "rule": "production_verified remains false until deterministic evidence fetch saves raw bytes, canonical URL, published_at and SHA-256"
+  },
+  "notes": [
+    "Discovery only; no Fair Value, production analyst consensus, catalyst probability, normalized fundamentals or PIT production file was modified.",
+    "Only material events published after the prior ledger cutoff were eligible for this batch.",
+    "Market-movement articles and previously published company events were excluded.",
+    "Search snippets remain discovery evidence only.",
+    "No paywall/login bypass or copyrighted broker-report full text was accessed or stored."
+  ]
+}
