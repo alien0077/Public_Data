@@ -1,41 +1,34 @@
 {
   "schema_version": "1.0",
-  "generated_at": "2026-09-11T20:05:07+08:00",
-  "window_start": "2026-09-10T19:56:02+08:00",
-  "window_end": "2026-09-11T20:05:07+08:00",
-  "event_file": "data/ingestion/discovery/events/2026/09/2026-09-11T120507Z.json",
+  "generated_at": "2026-09-12T07:56:01+08:00",
+  "window_start": "2026-09-11T20:05:07+08:00",
+  "window_end": "2026-09-12T07:56:01+08:00",
+  "event_file": "data/ingestion/discovery/events/2026/09/2026-09-11T235601Z.json",
   "production_verified": false,
-  "new_event_count": 2,
+  "new_event_count": 1,
   "counts_by_source_type": {
-    "analyst": 1,
-    "mops_material_announcement": 1
+    "analyst": 1
   },
   "counts_by_event_type": {
-    "analyst_consensus_revision": 1,
-    "media_forecast_clarification": 1
+    "analyst_consensus_revision": 1
   },
-  "high_priority_stock_ids": ["1560", "3441"],
+  "high_priority_stock_ids": ["6805"],
   "fetch_queue": {
-    "pending": 2,
+    "pending": 1,
     "verified": 0,
     "rule": "production_verified remains false until deterministic evidence fetch saves raw bytes, canonical URL, published_at and SHA-256"
   },
   "notable_candidates": [
     {
-      "event_id": "1560_20260911_factset_2026_eps_consensus_revision",
-      "stock_id": "1560",
-      "summary": "FactSet 10-analyst consensus raises 2026 EPS median from NT$14.84 to NT$14.95; public source reports NT$860 target price."
-    },
-    {
-      "event_id": "3441_20260911_mops_clarification_eps3_media_report",
-      "stock_id": "3441",
-      "summary": "Company clarification says the reported NT$3 full-year EPS is an external analyst estimate; the company did not provide predictive financial information."
+      "event_id": "6805_20260911_factset_2026_eps_consensus_revision_6242",
+      "stock_id": "6805",
+      "summary": "FactSet 10-analyst consensus raises 2026 EPS median from NT$61.85 to NT$62.42; public source reports NT$2,650 target price."
     }
   ],
   "notes": [
     "Discovery only; no Fair Value, analyst consensus production file, catalyst probability, normalized fundamental or PIT production file was modified.",
-    "Scheduled investor conferences that merely occurred today without sufficiently new official numerical guidance were not materialized as new candidates.",
-    "The 3441 clarification is a provenance guard: downstream parsers must not classify the media/analyst EPS estimate as company guidance.",
+    "Only material events published after the previous generated_at cutoff were eligible for this run.",
+    "Market-only articles and previously published company announcements were excluded.",
     "Search snippets and secondary pages remain discovery evidence only; production verification requires deterministic raw-byte materialization and SHA-256.",
     "No paywall/login bypass or copyrighted broker-report full text was accessed or stored."
   ]
