@@ -1,16 +1,17 @@
 {
   "schema_version": "1.2",
-  "generated_at": "2026-09-12T08:16:50+08:00",
+  "generated_at": "2026-09-12T20:16:48+08:00",
   "month": "2026-09",
   "scope": "semantic_research_only",
   "fair_value_policy": "Fair Value V2.1 is the sole valuation baseline. Semantic scores in this file must not directly overwrite official numeric macro series or Fair Value.",
-  "summary": "Material changes since the prior snapshot: U.S. August CPI was released at +0.4% m/m and +3.4% y/y, with core CPI +0.3% m/m and +2.4% y/y; the core monthly reading was above Reuters-polled expectations of +0.2%. Official Treasury closing yields for September 11 rose to 4.63% at 2Y and 4.96% at 10Y. Middle East conflict transmission broadened through record VLCC freight from the Gulf of Oman to China near Worldscale 450, about US$11.50/bbl. Brent settled at US$104.61 and WTI at US$100.05. No new Taiwan official macro release was identified since the prior snapshot.",
+  "summary": "Material change since the prior snapshot: Saudi Arabia officially confirmed that several drones launched from Iraq targeted the East-West Pipeline, after the Ministry of Energy had already shut the line as a precaution following multiple attacks. Saudi Arabia is not retaliating at this stage at Iraq's request, but reserves the right to protect its infrastructure. This raises confidence that the main Saudi oil route bypassing Hormuz is itself exposed to cross-border attack risk. No new U.S., Taiwan or China official macro release was identified since the prior snapshot; September 11 market closes remain the latest verified values.",
   "macro_summary": {
-    "new_official_us_macro_release_since_prior_snapshot": true,
+    "new_official_us_macro_release_since_prior_snapshot": false,
     "new_official_taiwan_macro_release_since_prior_snapshot": false,
+    "new_official_china_macro_release_since_prior_snapshot": false,
     "new_material_geopolitical_energy_information": true,
-    "policy_bias": "more_hawkish",
-    "taiwan_equity_implication": "Higher U.S. real/nominal discount-rate risk and imported-energy/freight inflation remain headwinds for long-duration technology and energy-intensive sectors, while AI/HPC export demand remains a domestic growth offset.",
+    "policy_bias": "hawkish_risk_elevated",
+    "taiwan_equity_implication": "The combination of near-5% U.S. long yields and persistent Middle East energy/logistics disruption remains a valuation and margin headwind for Taiwan equities, especially long-duration technology and energy-intensive sectors. Strong AI/HPC export demand remains an offset.",
     "notes": "Official numeric series remain authoritative. Semantic interpretation is downstream research input only."
   },
   "monitored_series_status": {
@@ -30,20 +31,14 @@
       "core_consensus_mom_pct": 0.2,
       "stale": false,
       "confidence": 0.99,
-      "source_urls": [
-        "https://www.bls.gov/news.release/cpi.nr0.htm",
-        "https://www.reuters.com/world/us/us-consumer-inflation-picks-up-august-2026-09-11/"
-      ]
+      "source_urls": ["https://www.bls.gov/news.release/cpi.nr0.htm", "https://www.reuters.com/world/us/us-consumer-inflation-picks-up-august-2026-09-11/"]
     },
     "US_PCE_CORE_PCE": {
       "status": "current_no_new_release",
       "latest_official": "July 2026: headline PCE +3.7% y/y; core PCE +3.3% y/y.",
       "next_release": "2026-09-30",
       "stale": false,
-      "source_urls": [
-        "https://www.bea.gov/data/personal-consumption-expenditures-price-index",
-        "https://www.bea.gov/data/personal-consumption-expenditures-price-index-excluding-food-and-energy"
-      ]
+      "source_urls": ["https://www.bea.gov/data/personal-consumption-expenditures-price-index", "https://www.bea.gov/data/personal-consumption-expenditures-price-index-excluding-food-and-energy"]
     },
     "US_NFP_UNEMPLOYMENT": {
       "status": "current_no_new_release",
@@ -68,18 +63,13 @@
       "services_pmi_aug": 55.4,
       "services_new_orders_aug": 60.9,
       "stale": false,
-      "source_urls": [
-        "https://www.ismworld.org/supply-management-news-and-reports/reports/ism-pmi-reports/pmi/august/",
-        "https://www.ismworld.org/supply-management-news-and-reports/reports/ism-pmi-reports/services/august/"
-      ]
+      "source_urls": ["https://www.ismworld.org/supply-management-news-and-reports/reports/ism-pmi-reports/pmi/august/", "https://www.ismworld.org/supply-management-news-and-reports/reports/ism-pmi-reports/services/august/"]
     },
     "FED": {
       "status": "no_new_policy_action",
       "next_scheduled_meeting": "2026-09-15/16",
       "policy_tone": "hawkish_risk_rising",
-      "market_context": "Reuters reported roughly 85-87% pricing for a 25 bp rate increase after the CPI release, versus about 67-72% before it.",
-      "stale": false,
-      "source_url": "https://www.reuters.com/world/us/us-consumer-inflation-picks-up-august-2026-09-11/"
+      "stale": false
     },
     "US_2Y_10Y_CURVE": {
       "status": "current_official_close",
@@ -91,179 +81,64 @@
       "confidence": 0.99,
       "source_url": "https://home.treasury.gov/resource-center/data-chart-center/interest-rates/TextView?type=daily_treasury_yield_curve&field_tdr_date_value_month=202609"
     },
-    "DXY": {
-      "status": "latest_reuters_observation",
-      "latest_observation": 99.1,
-      "observed_on": "2026-09-11",
-      "stale": false,
-      "note": "Reuters market observation; deterministic market-series ingestion remains authoritative.",
-      "source_url": "https://www.reuters.com/world/china/global-markets-corrected-2026-09-11/"
-    },
-    "VIX": {
-      "status": "latest_reuters_close_observation",
-      "close": 15.88,
-      "close_date": "2026-09-11",
-      "stale": false,
-      "source_url": "https://www.reuters.com/business/wall-st-futures-recover-oil-slides-ahead-inflation-test-2026-09-11/"
-    },
-    "USD_TWD": {
-      "status": "no_new_verified_close_incorporated",
-      "latest_repository_verified_close_date": "2026-09-10",
-      "latest_repository_verified_close": 31.548,
-      "stale": true,
-      "note": "No September 11 close was inserted because a sufficiently authoritative same-day value was not verified in this run."
-    },
-    "WTI_BRENT": {
-      "status": "current_reuters_settlement",
-      "settlement_date": "2026-09-11",
-      "brent_usd_per_bbl": 104.61,
-      "wti_usd_per_bbl": 100.05,
-      "weekly_context": "Both remained up more than 8% on the week despite Friday's pullback.",
-      "stale": false,
-      "source_url": "https://www.reuters.com/business/energy/oil-prices-set-end-week-over-100-first-time-nearly-4-months-2026-09-11/"
-    },
-    "COPPER": {
-      "status": "no_new_authoritative_value_incorporated",
-      "stale": true,
-      "note": "No same-day authoritative closing value was verified; no number was fabricated."
-    },
-    "TW_PMI_NMI": {
-      "status": "current_no_new_release",
-      "manufacturing_pmi_aug": 62.5,
-      "stale": false,
-      "source_urls": [
-        "https://www.cier.edu.tw/en/pmi-trend-en/",
-        "https://www.cier.edu.tw/en/eco_cat/nmi-en/"
-      ]
-    },
-    "TW_EXPORTS": {
-      "status": "current_official_release",
-      "period": "2026-08",
-      "exports_usd_billion": 82.4,
-      "exports_yoy_pct": 41.0,
-      "imports_usd_billion": 60.1,
-      "imports_yoy_pct": 44.3,
-      "trade_surplus_usd_billion": 22.3,
-      "stale": false,
-      "source_url": "https://www.mof.gov.tw/singlehtml/384fb3077bb349ea973e7fc6f13b6974?cntId=61f5437eabfe44bcbe442a02eaeea30a"
-    },
-    "TW_EXPORT_ORDERS": {
-      "status": "current_no_new_release",
-      "latest_period": "2026-07",
-      "next_release": "2026-09-22",
-      "stale": false
-    },
-    "TW_LEADING_BUSINESS_CYCLE": {
-      "status": "current_no_new_release",
-      "latest_period": "2026-07",
-      "monitoring_signal": "red",
-      "monitoring_score": 41,
-      "leading_index": 104.63,
-      "coincident_index": 106.8,
-      "next_release": "2026-09-29",
-      "stale": false,
-      "source_url": "https://www.ndc.gov.tw/en/nc_199_40405"
-    },
-    "TW_CENTRAL_BANK": {
-      "status": "no_new_policy_decision",
-      "next_scheduled_meeting": "2026-09-17",
-      "stale": false
-    },
-    "CHINA_PMI": {
-      "status": "current_no_new_release",
-      "manufacturing_pmi_aug": 49.8,
-      "manufacturing_new_orders_aug": 50.6,
-      "nonmanufacturing_business_activity_aug": 49.0,
-      "composite_pmi_aug": 49.5,
-      "stale": false,
-      "source_url": "https://www.stats.gov.cn/english/PressRelease/202609/t20260901_1965170.html"
-    }
+    "DXY": {"status": "latest_reuters_observation", "latest_observation": 99.1, "observed_on": "2026-09-11", "stale": false, "source_url": "https://www.reuters.com/world/china/global-markets-corrected-2026-09-11/"},
+    "VIX": {"status": "latest_reuters_close_observation", "close": 15.88, "close_date": "2026-09-11", "stale": false, "source_url": "https://www.reuters.com/business/wall-st-futures-recover-oil-slides-ahead-inflation-test-2026-09-11/"},
+    "USD_TWD": {"status": "no_new_verified_close_incorporated", "latest_repository_verified_close_date": "2026-09-10", "latest_repository_verified_close": 31.548, "stale": true},
+    "WTI_BRENT": {"status": "current_reuters_settlement", "settlement_date": "2026-09-11", "brent_usd_per_bbl": 104.61, "wti_usd_per_bbl": 100.05, "stale": false, "source_url": "https://www.reuters.com/business/energy/oil-prices-set-end-week-over-100-first-time-nearly-4-months-2026-09-11/"},
+    "COPPER": {"status": "no_new_authoritative_value_incorporated", "stale": true},
+    "TW_PMI_NMI": {"status": "current_no_new_release", "manufacturing_pmi_aug": 62.5, "stale": false, "source_urls": ["https://www.cier.edu.tw/en/pmi-trend-en/", "https://www.cier.edu.tw/en/eco_cat/nmi-en/"]},
+    "TW_EXPORTS": {"status": "current_official_release", "period": "2026-08", "exports_usd_billion": 82.4, "exports_yoy_pct": 41.0, "imports_usd_billion": 60.1, "imports_yoy_pct": 44.3, "trade_surplus_usd_billion": 22.3, "stale": false, "source_url": "https://www.mof.gov.tw/singlehtml/384fb3077bb349ea973e7fc6f13b6974?cntId=61f5437eabfe44bcbe442a02eaeea30a"},
+    "TW_EXPORT_ORDERS": {"status": "current_no_new_release", "latest_period": "2026-07", "next_release": "2026-09-22", "stale": false},
+    "TW_LEADING_BUSINESS_CYCLE": {"status": "current_no_new_release", "latest_period": "2026-07", "monitoring_signal": "red", "monitoring_score": 41, "leading_index": 104.63, "coincident_index": 106.8, "next_release": "2026-09-29", "stale": false, "source_url": "https://www.ndc.gov.tw/en/nc_199_40405"},
+    "TW_CENTRAL_BANK": {"status": "no_new_policy_decision", "next_scheduled_meeting": "2026-09-17", "stale": false},
+    "CHINA_PMI": {"status": "current_no_new_release", "manufacturing_pmi_aug": 49.8, "manufacturing_new_orders_aug": 50.6, "nonmanufacturing_business_activity_aug": 49.0, "composite_pmi_aug": 49.5, "stale": false, "source_url": "https://www.stats.gov.cn/english/PressRelease/202609/t20260901_1965170.html"}
   },
   "key_drivers": [
-    {
-      "name": "U.S. August CPI firms on energy and core services",
-      "observed": "Headline CPI rose 0.4% m/m and 3.4% y/y. Core CPI rose 0.3% m/m and 2.4% y/y; the core monthly reading exceeded the Reuters-polled 0.2% expectation. Gasoline rose 3.9% m/m and shelter 0.3%.",
-      "interpretation": "The report strengthens the case for a near-term Fed hike and raises the discount-rate risk for high-duration Taiwan technology equities even though core year-on-year inflation eased slightly.",
-      "source_urls": [
-        "https://www.bls.gov/news.release/cpi.nr0.htm",
-        "https://www.reuters.com/world/us/us-consumer-inflation-picks-up-august-2026-09-11/"
-      ]
-    },
-    {
-      "name": "Official U.S. yield curve reprices higher",
-      "observed": "Treasury's September 11 official par yields closed at 4.63% for 2Y and 4.96% for 10Y, a +33 bp 10Y-2Y slope.",
-      "interpretation": "Both front-end policy expectations and long-duration discount rates are restrictive for Taiwan growth-equity valuation multiples.",
-      "source_url": "https://home.treasury.gov/resource-center/data-chart-center/interest-rates/TextView?type=daily_treasury_yield_curve&field_tdr_date_value_month=202609"
-    },
-    {
-      "name": "Record Gulf-to-Asia tanker freight",
-      "observed": "Reuters reported Gulf of Oman-to-China VLCC freight near Worldscale 450, around US$11.50 per barrel, a record for the series introduced earlier in 2026.",
-      "interpretation": "The Middle East shock is increasingly embedded in delivered-energy and logistics costs, not merely spot crude, raising imported inflation and margin risk for Taiwan manufacturers.",
-      "source_url": "https://www.reuters.com/business/energy/oil-tanker-rates-hit-record-highs-following-iran-us-shipping-attacks-2026-09-11/"
-    }
+    {"name": "Saudi East-West Pipeline attack attribution becomes official", "observed": "Saudi Arabia officially said several drones launched from Iraq targeted the East-West Pipeline. The line had already been shut as a precaution after multiple attacks; injuries and damage were reported.", "interpretation": "The principal Saudi bypass around Hormuz is itself exposed to cross-border attack risk, increasing persistence risk for global energy logistics.", "source_urls": ["https://www.spa.gov.sa/en/N2674017", "https://www.spa.gov.sa/en/N2674116", "https://www.reuters.com/business/energy/saudis-shut-down-oil-pipeline-houthis-tighten-grip-red-sea-shipping-2026-09-12/"]},
+    {"name": "U.S. August CPI remains a hawkish-rate input", "observed": "Headline CPI rose 0.4% m/m and 3.4% y/y; core CPI rose 0.3% m/m and 2.4% y/y.", "interpretation": "Near-term Fed tightening risk remains elevated and long-duration equity discount rates remain restrictive.", "source_urls": ["https://www.bls.gov/news.release/cpi.nr0.htm"]},
+    {"name": "Oil/freight shock remains embedded", "observed": "Brent settled September 11 at US$104.61 and WTI at US$100.05; Gulf-to-Asia tanker freight had already reached record levels.", "interpretation": "Taiwan remains exposed through imported energy, freight, insurance, FX and global-rate channels.", "source_urls": ["https://www.reuters.com/business/energy/oil-prices-set-end-week-over-100-first-time-nearly-4-months-2026-09-11/", "https://www.reuters.com/business/energy/oil-tanker-rates-hit-record-highs-following-iran-us-shipping-attacks-2026-09-11/"]}
   ],
   "key_risks": [
     "A sustained U.S. 10Y yield near 5% can compress long-duration semiconductor and AI hardware valuation multiples.",
-    "Record tanker freight, war-risk premiums and constrained Hormuz/Bab el-Mandeb flows can keep delivered energy costs elevated even if spot crude retreats.",
-    "Core PCE for August may be revised higher by CPI/PPI components; Reuters-cited economists expected about +0.3% m/m and 3.4% y/y, but this is an estimate and is not written into the official PCE series.",
+    "Simultaneous security risk around Hormuz, Bab el-Mandeb and the Saudi East-West Pipeline can keep delivered energy and shipping costs elevated.",
+    "Saudi Arabia's decision not to retaliate immediately reduces near-term escalation risk, but attribution to drones launched from Iraq increases regional spillover risk.",
     "Taiwan's strong AI/HPC export cycle offsets but does not eliminate energy, FX and global-rate risks.",
-    "No new verified copper or September 11 USD/TWD close was inserted; those series remain stale in this semantic snapshot."
+    "Copper and the September 11 USD/TWD close remain stale in this semantic snapshot because no sufficiently authoritative new value was inserted."
   ],
   "policy_tone": {
-    "fed": "Hawkish risk increased after August CPI. No FOMC decision has occurred yet; the next meeting is September 15-16.",
-    "taiwan_central_bank": "No new decision. Imported-energy inflation, U.S. yields and FX pressures are more important ahead of the September 17 meeting, while exports remain strong.",
-    "global": "Energy and freight shocks are keeping global monetary-policy risks hawkish while simultaneously increasing downside risk to real demand."
+    "fed": "Hawkish risk remains elevated after August CPI; no new FOMC action since the prior snapshot.",
+    "taiwan_central_bank": "No new decision. Imported-energy inflation, U.S. yields and FX pressures remain relevant ahead of the September 17 meeting.",
+    "global": "Energy-security risk remains inflationary while also raising downside risk to global real demand."
   },
   "geopolitical_global_risk": {
     "level": "VERY_HIGH",
-    "dominant_event": "2026-09-11-gulf-vlcc-record-freight",
+    "dominant_event": "2026-09-12-saudi-east-west-pipeline-iraq-origin-update",
     "events": [
       {
-        "event_id": "2026-09-11-gulf-vlcc-record-freight",
-        "event_type": "shipping_freight_energy_shock",
-        "regions": ["Strait of Hormuz", "Gulf of Oman", "Middle East", "Asia"],
-        "severity": 0.89,
-        "confidence": 0.95,
-        "escalation_score": 0.90,
-        "persistence_score": 0.88,
-        "observed_evidence": "Gulf of Oman-to-China VLCC rates reached around Worldscale 450, roughly US$11.50/bbl, according to Reuters citing Baltic Exchange data.",
-        "semantic_interpretation": "Physical shipping scarcity and war-risk pricing are broadening the inflation shock beyond crude oil itself.",
-        "transmission_channels": ["shipping", "freight", "marine_insurance", "delivered_energy_cost", "inflation", "fx", "rates", "global_trade"],
-        "affected_factors": ["Brent", "WTI", "shipping_costs", "inflation", "US_2Y", "US_10Y", "USD_TWD", "global_growth"],
-        "affected_taiwan_sectors": ["貨櫃航運", "散裝航運", "航空運輸", "塑膠", "化工", "鋼鐵", "機械", "電子製造", "半導體"],
-        "source_urls": [
-          "https://www.reuters.com/business/energy/oil-tanker-rates-hit-record-highs-following-iran-us-shipping-attacks-2026-09-11/",
-          "https://www.reuters.com/world/middle-east/yemens-houthis-reach-strategic-island-mouth-vital-shipping-lane-2026-09-11/"
-        ],
-        "first_seen_at": "2026-09-12T08:16:50+08:00",
-        "updated_at": "2026-09-12T08:16:50+08:00"
-      },
-      {
-        "event_id": "2026-09-11-bab-el-mandeb-perim-island-escalation",
-        "event_type": "shipping_chokepoint_military_escalation",
-        "regions": ["Yemen", "Perim Island", "Dhubab", "Bab el-Mandeb", "Red Sea"],
-        "severity": 0.90,
-        "confidence": 0.94,
-        "escalation_score": 0.92,
-        "persistence_score": 0.90,
-        "observed_evidence": "Reuters reported Houthi advances to Perim Island and Dhubab near Bab el-Mandeb and a temporary shutdown of Saudi Arabia's East-West oil pipeline after a drone attack.",
-        "semantic_interpretation": "A second major shipping chokepoint is under greater threat while Hormuz flows remain constrained.",
-        "transmission_channels": ["shipping", "freight", "oil_supply", "marine_insurance", "global_trade", "risk_sentiment"],
-        "affected_factors": ["Brent", "WTI", "shipping_costs", "inflation", "global_growth"],
-        "affected_taiwan_sectors": ["貨櫃航運", "散裝航運", "航空運輸", "石化", "機械", "電子出口"],
-        "source_urls": ["https://www.reuters.com/world/middle-east/yemens-houthis-reach-strategic-island-mouth-vital-shipping-lane-2026-09-11/"],
-        "first_seen_at": "2026-09-11T20:09:39+08:00",
-        "updated_at": "2026-09-12T08:16:50+08:00"
+        "event_id": "2026-09-12-saudi-east-west-pipeline-iraq-origin-update",
+        "event_type": "energy_infrastructure_attack_escalation",
+        "regions": ["Saudi Arabia", "Iraq", "Middle East", "Red Sea", "Strait of Hormuz"],
+        "severity": 0.95,
+        "confidence": 0.98,
+        "escalation_score": 0.94,
+        "persistence_score": 0.91,
+        "observed_evidence": "Saudi Arabia officially confirmed that several drones launched from Iraq targeted the East-West Pipeline, after the Ministry of Energy had shut the line as a precaution following multiple attacks. Saudi Arabia said it would not retaliate at this stage at Iraq's request, while reserving the right to protect its infrastructure.",
+        "semantic_interpretation": "The Saudi bypass route around Hormuz is exposed to direct cross-border attack risk. Immediate retaliation risk is lower than it otherwise might be, but medium-term energy-logistics and regional spillover risks are higher.",
+        "transmission_channels": ["oil_supply", "energy_infrastructure", "shipping", "marine_insurance", "freight", "inflation", "rates", "fx", "global_trade", "risk_sentiment"],
+        "affected_factors": ["Brent", "WTI", "shipping_costs", "energy_inflation", "US_2Y", "US_10Y", "USD_TWD", "global_growth"],
+        "affected_taiwan_sectors": ["航空運輸", "貨櫃航運", "散裝航運", "塑膠", "化工", "鋼鐵", "機械", "電子製造", "半導體"],
+        "source_urls": ["https://www.spa.gov.sa/en/N2674017", "https://www.spa.gov.sa/en/N2674116", "https://www.aramco.com/en/news-media/news/2026/aramco-announces-first-quarter-2026-results", "https://www.reuters.com/business/energy/saudis-shut-down-oil-pipeline-houthis-tighten-grip-red-sea-shipping-2026-09-12/", "https://www.reuters.com/business/energy/trump-says-iran-probably-responsible-attack-saudi-pipeline-2026-09-12/"],
+        "first_seen_at": "2026-09-12T20:16:48+08:00",
+        "updated_at": "2026-09-12T20:16:48+08:00"
       }
     ]
   },
   "confidence": 0.96,
   "source_urls": [
-    "https://www.bls.gov/news.release/cpi.nr0.htm",
-    "https://home.treasury.gov/resource-center/data-chart-center/interest-rates/TextView?type=daily_treasury_yield_curve&field_tdr_date_value_month=202609",
-    "https://www.reuters.com/world/us/us-consumer-inflation-picks-up-august-2026-09-11/",
-    "https://www.reuters.com/business/energy/oil-prices-set-end-week-over-100-first-time-nearly-4-months-2026-09-11/",
-    "https://www.reuters.com/business/energy/oil-tanker-rates-hit-record-highs-following-iran-us-shipping-attacks-2026-09-11/",
-    "https://www.reuters.com/world/middle-east/yemens-houthis-reach-strategic-island-mouth-vital-shipping-lane-2026-09-11/"
+    "https://www.spa.gov.sa/en/N2674017",
+    "https://www.spa.gov.sa/en/N2674116",
+    "https://www.aramco.com/en/news-media/news/2026/aramco-announces-first-quarter-2026-results",
+    "https://www.reuters.com/business/energy/saudis-shut-down-oil-pipeline-houthis-tighten-grip-red-sea-shipping-2026-09-12/",
+    "https://www.reuters.com/business/energy/trump-says-iran-probably-responsible-attack-saudi-pipeline-2026-09-12/"
   ]
 }
