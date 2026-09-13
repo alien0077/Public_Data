@@ -147,8 +147,11 @@ export const api = {
 
         if (toFallback.length > 0) {
             try {
-                const lTwIdx = indexData.latest_daily_tw_indices || '2026-05-20', lUs = indexData.latest_daily_us || '2026-05-20', lTw = indexData.latest_daily_tw || '2026-05-21';
-                const [idxD, usD, twD] = await Promise.all([this.fetchLocalJson(`daily/tw_indices/${lTwIdx}.json`).catch(() => ({})), this.fetchLocalJson(`daily/us/${lUs}.json`).catch(() => ({})), this.fetchLocalJson(`daily/tw/${lTw}.json`).catch(() => ({}))]);
+                const lTwIdx = indexData.latest_daily_tw_indices || null, lUs = indexData.latest_daily_us || null, lTw = indexData.latest_daily_tw || null;
+                const fetchByDate = (prefix, date) => date
+                    ? this.fetchLocalJson(`${prefix}/${date}.json`).catch(() => ({}))
+                    : Promise.resolve({});
+                const [idxD, usD, twD] = await Promise.all([fetchByDate('daily/tw_indices', lTwIdx), fetchByDate('daily/us', lUs), fetchByDate('daily/tw', lTw)]);
                 const jMap = new Map();
                 const reg = (arr, d) => (arr || []).forEach(s => { const i = { ...s, _d: d }; if (s.id) jMap.set(String(s.id).toUpperCase(), i); if (s.symbol) jMap.set(String(s.symbol).toUpperCase(), i); });
                 reg(idxD.stocks || idxD.data, lTwIdx); reg(usD.stocks, lUs); reg(twD.stocks, lTw);
@@ -227,7 +230,7 @@ export const api = {
     async fetchFinancials(symbol, type = 'quarterly') { try { return await this.fetchLocalJson(`${type}/${symbol.split('.')[0]}.json`); } catch (e) { return null; } },
     async fetchFairValue(symbol) {
         try {
-            const data = await this.fetchLocalJson('valuation/fair_value_v2_1.json');
+            const data = await this.fetchFairValueSharded();
             return data?.stocks?.[symbol.split('.')[0]] || null;
         } catch (e) {
             try {
@@ -235,6 +238,20 @@ export const api = {
                 return data?.stocks?.[symbol.split('.')[0]] || null;
             } catch (fallbackError) { return null; }
         }
+    },
+    async fetchFairValueSharded() {
+        if (!this._fairValueShardedCache) {
+            const manifest = await this.fetchLocalJson('valuation/fair_value_v2_1_sharded/manifest.json');
+            const shards = await Promise.all((manifest.shards || []).map(shard =>
+                this.fetchLocalJson(`valuation/fair_value_v2_1_sharded/${shard.path}`)
+            ));
+            const stocks = Object.assign({}, ...shards.map(shard => shard.stocks || {}));
+            if (Object.keys(stocks).length !== Number(manifest.records)) {
+                throw new Error(`valuation shard count mismatch: ${Object.keys(stocks).length}/${manifest.records}`);
+            }
+            this._fairValueShardedCache = { ...manifest, stocks };
+        }
+        return this._fairValueShardedCache;
     },
     async fetchFairValueMap() {
         if (!this._fairValueMap) {
@@ -254,6 +271,12 @@ export const api = {
                     confidence: row.valuation_confidence,
                     source_dates: row.source_dates
                     ,valuation_group: row.valuation_group
+                    ,valuation_group_id: row.valuation_group_id
+                    ,valuation_group_label: row.valuation_group_label
+                    ,valuation_group_version: row.valuation_group_version
+                    ,taxonomy_version: row.taxonomy_version
+                    ,classification: row.classification
+                    ,peer_selection: row.peer_selection
                     ,core: row.valuation_core
                     ,future: row.valuation_future
                     ,market_implied: row.valuation_market_implied
@@ -262,7 +285,7 @@ export const api = {
                 }]));
             } catch (e) {
                 try {
-                    const data = await this.fetchLocalJson('valuation/fair_value.json');
+                    const data = await this.fetchFairValueSharded();
                     this._fairValueMap = data?.stocks || {};
                 } catch (fallbackError) { this._fairValueMap = {}; }
             }
@@ -320,6 +343,7 @@ export const api = {
         return meta.stocks?.find(item => item.symbol === s) || null;
     },
     async fetchSectorPE() { try { return await this.fetchLocalJson('quant/sector_pe.json'); } catch (err) { return null; } },
+    async fetchIndustryRotation() { try { return await this.fetchLocalJson('quant/industry_rotation.json'); } catch (err) { return null; } },
     async fetchLiarData() { try { return await this.fetchLocalJson(`daily/liar.json`); } catch (err) { return null; } },
 
     async fetchQuantMetrics() {
