@@ -78,6 +78,23 @@ export const api = {
         } catch (e) { console.warn(`Local fetch failed [${path}]: ${e.message}`); throw e; }
     },
 
+    async fetchLocalGzipJson(path) {
+        const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.protocol === 'file:';
+        let root = '../data/';
+        if (window.location.pathname.includes('/temp_repo/web/')) root = '../data/';
+        else if (window.location.pathname.includes('/web/')) root = '../temp_repo/data/';
+        const url = isLocal ? `${root}${path}` : `https://alien0077.github.io/Public_Data/data/${path}`;
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 8000);
+        try {
+            const res = await fetch(url, { signal: controller.signal, cache: 'no-cache' });
+            if (!res.ok) throw new Error(`HTTP ${res.status}`);
+            if (!('DecompressionStream' in window)) throw new Error('gzip decompression is unavailable');
+            const stream = res.body.pipeThrough(new DecompressionStream('gzip'));
+            return JSON.parse(await new Response(stream).text());
+        } finally { clearTimeout(timeoutId); }
+    },
+
     async fetchWithAuth(endpoint, options = {}) {
         const secret = this.getSecret();
         if (!secret) throw new Error('Unauthorized');
@@ -243,7 +260,9 @@ export const api = {
         if (!this._fairValueShardedCache) {
             const manifest = await this.fetchLocalJson('valuation/fair_value_v2_1_sharded/manifest.json');
             const shards = await Promise.all((manifest.shards || []).map(shard =>
-                this.fetchLocalJson(`valuation/fair_value_v2_1_sharded/${shard.path}`)
+                manifest.compression === 'gzip'
+                    ? this.fetchLocalGzipJson(`valuation/fair_value_v2_1_sharded/${shard.path}`)
+                    : this.fetchLocalJson(`valuation/fair_value_v2_1_sharded/${shard.path}`)
             ));
             const stocks = Object.assign({}, ...shards.map(shard => shard.stocks || {}));
             if (Object.keys(stocks).length !== Number(manifest.records)) {
