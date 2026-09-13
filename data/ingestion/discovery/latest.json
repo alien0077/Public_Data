@@ -1,36 +1,35 @@
 {
   "schema_version": "1.0",
-  "generated_at": "2026-09-13T21:04:35+08:00",
-  "window_start": "2026-09-12T07:56:01+08:00",
-  "window_end": "2026-09-13T21:04:35+08:00",
-  "event_file": "data/ingestion/discovery/events/2026/09/2026-09-13T130435Z.json",
+  "generated_at": "2026-09-12T07:56:01+08:00",
+  "window_start": "2026-09-11T20:05:07+08:00",
+  "window_end": "2026-09-12T07:56:01+08:00",
+  "event_file": "data/ingestion/discovery/events/2026/09/2026-09-11T235601Z.json",
   "production_verified": false,
   "new_event_count": 1,
   "counts_by_source_type": {
-    "reuters": 1
+    "analyst": 1
   },
   "counts_by_event_type": {
-    "energy_supply_shock": 1
+    "analyst_consensus_revision": 1
   },
-  "high_priority_stock_ids": ["2610", "2618", "2646"],
+  "high_priority_stock_ids": ["6805"],
   "fetch_queue": {
     "pending": 1,
     "verified": 0,
-    "rule": "production_verified remains false until deterministic evidence fetch saves required raw evidence/canonical URLs/published timestamps/SHA-256 and validates company-specific transmission inputs"
+    "rule": "production_verified remains false until deterministic evidence fetch saves raw bytes, canonical URL, published_at and SHA-256"
   },
   "notable_candidates": [
     {
-      "event_id": "tw_airlines_20260913_hormuz_saudi_pipeline_fuel_cost_shock",
-      "stock_ids": ["2610", "2618", "2646"],
-      "summary": "Fresh Hormuz vessel attack plus Saudi East-West pipeline disruption and Red Sea chokepoint risk increase the probability of sustained jet-fuel, insurance and routing cost pressure for Taiwan airlines; no deterministic EPS/margin change is asserted."
+      "event_id": "6805_20260911_factset_2026_eps_consensus_revision_6242",
+      "stock_id": "6805",
+      "summary": "FactSet 10-analyst consensus raises 2026 EPS median from NT$61.85 to NT$62.42; public source reports NT$2,650 target price."
     }
   ],
   "notes": [
-    "Discovery/semantic catalyst only; no official numeric series, normalized fundamentals, catalyst probabilities or Fair Value files were modified.",
-    "Fair Value V2.1 remains the sole valuation baseline.",
-    "Only material events published or materially changed after the previous generated_at cutoff were eligible for this run.",
-    "Observed evidence is separated from semantic interpretation; semantic scores do not directly modify production inputs.",
-    "Weekend articles that only repeated previously known company facts, unverified anonymous analyst claims, and deterministic monthly-revenue summaries were excluded.",
-    "No paywall/login bypass or copyrighted full broker-report text was accessed or stored."
+    "Discovery only; no Fair Value, analyst consensus production file, catalyst probability, normalized fundamental or PIT production file was modified.",
+    "Only material events published after the previous generated_at cutoff were eligible for this run.",
+    "Market-only articles and previously published company announcements were excluded.",
+    "Search snippets and secondary pages remain discovery evidence only; production verification requires deterministic raw-byte materialization and SHA-256.",
+    "No paywall/login bypass or copyrighted broker-report full text was accessed or stored."
   ]
 }
