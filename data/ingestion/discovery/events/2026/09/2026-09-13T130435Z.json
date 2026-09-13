@@ -1,0 +1,80 @@
+{
+  "schema_version": "1.0",
+  "generated_at": "2026-09-13T21:04:35+08:00",
+  "window_start": "2026-09-12T07:56:01+08:00",
+  "window_end": "2026-09-13T21:04:35+08:00",
+  "mode": "incremental_discovery",
+  "production_verified": false,
+  "events": [
+    {
+      "event_id": "tw_airlines_20260913_hormuz_saudi_pipeline_fuel_cost_shock",
+      "stock_ids": ["2610", "2618", "2646"],
+      "company_names": ["China Airlines", "EVA Airways", "STARLUX Airlines"],
+      "event_type": "energy_supply_shock",
+      "source_type": "reuters",
+      "title": "Hormuz vessel attack and Saudi East-West pipeline disruption intensify fuel-cost risk for Taiwan airlines",
+      "canonical_url": "https://www.reuters.com/business/energy/new-report-attack-strait-hormuz-shipping-fans-fears-threats-oil-supplies-2026-09-13/",
+      "publisher": "Reuters",
+      "published_at": "2026-09-13",
+      "discovered_at": "2026-09-13T21:04:35+08:00",
+      "observed_evidence": [
+        "Reuters reported on 2026-09-13 that a projectile struck a vessel in the Strait of Hormuz, causing a fire and crew evacuation.",
+        "Reuters also reported that Saudi Arabia's East-West oil pipeline had been temporarily shut after a drone attack; the route had become a key alternative while Hormuz traffic was heavily disrupted.",
+        "A separate Reuters report published 2026-09-12 said Houthi forces had tightened control around the Bab el-Mandeb/Red Sea chokepoint, adding a second major maritime-energy transit risk.",
+        "Taiwan's aviation fuel surcharge mechanism can offset only part of fuel-cost changes; Taiwan reporting earlier in 2026 documented that China Airlines, EVA Airways and STARLUX continued absorbing material portions of incremental fuel costs after surcharges."
+      ],
+      "semantic_interpretation": "This is a material negative operating-cost catalyst for Taiwan passenger airlines because simultaneous pressure on Hormuz, Saudi bypass infrastructure and Red Sea transit raises the probability of sustained crude/jet-fuel and insurance/logistics cost pressure. The event does not establish a deterministic EPS or margin change; downstream production systems must validate actual fuel prices, hedging, surcharge recovery and company-specific exposure before modifying any valuation input.",
+      "catalyst_direction": "negative",
+      "severity": 0.9,
+      "persistence_score": 0.85,
+      "confidence": 0.93,
+      "priority": "high",
+      "transmission_channels": [
+        "crude_oil_price",
+        "jet_fuel_price",
+        "fuel_hedging",
+        "passenger_fuel_surcharge",
+        "war_risk_insurance",
+        "route_disruption"
+      ],
+      "affected_inputs": [
+        "fuel_cost",
+        "operating_margin",
+        "ticket_surcharge_recovery",
+        "cash_flow"
+      ],
+      "affected_taiwan_sectors": [
+        "airlines",
+        "transportation"
+      ],
+      "source_urls": [
+        "https://www.reuters.com/business/energy/new-report-attack-strait-hormuz-shipping-fans-fears-threats-oil-supplies-2026-09-13/",
+        "https://www.reuters.com/business/energy/saudis-shut-down-oil-pipeline-houthis-tighten-grip-red-sea-shipping-2026-09-12/",
+        "https://www.taiwannews.com.tw/en/news/6431548"
+      ],
+      "content_hash": null,
+      "requires_raw_fetch": true,
+      "raw_fetch_reason": "Persist and hash the cited Reuters/Taiwan supporting pages where legally accessible, record canonical URLs and publication timestamps, and validate current company-specific fuel surcharge/hedging exposure before any production promotion.",
+      "production_verified": false
+    }
+  ],
+  "counts_by_source_type": {
+    "reuters": 1
+  },
+  "counts_by_event_type": {
+    "energy_supply_shock": 1
+  },
+  "high_priority_stock_ids": ["2610", "2618", "2646"],
+  "fetch_queue": {
+    "pending": 1,
+    "verified": 0,
+    "rule": "production_verified remains false until deterministic evidence fetch saves required raw evidence/canonical URLs/published timestamps/SHA-256 and validates company-specific transmission inputs"
+  },
+  "notes": [
+    "Discovery/semantic catalyst only; no official numeric series, normalized fundamentals, catalyst probabilities or Fair Value files were modified.",
+    "Fair Value V2.1 remains the sole valuation baseline.",
+    "Observed evidence is separated from semantic interpretation; severity and persistence scores are research metadata only.",
+    "Weekend articles that only repeated previously known company facts, unverified anonymous analyst claims, and deterministic monthly-revenue summaries were excluded.",
+    "No paywall/login bypass or copyrighted full broker report was accessed or stored."
+  ]
+}
