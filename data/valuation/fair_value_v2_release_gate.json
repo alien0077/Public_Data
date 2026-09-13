@@ -1,0 +1,153 @@
+{
+  "status": "passed",
+  "policy": "production_core",
+  "errors": [],
+  "warnings": [
+    "finmind_detail supplemental coverage: 0.172 (non-blocking; used only for absent official/MOPS fields)",
+    "catalyst probability calibration is not empirical until terminal outcomes are available",
+    "news full-text materialization remains incomplete: 189 rows"
+  ],
+  "stocks": 1943,
+  "v21_public_consumer_stocks": 1943,
+  "official_fundamentals_coverage": 0.975811,
+  "detail_coverage": {
+    "mops_detail": 1.0,
+    "finmind_detail": 0.171899
+  },
+  "detail_observations": {
+    "mops_detail": {
+      "fact_count": 48415,
+      "companies_with_any_fact": 1939,
+      "company_denominator": 1939,
+      "company_coverage": 1.0,
+      "excluded_symbols": [
+        "9103",
+        "9105",
+        "9110",
+        "9136"
+      ],
+      "field_fact_counts": {
+        "accounts_payable": 45833,
+        "accounts_receivable": 45761,
+        "amortization": 44545,
+        "assets": 48413,
+        "availability_basis": 48415,
+        "basis": 2,
+        "bulk_report": 48413,
+        "capex": 47513,
+        "cash": 48415,
+        "cfo": 48415,
+        "depreciation": 48401,
+        "effective_available_at": 48415,
+        "eps": 48415,
+        "equity_parent": 42146,
+        "fetched_at": 48415,
+        "id": 48415,
+        "inventory": 44062,
+        "lease_liabilities": 45515,
+        "liabilities": 48412,
+        "long_term_debt": 30279,
+        "market": 48415,
+        "net_income": 48415,
+        "operating_income": 46787,
+        "parser_version": 48415,
+        "period": 48415,
+        "revenue": 46778,
+        "short_term_debt": 35568,
+        "source": 48415
+      }
+    },
+    "finmind_detail": {
+      "fact_count": 5654,
+      "companies_with_any_fact": 334,
+      "company_denominator": 1943,
+      "company_coverage": 0.171899,
+      "excluded_symbols": [],
+      "field_fact_counts": {
+        "amortization": 5046,
+        "availability_basis": 5654,
+        "basis": 5651,
+        "bonds": 1403,
+        "capex": 5585,
+        "cash": 5649,
+        "cfo": 5636,
+        "depreciation": 5636,
+        "effective_available_at": 5654,
+        "eps": 5634,
+        "equity_parent": 5180,
+        "fetched_at": 5654,
+        "id": 5654,
+        "liabilities": 5649,
+        "long_term_debt": 4332,
+        "market": 5654,
+        "net_income": 5634,
+        "operating_income": 5584,
+        "parser_version": 5654,
+        "period": 5654,
+        "revenue": 5634,
+        "source": 5654,
+        "source_versions": 5654
+      }
+    }
+  },
+  "pit_history": {
+    "status": "ok",
+    "snapshot_count": 11,
+    "stock_rows": 21373,
+    "error_count": 0,
+    "errors": []
+  },
+  "backtest_observations": 38015,
+  "news_ledger": {
+    "status": "passed",
+    "errors": [],
+    "warnings": [],
+    "rows": 56068,
+    "text_status_counts": {
+      "deferred": 189,
+      "no_extractable_text": 51461,
+      "text_ok": 4418
+    },
+    "article_source_types": [
+      "event_seed_news",
+      "news"
+    ],
+    "article_rows": 19143,
+    "article_text_status_counts": {
+      "deferred": 189,
+      "no_extractable_text": 14536,
+      "text_ok": 4418
+    },
+    "article_text_ok": 4418,
+    "article_text_coverage": 0.230789,
+    "article_aggregator_only_excluded": 14428,
+    "article_eligible_rows": 4715,
+    "article_eligible_text_ok": 4418,
+    "article_eligible_text_coverage": 0.93701,
+    "article_coverage_denominators": {
+      "all_news": 19143,
+      "eligible_news": 4715
+    },
+    "official_structured_rows": 36925
+  },
+  "analyst": {
+    "documents": 3,
+    "events": 3,
+    "consensus": 3
+  },
+  "completion_gates": {
+    "artifact_build_gate": "PASS",
+    "schema_gate": "PASS",
+    "official_fundamental_gate": "PASS",
+    "analyst_reference_gate": "PASS",
+    "analyst_blend_gate": "DISABLED",
+    "catalyst_calibration_gate": "FAIL",
+    "macro_pit_gate": "FAIL",
+    "public_release_gate": "CONDITIONAL_PASS",
+    "v2_1_completion_gate": "FAIL"
+  },
+  "artifacts": {
+    "preview_sha256": "358d8c4e17aef6f0680ea1c1fe82ddeed194d3ede6760161edbd3f0bd7f97eee",
+    "v21_sha256": "d997b31e5a1c7d58426c363d2501d45fe86f0055a43b60168b90e827812c0f4b"
+  }
+}

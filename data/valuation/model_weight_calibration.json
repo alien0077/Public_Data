@@ -1,0 +1,401 @@
+{
+  "schema_version": "1.0",
+  "status": "ok",
+  "method": "walk_forward_inverse_mape",
+  "price_fit_method": "walk_forward_inverse_mape",
+  "min_samples": 30,
+  "max_single_model_weight": 0.25,
+  "observations": 315843,
+  "models": {
+    "dividend_multistage": {
+      "observations": 32262,
+      "median_mape": 0.513958,
+      "direction_accuracy": 0.595375,
+      "eligible_for_weight": true
+    },
+    "epv": {
+      "observations": 37696,
+      "median_mape": 0.472731,
+      "direction_accuracy": 0.56372,
+      "eligible_for_weight": true
+    },
+    "forward_pe": {
+      "observations": 36817,
+      "median_mape": 0.45781,
+      "direction_accuracy": 0.520765,
+      "eligible_for_weight": true
+    },
+    "growth_adjusted_peer": {
+      "observations": 36817,
+      "median_mape": 0.45781,
+      "direction_accuracy": 0.520765,
+      "eligible_for_weight": true
+    },
+    "multi_stage_ddm": {
+      "observations": 32262,
+      "median_mape": 0.513958,
+      "direction_accuracy": 0.595375,
+      "eligible_for_weight": true
+    },
+    "peer_pb": {
+      "observations": 36890,
+      "median_mape": 0.422907,
+      "direction_accuracy": 0.513364,
+      "eligible_for_weight": true
+    },
+    "residual_income": {
+      "observations": 34969,
+      "median_mape": 0.670898,
+      "direction_accuracy": 0.559152,
+      "eligible_for_weight": true
+    },
+    "roe_adjusted_pb": {
+      "observations": 35868,
+      "median_mape": 0.452055,
+      "direction_accuracy": 0.513996,
+      "eligible_for_weight": true
+    },
+    "stable_ddm": {
+      "observations": 32262,
+      "median_mape": 0.513644,
+      "direction_accuracy": 0.593051,
+      "eligible_for_weight": true
+    }
+  },
+  "weights": {
+    "dividend_multistage": 0.136448,
+    "epv": 0.148347,
+    "forward_pe": 0.153184,
+    "peer_pb": 0.165826,
+    "residual_income": 0.10453,
+    "roe_adjusted_pb": 0.155134,
+    "stable_ddm": 0.136532,
+    "growth_adjusted_peer": 0.0,
+    "multi_stage_ddm": 0.0
+  },
+  "price_fit_weights": {
+    "dividend_multistage": 0.136448,
+    "epv": 0.148347,
+    "forward_pe": 0.153184,
+    "peer_pb": 0.165826,
+    "residual_income": 0.10453,
+    "roe_adjusted_pb": 0.155134,
+    "stable_ddm": 0.136532,
+    "growth_adjusted_peer": 0.0,
+    "multi_stage_ddm": 0.0
+  },
+  "predictive_method": "walk_forward_multi_objective_shadow",
+  "predictive_weights": {
+    "dividend_multistage": 0.25,
+    "epv": 0.0,
+    "forward_pe": 0.050875,
+    "peer_pb": 0.096566,
+    "residual_income": 0.25,
+    "roe_adjusted_pb": 0.10256,
+    "stable_ddm": 0.25,
+    "growth_adjusted_peer": 0.0,
+    "multi_stage_ddm": 0.0
+  },
+  "predictive_models": {
+    "dividend_multistage": {
+      "observations": 32262,
+      "snapshot_count": 9,
+      "predictive_ic": 0.07436,
+      "direction_accuracy": 0.595375,
+      "positive_ic_snapshot_fraction": 0.777778,
+      "median_mape": 0.513958,
+      "predictive_score": 0.00728697,
+      "eligible_for_predictive_weight": true,
+      "predictive_weight": 0.25
+    },
+    "epv": {
+      "observations": 37696,
+      "snapshot_count": 9,
+      "predictive_ic": -0.00832,
+      "direction_accuracy": 0.56372,
+      "positive_ic_snapshot_fraction": 0.444444,
+      "median_mape": 0.472731,
+      "predictive_score": 0.0,
+      "eligible_for_predictive_weight": false,
+      "predictive_weight": 0.0
+    },
+    "forward_pe": {
+      "observations": 36817,
+      "snapshot_count": 9,
+      "predictive_ic": 0.023955,
+      "direction_accuracy": 0.520765,
+      "positive_ic_snapshot_fraction": 0.555556,
+      "median_mape": 0.45781,
+      "predictive_score": 0.00037913,
+      "eligible_for_predictive_weight": true,
+      "predictive_weight": 0.050875
+    },
+    "growth_adjusted_peer": {
+      "observations": 36817,
+      "snapshot_count": 9,
+      "predictive_ic": 0.023955,
+      "direction_accuracy": 0.520765,
+      "positive_ic_snapshot_fraction": 0.555556,
+      "median_mape": 0.45781,
+      "predictive_score": 0.00037913,
+      "eligible_for_predictive_weight": true,
+      "predictive_weight": 0.0
+    },
+    "multi_stage_ddm": {
+      "observations": 32262,
+      "snapshot_count": 9,
+      "predictive_ic": 0.07436,
+      "direction_accuracy": 0.595375,
+      "positive_ic_snapshot_fraction": 0.777778,
+      "median_mape": 0.513958,
+      "predictive_score": 0.00728697,
+      "eligible_for_predictive_weight": true,
+      "predictive_weight": 0.0
+    },
+    "peer_pb": {
+      "observations": 36890,
+      "snapshot_count": 9,
+      "predictive_ic": 0.049258,
+      "direction_accuracy": 0.513364,
+      "positive_ic_snapshot_fraction": 0.777778,
+      "median_mape": 0.422907,
+      "predictive_score": 0.00071966,
+      "eligible_for_predictive_weight": true,
+      "predictive_weight": 0.096566
+    },
+    "residual_income": {
+      "observations": 34969,
+      "snapshot_count": 9,
+      "predictive_ic": 0.084501,
+      "direction_accuracy": 0.559152,
+      "positive_ic_snapshot_fraction": 1.0,
+      "median_mape": 0.670898,
+      "predictive_score": 0.00598292,
+      "eligible_for_predictive_weight": true,
+      "predictive_weight": 0.25
+    },
+    "roe_adjusted_pb": {
+      "observations": 35868,
+      "snapshot_count": 9,
+      "predictive_ic": 0.044605,
+      "direction_accuracy": 0.513996,
+      "positive_ic_snapshot_fraction": 0.888889,
+      "median_mape": 0.452055,
+      "predictive_score": 0.00076432,
+      "eligible_for_predictive_weight": true,
+      "predictive_weight": 0.10256
+    },
+    "stable_ddm": {
+      "observations": 32262,
+      "snapshot_count": 9,
+      "predictive_ic": 0.028867,
+      "direction_accuracy": 0.593051,
+      "positive_ic_snapshot_fraction": 0.666667,
+      "median_mape": 0.513644,
+      "predictive_score": 0.00236608,
+      "eligible_for_predictive_weight": true,
+      "predictive_weight": 0.25
+    }
+  },
+  "duplicate_model_groups": [
+    [
+      "forward_pe",
+      "growth_adjusted_peer"
+    ],
+    [
+      "dividend_multistage",
+      "multi_stage_ddm"
+    ]
+  ],
+  "weight_aliases": {
+    "growth_adjusted_peer": "forward_pe",
+    "multi_stage_ddm": "dividend_multistage"
+  },
+  "predictive_weight_aliases": {
+    "growth_adjusted_peer": "forward_pe",
+    "multi_stage_ddm": "dividend_multistage"
+  },
+  "valuation_groups": {
+    "AI_SERVER_ODM": {
+      "observations": 1000,
+      "median_mape": 0.416555,
+      "direction_accuracy": 0.503,
+      "eligible_for_weight": true
+    },
+    "AUTO_OTHER": {
+      "observations": 6255,
+      "median_mape": 0.445155,
+      "direction_accuracy": 0.603837,
+      "eligible_for_weight": true
+    },
+    "AUTO_PARTS": {
+      "observations": 315,
+      "median_mape": 0.379265,
+      "direction_accuracy": 0.596825,
+      "eligible_for_weight": true
+    },
+    "BANK": {
+      "observations": 1509,
+      "median_mape": 0.260104,
+      "direction_accuracy": 0.552021,
+      "eligible_for_weight": true
+    },
+    "BASIC_CHEMICALS": {
+      "observations": 487,
+      "median_mape": 0.584707,
+      "direction_accuracy": 0.531828,
+      "eligible_for_weight": true
+    },
+    "CHEMICALS_OTHER": {
+      "observations": 7094,
+      "median_mape": 0.460623,
+      "direction_accuracy": 0.538483,
+      "eligible_for_weight": true
+    },
+    "COMPUTER_PERIPHERALS_OTHER": {
+      "observations": 17914,
+      "median_mape": 0.484437,
+      "direction_accuracy": 0.551301,
+      "eligible_for_weight": true
+    },
+    "ELECTRONICS_COMPONENTS_OTHER": {
+      "observations": 35287,
+      "median_mape": 0.485568,
+      "direction_accuracy": 0.503472,
+      "eligible_for_weight": true
+    },
+    "FINANCIALS_OTHER": {
+      "observations": 105,
+      "median_mape": 0.563141,
+      "direction_accuracy": 0.152381,
+      "eligible_for_weight": true
+    },
+    "FINANCIAL_HOLDING": {
+      "observations": 1828,
+      "median_mape": 0.390564,
+      "direction_accuracy": 0.480306,
+      "eligible_for_weight": true
+    },
+    "FOUNDRY": {
+      "observations": 414,
+      "median_mape": 0.582843,
+      "direction_accuracy": 0.381643,
+      "eligible_for_weight": true
+    },
+    "HEALTHCARE_OTHER": {
+      "observations": 21245,
+      "median_mape": 0.478166,
+      "direction_accuracy": 0.622405,
+      "eligible_for_weight": true
+    },
+    "IC_DESIGN": {
+      "observations": 1698,
+      "median_mape": 0.680681,
+      "direction_accuracy": 0.605418,
+      "eligible_for_weight": true
+    },
+    "INSURANCE": {
+      "observations": 2112,
+      "median_mape": 0.372008,
+      "direction_accuracy": 0.638731,
+      "eligible_for_weight": true
+    },
+    "MACHINERY_OTHER": {
+      "observations": 16990,
+      "median_mape": 0.533335,
+      "direction_accuracy": 0.5505,
+      "eligible_for_weight": true
+    },
+    "MEDICAL_DEVICE": {
+      "observations": 207,
+      "median_mape": 0.398387,
+      "direction_accuracy": 0.652174,
+      "eligible_for_weight": true
+    },
+    "MEMORY": {
+      "observations": 1184,
+      "median_mape": 0.706598,
+      "direction_accuracy": 0.466216,
+      "eligible_for_weight": true
+    },
+    "NETWORKING_OTHER": {
+      "observations": 14841,
+      "median_mape": 0.538154,
+      "direction_accuracy": 0.505896,
+      "eligible_for_weight": true
+    },
+    "OPTICAL_LENS": {
+      "observations": 417,
+      "median_mape": 0.695122,
+      "direction_accuracy": 0.568345,
+      "eligible_for_weight": true
+    },
+    "OPTOELECTRONICS_OTHER": {
+      "observations": 16829,
+      "median_mape": 0.537972,
+      "direction_accuracy": 0.535564,
+      "eligible_for_weight": true
+    },
+    "OSAT": {
+      "observations": 635,
+      "median_mape": 0.583673,
+      "direction_accuracy": 0.474016,
+      "eligible_for_weight": true
+    },
+    "OTHER": {
+      "observations": 129494,
+      "median_mape": 0.476213,
+      "direction_accuracy": 0.558644,
+      "eligible_for_weight": true
+    },
+    "PANEL": {
+      "observations": 408,
+      "median_mape": 0.638138,
+      "direction_accuracy": 0.507353,
+      "eligible_for_weight": true
+    },
+    "PHARMA": {
+      "observations": 357,
+      "median_mape": 0.637813,
+      "direction_accuracy": 0.770308,
+      "eligible_for_weight": true
+    },
+    "SECURITIES": {
+      "observations": 1664,
+      "median_mape": 0.444571,
+      "direction_accuracy": 0.509014,
+      "eligible_for_weight": true
+    },
+    "SEMICONDUCTOR_EQUIPMENT": {
+      "observations": 1236,
+      "median_mape": 0.659457,
+      "direction_accuracy": 0.411003,
+      "eligible_for_weight": true
+    },
+    "SEMICONDUCTOR_OTHER": {
+      "observations": 27828,
+      "median_mape": 0.529066,
+      "direction_accuracy": 0.574386,
+      "eligible_for_weight": true
+    },
+    "SERVER_SYSTEM": {
+      "observations": 315,
+      "median_mape": 0.437618,
+      "direction_accuracy": 0.498413,
+      "eligible_for_weight": true
+    },
+    "SPECIALTY_CHEMICALS": {
+      "observations": 315,
+      "median_mape": 0.608433,
+      "direction_accuracy": 0.431746,
+      "eligible_for_weight": true
+    },
+    "TRANSPORTATION_OTHER": {
+      "observations": 5860,
+      "median_mape": 0.502924,
+      "direction_accuracy": 0.485324,
+      "eligible_for_weight": true
+    }
+  },
+  "lookahead_policy": "only completed forward prices after each historical snapshot are used; current snapshot is never a training row"
+}
