@@ -75,6 +75,9 @@
         <aside class="hidden md:flex w-64 flex-col bg-white dark:bg-[#161b22] border-r border-gray-200 dark:border-gray-800 transition-colors duration-300">
             <div class="p-6 font-bold text-2xl text-blue-600 dark:text-blue-500 border-b border-gray-100 dark:border-gray-800">Alien存股</div>
             <nav class="flex-1 mt-4 px-3 space-y-1">
+                <a href="#" id="nav-market" class="nav-item flex items-center p-3 rounded-lg text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+                    <span class="mr-3">📈</span> 市場
+                </a>
                 <a href="#" id="nav-portfolio" class="nav-item flex items-center p-3 rounded-lg text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
                     <span class="mr-3">📊</span> 我的持股
                 </a>
@@ -98,6 +101,9 @@
                 </a>
                 <a href="#" id="nav-settings" class="nav-item flex items-center p-3 rounded-lg text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
                     <span class="mr-3">⚙️</span> 設定
+                </a>
+                <a href="#" id="nav-more" class="nav-item flex items-center p-3 rounded-lg text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+                    <span class="mr-3">•••</span> 更多
                 </a>
                 
                 <div class="pt-4 pb-2 px-3 text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider">工具</div>
@@ -123,7 +129,7 @@
         <main class="flex-1 min-w-0 flex flex-col overflow-hidden relative pb-16 md:pb-0">
             <!-- Header -->
             <header class="h-16 border-b border-gray-200 dark:border-gray-800 flex items-center justify-between px-6 bg-white dark:bg-[#0f1115] transition-colors duration-300">
-                <h2 class="text-xl font-bold" id="view-title">我的持股</h2>
+                <h2 class="text-xl font-bold" id="view-title">市場</h2>
                 <div id="refresh-indicator" class="text-xs text-gray-500 flex items-center">
                     <span class="w-2 h-2 bg-green-500 rounded-full mr-2 animate-pulse"></span>
                     連線中
@@ -150,6 +156,9 @@
             </div>
             <!-- Scrollable Content -->
             <div id="content-area" class="flex-1 min-w-0 overflow-y-auto p-3 md:p-6">
+                <div id="view-market" class="hidden space-y-6">
+                    <!-- Market sections are moved here by app.v14.js before routing. -->
+                </div>
                 <!-- Portfolio View -->
                 <div id="view-portfolio" class="space-y-6">
 
@@ -157,7 +166,7 @@
                     <div id="beta-warning" class="hidden p-4 bg-red-500/10 border border-red-500/20 rounded-2xl flex items-center shadow-sm">
                         <span class="text-2xl mr-4">🔴</span>
                         <div>
-                            <p class="text-red-500 font-bold text-sm">當前組合對大盤極度敏感，崩盤風險高</p>
+                            <p class="text-red-500 font-bold text-sm">當前組合對大盤敏感度偏高</p>
                             <p class="text-xs text-red-400/70 mt-0.5" id="beta-text">投資組合平均 Beta: --</p>
                         </div>
                     </div>
@@ -252,7 +261,7 @@
                     <div id="liar-section">
                         <div class="flex items-center mb-4">
                             <span class="text-xl mr-2">🎭</span>
-                            <h3 class="text-lg font-bold text-gray-900 dark:text-white">外資口是心非偵測 (說謊實錄)</h3>
+                        <h3 class="text-lg font-bold text-gray-900 dark:text-white">外資言行差異（待驗證）</h3>
                         </div>
                         <div id="liar-container" class="relative">
                             <!-- Liar cards (vertical marquee) injected by JS -->
@@ -357,6 +366,17 @@
                 <div id="view-favorites" class="hidden h-full flex flex-col"></div>
                 <div id="view-settings" class="hidden h-full flex flex-col"></div>
                 <div id="view-groupSearch" class="hidden h-full flex flex-col"></div>
+                <div id="view-more" class="hidden h-full flex flex-col space-y-4">
+                    <div class="bg-white dark:bg-[#161b22] rounded-2xl border border-gray-200 dark:border-gray-800 p-4 shadow-sm">
+                        <h3 class="font-bold mb-3">低頻工具</h3>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                            <button data-more-route="performance" class="more-route text-left p-3 rounded-xl bg-gray-50 dark:bg-gray-900 hover:bg-blue-50 dark:hover:bg-blue-900/20">🏆 歷年戰績</button>
+                            <button data-more-route="settings" class="more-route text-left p-3 rounded-xl bg-gray-50 dark:bg-gray-900 hover:bg-blue-50 dark:hover:bg-blue-900/20">⚙️ 設定與管理</button>
+                            <button data-more-route="favorites" class="more-route text-left p-3 rounded-xl bg-gray-50 dark:bg-gray-900 hover:bg-blue-50 dark:hover:bg-blue-900/20">❤️ 我的收藏</button>
+                            <button data-more-route="groupSearch" class="more-route text-left p-3 rounded-xl bg-gray-50 dark:bg-gray-900 hover:bg-blue-50 dark:hover:bg-blue-900/20">🔍 族群搜尋</button>
+                        </div>
+                    </div>
+                </div>
 
                 <!-- 財經摘要 -->
                 <div id="view-audioSummary" class="hidden">
@@ -434,6 +454,10 @@
 
     <!-- Mobile Bottom Navigation -->
     <nav class="md:hidden fixed bottom-0 left-0 right-0 bg-[#161b22] border-t border-gray-800 flex justify-around items-center h-16 z-50">
+        <button id="mobile-nav-market" class="flex flex-col items-center text-blue-400">
+            <span class="text-xl">📈</span>
+            <span class="text-[10px] mt-1">市場</span>
+        </button>
         <button id="mobile-nav-portfolio" class="flex flex-col items-center text-blue-400">
             <span class="text-xl">📊</span>
             <span class="text-[10px] mt-1">持股</span>
@@ -450,29 +474,9 @@
             <span class="text-xl">🛡️</span>
             <span class="text-[10px] mt-1">風險</span>
         </button>
-        <button id="mobile-nav-performance" class="flex flex-col items-center text-gray-500">
-            <span class="text-xl">🏆</span>
-            <span class="text-[10px] mt-1">戰績</span>
-        </button>
-        <button id="mobile-nav-addTrade" class="flex flex-col items-center text-gray-500">
-            <span class="text-xl">➕</span>
-            <span class="text-[10px] mt-1">交易</span>
-        </button>
-        <button id="mobile-nav-groupSearch" class="flex flex-col items-center text-gray-500">
-            <span class="text-xl">🔍</span>
-            <span class="text-[10px] mt-1">族群</span>
-        </button>
-        <button id="mobile-nav-audioSummary" class="flex flex-col items-center text-gray-500">
-            <span class="text-xl">📡</span>
-            <span class="text-[10px] mt-1">摘要</span>
-        </button>
-        <button id="mobile-nav-favorites" class="flex flex-col items-center text-gray-500">
-            <span class="text-xl">❤️</span>
-            <span class="text-[10px] mt-1">收藏</span>
-        </button>
-        <button id="mobile-nav-settings" class="flex flex-col items-center text-gray-500">
-            <span class="text-xl">⚙️</span>
-            <span class="text-[10px] mt-1">設定</span>
+        <button id="mobile-nav-more" class="flex flex-col items-center text-gray-500">
+            <span class="text-xl">•••</span>
+            <span class="text-[10px] mt-1">更多</span>
         </button>
     </nav>
 
