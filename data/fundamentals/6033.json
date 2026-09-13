@@ -2,7 +2,7 @@
   "schema_version": "1.0",
   "stock_id": "6033",
   "market": null,
-  "as_of": "2026-09-13",
+  "as_of": "2026-09-14",
   "balance_sheet": {
     "cash": 163633000.0,
     "accounts_receivable": 55575000.0,
@@ -15,6 +15,15 @@
     "equity_parent": null,
     "shares_outstanding": null,
     "treasury_shares": null,
+    "shares_outstanding_unit": "shares",
+    "shares_outstanding_metadata": {
+      "value": null,
+      "unit": "shares",
+      "source": [],
+      "period": null,
+      "effective_available_at": null,
+      "normalization": "declared actual shares; no unit conversion in normalized snapshot"
+    },
     "amount_unit": "TWD",
     "amount_units": {
       "cash": "TWD",
@@ -30,6 +39,10 @@
     "net_income": 172593000.0,
     "eps": 1.39,
     "revenue_ttm": 1827133000.0,
+    "revenue_ttm_source": "quarterly_income_ttm_fallback",
+    "revenue_ttm_provenance": {
+      "status": "quarterly_fallback"
+    },
     "ebit_ttm": 419375000.0,
     "net_income_ttm": 172593000.0,
     "eps_ttm": 1.39,
@@ -75,7 +88,8 @@
     "da_ttm": "TWD",
     "ebitda_ttm": "TWD",
     "fcf_ttm": "TWD",
-    "nwc": "TWD"
+    "nwc": "TWD",
+    "fcff_ttm": "TWD"
   },
   "derived": {
     "da_ttm": 220241000.0,
@@ -83,12 +97,16 @@
     "fcf_ttm": 274075000.0,
     "net_debt": null,
     "nwc": 102008000.0,
+    "fcff_ttm": 274075000.0,
+    "fcff_margin": 0.15000276389294048,
+    "ebitda_margin": 0.27540852253229514,
     "amount_unit": "TWD",
     "amount_units": {
       "da_ttm": "TWD",
       "ebitda_ttm": "TWD",
       "fcf_ttm": "TWD",
-      "nwc": "TWD"
+      "nwc": "TWD",
+      "fcff_ttm": "TWD"
     }
   },
   "missing_fields": [
@@ -195,6 +213,16 @@
       "effective_available_at": "2026-08-14"
     },
     "revenue_ttm": {
+      "source": [],
+      "period": null,
+      "effective_available_at": null
+    },
+    "revenue_ttm_source": {
+      "source": [],
+      "period": null,
+      "effective_available_at": null
+    },
+    "revenue_ttm_provenance": {
       "source": [],
       "period": null,
       "effective_available_at": null

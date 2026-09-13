@@ -2,7 +2,7 @@
   "schema_version": "1.0",
   "stock_id": "4429",
   "market": null,
-  "as_of": "2026-09-13",
+  "as_of": "2026-09-14",
   "balance_sheet": {
     "cash": 119383000.0,
     "accounts_receivable": 136466000.0,
@@ -15,6 +15,15 @@
     "equity_parent": 767512000.0,
     "shares_outstanding": null,
     "treasury_shares": null,
+    "shares_outstanding_unit": "shares",
+    "shares_outstanding_metadata": {
+      "value": null,
+      "unit": "shares",
+      "source": [],
+      "period": null,
+      "effective_available_at": null,
+      "normalization": "declared actual shares; no unit conversion in normalized snapshot"
+    },
     "amount_unit": "TWD",
     "amount_units": {
       "cash": "TWD",
@@ -32,6 +41,10 @@
     "net_income": 162494000.0,
     "eps": 4.75,
     "revenue_ttm": 864621000.0,
+    "revenue_ttm_source": "quarterly_income_ttm_fallback",
+    "revenue_ttm_provenance": {
+      "status": "quarterly_fallback"
+    },
     "ebit_ttm": 74710000.0,
     "net_income_ttm": 162494000.0,
     "eps_ttm": 4.75,
@@ -80,7 +93,8 @@
     "ebitda_ttm": "TWD",
     "fcf_ttm": "TWD",
     "net_debt": "TWD",
-    "nwc": "TWD"
+    "nwc": "TWD",
+    "fcff_ttm": "TWD"
   },
   "derived": {
     "da_ttm": 122289000.0,
@@ -88,13 +102,17 @@
     "fcf_ttm": -118861000.0,
     "net_debt": 45784000.0,
     "nwc": 131249000.0,
+    "fcff_ttm": -118861000.0,
+    "fcff_margin": -0.1374717939999144,
+    "ebitda_margin": 0.2265813576121792,
     "amount_unit": "TWD",
     "amount_units": {
       "da_ttm": "TWD",
       "ebitda_ttm": "TWD",
       "fcf_ttm": "TWD",
       "net_debt": "TWD",
-      "nwc": "TWD"
+      "nwc": "TWD",
+      "fcff_ttm": "TWD"
     }
   },
   "missing_fields": [
@@ -202,6 +220,16 @@
       "effective_available_at": "2022-05-15"
     },
     "revenue_ttm": {
+      "source": [],
+      "period": null,
+      "effective_available_at": null
+    },
+    "revenue_ttm_source": {
+      "source": [],
+      "period": null,
+      "effective_available_at": null
+    },
+    "revenue_ttm_provenance": {
       "source": [],
       "period": null,
       "effective_available_at": null

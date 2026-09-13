@@ -2,7 +2,7 @@
   "schema_version": "1.0",
   "stock_id": "8980",
   "market": null,
-  "as_of": "2026-09-13",
+  "as_of": "2026-09-14",
   "balance_sheet": {
     "cash": 7499000.0,
     "accounts_receivable": 6464000.0,
@@ -15,6 +15,15 @@
     "equity_parent": null,
     "shares_outstanding": null,
     "treasury_shares": null,
+    "shares_outstanding_unit": "shares",
+    "shares_outstanding_metadata": {
+      "value": null,
+      "unit": "shares",
+      "source": [],
+      "period": null,
+      "effective_available_at": null,
+      "normalization": "declared actual shares; no unit conversion in normalized snapshot"
+    },
     "amount_unit": "TWD",
     "amount_units": {
       "cash": "TWD",
@@ -31,6 +40,10 @@
     "net_income": 116109000.0,
     "eps": 5.0,
     "revenue_ttm": 364211000.0,
+    "revenue_ttm_source": "quarterly_income_ttm_fallback",
+    "revenue_ttm_provenance": {
+      "status": "quarterly_fallback"
+    },
     "ebit_ttm": 84957000.0,
     "net_income_ttm": 116109000.0,
     "eps_ttm": 5.0,
@@ -78,7 +91,8 @@
     "ebitda_ttm": "TWD",
     "fcf_ttm": "TWD",
     "net_debt": "TWD",
-    "nwc": "TWD"
+    "nwc": "TWD",
+    "fcff_ttm": "TWD"
   },
   "derived": {
     "da_ttm": 193878000.0,
@@ -86,13 +100,17 @@
     "fcf_ttm": 13593000.0,
     "net_debt": 425345000.0,
     "nwc": 2564000.0,
+    "fcff_ttm": 13593000.0,
+    "fcff_margin": 0.03732177226937133,
+    "ebitda_margin": 0.765042791129318,
     "amount_unit": "TWD",
     "amount_units": {
       "da_ttm": "TWD",
       "ebitda_ttm": "TWD",
       "fcf_ttm": "TWD",
       "net_debt": "TWD",
-      "nwc": "TWD"
+      "nwc": "TWD",
+      "fcff_ttm": "TWD"
     }
   },
   "missing_fields": [
@@ -199,6 +217,16 @@
       "effective_available_at": "2026-08-14"
     },
     "revenue_ttm": {
+      "source": [],
+      "period": null,
+      "effective_available_at": null
+    },
+    "revenue_ttm_source": {
+      "source": [],
+      "period": null,
+      "effective_available_at": null
+    },
+    "revenue_ttm_provenance": {
       "source": [],
       "period": null,
       "effective_available_at": null

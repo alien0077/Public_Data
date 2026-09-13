@@ -2,7 +2,7 @@
   "schema_version": "1.0",
   "stock_id": "8048",
   "market": "TPEX",
-  "as_of": "2026-09-13",
+  "as_of": "2026-09-14",
   "balance_sheet": {
     "cash": 456077000.0,
     "accounts_receivable": 304273000.0,
@@ -15,6 +15,17 @@
     "equity_parent": 1177074000.0,
     "shares_outstanding": 0.0,
     "treasury_shares": null,
+    "shares_outstanding_unit": "shares",
+    "shares_outstanding_metadata": {
+      "value": 0.0,
+      "unit": "shares",
+      "source": [
+        "metadata:stocks.shares_outstanding"
+      ],
+      "period": null,
+      "effective_available_at": null,
+      "normalization": "declared actual shares; no unit conversion in normalized snapshot"
+    },
     "amount_unit": "TWD",
     "amount_units": {
       "cash": "TWD",
@@ -30,7 +41,28 @@
     "operating_income": 210446000.0,
     "net_income": 200042000.0,
     "eps": 3.42,
-    "revenue_ttm": 1239296.0,
+    "revenue_ttm": 1239296000.0,
+    "revenue_ttm_source": "monthly_revenue_normalized_to_TWD",
+    "revenue_ttm_provenance": {
+      "status": "ok",
+      "latest_period": "2026-08",
+      "months": [
+        "2026-08",
+        "2026-07",
+        "2026-06",
+        "2026-05",
+        "2026-04",
+        "2026-03",
+        "2026-02",
+        "2026-01",
+        "2025-12",
+        "2025-11",
+        "2025-10",
+        "2025-09"
+      ],
+      "source_unit": "monthly_source_unit_normalized_to_TWD",
+      "inferred_unit": "thousand_twd"
+    },
     "ebit_ttm": 210446000.0,
     "net_income_ttm": 200042000.0,
     "eps_ttm": 3.42,
@@ -77,7 +109,8 @@
     "da_ttm": "TWD",
     "ebitda_ttm": "TWD",
     "fcf_ttm": "TWD",
-    "nwc": "TWD"
+    "nwc": "TWD",
+    "fcff_ttm": "TWD"
   },
   "derived": {
     "da_ttm": 41997000.0,
@@ -85,12 +118,16 @@
     "fcf_ttm": 131898000.0,
     "net_debt": null,
     "nwc": 390065000.0,
+    "fcff_ttm": 131898000.0,
+    "fcff_margin": 0.10642977948770915,
+    "ebitda_margin": 0.20153296710390414,
     "amount_unit": "TWD",
     "amount_units": {
       "da_ttm": "TWD",
       "ebitda_ttm": "TWD",
       "fcf_ttm": "TWD",
-      "nwc": "TWD"
+      "nwc": "TWD",
+      "fcff_ttm": "TWD"
     }
   },
   "missing_fields": [
@@ -171,7 +208,9 @@
       "effective_available_at": "2026-08-14"
     },
     "shares_outstanding": {
-      "source": [],
+      "source": [
+        "metadata:stocks.shares_outstanding"
+      ],
       "period": null,
       "effective_available_at": null
     },
@@ -217,6 +256,16 @@
       "effective_available_at": "2026-08-14"
     },
     "revenue_ttm": {
+      "source": [],
+      "period": null,
+      "effective_available_at": null
+    },
+    "revenue_ttm_source": {
+      "source": [],
+      "period": null,
+      "effective_available_at": null
+    },
+    "revenue_ttm_provenance": {
       "source": [],
       "period": null,
       "effective_available_at": null

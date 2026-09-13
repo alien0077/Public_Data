@@ -2,7 +2,7 @@
   "schema_version": "1.0",
   "stock_id": "7706",
   "market": null,
-  "as_of": "2026-09-13",
+  "as_of": "2026-09-14",
   "balance_sheet": {
     "cash": 94914000.0,
     "accounts_receivable": 112005000.0,
@@ -15,6 +15,15 @@
     "equity_parent": 137564000.0,
     "shares_outstanding": null,
     "treasury_shares": null,
+    "shares_outstanding_unit": "shares",
+    "shares_outstanding_metadata": {
+      "value": null,
+      "unit": "shares",
+      "source": [],
+      "period": null,
+      "effective_available_at": null,
+      "normalization": "declared actual shares; no unit conversion in normalized snapshot"
+    },
     "amount_unit": "TWD",
     "amount_units": {
       "cash": "TWD",
@@ -30,6 +39,10 @@
     "net_income": 20144000.0,
     "eps": 2.01,
     "revenue_ttm": 868035000.0,
+    "revenue_ttm_source": "quarterly_income_ttm_fallback",
+    "revenue_ttm_provenance": {
+      "status": "quarterly_fallback"
+    },
     "ebit_ttm": 21137000.0,
     "net_income_ttm": 20144000.0,
     "eps_ttm": 2.01,
@@ -79,6 +92,9 @@
     "fcf_ttm": null,
     "net_debt": null,
     "nwc": null,
+    "fcff_ttm": null,
+    "fcff_margin": null,
+    "ebitda_margin": 0.027206276244621474,
     "amount_unit": "TWD",
     "amount_units": {
       "da_ttm": "TWD",
@@ -95,7 +111,9 @@
     "capex",
     "fcf_ttm",
     "net_debt",
-    "nwc"
+    "nwc",
+    "fcff_ttm",
+    "fcff_margin"
   ],
   "field_provenance": {
     "cash": {
@@ -192,6 +210,16 @@
       "effective_available_at": "2026-08-14"
     },
     "revenue_ttm": {
+      "source": [],
+      "period": null,
+      "effective_available_at": null
+    },
+    "revenue_ttm_source": {
+      "source": [],
+      "period": null,
+      "effective_available_at": null
+    },
+    "revenue_ttm_provenance": {
       "source": [],
       "period": null,
       "effective_available_at": null

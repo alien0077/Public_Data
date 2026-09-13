@@ -2,7 +2,7 @@
   "schema_version": "1.0",
   "stock_id": "7796",
   "market": null,
-  "as_of": "2026-09-13",
+  "as_of": "2026-09-14",
   "balance_sheet": {
     "cash": 124681000.0,
     "accounts_receivable": 1185000.0,
@@ -15,6 +15,15 @@
     "equity_parent": null,
     "shares_outstanding": null,
     "treasury_shares": null,
+    "shares_outstanding_unit": "shares",
+    "shares_outstanding_metadata": {
+      "value": null,
+      "unit": "shares",
+      "source": [],
+      "period": null,
+      "effective_available_at": null,
+      "normalization": "declared actual shares; no unit conversion in normalized snapshot"
+    },
     "amount_unit": "TWD",
     "amount_units": {
       "cash": "TWD",
@@ -30,6 +39,10 @@
     "net_income": 319929000.0,
     "eps": 13.9,
     "revenue_ttm": 94930000.0,
+    "revenue_ttm_source": "quarterly_income_ttm_fallback",
+    "revenue_ttm_provenance": {
+      "status": "quarterly_fallback"
+    },
     "ebit_ttm": 349159000.0,
     "net_income_ttm": 319929000.0,
     "eps_ttm": 13.9,
@@ -75,7 +88,8 @@
     "da_ttm": "TWD",
     "ebitda_ttm": "TWD",
     "fcf_ttm": "TWD",
-    "nwc": "TWD"
+    "nwc": "TWD",
+    "fcff_ttm": "TWD"
   },
   "derived": {
     "da_ttm": 43139000.0,
@@ -83,12 +97,16 @@
     "fcf_ttm": 270761000.0,
     "net_debt": null,
     "nwc": 1185000.0,
+    "fcff_ttm": 270761000.0,
+    "fcff_margin": 2.8522174233645843,
+    "ebitda_margin": 4.060592015169072,
     "amount_unit": "TWD",
     "amount_units": {
       "da_ttm": "TWD",
       "ebitda_ttm": "TWD",
       "fcf_ttm": "TWD",
-      "nwc": "TWD"
+      "nwc": "TWD",
+      "fcff_ttm": "TWD"
     }
   },
   "missing_fields": [
@@ -195,6 +213,16 @@
       "effective_available_at": "2026-08-14"
     },
     "revenue_ttm": {
+      "source": [],
+      "period": null,
+      "effective_available_at": null
+    },
+    "revenue_ttm_source": {
+      "source": [],
+      "period": null,
+      "effective_available_at": null
+    },
+    "revenue_ttm_provenance": {
       "source": [],
       "period": null,
       "effective_available_at": null

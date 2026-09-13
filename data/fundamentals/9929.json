@@ -2,7 +2,7 @@
   "schema_version": "1.0",
   "stock_id": "9929",
   "market": "TWSE",
-  "as_of": "2026-09-13",
+  "as_of": "2026-09-14",
   "balance_sheet": {
     "cash": 299851000.0,
     "accounts_receivable": 106043000.0,
@@ -15,6 +15,17 @@
     "equity_parent": 853866000.0,
     "shares_outstanding": 101280000.0,
     "treasury_shares": null,
+    "shares_outstanding_unit": "shares",
+    "shares_outstanding_metadata": {
+      "value": 101280000.0,
+      "unit": "shares",
+      "source": [
+        "metadata:stocks.shares_outstanding"
+      ],
+      "period": null,
+      "effective_available_at": null,
+      "normalization": "declared actual shares; no unit conversion in normalized snapshot"
+    },
     "amount_unit": "TWD",
     "amount_units": {
       "cash": "TWD",
@@ -32,7 +43,28 @@
     "operating_income": 52285000.0,
     "net_income": 81871000.0,
     "eps": 0.66,
-    "revenue_ttm": 698466.0,
+    "revenue_ttm": 698466000.0,
+    "revenue_ttm_source": "monthly_revenue_normalized_to_TWD",
+    "revenue_ttm_provenance": {
+      "status": "ok",
+      "latest_period": "2026-08",
+      "months": [
+        "2026-08",
+        "2026-07",
+        "2026-06",
+        "2026-05",
+        "2026-04",
+        "2026-03",
+        "2026-02",
+        "2026-01",
+        "2025-12",
+        "2025-11",
+        "2025-10",
+        "2025-09"
+      ],
+      "source_unit": "monthly_source_unit_normalized_to_TWD",
+      "inferred_unit": "thousand_twd"
+    },
     "ebit_ttm": 52285000.0,
     "net_income_ttm": 81871000.0,
     "eps_ttm": 0.66,
@@ -85,6 +117,9 @@
     "fcf_ttm": null,
     "net_debt": -299851000.0,
     "nwc": 111071000.0,
+    "fcff_ttm": null,
+    "fcff_margin": null,
+    "ebitda_margin": 0.6117334272534383,
     "amount_unit": "TWD",
     "amount_units": {
       "da_ttm": "TWD",
@@ -98,7 +133,9 @@
     "treasury_shares",
     "capex",
     "amortization",
-    "fcf_ttm"
+    "fcf_ttm",
+    "fcff_ttm",
+    "fcff_margin"
   ],
   "field_provenance": {
     "cash": {
@@ -177,7 +214,9 @@
       "effective_available_at": "2026-08-14"
     },
     "shares_outstanding": {
-      "source": [],
+      "source": [
+        "metadata:stocks.shares_outstanding"
+      ],
       "period": null,
       "effective_available_at": null
     },
@@ -223,6 +262,16 @@
       "effective_available_at": "2026-08-14"
     },
     "revenue_ttm": {
+      "source": [],
+      "period": null,
+      "effective_available_at": null
+    },
+    "revenue_ttm_source": {
+      "source": [],
+      "period": null,
+      "effective_available_at": null
+    },
+    "revenue_ttm_provenance": {
       "source": [],
       "period": null,
       "effective_available_at": null

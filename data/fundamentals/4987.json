@@ -2,7 +2,7 @@
   "schema_version": "1.0",
   "stock_id": "4987",
   "market": null,
-  "as_of": "2026-09-13",
+  "as_of": "2026-09-14",
   "balance_sheet": {
     "cash": 403798000.0,
     "accounts_receivable": 180257000.0,
@@ -15,6 +15,15 @@
     "equity_parent": 1148260000.0,
     "shares_outstanding": null,
     "treasury_shares": null,
+    "shares_outstanding_unit": "shares",
+    "shares_outstanding_metadata": {
+      "value": null,
+      "unit": "shares",
+      "source": [],
+      "period": null,
+      "effective_available_at": null,
+      "normalization": "declared actual shares; no unit conversion in normalized snapshot"
+    },
     "amount_unit": "TWD",
     "amount_units": {
       "cash": "TWD",
@@ -31,7 +40,11 @@
     "operating_income": 250508000.0,
     "net_income": 196565000.0,
     "eps": 6.17,
-    "revenue_ttm": 1388033.0,
+    "revenue_ttm": 1375872000.0,
+    "revenue_ttm_source": "quarterly_income_ttm_fallback",
+    "revenue_ttm_provenance": {
+      "status": "quarterly_fallback"
+    },
     "ebit_ttm": 250508000.0,
     "net_income_ttm": 196565000.0,
     "eps_ttm": 6.17,
@@ -80,7 +93,8 @@
     "ebitda_ttm": "TWD",
     "fcf_ttm": "TWD",
     "net_debt": "TWD",
-    "nwc": "TWD"
+    "nwc": "TWD",
+    "fcff_ttm": "TWD"
   },
   "derived": {
     "da_ttm": 95197000.0,
@@ -88,13 +102,17 @@
     "fcf_ttm": 187080000.0,
     "net_debt": -403798000.0,
     "nwc": 637454000.0,
+    "fcff_ttm": 187080000.0,
+    "fcff_margin": 0.13597195087915154,
+    "ebitda_margin": 0.2507246313610568,
     "amount_unit": "TWD",
     "amount_units": {
       "da_ttm": "TWD",
       "ebitda_ttm": "TWD",
       "fcf_ttm": "TWD",
       "net_debt": "TWD",
-      "nwc": "TWD"
+      "nwc": "TWD",
+      "fcff_ttm": "TWD"
     }
   },
   "missing_fields": [
@@ -202,6 +220,16 @@
       "effective_available_at": "2026-05-15"
     },
     "revenue_ttm": {
+      "source": [],
+      "period": null,
+      "effective_available_at": null
+    },
+    "revenue_ttm_source": {
+      "source": [],
+      "period": null,
+      "effective_available_at": null
+    },
+    "revenue_ttm_provenance": {
       "source": [],
       "period": null,
       "effective_available_at": null

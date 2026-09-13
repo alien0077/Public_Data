@@ -2,7 +2,7 @@
   "schema_version": "1.0",
   "stock_id": "1337",
   "market": "TWSE",
-  "as_of": "2026-09-13",
+  "as_of": "2026-09-14",
   "balance_sheet": {
     "cash": 1056116000.0,
     "accounts_receivable": 82294000.0,
@@ -15,6 +15,17 @@
     "equity_parent": 3583196000.0,
     "shares_outstanding": 268955000.0,
     "treasury_shares": null,
+    "shares_outstanding_unit": "shares",
+    "shares_outstanding_metadata": {
+      "value": 268955000.0,
+      "unit": "shares",
+      "source": [
+        "metadata:stocks.shares_outstanding"
+      ],
+      "period": null,
+      "effective_available_at": null,
+      "normalization": "declared actual shares; no unit conversion in normalized snapshot"
+    },
     "amount_unit": "TWD",
     "amount_units": {
       "cash": "TWD",
@@ -31,7 +42,11 @@
     "operating_income": 420872000.0,
     "net_income": 490162000.0,
     "eps": 1.83,
-    "revenue_ttm": 634243.0,
+    "revenue_ttm": 528685000.0,
+    "revenue_ttm_source": "quarterly_income_ttm_fallback",
+    "revenue_ttm_provenance": {
+      "status": "quarterly_fallback"
+    },
     "ebit_ttm": 420872000.0,
     "net_income_ttm": 490162000.0,
     "eps_ttm": 1.83,
@@ -78,7 +93,8 @@
     "ebitda_ttm": "TWD",
     "fcf_ttm": "TWD",
     "net_debt": "TWD",
-    "nwc": "TWD"
+    "nwc": "TWD",
+    "fcff_ttm": "TWD"
   },
   "derived": {
     "da_ttm": 600328000.0,
@@ -86,13 +102,17 @@
     "fcf_ttm": -558051000.0,
     "net_debt": -64181000.0,
     "nwc": 179867000.0,
+    "fcff_ttm": -558051000.0,
+    "fcff_margin": -1.055545362550479,
+    "ebitda_margin": 1.9315849702563908,
     "amount_unit": "TWD",
     "amount_units": {
       "da_ttm": "TWD",
       "ebitda_ttm": "TWD",
       "fcf_ttm": "TWD",
       "net_debt": "TWD",
-      "nwc": "TWD"
+      "nwc": "TWD",
+      "fcff_ttm": "TWD"
     }
   },
   "missing_fields": [
@@ -197,7 +217,9 @@
       "effective_available_at": "2026-08-14"
     },
     "shares_outstanding": {
-      "source": [],
+      "source": [
+        "metadata:stocks.shares_outstanding"
+      ],
       "period": null,
       "effective_available_at": null
     },
@@ -255,6 +277,16 @@
       "effective_available_at": "2026-08-14"
     },
     "revenue_ttm": {
+      "source": [],
+      "period": null,
+      "effective_available_at": null
+    },
+    "revenue_ttm_source": {
+      "source": [],
+      "period": null,
+      "effective_available_at": null
+    },
+    "revenue_ttm_provenance": {
       "source": [],
       "period": null,
       "effective_available_at": null

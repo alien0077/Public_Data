@@ -2,7 +2,7 @@
   "schema_version": "1.0",
   "stock_id": "6781",
   "market": "TWSE",
-  "as_of": "2026-09-13",
+  "as_of": "2026-09-14",
   "balance_sheet": {
     "cash": 10118212000.0,
     "accounts_receivable": 1466882000.0,
@@ -15,6 +15,17 @@
     "equity_parent": 17697906000.0,
     "shares_outstanding": 85419000.0,
     "treasury_shares": null,
+    "shares_outstanding_unit": "shares",
+    "shares_outstanding_metadata": {
+      "value": 85419000.0,
+      "unit": "shares",
+      "source": [
+        "metadata:stocks.shares_outstanding"
+      ],
+      "period": null,
+      "effective_available_at": null,
+      "normalization": "declared actual shares; no unit conversion in normalized snapshot"
+    },
     "amount_unit": "TWD",
     "amount_units": {
       "cash": "TWD",
@@ -31,7 +42,11 @@
     "operating_income": 4342810000.0,
     "net_income": 3611778000.0,
     "eps": 42.29,
-    "revenue_ttm": 17092313.0,
+    "revenue_ttm": 17928151000.0,
+    "revenue_ttm_source": "quarterly_income_ttm_fallback",
+    "revenue_ttm_provenance": {
+      "status": "quarterly_fallback"
+    },
     "ebit_ttm": 4342810000.0,
     "net_income_ttm": 3611778000.0,
     "eps_ttm": 42.29,
@@ -80,7 +95,8 @@
     "ebitda_ttm": "TWD",
     "fcf_ttm": "TWD",
     "net_debt": "TWD",
-    "nwc": "TWD"
+    "nwc": "TWD",
+    "fcff_ttm": "TWD"
   },
   "derived": {
     "da_ttm": 1058448000.0,
@@ -88,13 +104,17 @@
     "fcf_ttm": 4035605000.0,
     "net_debt": -9702951000.0,
     "nwc": 8286638000.0,
+    "fcff_ttm": 4035605000.0,
+    "fcff_margin": 0.2250987845874346,
+    "ebitda_margin": 0.2960938916679138,
     "amount_unit": "TWD",
     "amount_units": {
       "da_ttm": "TWD",
       "ebitda_ttm": "TWD",
       "fcf_ttm": "TWD",
       "net_debt": "TWD",
-      "nwc": "TWD"
+      "nwc": "TWD",
+      "fcff_ttm": "TWD"
     }
   },
   "missing_fields": [
@@ -177,7 +197,9 @@
       "effective_available_at": "2026-08-14"
     },
     "shares_outstanding": {
-      "source": [],
+      "source": [
+        "metadata:stocks.shares_outstanding"
+      ],
       "period": null,
       "effective_available_at": null
     },
@@ -223,6 +245,16 @@
       "effective_available_at": "2026-08-14"
     },
     "revenue_ttm": {
+      "source": [],
+      "period": null,
+      "effective_available_at": null
+    },
+    "revenue_ttm_source": {
+      "source": [],
+      "period": null,
+      "effective_available_at": null
+    },
+    "revenue_ttm_provenance": {
       "source": [],
       "period": null,
       "effective_available_at": null

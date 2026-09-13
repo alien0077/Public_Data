@@ -2,7 +2,7 @@
   "schema_version": "1.0",
   "stock_id": "6020",
   "market": null,
-  "as_of": "2026-09-13",
+  "as_of": "2026-09-14",
   "balance_sheet": {
     "cash": 1096232000.0,
     "accounts_receivable": null,
@@ -15,6 +15,15 @@
     "equity_parent": 5495303000.0,
     "shares_outstanding": null,
     "treasury_shares": null,
+    "shares_outstanding_unit": "shares",
+    "shares_outstanding_metadata": {
+      "value": null,
+      "unit": "shares",
+      "source": [],
+      "period": null,
+      "effective_available_at": null,
+      "normalization": "declared actual shares; no unit conversion in normalized snapshot"
+    },
     "amount_unit": "TWD",
     "amount_units": {
       "cash": "TWD",
@@ -28,7 +37,28 @@
     "operating_income": 898015000.0,
     "net_income": 975026000.0,
     "eps": 3.87,
-    "revenue_ttm": 1002684.0,
+    "revenue_ttm": 1002684000.0,
+    "revenue_ttm_source": "monthly_revenue_normalized_to_TWD",
+    "revenue_ttm_provenance": {
+      "status": "ok",
+      "latest_period": "2026-08",
+      "months": [
+        "2026-08",
+        "2026-07",
+        "2026-06",
+        "2026-05",
+        "2026-04",
+        "2026-03",
+        "2026-02",
+        "2026-01",
+        "2025-12",
+        "2025-11",
+        "2025-10",
+        "2025-09"
+      ],
+      "source_unit": "monthly_source_unit_normalized_to_TWD",
+      "inferred_unit": "thousand_twd"
+    },
     "ebit_ttm": 898015000.0,
     "net_income_ttm": 975026000.0,
     "eps_ttm": 3.87,
@@ -72,7 +102,8 @@
     "amortization": "TWD",
     "da_ttm": "TWD",
     "ebitda_ttm": "TWD",
-    "fcf_ttm": "TWD"
+    "fcf_ttm": "TWD",
+    "fcff_ttm": "TWD"
   },
   "derived": {
     "da_ttm": 28577000.0,
@@ -80,11 +111,15 @@
     "fcf_ttm": 1902588000.0,
     "net_debt": null,
     "nwc": null,
+    "fcff_ttm": 1902588000.0,
+    "fcff_margin": 1.8974951230896275,
+    "ebitda_margin": 0.9195658851642192,
     "amount_unit": "TWD",
     "amount_units": {
       "da_ttm": "TWD",
       "ebitda_ttm": "TWD",
-      "fcf_ttm": "TWD"
+      "fcf_ttm": "TWD",
+      "fcff_ttm": "TWD"
     }
   },
   "missing_fields": [
@@ -191,6 +226,16 @@
       "effective_available_at": "2026-08-14"
     },
     "revenue_ttm": {
+      "source": [],
+      "period": null,
+      "effective_available_at": null
+    },
+    "revenue_ttm_source": {
+      "source": [],
+      "period": null,
+      "effective_available_at": null
+    },
+    "revenue_ttm_provenance": {
       "source": [],
       "period": null,
       "effective_available_at": null

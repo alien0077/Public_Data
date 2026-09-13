@@ -2,7 +2,7 @@
   "schema_version": "1.0",
   "stock_id": "1589",
   "market": "TWSE",
-  "as_of": "2026-09-13",
+  "as_of": "2026-09-14",
   "balance_sheet": {
     "cash": 1978317000.0,
     "accounts_receivable": 2793142000.0,
@@ -15,6 +15,17 @@
     "equity_parent": 7778358000.0,
     "shares_outstanding": 153135941.0,
     "treasury_shares": null,
+    "shares_outstanding_unit": "shares",
+    "shares_outstanding_metadata": {
+      "value": 153135941.0,
+      "unit": "shares",
+      "source": [
+        "metadata:stocks.shares_outstanding"
+      ],
+      "period": null,
+      "effective_available_at": null,
+      "normalization": "declared actual shares; no unit conversion in normalized snapshot"
+    },
     "amount_unit": "TWD",
     "amount_units": {
       "cash": "TWD",
@@ -33,7 +44,11 @@
     "operating_income": 600076000.0,
     "net_income": 1307231000.0,
     "eps": 10.23,
-    "revenue_ttm": 7993605.0,
+    "revenue_ttm": 8041700000.0,
+    "revenue_ttm_source": "quarterly_income_ttm_fallback",
+    "revenue_ttm_provenance": {
+      "status": "quarterly_fallback"
+    },
     "ebit_ttm": 600076000.0,
     "net_income_ttm": 1307231000.0,
     "eps_ttm": 10.23,
@@ -84,7 +99,8 @@
     "ebitda_ttm": "TWD",
     "fcf_ttm": "TWD",
     "net_debt": "TWD",
-    "nwc": "TWD"
+    "nwc": "TWD",
+    "fcff_ttm": "TWD"
   },
   "derived": {
     "da_ttm": 1689704000.0,
@@ -92,13 +108,17 @@
     "fcf_ttm": -160480000.0,
     "net_debt": 11224868000.0,
     "nwc": 3923916000.0,
+    "fcff_ttm": -160480000.0,
+    "fcff_margin": -0.01995597945707997,
+    "ebitda_margin": 0.28277665170299815,
     "amount_unit": "TWD",
     "amount_units": {
       "da_ttm": "TWD",
       "ebitda_ttm": "TWD",
       "fcf_ttm": "TWD",
       "net_debt": "TWD",
-      "nwc": "TWD"
+      "nwc": "TWD",
+      "fcff_ttm": "TWD"
     }
   },
   "missing_fields": [
@@ -196,7 +216,9 @@
       "effective_available_at": "2025-11-14"
     },
     "shares_outstanding": {
-      "source": [],
+      "source": [
+        "metadata:stocks.shares_outstanding"
+      ],
       "period": null,
       "effective_available_at": null
     },
@@ -246,6 +268,16 @@
       "effective_available_at": "2025-11-14"
     },
     "revenue_ttm": {
+      "source": [],
+      "period": null,
+      "effective_available_at": null
+    },
+    "revenue_ttm_source": {
+      "source": [],
+      "period": null,
+      "effective_available_at": null
+    },
+    "revenue_ttm_provenance": {
       "source": [],
       "period": null,
       "effective_available_at": null
