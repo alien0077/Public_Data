@@ -1,12 +1,20 @@
 {
   "schema_version": "macro-artifact-v1",
-  "as_of": "2026-09-12T00:27:18.486007+00:00",
+  "as_of": "2026-09-13T00:00:00+08:00",
   "formula_version": "macro-factors-v1",
   "factors": {
     "growth_score": {
       "value": 0.504753,
-      "confidence": 1.0,
+      "status": "NORMAL",
       "coverage": 1.0,
+      "coverage_score": 1.0,
+      "freshness_score": 0.888889,
+      "quality_score": 1.0,
+      "confidence": 0.888889,
+      "confidence_score": 0.888889,
+      "configured_weight_sum": 1.0,
+      "valid_weight_sum": 1.0,
+      "missing_inputs": [],
       "contributing_inputs": [
         "TW_EXPORT_ORDERS_YOY",
         "TW_EXPORTS_YOY",
@@ -17,6 +25,53 @@
         "TW_LEADING_INDEX_LEVEL",
         "TW_COINCIDENT_INDEX_LEVEL",
         "TW_REAL_GDP_GROWTH"
+      ],
+      "input_quality": [
+        {
+          "series_id": "TW_EXPORT_ORDERS_YOY",
+          "release_at": "2026-09-07T11:07:19.950177+00:00",
+          "stale": false
+        },
+        {
+          "series_id": "TW_EXPORTS_YOY",
+          "release_at": "2026-07-16T00:00:00+08:00",
+          "stale": true
+        },
+        {
+          "series_id": "TW_PMI",
+          "release_at": "2026-09-07T11:07:22.711820+00:00",
+          "stale": false
+        },
+        {
+          "series_id": "US_ISM_MFG_PMI",
+          "release_at": "2026-09-01T10:00:00-04:00",
+          "stale": false
+        },
+        {
+          "series_id": "US_ISM_MFG_NEW_ORDERS",
+          "release_at": "2026-09-01T10:00:00-04:00",
+          "stale": false
+        },
+        {
+          "series_id": "TW_LEADING_INDEX_MOM",
+          "release_at": "2026-09-07T23:48:50.852849+00:00",
+          "stale": false
+        },
+        {
+          "series_id": "TW_LEADING_INDEX_LEVEL",
+          "release_at": "2026-09-07T23:48:50.852849+00:00",
+          "stale": false
+        },
+        {
+          "series_id": "TW_COINCIDENT_INDEX_LEVEL",
+          "release_at": "2026-09-07T23:48:50.852849+00:00",
+          "stale": false
+        },
+        {
+          "series_id": "TW_REAL_GDP_GROWTH",
+          "release_at": "2026-09-07T06:45:07.728145+00:00",
+          "stale": false
+        }
       ],
       "source_dates": [
         "2026-07",
@@ -29,19 +84,54 @@
         "2026-07",
         "2026-Q2"
       ],
-      "stale": false,
+      "stale": true,
       "formula_version": "macro-factors-v1"
     },
     "inflation_score": {
       "value": 0.101598,
-      "confidence": 1.0,
+      "status": "NORMAL",
       "coverage": 1.0,
+      "coverage_score": 1.0,
+      "freshness_score": 1.0,
+      "quality_score": 1.0,
+      "confidence": 1.0,
+      "confidence_score": 1.0,
+      "configured_weight_sum": 1.0,
+      "valid_weight_sum": 1.0,
+      "missing_inputs": [],
       "contributing_inputs": [
         "US_CPI_YOY",
         "US_CORE_CPI_YOY",
         "US_PCE_YOY",
         "US_CORE_PCE_YOY",
         "TW_CPI_YOY"
+      ],
+      "input_quality": [
+        {
+          "series_id": "US_CPI_YOY",
+          "release_at": "2026-09-07T06:48:05.025014+00:00",
+          "stale": false
+        },
+        {
+          "series_id": "US_CORE_CPI_YOY",
+          "release_at": "2026-09-07T06:48:05.025014+00:00",
+          "stale": false
+        },
+        {
+          "series_id": "US_PCE_YOY",
+          "release_at": "2026-09-07T11:07:06.295114+00:00",
+          "stale": false
+        },
+        {
+          "series_id": "US_CORE_PCE_YOY",
+          "release_at": "2026-09-07T11:07:06.295114+00:00",
+          "stale": false
+        },
+        {
+          "series_id": "TW_CPI_YOY",
+          "release_at": "2026-09-07T11:07:22.319842+00:00",
+          "stale": false
+        }
       ],
       "source_dates": [
         "2026-07",
@@ -55,14 +145,49 @@
     },
     "liquidity_score": {
       "value": -0.06364,
-      "confidence": 1.0,
+      "status": "NORMAL",
       "coverage": 1.0,
+      "coverage_score": 1.0,
+      "freshness_score": 1.0,
+      "quality_score": 0.9,
+      "confidence": 0.9,
+      "confidence_score": 0.9,
+      "configured_weight_sum": 1.0,
+      "valid_weight_sum": 1.0,
+      "missing_inputs": [],
       "contributing_inputs": [
         "US2Y_CHANGE_20D",
         "US10Y_CHANGE_20D",
         "US_BROAD_DOLLAR_INDEX",
         "TW_M1B_YOY",
         "TW_M2_YOY"
+      ],
+      "input_quality": [
+        {
+          "series_id": "US2Y_CHANGE_20D",
+          "release_at": "2026-09-07T06:06:59.579509+00:00",
+          "stale": false
+        },
+        {
+          "series_id": "US10Y_CHANGE_20D",
+          "release_at": "2026-09-12T00:27:15.946183+00:00",
+          "stale": false
+        },
+        {
+          "series_id": "US_BROAD_DOLLAR_INDEX",
+          "release_at": "2026-09-07T06:07:06.932706+00:00",
+          "stale": false
+        },
+        {
+          "series_id": "TW_M1B_YOY",
+          "release_at": "2026-09-07T15:38:01.263002+00:00",
+          "stale": false
+        },
+        {
+          "series_id": "TW_M2_YOY",
+          "release_at": "2026-09-07T15:38:01.263002+00:00",
+          "stale": false
+        }
       ],
       "source_dates": [
         "2026-09",
@@ -76,13 +201,43 @@
     },
     "rates_score": {
       "value": -0.162852,
-      "confidence": 1.0,
+      "status": "NORMAL",
       "coverage": 1.0,
+      "coverage_score": 1.0,
+      "freshness_score": 1.0,
+      "quality_score": 0.75,
+      "confidence": 0.75,
+      "confidence_score": 0.75,
+      "configured_weight_sum": 1.0,
+      "valid_weight_sum": 1.0,
+      "missing_inputs": [],
       "contributing_inputs": [
         "US10Y_MINUS_US2Y",
         "US10Y_CHANGE_20D",
         "TW_POLICY_RATE",
         "TW10Y_CHANGE_20D"
+      ],
+      "input_quality": [
+        {
+          "series_id": "US10Y_MINUS_US2Y",
+          "release_at": "2026-09-03T23:59:59+00:00",
+          "stale": false
+        },
+        {
+          "series_id": "US10Y_CHANGE_20D",
+          "release_at": "2026-09-12T00:27:15.946183+00:00",
+          "stale": false
+        },
+        {
+          "series_id": "TW_POLICY_RATE",
+          "release_at": "2026-09-07T15:38:01.263002+00:00",
+          "stale": false
+        },
+        {
+          "series_id": "TW10Y_CHANGE_20D",
+          "release_at": "2026-09-07T15:38:01.263002+00:00",
+          "stale": false
+        }
       ],
       "source_dates": [
         "2026-09-03",
@@ -95,13 +250,43 @@
     },
     "fx_score": {
       "value": -0.110594,
-      "confidence": 1.0,
+      "status": "NORMAL",
       "coverage": 1.0,
+      "coverage_score": 1.0,
+      "freshness_score": 1.0,
+      "quality_score": 0.75,
+      "confidence": 0.75,
+      "confidence_score": 0.75,
+      "configured_weight_sum": 1.0,
+      "valid_weight_sum": 1.0,
+      "missing_inputs": [],
       "contributing_inputs": [
         "USD_TWD_CBC_CHANGE_20D",
         "USD_TWD_CHANGE_20D",
         "US_BROAD_DOLLAR_INDEX",
         "DXY_CHANGE_20D"
+      ],
+      "input_quality": [
+        {
+          "series_id": "USD_TWD_CBC_CHANGE_20D",
+          "release_at": "2026-09-07T15:38:01.263002+00:00",
+          "stale": false
+        },
+        {
+          "series_id": "USD_TWD_CHANGE_20D",
+          "release_at": "2026-09-12T00:27:16.043562+00:00",
+          "stale": false
+        },
+        {
+          "series_id": "US_BROAD_DOLLAR_INDEX",
+          "release_at": "2026-09-07T06:07:06.932706+00:00",
+          "stale": false
+        },
+        {
+          "series_id": "DXY_CHANGE_20D",
+          "release_at": "2026-09-12T00:27:16.058211+00:00",
+          "stale": false
+        }
       ],
       "source_dates": [
         "2025-12-31",
@@ -114,14 +299,49 @@
     },
     "risk_score": {
       "value": 0.004667,
-      "confidence": 1.0,
+      "status": "NORMAL",
       "coverage": 1.0,
+      "coverage_score": 1.0,
+      "freshness_score": 1.0,
+      "quality_score": 0.8,
+      "confidence": 0.8,
+      "confidence_score": 0.8,
+      "configured_weight_sum": 1.0,
+      "valid_weight_sum": 1.0,
+      "missing_inputs": [],
       "contributing_inputs": [
         "VIX",
         "US_BROAD_DOLLAR_INDEX",
         "TW_MONITORING_SCORE",
         "WTI_CHANGE_20D",
         "TW_UNEMPLOYMENT_RATE"
+      ],
+      "input_quality": [
+        {
+          "series_id": "VIX",
+          "release_at": "2026-09-12T00:27:16.041997+00:00",
+          "stale": false
+        },
+        {
+          "series_id": "US_BROAD_DOLLAR_INDEX",
+          "release_at": "2026-09-07T06:07:06.932706+00:00",
+          "stale": false
+        },
+        {
+          "series_id": "TW_MONITORING_SCORE",
+          "release_at": "2026-09-07T23:48:50.852849+00:00",
+          "stale": false
+        },
+        {
+          "series_id": "WTI_CHANGE_20D",
+          "release_at": "2026-09-12T00:27:15.956404+00:00",
+          "stale": false
+        },
+        {
+          "series_id": "TW_UNEMPLOYMENT_RATE",
+          "release_at": "2026-09-07T06:45:08.214296+00:00",
+          "stale": false
+        }
       ],
       "source_dates": [
         "2026-09-11",

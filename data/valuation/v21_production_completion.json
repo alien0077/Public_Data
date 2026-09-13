@@ -1,0 +1,51 @@
+{
+  "schema_version": "v21-production-completion-v1",
+  "production_completion": "PASS",
+  "external_enhancement_readiness": "PARTIAL",
+  "release_gate_safe": true,
+  "gates": {
+    "analyst": {
+      "production_safety": "PASS",
+      "readiness": "PASS",
+      "blend_enabled": false,
+      "documents": 3,
+      "events": 3,
+      "consensus": 3,
+      "reason": "analyst corpus present"
+    },
+    "catalyst": {
+      "production_safety": "PASS",
+      "readiness": "NOT_READY_UNCALIBRATED",
+      "observations": 0,
+      "nonzero_stock_count": 0,
+      "unsafe_uncalibrated_stock_count": 0,
+      "unsafe_examples": [],
+      "reason": "uncalibrated catalyst is excluded from production valuation"
+    },
+    "macro": {
+      "production_safety": "PASS",
+      "readiness": "NOT_READY_SHADOW_ONLY",
+      "unsafe_stock_count": 0,
+      "unsafe_examples": [],
+      "reason": "macro overlay remains observational with zero production adjustment"
+    },
+    "news": {
+      "production_safety": "PASS",
+      "readiness": "PASS",
+      "eligible_coverage": 0.93701,
+      "minimum_eligible_coverage": 0.9,
+      "article_text_ok": 4418,
+      "article_deferred": 189,
+      "article_no_extractable_text": 14536,
+      "article_unmaterialized": 0,
+      "validator_errors": [],
+      "reason": "eligible publisher-backed article coverage meets threshold; unresolved rows are explicit deferred/no-extractable states"
+    }
+  },
+  "policy": {
+    "analyst_reference": "optional while analyst_blend_enabled=false",
+    "catalyst_calibration": "optional only when uncalibrated catalyst contributes zero to production FV",
+    "macro_pit": "optional while macro_overlay_enabled=false and adjustment/deltas are zero",
+    "news_text": "PASS at >= 90% eligible publisher-backed coverage with no silent unmaterialized article rows"
+  }
+}
