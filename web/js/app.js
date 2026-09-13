@@ -397,15 +397,17 @@ document.addEventListener('DOMContentLoaded', () => {
             const refPrice = parseFloat(q.referencePrice || price);
             const shares = parseFloat(h.shares || 0);
             const avgCost = shares > 0 ? (h.totalCost / shares) : 0;
-            const mv = price > 0 ? (price * shares) : (avgCost * shares);
+            const mv = price > 0 ? (price * shares) : null;
             
-            totalMV += mv;
-            totalYtdBasis += (h.ytdBasis || h.totalCost);
-            totalRefMV += (refPrice > 0 ? (refPrice * shares) : mv);
-            totalCost += h.totalCost;
+            if (mv != null) totalMV += mv;
+            if (price > 0) {
+                totalYtdBasis += (h.ytdBasis || h.totalCost);
+                totalRefMV += (refPrice > 0 ? (refPrice * shares) : mv);
+                totalCost += h.totalCost;
+            }
 
-            const pnl = price > 0 ? (mv - h.totalCost) : 0;
-            const roi = h.totalCost > 0 ? (pnl / h.totalCost * 100) : 0;
+            const pnl = price > 0 ? (mv - h.totalCost) : null;
+            const roi = pnl != null && h.totalCost > 0 ? (pnl / h.totalCost * 100) : null;
             const pct = (price > 0 && refPrice > 0) ? ((price - refPrice) / refPrice * 100) : 0;
 
             const style = getPriceChangeStyle(price, refPrice, sym);
@@ -419,7 +421,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const health = healthDataMap[sym];
             const fairValue = fairValueMap[sym.split('.')[0]];
             const support = supportMap[sym] || {};
-            const healthScore = health?.health_score;
+            const rawHealthScore = Number(health?.health_score);
+            const healthScore = Number.isFinite(rawHealthScore) && rawHealthScore >= 0 && rawHealthScore <= 100 ? rawHealthScore : null;
 
             const adviceClass = quant.advice === 'HOLD' ? 'bg-green-500/20 text-green-400' :
                 quant.advice === 'REDUCE' ? 'bg-yellow-500/20 text-yellow-400' :
@@ -519,9 +522,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 const q = quotes[sym] || quotes[sym.split('.')[0]] || {};
                 const price = parseFloat(q.price || 0);
                 const shares = parseFloat(h.shares || 0);
-                const mv = price > 0 ? (price * shares) : (h.totalCost || 0);
-                if (!isNaN(mv)) totalMV += mv;
-                if (!isNaN(h.totalCost)) totalCost += h.totalCost;
+                const mv = price > 0 ? (price * shares) : null;
+                if (mv != null && !isNaN(mv)) totalMV += mv;
+                if (price > 0 && !isNaN(h.totalCost)) totalCost += h.totalCost;
                 const actions = (CorporateActions && typeof CorporateActions.getActions === 'function') ? (CorporateActions.getActions(sym) || []) : [];
                 const allDividendActions = actions.filter(a => a.ex_date && (a.type === 'DIVIDEND' || a.type === 'CASH_DIVIDEND') && a.cash_dividend > 0)
                     .sort((a, b) => (b.ex_date || '').localeCompare(a.ex_date || ''));
@@ -579,7 +582,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const q = quotes[sym] || quotes[sym.split('.')[0]] || {};
                 const price = parseFloat(q.price || 0);
                 const shares = parseFloat(h.shares || 0);
-                const mv = price > 0 ? (price * shares) : (h.totalCost || 0);
+                const mv = price > 0 ? (price * shares) : null;
                 if (mv > 0) cashflows.push({ date: new Date(), amount: mv });
             });
             let irr = 0;
@@ -680,12 +683,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             } catch(e) {}
             const getStatusBadge = (status) => {
-                const map = { 'LIE': { label: '說謊', color: 'bg-red-500', icon: '🐜' }, 'HONEST': { label: '誠實', color: 'bg-green-500', icon: '✅' }, 'PENDING': { label: '追蹤中', color: 'bg-orange-500', icon: '🕒' } };
+                const map = { 'LIE': { label: '待驗證差異', color: 'bg-red-500', icon: '⚠️' }, 'HONEST': { label: '已驗證一致', color: 'bg-green-500', icon: '✅' }, 'PENDING': { label: '追蹤中', color: 'bg-orange-500', icon: '🕒' } };
                 const s = map[status] || map['PENDING'];
                 return '<span class="' + s.color + ' text-white text-[10px] px-2 py-0.5 rounded-full font-bold flex items-center shadow-sm"><span class="mr-1">' + s.icon + '</span>' + s.label + '</span>';
             };
             const renderCard = (item) => {
-                const name = stocksMeta[item.stockId] || stocksMeta[item.stockId.split('.')[0]] || '';
+                const name = stocksMeta[item.stockId] || stocksMeta[item.stockId.split('.')[0]] || item.stockId;
                 const isUpgrade = item.sentiment === 'bullish';
                 const sentimentColor = isUpgrade ? 'text-red-500' : 'text-green-500';
                 return '<div class="liar-marquee-card p-4 bg-white dark:bg-[#161b22] rounded-2xl border border-gray-200 dark:border-gray-800 cursor-pointer hover:border-blue-500/50 transition-all shadow-sm group" onclick="window.StockDetail.show(\'' + item.stockId + '\')">' +
@@ -805,7 +808,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             const d = riskData.stocks?.[0] || riskData.data?.[0] || riskData;
-            if (!d || !d.risk_score) {
+            if (!d || d.risk_score == null) {
                 section.classList.add('hidden');
                 return;
             }
@@ -815,17 +818,21 @@ document.addEventListener('DOMContentLoaded', () => {
             const riskScore = d.risk_score;
             const status = d.status || '--';
             const sentiment = d.retail_sentiment || '計算中';
-            const marginRatio = d.margin_ratio || 1.0;
-            const marginBalance = d.margin_balance || 0;
-            const shortBalance = d.short_balance || 0;
-            const shortMarginRatio = d.short_margin_ratio || 0;
+            const marginRatioValue = Number(d.margin_ratio);
+            const marginRatio = Number.isFinite(marginRatioValue) && marginRatioValue > 0 ? marginRatioValue : null;
+            const marginBalanceValue = Number(d.margin_balance);
+            const marginBalance = Number.isFinite(marginBalanceValue) ? marginBalanceValue : null;
+            const shortBalanceValue = Number(d.short_balance);
+            const shortBalance = Number.isFinite(shortBalanceValue) ? shortBalanceValue : null;
+            const shortMarginRatioValue = Number(d.short_margin_ratio);
+            const shortMarginRatio = Number.isFinite(shortMarginRatioValue) ? shortMarginRatioValue : null;
             const summaryText = d.summary_text || '';
 
             const scoreColor = riskScore < 30 ? 'text-green-500' : riskScore < 50 ? 'text-blue-500' : riskScore < 70 ? 'text-orange-500' : 'text-red-500';
             const statusColor = riskScore < 30 ? 'bg-green-500' : riskScore < 50 ? 'bg-blue-500' : riskScore < 70 ? 'bg-orange-500' : 'bg-red-500';
             const sentimentColor = sentiment === '市場情緒過熱' ? 'text-red-500' : sentiment === '散戶偏積極' ? 'text-orange-500' : sentiment === '籌碼冷清' ? 'text-blue-500' : 'text-green-500';
             const sentimentBg = sentiment === '市場情緒過熱' ? 'bg-red-500/10' : sentiment === '散戶偏積極' ? 'bg-orange-500/10' : sentiment === '籌碼冷清' ? 'bg-blue-500/10' : 'bg-green-500/10';
-            const marginBarColor = marginRatio > 1.1 ? 'bg-red-500' : marginRatio > 1.05 ? 'bg-orange-500' : marginRatio < 0.9 ? 'bg-blue-500' : 'bg-green-500';
+            const marginBarColor = marginRatio == null ? 'bg-gray-400' : marginRatio > 1.1 ? 'bg-red-500' : marginRatio > 1.05 ? 'bg-orange-500' : marginRatio < 0.9 ? 'bg-blue-500' : 'bg-green-500';
 
             // 取得近一週融資歷史資料
             let marginHistory = [];
@@ -875,15 +882,15 @@ document.addEventListener('DOMContentLoaded', () => {
                         <div class="grid grid-cols-3 gap-4 pt-2">
                             <div class="text-center">
                                 <div class="text-[9px] text-gray-400 uppercase">融資餘額</div>
-                                <div class="text-base font-mono font-bold">${(marginBalance / 100000000).toFixed(0)}<span class="text-[9px] text-gray-400"> 億</span></div>
+                                <div class="text-base font-mono font-bold">${marginBalance == null ? '資料不足' : (marginBalance / 100000000).toFixed(0)}${marginBalance == null ? '' : '<span class="text-[9px] text-gray-400"> 億</span>'}</div>
                             </div>
                             <div class="text-center">
                                 <div class="text-[9px] text-gray-400 uppercase">融券餘額</div>
-                                <div class="text-base font-mono font-bold">${(shortBalance / 10000).toFixed(1)}<span class="text-[9px] text-gray-400"> 萬張</span></div>
+                                <div class="text-base font-mono font-bold">${shortBalance == null ? '資料不足' : (shortBalance / 10000).toFixed(1)}${shortBalance == null ? '' : '<span class="text-[9px] text-gray-400"> 萬張</span>'}</div>
                             </div>
                             <div class="text-center">
                                 <div class="text-[9px] text-gray-400 uppercase">券資比</div>
-                                <div class="text-base font-mono font-bold">${shortMarginRatio.toFixed(1)}<span class="text-[9px] text-gray-400">%</span></div>
+                                <div class="text-base font-mono font-bold">${shortMarginRatio == null ? '資料不足' : shortMarginRatio.toFixed(1) + '<span class="text-[9px] text-gray-400">%</span>'}</div>
                             </div>
                         </div>
                         <!-- 近一週融資餘額曲線 -->
@@ -899,12 +906,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="mt-4 pt-4 border-t border-gray-100 dark:border-gray-800 space-y-2">
                     <div class="flex justify-between items-center">
                         <span class="text-[10px] text-gray-500">融資水位 (vs MA20)</span>
-                        <span class="text-[10px] font-bold font-mono">${(marginRatio * 100).toFixed(1)}%</span>
+                        <span class="text-[10px] font-bold font-mono">${marginRatio == null ? '資料不足' : (marginRatio * 100).toFixed(1) + '%'}</span>
                     </div>
                     <div class="w-full h-2 bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden">
-                        <div class="h-full rounded-full ${marginBarColor}" style="width: ${Math.min(100, marginRatio / 1.5 * 100)}%"></div>
+                        <div class="h-full rounded-full ${marginBarColor}" style="width: ${marginRatio == null ? 0 : Math.min(100, marginRatio / 1.5 * 100)}%"></div>
                     </div>
-                    <div class="text-[8px] text-gray-400 leading-relaxed">融資水位 = 目前融資餘額 / MA20 月均線。>100% 表示融資增加（散戶偏多），<100% 表示融資減少（散戶偏空）。</div>
+                    <div class="text-[8px] text-gray-400 leading-relaxed">融資水位 = 目前融資餘額 / MA20 月均線；僅描述融資餘額相對基準的觀測結果，不推論投資人身份。</div>
                     ${d.maintenance_rate ? `
                     <div class="flex justify-between items-center pt-1">
                         <span class="text-[10px] text-gray-500">融資維持率</span>

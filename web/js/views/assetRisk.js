@@ -67,7 +67,7 @@ export const AssetRisk = {
                         <p class="text-gray-500 mt-1 text-sm">${config.description}</p>
                     </div>
                     <div class="text-[10px] text-gray-400 font-mono bg-gray-100 dark:bg-gray-800 px-3 py-1 rounded-full">
-                        Update: ${new Date().toLocaleDateString()}
+                        頁面載入：${new Date().toLocaleDateString()}
                     </div>
                 </div>
             </div>
@@ -213,22 +213,31 @@ export const AssetRisk = {
         });
 
         let totalMarketValue = 0;
-        const processed = symbols.map(sym => {
+        const allocationRows = symbols.map(sym => {
             const h = holdings[sym];
             const q = quotes[sym] || {};
-            const price = q.price || (h.totalCost / h.shares);
-            const mv = price * h.shares;
-            totalMarketValue += mv;
+            const quotePrice = Number(q.price);
+            const price = Number.isFinite(quotePrice) && quotePrice > 0 ? quotePrice : null;
+            const mv = price == null ? null : price * h.shares;
+            if (mv != null) totalMarketValue += mv;
             const meta = stockMap[String(sym).toUpperCase()] || stockMap[this.baseSymbol(sym)] || {};
             const name = this.resolveStockName(sym, q, meta, h);
             return { symbol: sym, name, shares: h.shares, avgCost: h.totalCost / h.shares, price, marketValue: mv, industry: meta.industry || meta.sector || '其他' };
         });
+        const missingQuoteCount = allocationRows.filter(item => item.marketValue == null).length;
+        const processed = allocationRows.filter(item => item.marketValue != null);
+
+        if (processed.length === 0 || totalMarketValue <= 0) {
+            container.innerHTML = '<div class="p-8 text-center text-gray-500">持股報價尚未載入，暫無法計算市值配置；成本不會代替現價。</div>';
+            return;
+        }
 
         processed.sort((a, b) => b.marketValue - a.marketValue);
         container.innerHTML = `
             <div class="p-4 border-b border-gray-100 dark:border-gray-800 flex justify-between items-center bg-gray-50/50 dark:bg-gray-900/50">
                 <span class="text-sm font-bold text-gray-900 dark:text-white">持股比例與產業分佈</span>
             </div>
+            ${missingQuoteCount > 0 ? `<div class="px-4 pt-3 text-xs text-amber-700 dark:text-amber-300">${missingQuoteCount} 檔缺少有效現價，已排除市值比例；成本均價不代替現價。</div>` : ''}
             <div id="allocation-chart-inner" class="w-full min-h-[380px]"></div>
             <div class="border-t border-gray-100 dark:border-gray-800 overflow-x-auto">
                 <table class="w-full text-left text-xs font-mono">
@@ -305,14 +314,22 @@ export const AssetRisk = {
             const quotes = await api.fetchQuotes(activeSymbols).catch(() => ({}));
             
             let totalMV = 0;
-            const processed = activeSymbols.map(sym => {
+            const riskRows = activeSymbols.map(sym => {
                 const h = holdings[sym];
                 const q = quotes[sym] || {};
-                const price = q.price || (h.totalCost / h.shares);
-                const mv = price * h.shares;
-                totalMV += mv;
-                return { symbol: sym, marketValue: mv, beta: 1.0 };
+                const quotePrice = Number(q.price);
+                const price = Number.isFinite(quotePrice) && quotePrice > 0 ? quotePrice : null;
+                const mv = price == null ? null : price * h.shares;
+                if (mv != null) totalMV += mv;
+                return { symbol: sym, marketValue: mv };
             });
+            const missingQuoteCount = riskRows.filter(item => item.marketValue == null).length;
+            const processed = riskRows.filter(item => item.marketValue != null);
+
+            if (processed.length === 0 || totalMV <= 0) {
+                container.innerHTML = '<div class="p-8 text-center text-gray-500">持股報價尚未載入，暫無法進行風險評估；成本不會代替現價。</div>';
+                return;
+            }
 
             // Calculate peak equity (mocked with current or from localStorage)
             let peakMV = parseFloat(localStorage.getItem('twstock_peak_mv') || totalMV);
@@ -362,6 +379,7 @@ export const AssetRisk = {
                             </div>
                         </div>
                     </div>
+                    ${missingQuoteCount > 0 ? `<div class="text-xs text-amber-700 dark:text-amber-300">${missingQuoteCount} 檔持股缺少有效現價，未納入風險與情境計算；成本均價不代替現價。</div>` : ''}
 
                     <div class="bg-white dark:bg-[#161b22] rounded-2xl border border-gray-200 dark:border-gray-800 p-6">
                         <h4 class="font-bold mb-4 flex items-center">
@@ -559,49 +577,42 @@ export const AssetRisk = {
         const holdings = this.calculateHoldings(trades);
         const symbols = Object.keys(holdings);
         let totalMV = 0, totalCost = 0;
+        let missingQuoteCount = 0;
         const quotes = await api.fetchQuotes(symbols).catch(() => ({}));
         symbols.forEach(sym => {
             const h = holdings[sym];
             const q = quotes[sym] || {};
-            const price = q.price || (h.totalCost / h.shares);
+            const quotePrice = Number(q.price);
+            if (!Number.isFinite(quotePrice) || quotePrice <= 0) {
+                missingQuoteCount += 1;
+                return;
+            }
+            const price = quotePrice;
             totalMV += price * h.shares;
             totalCost += h.totalCost;
         });
-        const totalReturn = totalCost > 0 ? ((totalMV - totalCost) / totalCost * 100) : 0;
+        const totalReturn = totalCost > 0 && totalMV > 0 ? ((totalMV - totalCost) / totalCost * 100) : null;
 
         container.innerHTML = `
             <div class="p-6 space-y-8 flex-1 overflow-y-auto">
+                ${missingQuoteCount > 0 ? `<div class="text-xs text-amber-700 dark:text-amber-300">${missingQuoteCount} 檔缺少有效現價，未納入績效計算；成本均價不代替現價。</div>` : ''}
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <div class="bg-gray-50 dark:bg-gray-900 p-6 rounded-2xl border border-gray-100 dark:border-gray-800 text-center">
                         <div class="text-[10px] text-gray-500 mb-2 font-bold uppercase">總報酬率</div>
-                        <div class="text-2xl font-bold font-mono ${totalReturn >= 0 ? 'text-red-500' : 'text-green-500'}">${totalReturn.toFixed(2)}%</div>
+                        <div class="text-2xl font-bold font-mono ${totalReturn == null ? 'text-gray-500' : totalReturn >= 0 ? 'text-red-500' : 'text-green-500'}">${totalReturn == null ? '資料不足' : `${totalReturn.toFixed(2)}%`}</div>
                     </div>
                     <div class="bg-gray-50 dark:bg-gray-900 p-6 rounded-2xl border border-gray-100 dark:border-gray-800 text-center">
                         <div class="text-[10px] text-gray-500 mb-2 font-bold uppercase">大盤對比 (YTD)</div>
-                        <div class="text-2xl font-bold font-mono text-blue-500">+15.4%</div>
+                        <div class="text-2xl font-bold font-mono text-gray-500">資料不足</div>
                     </div>
                     <div class="bg-gray-50 dark:bg-gray-900 p-6 rounded-2xl border border-gray-100 dark:border-gray-800 text-center">
                         <div class="text-[10px] text-gray-500 mb-2 font-bold uppercase">Alpha</div>
-                        <div class="text-2xl font-bold font-mono text-purple-500">${(totalReturn - 15.4).toFixed(2)}%</div>
+                        <div class="text-2xl font-bold font-mono text-gray-500">資料不足</div>
                     </div>
                 </div>
-                <div id="performance-chart" class="w-full h-80 bg-white dark:bg-[#161b22] rounded-2xl border border-gray-200 dark:border-gray-800 p-4"></div>
+                <div class="w-full min-h-32 bg-white dark:bg-[#161b22] rounded-2xl border border-gray-200 dark:border-gray-800 p-6 text-sm text-gray-500">尚未取得按日期的組合資產曲線，暫不繪製推算曲線。總報酬率僅反映目前有效報價與交易成本資料。</div>
             </div>
         `;
-        
-        setTimeout(() => {
-            const chartDom = document.getElementById('performance-chart');
-            if (!chartDom) return;
-            const isDark = document.documentElement.classList.contains('dark');
-            const myChart = echarts.init(chartDom, isDark ? 'dark' : null);
-            myChart.setOption({
-                backgroundColor: 'transparent',
-                tooltip: { trigger: 'axis' },
-                xAxis: { type: 'category', data: ['5/1', '5/5', '5/10', '5/15', '5/20'], axisLabel: { color: isDark ? '#8b949e' : '#333' } },
-                yAxis: { type: 'value', axisLabel: { color: isDark ? '#8b949e' : '#333' }, splitLine: { lineStyle: { color: isDark ? '#30363d' : '#e0e0e0' } } },
-                series: [{ name: '我的投資組合', type: 'line', data: [0, totalReturn*0.3, totalReturn*0.6, totalReturn*0.8, totalReturn], smooth: true, itemStyle: { color: '#ef4444' } }]
-            });
-        }, 100);
     },
 
     async initSimulation(container) {

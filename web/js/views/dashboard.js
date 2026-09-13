@@ -60,7 +60,7 @@ export const Dashboard = {
                         <div class="bg-white dark:bg-[#161b22] rounded-2xl border border-gray-200 dark:border-gray-800 overflow-hidden shadow-sm">
                             <div class="p-5 border-b border-gray-100 dark:border-gray-800 flex justify-between items-center">
                                 <h3 class="font-bold text-gray-900 dark:text-white flex items-center">
-                                    <span class="mr-2">🔥</span> 外資口是心非偵測
+                                    <span class="mr-2">🔥</span> 外資言行差異
                                 </h3>
                             </div>
                             <div class="p-5 space-y-4" id="dashboard-liar-summary">
@@ -112,12 +112,14 @@ export const Dashboard = {
             console.warn('Dashboard: Could not fetch index.json');
         }
 
-        const latestMargin = indexData?.latest_daily_tw_market_margin || '2026-05-20';
+        const latestMargin = indexData?.latest_daily_tw_market_margin || null;
         const indexSymbols = ['IX0001', 'IX0043', '^DJI', '^IXIC', '^GSPC', '^SOX', 'TSM']; 
         
         try {
             const quotesPromise = api.fetchQuotes(indexSymbols).catch(err => { console.error('Dashboard: fetchQuotes failed', err); return {}; });
-            const marginPromise = api.fetchLocalJson(`daily/tw_market_margin/${latestMargin}.json`).catch(() => null);
+            const marginPromise = latestMargin
+                ? api.fetchLocalJson(`daily/tw_market_margin/${latestMargin}.json`).catch(() => null)
+                : Promise.resolve(null);
             const liarPromise = api.fetchLocalJson('daily/liar.json').catch(() => null);
             const quantPromise = api.fetchLocalJson('quant/latest_portfolio.json').catch(() => null);
             const tradesPromise = db.getAllTrades().catch(() => []);
@@ -183,7 +185,7 @@ export const Dashboard = {
             const num = parseFloat(val);
             return isNaN(num) || num === 0 ? '--' : num.toLocaleString(undefined, {minimumFractionDigits: 1, maximumFractionDigits: 1});
         };
-        const getPctColor = (pct) => parseFloat(pct || 0) >= 0 ? 'text-red-500' : 'text-green-500';
+        const getPctColor = (pct) => Number.isFinite(parseFloat(pct)) ? (parseFloat(pct) >= 0 ? 'text-red-500' : 'text-green-500') : 'text-gray-500';
 
         const getItem = (sym) => {
             const clean = sym.replace('^', '').toUpperCase();
@@ -192,7 +194,7 @@ export const Dashboard = {
                         quotes[clean] || 
                         (clean === 'IX0001' ? (quotes['TSE'] || quotes['^TWII'] || quotes['TWII']) : null) ||
                         (clean === 'IX0043' ? (quotes['OTC'] || quotes['^TWOII'] || quotes['TWOII']) : null) ||
-                        { price: 0, changePercent: 0, source: 'N/A', date: '--' };
+                        { price: 0, changePercent: null, source: 'N/A', date: '--' };
             return res;
         };
 
@@ -212,8 +214,8 @@ export const Dashboard = {
 
         const formatPct = (val) => {
             const num = parseFloat(val);
-            if (isNaN(num)) return '0.00';
-            return (num >= 0 ? '+' : '') + num.toFixed(2);
+            if (!Number.isFinite(num)) return '資料不足';
+            return (num >= 0 ? '+' : '') + num.toFixed(2) + '%';
         };
 
         container.innerHTML = `
@@ -226,17 +228,17 @@ export const Dashboard = {
                     <div>
                         <div class="text-[9px] text-gray-500 mb-0.5 flex items-center truncate">加權 ${getDateBadge(tse)}</div>
                         <div class="text-xl font-mono font-bold text-gray-900 dark:text-white">${formatIdx(tse.price)}</div>
-                        <div class="${getPctColor(tse.changePercent)} font-mono font-bold text-xs">${formatPct(tse.changePercent)}%</div>
+                        <div class="${getPctColor(tse.changePercent)} font-mono font-bold text-xs">${formatPct(tse.changePercent)}</div>
                     </div>
                     <div>
                         <div class="text-[9px] text-gray-500 mb-0.5 flex items-center truncate">櫃買 ${getDateBadge(otc)}</div>
                         <div class="text-xl font-mono font-bold text-gray-900 dark:text-white">${formatIdx(otc.price)}</div>
-                        <div class="${getPctColor(otc.changePercent)} font-mono font-bold text-xs">${formatPct(otc.changePercent)}%</div>
+                        <div class="${getPctColor(otc.changePercent)} font-mono font-bold text-xs">${formatPct(otc.changePercent)}</div>
                     </div>
                 </div>
                 <div class="mt-4 pt-3 border-t border-gray-100 dark:border-gray-800 flex justify-between items-center">
                     <span class="text-[10px] text-gray-400 font-bold">市場融資餘額</span>
-                    <span class="text-xs font-mono font-bold text-blue-500">${((marginData?.stocks?.[0]?.total_margin_balance || 0) / 100000000).toFixed(0)} 億</span>
+                    <span class="text-xs font-mono font-bold text-blue-500">${Number.isFinite(Number(marginData?.stocks?.[0]?.total_margin_balance)) ? (Number(marginData.stocks[0].total_margin_balance) / 100000000).toFixed(0) + ' 億' : '資料不足'}</span>
                 </div>
             </div>
 
@@ -249,27 +251,27 @@ export const Dashboard = {
                     <div class="p-1 min-w-0">
                         <div class="text-[9px] text-gray-500 mb-0.5 flex items-center truncate">道瓊 ${getDateBadge(dji)}</div>
                         <div class="text-base font-mono font-bold text-gray-900 dark:text-white">${formatIdx(dji.price)}</div>
-                        <div class="${getPctColor(dji.changePercent)} text-[10px] font-mono font-bold">${formatPct(dji.changePercent)}%</div>
+                        <div class="${getPctColor(dji.changePercent)} text-[10px] font-mono font-bold">${formatPct(dji.changePercent)}</div>
                     </div>
                     <div class="p-1 min-w-0">
                         <div class="text-[9px] text-gray-500 mb-0.5 flex items-center truncate">標普 ${getDateBadge(sp500)}</div>
                         <div class="text-base font-mono font-bold text-gray-900 dark:text-white">${formatIdx(sp500.price)}</div>
-                        <div class="${getPctColor(sp500.changePercent)} text-[10px] font-mono font-bold">${formatPct(sp500.changePercent)}%</div>
+                        <div class="${getPctColor(sp500.changePercent)} text-[10px] font-mono font-bold">${formatPct(sp500.changePercent)}</div>
                     </div>
                     <div class="p-1 min-w-0">
                         <div class="text-[9px] text-gray-500 mb-0.5 flex items-center truncate">納指 ${getDateBadge(nasdaq)}</div>
                         <div class="text-base font-mono font-bold text-gray-900 dark:text-white">${formatIdx(nasdaq.price)}</div>
-                        <div class="${getPctColor(nasdaq.changePercent)} text-[10px] font-mono font-bold">${formatPct(nasdaq.changePercent)}%</div>
+                        <div class="${getPctColor(nasdaq.changePercent)} text-[10px] font-mono font-bold">${formatPct(nasdaq.changePercent)}</div>
                     </div>
                     <div class="bg-blue-500/5 p-1.5 rounded-xl border border-blue-500/10 min-w-0">
                         <div class="text-[10px] text-blue-600 font-bold mb-1 flex items-center text-xs">費半 ${getDateBadge(sox)}</div>
                         <div class="text-base font-mono font-bold text-gray-900 dark:text-white">${formatIdx(sox.price)}</div>
-                        <div class="${getPctColor(sox.changePercent)} text-[10px] font-mono font-bold">${formatPct(sox.changePercent)}%</div>
+                        <div class="${getPctColor(sox.changePercent)} text-[10px] font-mono font-bold">${formatPct(sox.changePercent)}</div>
                     </div>
                     <div class="bg-red-500/5 p-1.5 rounded-xl border border-red-500/10 min-w-0">
                         <div class="text-[10px] text-red-600 font-bold mb-1 flex items-center text-xs">台積 ADR ${getDateBadge(tsm)}</div>
                         <div class="text-base font-mono font-bold text-gray-900 dark:text-white">${formatIdx(tsm.price)}</div>
-                        <div class="${getPctColor(tsm.changePercent)} text-[10px] font-mono font-bold">${formatPct(tsm.changePercent)}%</div>
+                        <div class="${getPctColor(tsm.changePercent)} text-[10px] font-mono font-bold">${formatPct(tsm.changePercent)}</div>
                     </div>
                 </div>
             </div>
@@ -283,7 +285,7 @@ export const Dashboard = {
         if (!dashboardSummary) return;
 
         if (!data || !data.data || data.data.length === 0) {
-            dashboardSummary.innerHTML = `<div class="text-center py-4 text-gray-500 text-sm">目前無偵測到說謊事件。</div>`;
+            dashboardSummary.innerHTML = `<div class="text-center py-4 text-gray-500 text-sm">目前沒有可呈現的外資言行差異。</div>`;
             return;
         }
 
@@ -297,8 +299,8 @@ export const Dashboard = {
 
         const getStatusBadge = (status) => {
             const map = {
-                'LIE': { label: '說謊', color: 'bg-red-500', icon: '🐜' },
-                'HONEST': { label: '誠實', color: 'bg-green-500', icon: '✅' },
+                'LIE': { label: '待驗證差異', color: 'bg-red-500', icon: '⚠️' },
+                'HONEST': { label: '已驗證一致', color: 'bg-green-500', icon: '✅' },
                 'PENDING': { label: '追蹤中', color: 'bg-orange-500', icon: '🕒' }
             };
             const s = map[status] || map['PENDING'];
@@ -308,7 +310,7 @@ export const Dashboard = {
         };
 
         const renderCard = (item) => {
-            const name = stocksMeta[item.stockId] || stocksMeta[item.stockId.split('.')[0]] || '';
+            const name = stocksMeta[item.stockId] || stocksMeta[item.stockId.split('.')[0]] || item.stockId;
             const isUpgrade = item.sentiment === 'bullish';
             const sentimentColor = isUpgrade ? 'text-red-500' : 'text-green-500';
             return `
@@ -591,29 +593,37 @@ export const Dashboard = {
         }
 
         let totalMV = 0;
+        let missingQuoteCount = 0;
         const quotes = await api.fetchQuotes(activeSymbols).catch(() => ({}));
         activeSymbols.forEach(sym => {
             const h = holdings[sym];
-            totalMV += (quotes[sym]?.price || (h.totalCost / h.shares)) * h.shares;
+            const quotePrice = Number(quotes[sym]?.price);
+            if (!Number.isFinite(quotePrice) || quotePrice <= 0) {
+                missingQuoteCount += 1;
+                return;
+            }
+            totalMV += quotePrice * h.shares;
         });
 
-        let peakMV = parseFloat(localStorage.getItem('twstock_peak_mv') || totalMV);
-        if (totalMV > peakMV) { peakMV = totalMV; localStorage.setItem('twstock_peak_mv', peakMV.toString()); }
-        const drawdown = peakMV > 0 ? (peakMV - totalMV) / peakMV : 0;
+        const hasCompleteMarketValue = missingQuoteCount === 0 && totalMV > 0;
+        let peakMV = hasCompleteMarketValue ? parseFloat(localStorage.getItem('twstock_peak_mv') || totalMV) : null;
+        if (hasCompleteMarketValue && totalMV > peakMV) { peakMV = totalMV; localStorage.setItem('twstock_peak_mv', peakMV.toString()); }
+        const drawdown = hasCompleteMarketValue && peakMV > 0 ? (peakMV - totalMV) / peakMV : null;
 
         if (riskEl) {
             riskEl.innerHTML = `
+                ${missingQuoteCount > 0 ? `<div class="mb-3 text-xs text-amber-700 dark:text-amber-300">${missingQuoteCount} 檔缺少有效現價，回撤暫不計算；成本均價不代替現價。</div>` : ''}
                 <div class="flex justify-between items-center mb-4">
                     <div>
                         <div class="text-xs text-gray-500 mb-1 uppercase font-bold">目前回撤</div>
-                        <div class="text-3xl font-mono font-bold text-gray-900 dark:text-white">${(drawdown * 100).toFixed(2)}%</div>
+                        <div class="text-3xl font-mono font-bold text-gray-900 dark:text-white">${drawdown == null ? '資料不足' : `${(drawdown * 100).toFixed(2)}%`}</div>
                     </div>
                     <div class="text-right">
                         <div class="text-xs text-gray-500 mb-1 uppercase font-bold">歷史最高</div>
-                        <div class="text-xl font-mono text-blue-500">$${this.formatNumber(peakMV, 0)}</div>
+                        <div class="text-xl font-mono text-blue-500">${peakMV == null ? '資料不足' : `$${this.formatNumber(peakMV, 0)}`}</div>
                     </div>
                 </div>
-                <div class="w-full bg-gray-100 dark:bg-gray-800 rounded-full h-1.5"><div class="bg-red-500 h-1.5 rounded-full" style="width: ${Math.min(100, drawdown * 400)}%"></div></div>
+                <div class="w-full bg-gray-100 dark:bg-gray-800 rounded-full h-1.5"><div class="bg-red-500 h-1.5 rounded-full" style="width: ${drawdown == null ? 0 : Math.min(100, drawdown * 400)}%"></div></div>
             `;
         }
     },

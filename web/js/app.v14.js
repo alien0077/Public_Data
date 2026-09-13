@@ -46,6 +46,20 @@ document.addEventListener('DOMContentLoaded', () => {
     let lastTrades = [];
     let lastHoldings = {};
 
+    // 與 iOS 相同的資訊架構：市場資料不再掛在持股頁。
+    const marketSectionIds = [
+        'exchange-rate-section', 'market-summary-section', 'macro-dashboard-section',
+        'market-health-section', 'market-divergence-section', 'liar-section'
+    ];
+    const marketView = document.getElementById('view-market');
+    const portfolioView = document.getElementById('view-portfolio');
+    if (marketView && portfolioView) {
+        marketSectionIds.forEach((id) => {
+            const section = document.getElementById(id);
+            if (section && section.parentElement !== marketView) marketView.appendChild(section);
+        });
+    }
+
     function updateApiStatus(status, isError = false, source = 'OFFLINE') {
         const indicator = document.getElementById('status-indicator');
         const text = document.getElementById('status-text');
@@ -86,10 +100,13 @@ document.addEventListener('DOMContentLoaded', () => {
         const el = document.getElementById(id);
         if (el) el.addEventListener('click', (e) => { e.preventDefault(); router.switchPage(p); });
     };
-    ['portfolio', 'trendHunter', 'marginRankings', 'assetRisk', 'performance', 'addTrade', 'favorites', 'audioSummary', 'groupSearch', 'settings'].forEach(p => {
+    ['market', 'portfolio', 'trendHunter', 'marginRankings', 'assetRisk', 'performance', 'addTrade', 'favorites', 'audioSummary', 'groupSearch', 'settings', 'more'].forEach(p => {
         bindPage('nav-' + p, p);
         const m = document.getElementById('mobile-nav-' + p);
         if (m) m.addEventListener('click', (e) => { e.preventDefault(); router.switchPage(p); });
+    });
+    document.querySelectorAll('.more-route').forEach(button => {
+        button.addEventListener('click', () => router.switchPage(button.dataset.moreRoute));
     });
 
     const triggerImportBtn = document.getElementById('trigger-import');
@@ -346,7 +363,7 @@ document.addEventListener('DOMContentLoaded', () => {
         portfolioBody.innerHTML = '';
         const portfolioCards = document.getElementById('portfolio-cards');
         if (portfolioCards) portfolioCards.innerHTML = '';
-        let totalMV = 0, totalYtdBasis = 0, totalRefMV = 0, totalCost = 0;
+        let totalMV = 0, totalYtdBasis = 0, totalRefMV = 0, totalCost = 0, missingQuoteCount = 0;
         let rows = [];
 
         const syms = Object.keys(holdings).filter(s => s !== 'yearlyStats' && holdings[s].shares > 0.001);
@@ -379,7 +396,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const qb = quotes[b] || quotes[b.split('.')[0]] || {};
             const pa = parseFloat(qa.price || 0), pb = parseFloat(qb.price || 0);
             const sha = parseFloat(ha.shares || 0), shb = parseFloat(hb.shares || 0);
-            const mva = pa > 0 ? pa * sha : ha.totalCost, mvb = pb > 0 ? pb * shb : hb.totalCost;
+            const mva = pa > 0 ? pa * sha : 0, mvb = pb > 0 ? pb * shb : 0;
             const pnla = pa > 0 ? mva - ha.totalCost : 0, pnlb = pb > 0 ? mvb - hb.totalCost : 0;
             const pcta = (pa > 0 && parseFloat(qa.referencePrice || pa) > 0) ? (pa - parseFloat(qa.referencePrice || pa)) / parseFloat(qa.referencePrice || pa) * 100 : 0;
             const pctb = (pb > 0 && parseFloat(qb.referencePrice || pb) > 0) ? (pb - parseFloat(qb.referencePrice || pb)) / parseFloat(qb.referencePrice || pb) * 100 : 0;
@@ -404,15 +421,19 @@ document.addEventListener('DOMContentLoaded', () => {
             const refPrice = parseFloat(q.referencePrice || price);
             const shares = parseFloat(h.shares || 0);
             const avgCost = shares > 0 ? (h.totalCost / shares) : 0;
-            const mv = price > 0 ? (price * shares) : (avgCost * shares);
+            const hasPrice = price > 0;
+            if (!hasPrice) missingQuoteCount += 1;
+            const mv = hasPrice ? price * shares : 0;
 
             totalMV += mv;
-            totalYtdBasis += (h.ytdBasis || h.totalCost);
-            totalRefMV += (refPrice > 0 ? (refPrice * shares) : mv);
-            totalCost += h.totalCost;
+            if (hasPrice) {
+                totalYtdBasis += (h.ytdBasis || h.totalCost);
+                totalRefMV += (refPrice > 0 ? (refPrice * shares) : mv);
+                totalCost += h.totalCost;
+            }
 
-            const pnl = price > 0 ? (mv - h.totalCost) : 0;
-            const roi = h.totalCost > 0 ? (pnl / h.totalCost * 100) : 0;
+            const pnl = hasPrice ? (mv - h.totalCost) : null;
+            const roi = hasPrice && h.totalCost > 0 ? (pnl / h.totalCost * 100) : null;
             const pct = (price > 0 && refPrice > 0) ? ((price - refPrice) / refPrice * 100) : 0;
 
             const style = getPriceChangeStyle(price, refPrice, sym);
@@ -426,7 +447,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const health = healthDataMap[sym];
             const fairValue = fairValueMap[sym.split('.')[0]];
             const support = supportMap[sym] || {};
-            const healthScore = health?.health_score;
+            const rawHealthScore = Number(health?.health_score);
+            const healthScore = Number.isFinite(rawHealthScore) && rawHealthScore >= 0 && rawHealthScore <= 100 ? rawHealthScore : null;
 
             const adviceClass = quant.advice === 'HOLD' ? 'bg-green-500/20 text-green-400' :
                 quant.advice === 'REDUCE' ? 'bg-yellow-500/20 text-yellow-400' :
@@ -453,7 +475,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     (eventAlert ? '<span class="text-[10px] text-yellow-400">' + eventAlert + '</span>' : '') +
                     (supportMA !== 'X' ? '<span class="text-[10px] font-bold ' + supportMAColor + '">' + supportMA + '</span>' : '') +
                 '</div></td>' +
-                '<td class="px-3 md:px-6 py-4 text-right ' + (pnl >= 0 ? 'text-red-500' : 'text-green-500') + '"><div class="font-bold">' + (pnl >= 0 ? '+' : '') + formatNumber(pnl, 0) + '</div><div class="text-[10px] opacity-70">' + roi.toFixed(2) + '%</div></td>' +
+                '<td class="px-3 md:px-6 py-4 text-right ' + (pnl == null ? 'text-gray-500' : pnl >= 0 ? 'text-red-500' : 'text-green-500') + '"><div class="font-bold">' + (pnl == null ? '資料不足' : (pnl >= 0 ? '+' : '') + formatNumber(pnl, 0)) + '</div><div class="text-[10px] opacity-70">' + (roi == null ? '--' : roi.toFixed(2) + '%') + '</div></td>' +
                 '<td class="px-3 md:px-6 py-4 text-right"><button class="delete-stock p-2 text-gray-500 hover:text-red-500"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg></button></td>';
 
             row.querySelector('.delete-stock').addEventListener('click', (e) => {
@@ -481,8 +503,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     '</div>',
                     valuation: fairValue,
                     metricsHTML: stockMetricHTML('股數/成本', formatNumber(shares, 0) + '股 @ ' + formatNumber(avgCost)) +
-                        stockMetricHTML('損益', (pnl >= 0 ? '+' : '') + formatNumber(pnl, 0) + ' (' + roi.toFixed(2) + '%)', {
-                            valueClass: (pnl >= 0 ? 'text-red-500' : 'text-green-500')
+                        stockMetricHTML('損益', pnl == null ? '資料不足' : (pnl >= 0 ? '+' : '') + formatNumber(pnl, 0) + ' (' + roi.toFixed(2) + '%)', {
+                            valueClass: (pnl == null ? 'text-gray-500' : pnl >= 0 ? 'text-red-500' : 'text-green-500')
                         }),
                     detailHTML: chipEventHTML,
                     actionsHTML: '<button class="delete-stock-mobile inline-flex items-center px-2.5 py-1 rounded-lg text-[10px] font-bold text-red-500 bg-red-50 dark:bg-red-900/20 hover:bg-red-100 dark:hover:bg-red-900/40" title="刪除持股">刪除</button>'
@@ -503,13 +525,15 @@ document.addEventListener('DOMContentLoaded', () => {
         const totalPnlPercent = totalCost > 0 ? (totalPnl / totalCost * 100) : 0;
         const dPnl = isNaN(totalMV) || isNaN(totalRefMV) ? 0 : (totalMV - totalRefMV);
 
-        totalMarketValueEl.textContent = formatNumber(totalMV, 0);
-        totalPnlEl.textContent = (totalPnl >= 0 ? '+' : '') + formatNumber(totalPnl, 0);
-        totalPnlEl.className = 'text-3xl font-mono font-bold ' + (totalPnl >= 0 ? 'text-red-500' : 'text-green-500');
-        totalPnlPercentEl.textContent = totalPnlPercent.toFixed(2) + '%';
-        totalPnlPercentEl.className = 'text-xs mt-1 ' + (totalPnl >= 0 ? 'text-red-500' : 'text-green-500');
-        dailyPnlEl.textContent = (dPnl >= 0 ? '+' : '') + formatNumber(dPnl, 0);
-        dailyPnlEl.className = 'text-3xl font-mono font-bold ' + (dPnl >= 0 ? 'text-red-500' : 'text-green-500');
+        const portfolioDataComplete = missingQuoteCount === 0 && totalCost > 0;
+        totalMarketValueEl.textContent = portfolioDataComplete ? formatNumber(totalMV, 0) : '資料不足';
+        totalPnlEl.textContent = portfolioDataComplete ? (totalPnl >= 0 ? '+' : '') + formatNumber(totalPnl, 0) : '資料不足';
+        totalPnlEl.className = 'text-3xl font-mono font-bold ' + (portfolioDataComplete ? (totalPnl >= 0 ? 'text-red-500' : 'text-green-500') : 'text-gray-500');
+        totalPnlPercentEl.textContent = portfolioDataComplete ? totalPnlPercent.toFixed(2) + '%' : '資料不足';
+        totalPnlPercentEl.className = 'text-xs mt-1 ' + (portfolioDataComplete ? (totalPnl >= 0 ? 'text-red-500' : 'text-green-500') : 'text-gray-500');
+        dailyPnlEl.textContent = portfolioDataComplete ? (dPnl >= 0 ? '+' : '') + formatNumber(dPnl, 0) : '資料不足';
+        dailyPnlEl.className = 'text-3xl font-mono font-bold ' + (portfolioDataComplete ? (dPnl >= 0 ? 'text-red-500' : 'text-green-500') : 'text-gray-500');
+        if (missingQuoteCount > 0) updateApiStatus(`${missingQuoteCount} 檔持股缺少有效現價，總市值與損益暫不完整`, true, 'PARTIAL');
         const pt = document.querySelector('#total-pnl')?.previousElementSibling;
         if (pt) pt.textContent = '總盈虧';
         StockListPreferences.applyAll();
@@ -522,17 +546,19 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             const curY = new Date().getFullYear().toString();
             const lastY = (curY - 1).toString();
-            let totalMV = 0, totalCost = 0, totalDiv = 0;
+            let totalMV = 0, totalCost = 0, totalDiv = 0, missingQuoteCount = 0;
             const cashflows = [{ date: new Date(), amount: 0 }];
             Object.keys(holdings).forEach(sym => {
                 if (sym === 'yearlyStats' || !holdings[sym] || holdings[sym].shares <= 0.001) return;
                 const h = holdings[sym];
                 const q = quotes[sym] || quotes[sym.split('.')[0]] || {};
-                const price = parseFloat(q.price || 0);
+                const rawPrice = Number(q.price);
+                const price = Number.isFinite(rawPrice) && rawPrice > 0 ? rawPrice : 0;
                 const shares = parseFloat(h.shares || 0);
-                const mv = price > 0 ? (price * shares) : (h.totalCost || 0);
-                if (!isNaN(mv)) totalMV += mv;
-                if (!isNaN(h.totalCost)) totalCost += h.totalCost;
+                const mv = price > 0 ? (price * shares) : null;
+                if (price <= 0) missingQuoteCount += 1;
+                if (mv != null && !isNaN(mv)) totalMV += mv;
+                if (price > 0 && !isNaN(h.totalCost)) totalCost += h.totalCost;
                 const actions = (CorporateActions && typeof CorporateActions.getActions === 'function') ? (CorporateActions.getActions(sym) || []) : [];
                 const allDividendActions = actions.filter(a => a.ex_date && (a.type === 'DIVIDEND' || a.type === 'CASH_DIVIDEND') && a.cash_dividend > 0)
                     .sort((a, b) => (b.ex_date || '').localeCompare(a.ex_date || ''));
@@ -588,20 +614,21 @@ document.addEventListener('DOMContentLoaded', () => {
             Object.keys(holdings).filter(s => s !== 'yearlyStats' && holdings[s].shares > 0.001).forEach(sym => {
                 const h = holdings[sym];
                 const q = quotes[sym] || quotes[sym.split('.')[0]] || {};
-                const price = parseFloat(q.price || 0);
+                const rawPrice = Number(q.price);
+                const price = Number.isFinite(rawPrice) && rawPrice > 0 ? rawPrice : 0;
                 const shares = parseFloat(h.shares || 0);
-                const mv = price > 0 ? (price * shares) : (h.totalCost || 0);
+                const mv = price > 0 ? (price * shares) : null;
                 if (mv > 0) cashflows.push({ date: new Date(), amount: mv });
             });
             let irr = 0;
             if (cashflows.length >= 2 && typeof calculateXIRR === 'function') {
                 irr = calculateXIRR(cashflows);
             }
-            const totalReturn = totalCost > 0 ? ((totalMV - totalCost) / totalCost * 100) : 0;
+            const totalReturn = missingQuoteCount === 0 && totalCost > 0 ? ((totalMV - totalCost) / totalCost * 100) : null;
             const retEl = document.getElementById('total-return-pct');
-            if (retEl) { retEl.textContent = totalReturn.toFixed(2) + '%'; retEl.className = 'text-2xl md:text-3xl font-mono font-bold ' + (totalReturn >= 0 ? 'text-red-500' : 'text-green-500'); }
+            if (retEl) { retEl.textContent = totalReturn == null ? '資料不足' : totalReturn.toFixed(2) + '%'; retEl.className = 'text-2xl md:text-3xl font-mono font-bold ' + (totalReturn == null ? 'text-gray-500' : totalReturn >= 0 ? 'text-red-500' : 'text-green-500'); }
             const irrEl = document.getElementById('irr-value');
-            if (irrEl) irrEl.textContent = irr !== 0 ? (irr * 100).toFixed(2) + '%' : '--';
+            if (irrEl) irrEl.textContent = missingQuoteCount > 0 ? '資料不足' : (irr !== 0 ? (irr * 100).toFixed(2) + '%' : '--');
             const divEl = document.getElementById('dividend-estimate');
             if (divEl) divEl.textContent = totalDiv > 0 ? '$' + formatNumber(totalDiv, 0) : '--';
         } catch(e) { console.error('renderAssetRow2 error:', e); }
@@ -641,25 +668,25 @@ document.addEventListener('DOMContentLoaded', () => {
             if (Object.keys(allQuotes).length === 0) { section.classList.add('hidden'); return; }
             section.classList.remove('hidden');
             const formatIdx = (val) => { const n = parseFloat(val); return isNaN(n) || n === 0 ? '--' : n.toLocaleString(undefined, {minimumFractionDigits: 1, maximumFractionDigits: 1}); };
-            const getPctColor = (pct) => parseFloat(pct || 0) >= 0 ? 'text-red-500' : 'text-green-500';
+            const getPctColor = (pct) => Number.isFinite(parseFloat(pct)) ? (parseFloat(pct) >= 0 ? 'text-red-500' : 'text-green-500') : 'text-gray-500';
             const getItem = (sym) => {
                 const clean = sym.replace('^', '').toUpperCase();
                 return allQuotes[sym] || allQuotes['^' + clean] || allQuotes[clean] ||
                     (clean === 'IX0001' ? (allQuotes['TSE'] || allQuotes['^TWII'] || allQuotes['TWII']) : null) ||
                     (clean === 'IX0043' ? (allQuotes['OTC'] || allQuotes['^TWOII'] || allQuotes['TWOII']) : null) ||
-                    { price: 0, changePercent: 0, source: 'N/A', date: '--' };
+                    { price: 0, changePercent: null, source: 'N/A', date: '--' };
             };
             const getDateBadge = (item) => {
                 if (item.source === 'REALTIME' || item.source === 'REALTIME_CHART') return '<span class="ml-1 animate-pulse text-blue-500">📡</span>';
                 if (item.date && item.date !== '--') return '<span class="ml-1 text-[8px] bg-gray-100 dark:bg-gray-800 text-gray-400 px-1 rounded">' + item.date.substring(5) + '</span>';
                 return '';
             };
-            const formatPct = (val) => { const n = parseFloat(val); if (isNaN(n)) return '0.00'; return (n >= 0 ? '+' : '') + n.toFixed(2); };
+            const formatPct = (val) => { const n = parseFloat(val); if (!Number.isFinite(n)) return '資料不足'; return (n >= 0 ? '+' : '') + n.toFixed(2) + '%'; };
             const tse = getItem('IX0001'), otc = getItem('IX0043'), dji = getItem('DJI'), sp = getItem('GSPC'), nas = getItem('IXIC'), sox = getItem('SOX'), tsm = getItem('TSM');
             const idxItem = (label, badge, price, pct) => {
-                const c = parseFloat(pct || 0) >= 0 ? 'text-red-500' : 'text-green-500';
+                const c = Number.isFinite(parseFloat(pct)) ? (parseFloat(pct) >= 0 ? 'text-red-500' : 'text-green-500') : 'text-gray-500';
                 const bg = label === '費半' ? 'bg-blue-500/5' : label === '台積ADR' ? 'bg-red-500/5' : '';
-                return '<div class="' + bg + ' min-w-[80px] flex-1 px-2 py-1.5"><div class="text-[9px] md:text-[10px] text-gray-500 flex items-center whitespace-nowrap">' + label + ' ' + badge + '</div><div class="text-xs md:text-sm font-mono font-bold text-gray-900 dark:text-white truncate">' + price + '</div><div class="' + c + ' text-[9px] md:text-[10px] font-mono font-bold">' + formatPct(pct) + '%</div></div>';
+                return '<div class="' + bg + ' min-w-[80px] flex-1 px-2 py-1.5"><div class="text-[9px] md:text-[10px] text-gray-500 flex items-center whitespace-nowrap">' + label + ' ' + badge + '</div><div class="text-xs md:text-sm font-mono font-bold text-gray-900 dark:text-white truncate">' + price + '</div><div class="' + c + ' text-[9px] md:text-[10px] font-mono font-bold">' + formatPct(pct) + '</div></div>';
             };
             content.innerHTML = '<div class="md:col-span-2 bg-white dark:bg-[#161b22] p-3 md:p-4 rounded-2xl border border-gray-200 dark:border-gray-800 shadow-sm">' +
                 '<div class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">📊 市場概況</div>' +
@@ -684,16 +711,25 @@ document.addEventListener('DOMContentLoaded', () => {
         section.classList.remove('hidden');
         const regime = data.macro_regime;
         const trading = data.trading_regime || {};
-        const values = [['成長', regime.growth_score], ['通膨', regime.inflation_score], ['流動性', regime.liquidity_score], ['利率', regime.rates_score], ['匯率', regime.fx_score], ['風險', regime.risk_score]];
+        const labels = { GOLDILOCKS: '金髮女孩', EXPANSION: '擴張', REFLATION: '再通膨', RECESSION: '衰退', SLOWDOWN: '景氣放緩', STAGFLATION: '停滯性通膨', RECOVERY: '復甦', DEFENSIVE: '防禦', CAUTIOUS: '謹慎' };
+        const regimeLabel = value => labels[value] || value || '資料不足';
+        const presentation = data.presentation || {};
+        const values = [['成長', regime.growth], ['通膨', regime.inflation], ['流動性', regime.liquidity], ['利率', regime.rates], ['匯率', regime.fx], ['風險', regime.risk]];
         const format = value => value === null || value === undefined ? '資料不足' : Number(value).toFixed(2);
         const tile = ([label, value]) => '<div class="bg-gray-50 dark:bg-gray-900/60 rounded-xl p-3"><div class="text-[10px] text-gray-500">' + label + '</div><div class="font-mono font-bold">' + format(value) + '</div></div>';
+        const factorLabels = { growth: '成長', inflation: '通膨', liquidity: '流動性', rates: '利率', fx: '匯率', risk: '風險' };
+        const trendLabels = { improving: '改善', weakening: '轉弱', neutral: '中性', unknown: '資料不足' };
+        const impactLabels = { positive: '正向', negative: '負向', neutral: '中性', unknown: '資料不足' };
+        const factors = Object.entries(presentation.factors || {}).sort(([a], [b]) => a.localeCompare(b)).map(([key, value]) => '<div class="flex justify-between gap-3 text-[10px] text-gray-500"><span>' + (factorLabels[key] || key) + '</span><span>' + (trendLabels[value?.trend] || '資料不足') + ' · ' + (impactLabels[value?.impact] || '資料不足') + '</span></div>').join('');
         const tailwinds = (data.sector_tailwinds || []).slice(0, 3).map(item => '<span class="px-2 py-1 rounded bg-green-500/10 text-green-600 text-xs">' + item.name + '</span>').join('');
         const headwinds = (data.sector_headwinds || []).slice(0, 3).map(item => '<span class="px-2 py-1 rounded bg-red-500/10 text-red-600 text-xs">' + item.name + '</span>').join('');
         content.innerHTML = '<div class="bg-white dark:bg-[#161b22] p-4 rounded-2xl border border-gray-200 dark:border-gray-800 shadow-sm">' +
-            '<div class="flex justify-between items-center mb-3"><span class="font-bold">' + (regime.state || '資料不足') + '</span><span class="text-xs text-gray-500">交易狀態：' + (trading.state || '資料不足') + (trading.target_equity_exposure == null ? '' : ' · 目標股票 ' + (trading.target_equity_exposure * 100).toFixed(0) + '%') + '</span></div>' +
+            '<div class="flex justify-between items-center mb-3"><span class="font-bold">' + (presentation.regime_zh || regimeLabel(regime.state)) + '</span><span class="text-xs text-gray-500">交易狀態：' + (presentation.stance_zh || regimeLabel(trading.state)) + (trading.target_equity_exposure == null ? '' : ' · 模型風險資產曝險 ' + (trading.target_equity_exposure * 100).toFixed(0) + '%') + '</span></div>' +
             '<div class="grid grid-cols-2 md:grid-cols-6 gap-2">' + values.map(tile).join('') + '</div>' +
+            (factors ? '<div class="mt-3 p-3 rounded-xl bg-gray-50 dark:bg-gray-900/60"><div class="text-[10px] font-bold text-gray-500 mb-2">因子解讀</div><div class="space-y-1">' + factors + '</div></div>' : '') +
             '<div class="flex flex-wrap gap-2 mt-3">' + (tailwinds ? '<span class="text-xs text-gray-500">順風</span>' + tailwinds : '') + (headwinds ? '<span class="text-xs text-gray-500 ml-2">逆風</span>' + headwinds : '') + '</div>' +
             '<div class="mt-3 p-3 rounded-xl bg-orange-500/5 border border-orange-500/20"><div class="text-xs font-bold">🌍 全球／地緣風險</div><div class="text-xs text-gray-500 mt-1">' + ((data.global_risk?.active_events || []).length ? '已驗證事件 ' + data.global_risk.active_events.length + ' 件' : '目前無已驗證事件') + ' · 分數 ' + format(data.global_risk?.severity) + ' · 語意內容不會直接觸發清倉</div></div>' +
+            '<div class="mt-2 text-[10px] text-gray-500">' + (data.quality?.stale === true ? '資料較舊' : '資料新鮮度正常') + (data.quality?.confidence == null ? '' : ' · 信心 ' + (Number(data.quality.confidence) * 100).toFixed(0) + '%') + '</div>' +
             (data.analysis?.summary ? '<p class="text-xs text-gray-500 mt-3">' + data.analysis.summary + '</p>' : '') +
             '</div>';
         const date = document.getElementById('macro-dashboard-date');
@@ -716,12 +752,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             } catch(e) {}
             const getStatusBadge = (status) => {
-                const map = { 'LIE': { label: '說謊', color: 'bg-red-500', icon: '🐜' }, 'HONEST': { label: '誠實', color: 'bg-green-500', icon: '✅' }, 'PENDING': { label: '追蹤中', color: 'bg-orange-500', icon: '🕒' } };
+                const map = { 'LIE': { label: '待驗證差異', color: 'bg-red-500', icon: '⚠️' }, 'HONEST': { label: '已驗證一致', color: 'bg-green-500', icon: '✅' }, 'PENDING': { label: '追蹤中', color: 'bg-orange-500', icon: '🕒' } };
                 const s = map[status] || map['PENDING'];
                 return '<span class="' + s.color + ' text-white text-[10px] px-2 py-0.5 rounded-full font-bold flex items-center shadow-sm"><span class="mr-1">' + s.icon + '</span>' + s.label + '</span>';
             };
             const renderCard = (item) => {
-                const name = stocksMeta[item.stockId] || stocksMeta[item.stockId.split('.')[0]] || '';
+                const name = stocksMeta[item.stockId] || stocksMeta[item.stockId.split('.')[0]] || item.stockId;
                 const isUpgrade = item.sentiment === 'bullish';
                 const sentimentColor = isUpgrade ? 'text-red-500' : 'text-green-500';
                 return '<div class="liar-marquee-card p-4 bg-white dark:bg-[#161b22] rounded-2xl border border-gray-200 dark:border-gray-800 cursor-pointer hover:border-blue-500/50 transition-all shadow-sm group" onclick="window.StockDetail.show(\'' + item.stockId + '\')">' +
@@ -812,7 +848,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const h = holdings[sym];
                 const totalPnl = (h.realizedPNL || 0) + (h.dividend || 0);
                 return '<div class="p-4 flex justify-between items-center opacity-60 hover:opacity-100 transition-opacity">' +
-                    '<div><div class="text-sm font-bold">' + sym + '</div><div class="text-[10px] text-gray-500">' + (h.name || '') + '</div></div>' +
+                    '<div><div class="text-sm font-bold">' + sym + '</div><div class="text-[10px] text-gray-500">' + (h.name || sym) + '</div></div>' +
                     '<div class="text-right"><div class="text-sm font-bold ' + (totalPnl >= 0 ? 'text-red-500' : 'text-green-500') + '">' + (totalPnl >= 0 ? '+' : '') + formatNumber(totalPnl, 0) + '</div></div></div>';
             }).join('');
             const toggle = document.getElementById('history-toggle');
@@ -841,7 +877,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             const d = riskData.stocks?.[0] || riskData.data?.[0] || riskData;
-            if (!d || !d.risk_score) {
+            if (!d || d.risk_score == null) {
                 section.classList.add('hidden');
                 return;
             }
@@ -851,17 +887,18 @@ document.addEventListener('DOMContentLoaded', () => {
             const riskScore = d.risk_score;
             const status = d.status || '--';
             const sentiment = d.retail_sentiment || '計算中';
-            const marginRatio = d.margin_ratio || 1.0;
-            const marginBalance = d.margin_balance || 0;
-            const shortBalance = d.short_balance || 0;
-            const shortMarginRatio = d.short_margin_ratio || 0;
+            const marginRatioValue = Number(d.margin_ratio);
+            const marginRatio = Number.isFinite(marginRatioValue) && marginRatioValue > 0 ? marginRatioValue : null;
+            const marginBalance = Number.isFinite(Number(d.margin_balance)) ? Number(d.margin_balance) : null;
+            const shortBalance = Number.isFinite(Number(d.short_balance)) ? Number(d.short_balance) : null;
+            const shortMarginRatio = Number.isFinite(Number(d.short_margin_ratio)) ? Number(d.short_margin_ratio) : null;
             const summaryText = d.summary_text || '';
 
             const scoreColor = riskScore < 30 ? 'text-green-500' : riskScore < 50 ? 'text-blue-500' : riskScore < 70 ? 'text-orange-500' : 'text-red-500';
             const statusColor = riskScore < 30 ? 'bg-green-500' : riskScore < 50 ? 'bg-blue-500' : riskScore < 70 ? 'bg-orange-500' : 'bg-red-500';
-            const sentimentColor = sentiment === '市場情緒過熱' ? 'text-red-500' : sentiment === '散戶偏積極' ? 'text-orange-500' : sentiment === '籌碼冷清' ? 'text-blue-500' : 'text-green-500';
-            const sentimentBg = sentiment === '市場情緒過熱' ? 'bg-red-500/10' : sentiment === '散戶偏積極' ? 'bg-orange-500/10' : sentiment === '籌碼冷清' ? 'bg-blue-500/10' : 'bg-green-500/10';
-            const marginBarColor = marginRatio > 1.1 ? 'bg-red-500' : marginRatio > 1.05 ? 'bg-orange-500' : marginRatio < 0.9 ? 'bg-blue-500' : 'bg-green-500';
+            const sentimentColor = sentiment === '融資水位過熱' ? 'text-red-500' : sentiment === '融資水位偏高' ? 'text-orange-500' : sentiment === '融資水位偏低' ? 'text-blue-500' : 'text-green-500';
+            const sentimentBg = sentiment === '融資水位過熱' ? 'bg-red-500/10' : sentiment === '融資水位偏高' ? 'bg-orange-500/10' : sentiment === '融資水位偏低' ? 'bg-blue-500/10' : 'bg-green-500/10';
+            const marginBarColor = marginRatio == null ? 'bg-gray-400' : marginRatio > 1.1 ? 'bg-red-500' : marginRatio > 1.05 ? 'bg-orange-500' : marginRatio < 0.9 ? 'bg-blue-500' : 'bg-green-500';
 
             // 取得近一週融資歷史資料
             let marginHistory = [];
@@ -911,15 +948,15 @@ document.addEventListener('DOMContentLoaded', () => {
                         <div class="grid grid-cols-3 gap-4 pt-2">
                             <div class="text-center">
                                 <div class="text-[9px] text-gray-400 uppercase">融資餘額</div>
-                                <div class="text-base font-mono font-bold">${(marginBalance / 100000000).toFixed(0)}<span class="text-[9px] text-gray-400"> 億</span></div>
+                            <div class="text-base font-mono font-bold">${marginBalance == null ? '資料不足' : (marginBalance / 100000000).toFixed(0) + '<span class="text-[9px] text-gray-400"> 億</span>'}</div>
                             </div>
                             <div class="text-center">
                                 <div class="text-[9px] text-gray-400 uppercase">融券餘額</div>
-                                <div class="text-base font-mono font-bold">${(shortBalance / 10000).toFixed(1)}<span class="text-[9px] text-gray-400"> 萬張</span></div>
+                            <div class="text-base font-mono font-bold">${shortBalance == null ? '資料不足' : (shortBalance / 10000).toFixed(1) + '<span class="text-[9px] text-gray-400"> 萬張</span>'}</div>
                             </div>
                             <div class="text-center">
                                 <div class="text-[9px] text-gray-400 uppercase">券資比</div>
-                                <div class="text-base font-mono font-bold">${shortMarginRatio.toFixed(1)}<span class="text-[9px] text-gray-400">%</span></div>
+                                <div class="text-base font-mono font-bold">${shortMarginRatio == null ? '資料不足' : shortMarginRatio.toFixed(1) + '<span class="text-[9px] text-gray-400">%</span>'}</div>
                             </div>
                         </div>
                         <!-- 近一週融資餘額曲線 -->
@@ -935,19 +972,20 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="mt-4 pt-4 border-t border-gray-100 dark:border-gray-800 space-y-2">
                     <div class="flex justify-between items-center">
                         <span class="text-[10px] text-gray-500">融資水位 (vs MA20)</span>
-                        <span class="text-[10px] font-bold font-mono">${(marginRatio * 100).toFixed(1)}%</span>
+                        <span class="text-[10px] font-bold font-mono">${marginRatio == null ? '資料不足' : (marginRatio * 100).toFixed(1) + '%'}</span>
                     </div>
                     <div class="w-full h-2 bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden">
-                        <div class="h-full rounded-full ${marginBarColor}" style="width: ${Math.min(100, marginRatio / 1.5 * 100)}%"></div>
+                        <div class="h-full rounded-full ${marginBarColor}" style="width: ${marginRatio == null ? 0 : Math.min(100, marginRatio / 1.5 * 100)}%"></div>
                     </div>
-                    <div class="text-[8px] text-gray-400 leading-relaxed">融資水位 = 目前融資餘額 / MA20 月均線。>100% 表示融資增加（散戶偏多），<100% 表示融資減少（散戶偏空）。</div>
+                    <div class="text-[8px] text-gray-400 leading-relaxed">融資水位 = 目前融資餘額 / MA20 月均線；高於 100% 表示相對基準較高，低於 100% 表示相對基準較低，不推論投資人身份。</div>
                     ${d.maintenance_rate ? `
                     <div class="flex justify-between items-center pt-1">
-                        <span class="text-[10px] text-gray-500">普通股融資市值比</span>
+                        <span class="text-[10px] text-gray-500">融資維持率</span>
                         <span class="text-[10px] font-bold font-mono ${d.maintenance_rate < 140 ? "text-red-500" : d.maintenance_rate < 150 ? "text-orange-500" : "text-green-500"}">${d.maintenance_rate.toFixed(1)}%${d.maintenance_rate < 140 ? " ⚠️" : ""}</span>
                     </div>
-                    <div class="text-[8px] text-gray-400 leading-relaxed">普通股融資市值比 = Σ(普通股融資張數×收盤×1000) / 全市場融資金額。</div>` : ""}
+                    <div class="text-[8px] text-gray-400 leading-relaxed">融資維持率 = 股票市值 / 融資金額；資料不足時不作安全或危險判定。</div>` : ""}
                     <div class="text-[10px] text-gray-500 leading-relaxed mt-1">${summaryText}</div>
+                    <div class="text-[9px] text-gray-500 mt-2">資料日期：${d.date || '資料不足'}${d.updated_at ? ' · 更新：' + d.updated_at : ''}${d.status === '資料不足' ? ' · 部分資料不足' : ''}</div>
                     <div class="mt-6 pt-4 border-t border-gray-100 dark:border-gray-800">
                         <div class="flex justify-between items-center mb-2">
                             <span class="text-xs font-bold text-gray-400 uppercase tracking-widest">普通股融資市值比歷史走勢</span>
@@ -1184,7 +1222,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const volRatio = d.vol_ratio || 0;
             const triggerBias = d.trigger_bias_threshold || 0;
             const triggerVol = d.trigger_vol_threshold || 1.2;
-            const crashProb = d.crash_probability || 0;
+            const crashProb = Number.isFinite(Number(d.crash_probability)) ? Number(d.crash_probability) : null;
+            const shadow5 = d.reversal_shadow_v2?.['5'] || null;
             const summary = d.summary || '';
 
             const severityConfig = {
@@ -1229,7 +1268,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             <div class="text-[10px] text-gray-400">成交量能比：暫無數據</div>
                             `}
                         </div>
-                        ${crashProb > 0 ? `
+                        ${crashProb != null ? `
                         <div class="flex items-center space-x-2 pt-1">
                             <span class="text-[10px] text-gray-500">歷史修正機率</span>
                             <div class="flex-1 h-1.5 bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden max-w-[100px]">
@@ -1238,6 +1277,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             <span class="text-[10px] font-bold font-mono ${cfg.text}">${(crashProb * 100).toFixed(0)}%</span>
                         </div>
                         ` : ''}
+                        ${shadow5 ? `<div class="text-[10px] text-gray-500 pt-1">5D 事件研究：樣本 ${shadow5.sample_n ?? '資料不足'} · 修正 ${Number.isFinite(Number(shadow5.drawdown_probability)) ? (Number(shadow5.drawdown_probability) * 100).toFixed(0) + '%' : '資料不足'} · 反彈 ${Number.isFinite(Number(shadow5.rebound_probability)) ? (Number(shadow5.rebound_probability) * 100).toFixed(0) + '%' : '資料不足'} · 僅 shadow</div>` : ''}
                         <div class="text-[10px] text-gray-500 leading-relaxed pt-1 border-t border-gray-100 dark:border-gray-800">${summary}</div>
                     </div>
                 </div>

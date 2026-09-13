@@ -200,14 +200,16 @@ export const BattleRecord = {
         const results = [];
         Object.keys(symbolGroups).forEach(sym => {
             const h = holdings[sym] || { realizedPNL: 0, totalDividend: 0, shares: 0, totalCost: 0 };
-            let unrealized = 0;
+            let unrealized = null;
             if (h.shares > 0) {
                 const q = quotes[sym] || quotes[sym.split('.')[0]] || {};
-                const price = q.price || (h.totalCost / h.shares);
-                unrealized = (price * h.shares) - h.totalCost;
+                const quotePrice = Number(q.price);
+                if (Number.isFinite(quotePrice) && quotePrice > 0) {
+                    unrealized = (quotePrice * h.shares) - h.totalCost;
+                }
             }
-            totalUnrealizedPNL += unrealized;
-            const totalResult = h.realizedPNL + h.totalDividend + unrealized;
+            if (unrealized != null) totalUnrealizedPNL += unrealized;
+            const totalResult = h.realizedPNL + h.totalDividend + (unrealized ?? 0);
 
             if (Math.abs(h.realizedPNL) > 0.1 || h.totalDividend > 0 || h.shares > 0) {
                 totalRealizedPNL += h.realizedPNL;
@@ -275,7 +277,7 @@ export const BattleRecord = {
                             </div>
                             <div class="text-right">
                                 <div class="text-lg font-mono font-bold ${r.total >= 0 ? 'text-red-500' : 'text-green-500'}">${r.total >= 0 ? '+' : ''}${this.formatNumber(r.total, 0)}</div>
-                                <div class="text-[10px] text-gray-400 font-mono">價差: ${this.formatNumber(r.pnl + r.unrealized, 0)} | 股利: ${this.formatNumber(r.dividend, 0)}</div>
+                                <div class="text-[10px] text-gray-400 font-mono">價差: ${r.unrealized == null ? '資料不足' : this.formatNumber(r.pnl + r.unrealized, 0)} | 股利: ${this.formatNumber(r.dividend, 0)}</div>
                             </div>
                         </div>
                     </div>
