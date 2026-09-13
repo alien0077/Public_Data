@@ -3,16 +3,17 @@
   "policy": "production_core",
   "errors": [],
   "warnings": [
-    "finmind_detail supplemental coverage: 0.172 (non-blocking; used only for absent official/MOPS fields)",
+    "finmind_detail supplemental coverage: 0.000 (non-blocking; used only for absent official/MOPS fields)",
     "catalyst probability calibration is not empirical until terminal outcomes are available",
-    "news full-text materialization remains incomplete: 189 rows"
+    "news full-text materialization remains incomplete: 189 rows",
+    "legacy readiness (non-blocking for production core): V1 rollback snapshot missing"
   ],
   "stocks": 1943,
   "v21_public_consumer_stocks": 1943,
   "official_fundamentals_coverage": 0.975811,
   "detail_coverage": {
     "mops_detail": 1.0,
-    "finmind_detail": 0.171899
+    "finmind_detail": 0.0
   },
   "detail_observations": {
     "mops_detail": {
@@ -58,46 +59,22 @@
       }
     },
     "finmind_detail": {
-      "fact_count": 5654,
-      "companies_with_any_fact": 334,
+      "fact_count": 0,
+      "companies_with_any_fact": 0,
       "company_denominator": 1943,
-      "company_coverage": 0.171899,
+      "company_coverage": 0.0,
       "excluded_symbols": [],
-      "field_fact_counts": {
-        "amortization": 5046,
-        "availability_basis": 5654,
-        "basis": 5651,
-        "bonds": 1403,
-        "capex": 5585,
-        "cash": 5649,
-        "cfo": 5636,
-        "depreciation": 5636,
-        "effective_available_at": 5654,
-        "eps": 5634,
-        "equity_parent": 5180,
-        "fetched_at": 5654,
-        "id": 5654,
-        "liabilities": 5649,
-        "long_term_debt": 4332,
-        "market": 5654,
-        "net_income": 5634,
-        "operating_income": 5584,
-        "parser_version": 5654,
-        "period": 5654,
-        "revenue": 5634,
-        "source": 5654,
-        "source_versions": 5654
-      }
+      "field_fact_counts": {}
     }
   },
   "pit_history": {
     "status": "ok",
-    "snapshot_count": 11,
-    "stock_rows": 21373,
+    "snapshot_count": 9,
+    "stock_rows": 17487,
     "error_count": 0,
     "errors": []
   },
-  "backtest_observations": 38015,
+  "backtest_observations": 32741,
   "news_ledger": {
     "status": "passed",
     "errors": [],
@@ -131,7 +108,7 @@
     "official_structured_rows": 36925
   },
   "analyst": {
-    "documents": 3,
+    "documents": 6,
     "events": 3,
     "consensus": 3
   },
@@ -147,7 +124,7 @@
     "v2_1_completion_gate": "FAIL"
   },
   "artifacts": {
-    "preview_sha256": "358d8c4e17aef6f0680ea1c1fe82ddeed194d3ede6760161edbd3f0bd7f97eee",
-    "v21_sha256": "d997b31e5a1c7d58426c363d2501d45fe86f0055a43b60168b90e827812c0f4b"
+    "preview_sha256": "30be7eb198fdd2de7edc4fcef13206920d99b64354e40cbd7d514a9efc3ba4ec",
+    "v21_sha256": "4c0730dc25d9bc401a6fd527d0463b7da4b5d5309f223201401de55152752876"
   }
 }

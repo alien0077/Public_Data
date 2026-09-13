@@ -2,7 +2,7 @@
   "schema_version": "1.0",
   "stock_id": "1781",
   "market": "TPEX",
-  "as_of": "2026-09-14",
+  "as_of": "2026-09-13",
   "balance_sheet": {
     "cash": 222113000.0,
     "accounts_receivable": 60589000.0,
@@ -10,7 +10,7 @@
     "accounts_payable": 79538000.0,
     "short_term_debt": 0.0,
     "long_term_debt": 0.0,
-    "bonds": 192848.0,
+    "bonds": null,
     "lease_liabilities": 3985000.0,
     "equity_parent": 303232000.0,
     "shares_outstanding": 47407600.0,
@@ -34,7 +34,6 @@
       "accounts_payable": "TWD",
       "short_term_debt": "TWD",
       "long_term_debt": "TWD",
-      "bonds": "TWD",
       "lease_liabilities": "TWD",
       "equity_parent": "TWD"
     }
@@ -99,7 +98,6 @@
     "accounts_payable": "TWD",
     "short_term_debt": "TWD",
     "long_term_debt": "TWD",
-    "bonds": "TWD",
     "lease_liabilities": "TWD",
     "equity_parent": "TWD",
     "revenue": "TWD",
@@ -123,7 +121,7 @@
     "da_ttm": 36309000.0,
     "ebitda_ttm": 106037000.0,
     "fcf_ttm": 37340000.0,
-    "net_debt": -221920152.0,
+    "net_debt": -222113000.0,
     "nwc": 91792000.0,
     "fcff_ttm": 37340000.0,
     "fcff_margin": 0.09718061696939097,
@@ -139,14 +137,12 @@
     }
   },
   "missing_fields": [
+    "bonds",
     "treasury_shares"
   ],
   "field_provenance": {
     "cash": {
       "source": [
-        "finmind:TaiwanStockBalanceSheet",
-        "finmind:TaiwanStockCashFlowsStatement",
-        "finmind:TaiwanStockFinancialStatements",
         "mops:xbrl_bulk",
         "official:tpex:balance",
         "official:tpex:income"
@@ -156,9 +152,6 @@
     },
     "accounts_receivable": {
       "source": [
-        "finmind:TaiwanStockBalanceSheet",
-        "finmind:TaiwanStockCashFlowsStatement",
-        "finmind:TaiwanStockFinancialStatements",
         "mops:xbrl_bulk",
         "official:tpex:balance",
         "official:tpex:income"
@@ -168,9 +161,6 @@
     },
     "inventory": {
       "source": [
-        "finmind:TaiwanStockBalanceSheet",
-        "finmind:TaiwanStockCashFlowsStatement",
-        "finmind:TaiwanStockFinancialStatements",
         "mops:xbrl_bulk",
         "official:tpex:balance",
         "official:tpex:income"
@@ -180,9 +170,6 @@
     },
     "accounts_payable": {
       "source": [
-        "finmind:TaiwanStockBalanceSheet",
-        "finmind:TaiwanStockCashFlowsStatement",
-        "finmind:TaiwanStockFinancialStatements",
         "mops:xbrl_bulk",
         "official:tpex:balance",
         "official:tpex:income"
@@ -192,9 +179,6 @@
     },
     "short_term_debt": {
       "source": [
-        "finmind:TaiwanStockBalanceSheet",
-        "finmind:TaiwanStockCashFlowsStatement",
-        "finmind:TaiwanStockFinancialStatements",
         "mops:xbrl_bulk"
       ],
       "period": "2025-Q2",
@@ -202,9 +186,6 @@
     },
     "long_term_debt": {
       "source": [
-        "finmind:TaiwanStockBalanceSheet",
-        "finmind:TaiwanStockCashFlowsStatement",
-        "finmind:TaiwanStockFinancialStatements",
         "mops:xbrl_bulk",
         "official:tpex:balance",
         "official:tpex:income"
@@ -213,22 +194,12 @@
       "effective_available_at": "2026-08-14"
     },
     "bonds": {
-      "source": [
-        "finmind:TaiwanStockBalanceSheet",
-        "finmind:TaiwanStockCashFlowsStatement",
-        "finmind:TaiwanStockFinancialStatements",
-        "mops:xbrl_bulk",
-        "official:tpex:balance",
-        "official:tpex:income"
-      ],
-      "period": "2026-Q2",
-      "effective_available_at": "2026-08-14"
+      "source": [],
+      "period": null,
+      "effective_available_at": null
     },
     "lease_liabilities": {
       "source": [
-        "finmind:TaiwanStockBalanceSheet",
-        "finmind:TaiwanStockCashFlowsStatement",
-        "finmind:TaiwanStockFinancialStatements",
         "mops:xbrl_bulk",
         "official:tpex:balance",
         "official:tpex:income"
@@ -238,9 +209,6 @@
     },
     "equity_parent": {
       "source": [
-        "finmind:TaiwanStockBalanceSheet",
-        "finmind:TaiwanStockCashFlowsStatement",
-        "finmind:TaiwanStockFinancialStatements",
         "mops:xbrl_bulk",
         "official:tpex:balance",
         "official:tpex:income"
@@ -262,9 +230,6 @@
     },
     "revenue": {
       "source": [
-        "finmind:TaiwanStockBalanceSheet",
-        "finmind:TaiwanStockCashFlowsStatement",
-        "finmind:TaiwanStockFinancialStatements",
         "mops:xbrl_bulk",
         "official:tpex:balance",
         "official:tpex:income"
@@ -274,9 +239,6 @@
     },
     "operating_income": {
       "source": [
-        "finmind:TaiwanStockBalanceSheet",
-        "finmind:TaiwanStockCashFlowsStatement",
-        "finmind:TaiwanStockFinancialStatements",
         "mops:xbrl_bulk",
         "official:tpex:balance",
         "official:tpex:income"
@@ -286,9 +248,6 @@
     },
     "net_income": {
       "source": [
-        "finmind:TaiwanStockBalanceSheet",
-        "finmind:TaiwanStockCashFlowsStatement",
-        "finmind:TaiwanStockFinancialStatements",
         "mops:xbrl_bulk",
         "official:tpex:balance",
         "official:tpex:income"
@@ -298,9 +257,6 @@
     },
     "eps": {
       "source": [
-        "finmind:TaiwanStockBalanceSheet",
-        "finmind:TaiwanStockCashFlowsStatement",
-        "finmind:TaiwanStockFinancialStatements",
         "mops:xbrl_bulk",
         "official:tpex:balance",
         "official:tpex:income"
@@ -340,9 +296,6 @@
     },
     "cfo": {
       "source": [
-        "finmind:TaiwanStockBalanceSheet",
-        "finmind:TaiwanStockCashFlowsStatement",
-        "finmind:TaiwanStockFinancialStatements",
         "mops:xbrl_bulk",
         "official:tpex:balance",
         "official:tpex:income"
@@ -352,9 +305,6 @@
     },
     "capex": {
       "source": [
-        "finmind:TaiwanStockBalanceSheet",
-        "finmind:TaiwanStockCashFlowsStatement",
-        "finmind:TaiwanStockFinancialStatements",
         "mops:xbrl_bulk",
         "official:tpex:balance",
         "official:tpex:income"
@@ -364,9 +314,6 @@
     },
     "depreciation": {
       "source": [
-        "finmind:TaiwanStockBalanceSheet",
-        "finmind:TaiwanStockCashFlowsStatement",
-        "finmind:TaiwanStockFinancialStatements",
         "mops:xbrl_bulk",
         "official:tpex:balance",
         "official:tpex:income"
@@ -376,9 +323,6 @@
     },
     "amortization": {
       "source": [
-        "finmind:TaiwanStockBalanceSheet",
-        "finmind:TaiwanStockCashFlowsStatement",
-        "finmind:TaiwanStockFinancialStatements",
         "mops:xbrl_bulk",
         "official:tpex:balance",
         "official:tpex:income"
@@ -392,9 +336,6 @@
       "mops:xbrl_bulk"
     ],
     "official": [
-      "finmind:TaiwanStockBalanceSheet",
-      "finmind:TaiwanStockCashFlowsStatement",
-      "finmind:TaiwanStockFinancialStatements",
       "official:tpex:balance",
       "official:tpex:income"
     ],
