@@ -4,6 +4,10 @@
  */
 
 const ROUTES = {
+    'market': {
+        title: '市場',
+        subPages: []
+    },
     'portfolio': {
         title: '我的持股',
         subPages: []
@@ -11,6 +15,10 @@ const ROUTES = {
     'trendHunter': {
         title: '趨勢獵人',
         subPages: ['法人建倉', '短期快篩', '族群本益比', '量化精選', 'ETF戰情', 'ETF流量', '精選策略', '今日最熱', '資金輪動', '熱力圖']
+    },
+    'marginRankings': {
+        title: '融資排行',
+        subPages: []
     },
     'assetRisk': {
         title: '資產風險',
@@ -32,6 +40,10 @@ const ROUTES = {
         title: '設定 Settings',
         subPages: []
     },
+    'more': {
+        title: '更多',
+        subPages: []
+    },
     'groupSearch': {
         title: '族群搜尋',
         subPages: []
@@ -44,7 +56,7 @@ const ROUTES = {
 
 class Router {
     constructor() {
-        this.currentPrimary = 'portfolio';
+        this.currentPrimary = 'market';
         this.currentSecondary = null;
     }
 
@@ -58,7 +70,7 @@ class Router {
 
         // 初始載入第一頁
         try {
-            this.switchPage('portfolio');
+            this.switchPage('market');
         } catch (e) {
             console.error("Router: Failed to load initial page", e);
         }
