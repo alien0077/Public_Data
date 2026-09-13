@@ -1,0 +1,126 @@
+{
+  "schema_version": "1.0",
+  "generated_at": "2026-09-11T02:46:54.203464+00:00",
+  "data_root": "temp_repo/data",
+  "target_start": "2021-01-01",
+  "datasets": [
+    {
+      "dataset": "daily_tw_price",
+      "symbol_count": 2368,
+      "earliest_date": "2024-01-02",
+      "latest_date": "2026-09-04",
+      "period_count": 648,
+      "missing_period_count": null,
+      "coverage_percent": null,
+      "source": "local Public_Data data/daily/tw",
+      "script": "scripts/daily_tw_job.py",
+      "status": "present",
+      "trading_day_file_count": 648,
+      "symbol_count_by_year": {
+        "2024": 2368,
+        "2025": 2368,
+        "2026": 2368
+      }
+    },
+    {
+      "dataset": "monthly_revenue",
+      "symbol_count": 1979,
+      "earliest_date": "2024-01",
+      "latest_date": "2026-07",
+      "period_count": 31,
+      "missing_period_count": null,
+      "coverage_percent": null,
+      "source": "local Public_Data data/monthly",
+      "script": "scripts/monthly_job.py",
+      "status": "present"
+    },
+    {
+      "dataset": "raw_quarterly_financial_statements",
+      "symbol_count": null,
+      "earliest_date": "2021Q1",
+      "latest_date": "2026Q2",
+      "period_count": 22,
+      "missing_period_count": null,
+      "coverage_percent": null,
+      "source": "local Public_Data data/raw_csvs/quarterly or data/quarterly",
+      "script": "scripts/quarterly_job.py",
+      "status": "present"
+    },
+    {
+      "dataset": "quarterly_fundamentals",
+      "symbol_count": null,
+      "earliest_date": "2021-Q1.json",
+      "latest_date": "2026-Q2.json",
+      "period_count": 22,
+      "missing_period_count": null,
+      "coverage_percent": null,
+      "source": "local Public_Data data/raw_csvs/quarterly or data/quarterly",
+      "script": "scripts/fundamentals/normalize_quarterly.py",
+      "status": "present"
+    },
+    {
+      "dataset": "dividends",
+      "symbol_count": 0,
+      "earliest_date": "00400A",
+      "latest_date": "9962",
+      "period_count": 2149,
+      "missing_period_count": null,
+      "coverage_percent": null,
+      "source": "local Public_Data data/dividends",
+      "script": "existing dividend ingestion",
+      "status": "present"
+    },
+    {
+      "dataset": "corporate_actions_announcements",
+      "symbol_count": 0,
+      "earliest_date": null,
+      "latest_date": null,
+      "period_count": 0,
+      "missing_period_count": null,
+      "coverage_percent": null,
+      "source": "local Public_Data data/announcements",
+      "script": "existing MOPS announcement ingestion",
+      "status": "missing"
+    },
+    {
+      "dataset": "macro_pit",
+      "symbol_count": 0,
+      "earliest_date": "calendar",
+      "latest_date": "sector_scores",
+      "period_count": 10,
+      "missing_period_count": null,
+      "coverage_percent": null,
+      "source": "local Public_Data data/macro",
+      "script": "existing macro ingestion",
+      "status": "present"
+    },
+    {
+      "dataset": "weekly_tdcc_or_flows",
+      "symbol_count": 3651,
+      "earliest_date": "2024-W01",
+      "latest_date": "2026-W36",
+      "period_count": 137,
+      "missing_period_count": null,
+      "coverage_percent": null,
+      "source": "local Public_Data data/weekly",
+      "script": "existing weekly ingestion",
+      "status": "present"
+    },
+    {
+      "dataset": "shares_outstanding",
+      "symbol_count": 2131,
+      "earliest_date": null,
+      "latest_date": null,
+      "period_count": null,
+      "missing_period_count": null,
+      "coverage_percent": 100.0,
+      "source": "local metadata / share provenance",
+      "script": "scripts/valuation/share_normalization.py",
+      "status": "complete"
+    }
+  ],
+  "notes": [
+    "Coverage is based on files and locally readable payloads; missing trading-day calendars are not inferred.",
+    "No source data, checkpoint, or cache was modified by this audit."
+  ]
+}

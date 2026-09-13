@@ -1,0 +1,10 @@
+dataset,symbol_count,earliest_date,latest_date,period_count,missing_period_count,coverage_percent,source,script,status,trading_day_file_count,symbol_count_by_year
+daily_tw_price,2368,2024-01-02,2026-09-04,648,,,local Public_Data data/daily/tw,scripts/daily_tw_job.py,present,648,"{'2024': 2368, '2025': 2368, '2026': 2368}"
+monthly_revenue,1979,2024-01,2026-07,31,,,local Public_Data data/monthly,scripts/monthly_job.py,present,,
+raw_quarterly_financial_statements,,2021Q1,2026Q2,22,,,local Public_Data data/raw_csvs/quarterly or data/quarterly,scripts/quarterly_job.py,present,,
+quarterly_fundamentals,,2021-Q1.json,2026-Q2.json,22,,,local Public_Data data/raw_csvs/quarterly or data/quarterly,scripts/fundamentals/normalize_quarterly.py,present,,
+dividends,0,00400A,9962,2149,,,local Public_Data data/dividends,existing dividend ingestion,present,,
+corporate_actions_announcements,0,,,0,,,local Public_Data data/announcements,existing MOPS announcement ingestion,missing,,
+macro_pit,0,calendar,sector_scores,10,,,local Public_Data data/macro,existing macro ingestion,present,,
+weekly_tdcc_or_flows,3651,2024-W01,2026-W36,137,,,local Public_Data data/weekly,existing weekly ingestion,present,,
+shares_outstanding,2131,,,,,100.0,local metadata / share provenance,scripts/valuation/share_normalization.py,complete,,
