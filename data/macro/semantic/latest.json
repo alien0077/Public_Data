@@ -1,18 +1,18 @@
 {
   "schema_version": "1.2",
-  "generated_at": "2026-09-14T08:11:17+08:00",
+  "generated_at": "2026-09-14T20:19:46+08:00",
   "month": "2026-09",
   "scope": "semantic_research_only",
   "fair_value_policy": "Fair Value V2.1 is the sole valuation baseline. Semantic scores in this file must not directly overwrite official numeric macro series or Fair Value.",
-  "summary": "Material change since the prior snapshot: the scheduled Oman meeting between Iran and Gulf Arab states on reopening the Strait of Hormuz was postponed, removing a near-term diplomatic de-escalation catalyst while Saudi bypass-pipeline and maritime risks remain active. Brent rose to about $107.84/bbl and WTI to about $102.85/bbl in early September 14 Asian trade. Separately, repeated Ukrainian strikes on Russian refineries have reduced fuel production, prompted a public U.S. request for Ukraine to stop targeting Russian diesel infrastructure, and add a second refined-product supply shock. No new U.S., Taiwan or China official macro release was identified since the prior snapshot.",
+  "summary": "Material change since the prior snapshot: Reuters ship-tracking data confirmed Strait of Hormuz commodity-vessel traffic remained severely depressed over the weekend, while Iran's Persian Gulf Strait Authority expanded its vessel-sanctions list to 77 ships, increasing maritime-access, insurance and freight persistence risk. Reuters also published a Taiwan central-bank poll in which 28 of 31 economists expected the September 17 policy rate to remain at 2%, while three expected a hike to 2.125%. No new U.S., Taiwan or China official macro release was identified since the prior snapshot.",
   "macro_summary": {
     "new_official_us_macro_release_since_prior_snapshot": false,
     "new_official_taiwan_macro_release_since_prior_snapshot": false,
     "new_official_china_macro_release_since_prior_snapshot": false,
     "new_material_geopolitical_energy_information": true,
     "policy_bias": "hawkish_risk_elevated",
-    "taiwan_equity_implication": "The risk mix remains adverse for Taiwan equities: near-5% U.S. long yields, an 86% Reuters-reported market probability of a September Fed hike, renewed oil gains above $100, persistent Hormuz/Bab el-Mandeb disruption and a separate Russia-Ukraine refined-product shock all pressure valuation, freight, imported inflation and margins. Strong AI/HPC export demand remains the main offset.",
-    "notes": "Official numeric series remain authoritative. Reuters market probabilities, intraday oil observations and conflict-related supply estimates are semantic evidence only and must not overwrite deterministic macro series."
+    "taiwan_equity_implication": "The risk mix remains adverse for Taiwan equities: U.S. long yields remain near 5%, Reuters-reported market pricing for a September Fed hike increased to about 89%, crude remains around $108 Brent, Hormuz physical-flow and maritime-access constraints remain severe, and Russian refined-product disruption persists. Taiwan's AI/HPC export cycle remains the main offset, while the domestic central-bank base case is still a hold at 2% according to the latest Reuters poll.",
+    "notes": "Official numeric series remain authoritative. Reuters market probabilities, intraday market observations, conflict-related supply estimates and economist polls are semantic evidence only and must not overwrite deterministic macro series."
   },
   "monitored_series_status": {
     "US_CPI_CORE_CPI": {
@@ -78,28 +78,36 @@
       "status": "no_new_policy_action",
       "next_scheduled_meeting": "2026-09-15/16",
       "policy_tone": "hawkish_risk_rising",
-      "market_hike_probability_pct_reuters": 86,
+      "market_hike_probability_pct_reuters": 89,
       "market_hike_probability_observed_on": "2026-09-14",
       "market_hike_probability_is_official_series": false,
       "stale": false,
-      "source_url": "https://www.reuters.com/world/china/global-markets-global-markets-2026-09-13/"
+      "source_url": "https://www.reuters.com/world/india/gold-slips-oil-rally-fans-rate-hike-bets-ahead-fed-meeting-2026-09-14/"
     },
     "US_2Y_10Y_CURVE": {
-      "status": "current_official_close",
+      "status": "current_official_close_with_new_intraday_10y_context",
       "close_date": "2026-09-11",
       "official_2y_pct": 4.63,
       "official_10y_pct": 4.96,
       "official_curve_10y_minus_2y_bp": 33,
+      "intraday_10y_high_pct_reuters_2026_09_14": 4.9915,
       "stale": false,
       "confidence": 0.99,
-      "source_url": "https://home.treasury.gov/resource-center/data-chart-center/interest-rates/TextView?type=daily_treasury_yield_curve&field_tdr_date_value_month=202609"
+      "source_urls": [
+        "https://home.treasury.gov/resource-center/data-chart-center/interest-rates/TextView?type=daily_treasury_yield_curve&field_tdr_date_value_month=202609",
+        "https://www.reuters.com/markets/us/global-markets-technicals-graphic-2026-09-14/"
+      ]
     },
     "DXY": {
-      "status": "latest_verified_repository_observation",
+      "status": "latest_verified_repository_observation_with_new_directional_context",
       "latest_observation": 99.1,
       "observed_on": "2026-09-11",
+      "new_context_2026_09_14": "Reuters reported the U.S. dollar at a one-week high; no newer exact DXY value was incorporated.",
       "stale": true,
-      "source_url": "https://www.reuters.com/world/china/global-markets-corrected-2026-09-11/"
+      "source_urls": [
+        "https://www.reuters.com/world/china/global-markets-corrected-2026-09-11/",
+        "https://www.reuters.com/world/india/gold-slips-oil-rally-fans-rate-hike-bets-ahead-fed-meeting-2026-09-14/"
+      ]
     },
     "VIX": {
       "status": "latest_verified_repository_close",
@@ -115,15 +123,19 @@
       "stale": true
     },
     "WTI_BRENT": {
-      "status": "current_reuters_intraday_observation",
+      "status": "current_reuters_intraday_context",
       "observed_on": "2026-09-14",
       "brent_usd_per_bbl": 107.84,
       "wti_usd_per_bbl": 102.85,
+      "newer_context": "Reuters subsequently described Brent trading around $108/bbl as Middle East supply risk persisted; no more precise newer quote was promoted into the numeric series.",
       "last_verified_settlement_date": "2026-09-11",
       "last_verified_settlement_brent_usd_per_bbl": 104.61,
       "last_verified_settlement_wti_usd_per_bbl": 100.05,
       "stale": false,
-      "source_url": "https://www.reuters.com/world/china/global-markets-global-markets-2026-09-13/"
+      "source_urls": [
+        "https://www.reuters.com/world/china/global-markets-global-markets-2026-09-13/",
+        "https://www.reuters.com/business/sterling-hits-one-month-low-oil-price-jump-boosts-dollar-2026-09-14/"
+      ]
     },
     "COPPER": {
       "status": "no_new_authoritative_value_incorporated",
@@ -167,9 +179,15 @@
       "source_url": "https://www.ndc.gov.tw/en/nc_199_40405"
     },
     "TW_CENTRAL_BANK": {
-      "status": "no_new_policy_decision",
+      "status": "no_new_policy_decision_new_reuters_poll",
       "next_scheduled_meeting": "2026-09-17",
-      "stale": false
+      "current_policy_rate_pct": 2.0,
+      "reuters_poll_hold_count": 28,
+      "reuters_poll_hike_to_2_125_count": 3,
+      "reuters_poll_total": 31,
+      "poll_is_official_series": false,
+      "stale": false,
+      "source_url": "https://www.reuters.com/world/asia-pacific/taiwan-likely-keep-rates-unchanged-fed-hike-could-upend-expectations-2026-09-14/"
     },
     "CHINA_PMI": {
       "status": "current_no_new_release",
@@ -183,48 +201,77 @@
   },
   "key_drivers": [
     {
-      "name": "Hormuz diplomacy postponed as oil reprices higher",
-      "observed": "Reuters reported that the scheduled Oman meeting between Iran and Gulf Arab states on reopening the Strait of Hormuz was postponed. Brent was about $107.84/bbl and WTI about $102.85/bbl in early September 14 Asian trade.",
-      "interpretation": "A near-term diplomatic de-escalation catalyst has weakened while physical supply and shipping constraints remain active, raising persistence risk for imported energy inflation and freight costs.",
+      "name": "Hormuz physical-flow stress remains severe",
+      "observed": "Reuters reported preliminary ship-tracking data showing only four commodity vessels exited and ten entered the Gulf through Hormuz over the weekend, below a 10-day average of about 14 commodity-vessel movements per day; before the Iran war, the strait typically handled about 125 large commercial vessel transits per day. Iran's Persian Gulf Strait Authority also published an updated list of 77 vessels facing potential penalties for alleged protocol violations.",
+      "interpretation": "This confirms that the shock remains a physical-flow and maritime-access constraint, increasing persistence risk for tanker availability, insurance, freight, delivered energy and imported inflation.",
       "source_urls": [
-        "https://www.reuters.com/world/china/global-markets-global-markets-2026-09-13/",
-        "https://www.reuters.com/business/energy/oil-prices-jump-more-than-3-after-new-strikes-saudi-strait-hormuz-2026-09-13/"
+        "https://www.reuters.com/business/hormuz-shipping-traffic-remains-below-10-day-average-weekend-data-shows-2026-09-14/",
+        "https://www.reuters.com/world/middle-east/iranian-strait-authority-issues-updated-list-sanctioned-vessels-2026-09-14/"
       ]
     },
     {
-      "name": "Russia-Ukraine refinery attacks add a refined-product shock",
-      "observed": "Reuters reported repeated Ukrainian long-range drone strikes have reduced Russian fuel production. President Trump urged Ukraine to stop targeting Russian diesel infrastructure, while Russia has downgraded its 2026 oil-output forecast and fuel-export outlook because of the war.",
-      "interpretation": "This creates a second energy channel, focused on diesel/refining, which can reinforce freight, inflation and rate pressure independently of Middle East crude disruptions.",
+      "name": "Russia-Ukraine refinery attacks remain a refined-product shock",
+      "observed": "Reuters reported repeated Ukrainian long-range drone strikes have reduced Russian fuel production. President Trump urged Ukraine to stop targeting Russian diesel infrastructure, while Russia downgraded its 2026 oil-output forecast and fuel-export outlook because of the war.",
+      "interpretation": "The refined-product channel can reinforce freight, inflation and rate pressure independently of Middle East crude disruptions.",
       "source_urls": [
-        "https://www.reuters.com/business/energy/trump-tells-ukraines-zelenskiy-stop-hitting-russian-diesel-2026-09-13/"
+        "https://www.reuters.com/business/energy/trump-tells-ukraines-zelenskiy-stop-hitting-russian-diesel-2026-09-13/",
+        "https://www.reuters.com/business/energy/kremlin-welcomes-trumps-call-ukraine-halt-strikes-diesel-facilities-2026-09-14/"
       ]
     },
     {
-      "name": "U.S. August CPI remains a hawkish-rate input",
-      "observed": "Headline CPI rose 0.4% m/m and 3.4% y/y; core CPI rose 0.3% m/m and 2.4% y/y.",
-      "interpretation": "Reuters reported markets pricing an 86% chance of a 25 bp Fed hike on September 16; this is a market-implied probability, not an official Fed forecast.",
+      "name": "U.S. inflation and oil keep Fed hike risk elevated",
+      "observed": "August headline CPI rose 0.4% m/m and 3.4% y/y; core CPI rose 0.3% m/m and 2.4% y/y. Reuters reported CME FedWatch pricing of about 89% for a hike at this week's meeting.",
+      "interpretation": "Near-5% 10-year yields and renewed energy inflation increase duration pressure on Taiwan technology equities; the market probability is not an official Fed forecast.",
       "source_urls": [
         "https://www.bls.gov/news.release/cpi.nr0.htm",
-        "https://www.reuters.com/world/china/global-markets-global-markets-2026-09-13/"
+        "https://www.reuters.com/world/india/gold-slips-oil-rally-fans-rate-hike-bets-ahead-fed-meeting-2026-09-14/"
+      ]
+    },
+    {
+      "name": "Taiwan central-bank base case remains hold",
+      "observed": "A Reuters poll of 31 economists found 28 expected the September 17 policy rate to remain at 2%, while three expected a hike to 2.125%.",
+      "interpretation": "The domestic policy base case remains unchanged, but a Fed hike and persistent imported-energy inflation could raise the probability of later tightening.",
+      "source_urls": [
+        "https://www.reuters.com/world/asia-pacific/taiwan-likely-keep-rates-unchanged-fed-hike-could-upend-expectations-2026-09-14/"
       ]
     }
   ],
   "key_risks": [
-    "A sustained U.S. 10Y yield near 5% and a possible renewed Fed hiking cycle can compress long-duration semiconductor and AI-hardware valuation multiples.",
-    "Postponed Hormuz diplomacy, attacks on Gulf shipping and the Saudi East-West Pipeline outage increase the probability of persistent delivered-energy, freight and insurance-cost pressure.",
+    "A sustained U.S. 10Y yield near 5% and a renewed Fed hiking cycle can compress long-duration semiconductor and AI-hardware valuation multiples.",
+    "Persistently depressed Hormuz traffic, direct vessel-security incidents, an expanded Iranian vessel-sanctions list and the Saudi East-West Pipeline outage increase the probability of persistent delivered-energy, freight and insurance-cost pressure.",
     "Russia-Ukraine attacks on refinery infrastructure add a refined-product/diesel shock that can raise trucking, shipping and industrial logistics costs even if crude supply stabilizes.",
     "Taiwan's strong AI/HPC export cycle offsets but does not eliminate energy, FX, rates and global-demand risks.",
-    "DXY, VIX, copper and the latest USD/TWD close remain stale in this semantic snapshot because no sufficiently authoritative newer value was incorporated."
+    "DXY, VIX, copper and the latest USD/TWD close remain stale in this semantic snapshot because no sufficiently authoritative newer exact value was incorporated."
   ],
   "policy_tone": {
-    "fed": "Hawkish risk is elevated after August CPI. Reuters reported markets pricing an 86% chance of a 25 bp hike at the September 15-16 FOMC meeting; no new official FOMC action has occurred yet.",
-    "taiwan_central_bank": "No new decision. Imported-energy inflation, U.S. yields and FX pressures remain important ahead of the September 17 meeting.",
-    "global": "Energy-security risk remains inflationary and growth-negative. Postponed Gulf-Iran diplomacy and Russia-Ukraine refinery disruptions broaden the energy shock from crude/chokepoints to refined products."
+    "fed": "Hawkish risk remains elevated after August CPI and renewed energy-price pressure. Reuters reported CME FedWatch pricing around an 89% probability of a hike at the September 15-16 meeting; no new official FOMC action has occurred yet.",
+    "taiwan_central_bank": "No new decision. A Reuters poll showed 28 of 31 economists expecting the September 17 rate to remain at 2%, while three expected a hike to 2.125%. Imported-energy inflation, U.S. yields and FX remain key risks.",
+    "global": "Energy-security risk remains inflationary and growth-negative. Hormuz physical flows remain severely constrained, maritime access restrictions have broadened, and Russia-Ukraine refinery disruption adds a separate refined-product channel."
   },
   "geopolitical_global_risk": {
     "level": "VERY_HIGH",
-    "dominant_event": "2026-09-14-hormuz-diplomacy-postponed-oil-repricing",
+    "dominant_event": "2026-09-14-hormuz-traffic-sanctions-persistence",
     "events": [
+      {
+        "event_id": "2026-09-14-hormuz-traffic-sanctions-persistence",
+        "event_type": "maritime_chokepoint_access_restriction",
+        "regions": ["Strait of Hormuz", "Persian Gulf", "Middle East"],
+        "severity": 0.95,
+        "confidence": 0.98,
+        "escalation_score": 0.90,
+        "persistence_score": 0.96,
+        "observed_evidence": "Reuters reported only four commodity vessels exited and ten entered the Gulf through Hormuz over the weekend, below the recent 10-day average; before the Iran war the strait typically handled about 125 large commercial vessel transits per day. Iran's Persian Gulf Strait Authority also expanded its list of vessels facing penalties to 77 ships.",
+        "semantic_interpretation": "The shock remains a physical-flow and maritime-access constraint, increasing persistence risk for tanker availability, insurance, freight and delivered-energy costs.",
+        "transmission_channels": ["oil_supply", "lng_supply", "maritime_security", "shipping_capacity", "marine_insurance", "freight", "energy_inflation", "rates", "fx", "global_trade", "risk_sentiment"],
+        "affected_factors": ["Brent", "WTI", "LNG", "shipping_costs", "marine_insurance", "energy_inflation", "US_2Y", "US_10Y", "USD_TWD", "global_growth"],
+        "affected_taiwan_sectors": ["航空運輸", "貨櫃航運", "散裝航運", "塑膠", "化工", "鋼鐵", "機械", "電子製造", "半導體"],
+        "source_urls": [
+          "https://www.reuters.com/business/hormuz-shipping-traffic-remains-below-10-day-average-weekend-data-shows-2026-09-14/",
+          "https://www.reuters.com/world/middle-east/iranian-strait-authority-issues-updated-list-sanctioned-vessels-2026-09-14/"
+        ],
+        "first_seen_at": "2026-09-14T20:19:46+08:00",
+        "updated_at": "2026-09-14T20:19:46+08:00"
+      },
       {
         "event_id": "2026-09-14-hormuz-diplomacy-postponed-oil-repricing",
         "event_type": "energy_supply_diplomacy_escalation",
@@ -233,7 +280,7 @@
         "confidence": 0.98,
         "escalation_score": 0.93,
         "persistence_score": 0.94,
-        "observed_evidence": "Reuters reported the Oman meeting between Iran and Gulf Arab states on reopening the Strait of Hormuz was postponed while the Saudi East-West Pipeline remained shut and new attacks had hit Saudi Arabia and Gulf shipping. Brent rose to about $107.84/bbl and WTI to about $102.85/bbl in early September 14 Asian trade.",
+        "observed_evidence": "Reuters reported the Oman meeting between Iran and Gulf Arab states on reopening the Strait of Hormuz was postponed while the Saudi East-West Pipeline remained shut and attacks had hit Saudi Arabia and Gulf shipping. Brent traded around $108/bbl on September 14.",
         "semantic_interpretation": "The loss of a near-term diplomatic de-escalation catalyst, combined with unresolved physical supply and shipping constraints, raises the persistence probability of an imported-energy shock.",
         "transmission_channels": ["oil_supply", "maritime_security", "shipping", "marine_insurance", "freight", "refined_products", "inflation", "rates", "fx", "global_trade", "risk_sentiment"],
         "affected_factors": ["Brent", "WTI", "shipping_costs", "marine_insurance", "energy_inflation", "US_2Y", "US_10Y", "USD_TWD", "global_growth"],
@@ -243,7 +290,7 @@
           "https://www.reuters.com/business/energy/oil-prices-jump-more-than-3-after-new-strikes-saudi-strait-hormuz-2026-09-13/"
         ],
         "first_seen_at": "2026-09-14T08:11:17+08:00",
-        "updated_at": "2026-09-14T08:11:17+08:00"
+        "updated_at": "2026-09-14T20:19:46+08:00"
       },
       {
         "event_id": "2026-09-14-russia-ukraine-refinery-diesel-supply-shock",
@@ -253,22 +300,28 @@
         "confidence": 0.95,
         "escalation_score": 0.82,
         "persistence_score": 0.86,
-        "observed_evidence": "Reuters reported that repeated Ukrainian drone attacks on Russian refineries have reduced fuel production and that Russia downgraded its 2026 oil-output forecast and fuel-export outlook because of the war. President Trump publicly urged Ukraine to stop targeting Russian diesel infrastructure.",
+        "observed_evidence": "Reuters reported repeated Ukrainian drone attacks on Russian refineries have reduced fuel production and that Russia downgraded its 2026 oil-output forecast and fuel-export outlook because of the war. President Trump publicly urged Ukraine to stop targeting Russian diesel infrastructure; the Kremlin welcomed that request on September 14.",
         "semantic_interpretation": "A distinct refined-product supply shock is reinforcing the Middle East crude shock through diesel, freight, inflation and global industrial-demand channels.",
         "transmission_channels": ["refinery_capacity", "diesel_supply", "freight", "shipping", "inflation", "rates", "global_trade", "industrial_demand"],
         "affected_factors": ["diesel", "refined_product_cracks", "shipping_costs", "energy_inflation", "US_2Y", "US_10Y", "global_growth"],
         "affected_taiwan_sectors": ["貨櫃航運", "散裝航運", "航空運輸", "物流", "塑膠", "化工", "鋼鐵", "機械", "電子製造"],
-        "source_urls": ["https://www.reuters.com/business/energy/trump-tells-ukraines-zelenskiy-stop-hitting-russian-diesel-2026-09-13/"],
+        "source_urls": [
+          "https://www.reuters.com/business/energy/trump-tells-ukraines-zelenskiy-stop-hitting-russian-diesel-2026-09-13/",
+          "https://www.reuters.com/business/energy/kremlin-welcomes-trumps-call-ukraine-halt-strikes-diesel-facilities-2026-09-14/"
+        ],
         "first_seen_at": "2026-09-14T08:11:17+08:00",
-        "updated_at": "2026-09-14T08:11:17+08:00"
+        "updated_at": "2026-09-14T20:19:46+08:00"
       }
     ]
   },
-  "confidence": 0.97,
+  "confidence": 0.98,
   "source_urls": [
-    "https://www.reuters.com/world/china/global-markets-global-markets-2026-09-13/",
-    "https://www.reuters.com/business/energy/oil-prices-jump-more-than-3-after-new-strikes-saudi-strait-hormuz-2026-09-13/",
-    "https://www.reuters.com/business/energy/trump-tells-ukraines-zelenskiy-stop-hitting-russian-diesel-2026-09-13/",
+    "https://www.reuters.com/business/hormuz-shipping-traffic-remains-below-10-day-average-weekend-data-shows-2026-09-14/",
+    "https://www.reuters.com/world/middle-east/iranian-strait-authority-issues-updated-list-sanctioned-vessels-2026-09-14/",
+    "https://www.reuters.com/world/asia-pacific/taiwan-likely-keep-rates-unchanged-fed-hike-could-upend-expectations-2026-09-14/",
+    "https://www.reuters.com/world/india/gold-slips-oil-rally-fans-rate-hike-bets-ahead-fed-meeting-2026-09-14/",
+    "https://www.reuters.com/markets/us/global-markets-technicals-graphic-2026-09-14/",
+    "https://www.reuters.com/business/energy/kremlin-welcomes-trumps-call-ukraine-halt-strikes-diesel-facilities-2026-09-14/",
     "https://www.bls.gov/news.release/cpi.nr0.htm",
     "https://home.treasury.gov/resource-center/data-chart-center/interest-rates/TextView?type=daily_treasury_yield_curve&field_tdr_date_value_month=202609"
   ]
