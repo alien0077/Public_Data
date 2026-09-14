@@ -287,7 +287,7 @@ export const StockDetail = {
             relative_pe: 'Relative P/E（同業本益比）',
             forward_eps: 'Forward EPS（前瞻線性 EPS）'
         };
-        if (!fairValue || fairValue.status !== 'ok' || fairValue.fair_value == null || fairValue.production_publishable === false || (fairValue.hard_fail_flags || []).length) {
+        if (!fairValue || fairValue.status !== 'ok' || fairValue.fair_value == null || fairValue.production_publishable === false || (fairValue.hard_fail_flags || []).length || fairValue.consumer_signal_state === 'blocked') {
             if (fairValue?.production_publishable === false || (fairValue?.hard_fail_flags || []).length) {
                 const reason = fairValue.production_publish_block_reason || (fairValue.hard_fail_flags || []).join('、') || '未通過發布安全檢查';
                 return `<div class="bg-amber-50 dark:bg-amber-950/20 rounded-2xl border border-amber-200 dark:border-amber-800/40 p-5" data-testid="fair-value-detail"><h3 class="text-sm font-bold">估值需複核（${this.escapeHtml(this.currentSymbol)} ${this.escapeHtml(titleName)}）</h3><p class="text-xs text-amber-700 dark:text-amber-300 mt-2">未通過發布安全檢查：${this.escapeHtml(reason)}</p></div>`;
@@ -306,7 +306,7 @@ export const StockDetail = {
         const formatInput = (value, decimals = 1) => typeof value === 'number' ? value.toFixed(decimals) : (value || '--');
         const upside = Number(fairValue.upside);
         const upsideClass = Number.isFinite(upside) && upside >= 0 ? 'text-red-500' : 'text-green-500';
-        const signalLabel = fairValue.valuation_signal_label || (upside >= 0 ? '低估' : '高估');
+        const signalLabel = fairValue.consumer_signal_state === 'review' ? (fairValue.consumer_signal_label || '模型分歧') : (fairValue.consumer_signal_label || fairValue.valuation_signal_label || (upside >= 0 ? '低估' : '高估'));
         const signalClass = signalLabel === '低估' ? 'text-red-500' : signalLabel === '高估' ? 'text-green-500' : 'text-orange-500';
         const reasonLines = this.fairValueReasonLines(fairValue, upside);
         const v21 = fairValue.model_version === 'v2.1' || fairValue.fair_value_v2_1 != null;
@@ -1091,7 +1091,7 @@ export const StockDetail = {
                             ['估值中樞', fairValue.fair_value, 'text-orange-600'],
                             ['現價', fairValue.market_price, 'text-gray-900 dark:text-white'],
                             ['模型估值差距', fairValue.upside != null ? `${(fairValue.upside * 100).toFixed(1)}%` : '--', fairValue.upside >= 0 ? 'text-red-500' : 'text-green-500'],
-                            ['判定', fairValue.valuation_signal_label || '--', fairValue.valuation_signal_label === '低估' ? 'text-red-500' : fairValue.valuation_signal_label === '高估' ? 'text-green-500' : 'text-orange-500'],
+                            ['判定', fairValue.consumer_signal_label || fairValue.valuation_signal_label || '--', fairValue.consumer_signal_state === 'normal' && fairValue.valuation_signal_label === '低估' ? 'text-red-500' : fairValue.consumer_signal_state === 'normal' && fairValue.valuation_signal_label === '高估' ? 'text-green-500' : 'text-orange-500'],
                             ['合理區間低', fairValue.range?.bear, 'text-gray-700 dark:text-gray-300'],
                             ['合理區間中', fairValue.range?.base, 'text-gray-700 dark:text-gray-300'],
                             ['合理區間高', fairValue.range?.bull, 'text-gray-700 dark:text-gray-300']
