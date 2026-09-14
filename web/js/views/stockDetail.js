@@ -287,7 +287,11 @@ export const StockDetail = {
             relative_pe: 'Relative P/E（同業本益比）',
             forward_eps: 'Forward EPS（前瞻線性 EPS）'
         };
-        if (!fairValue || fairValue.status !== 'ok' || fairValue.fair_value == null) {
+        if (!fairValue || fairValue.status !== 'ok' || fairValue.fair_value == null || fairValue.production_publishable === false || (fairValue.hard_fail_flags || []).length) {
+            if (fairValue?.production_publishable === false || (fairValue?.hard_fail_flags || []).length) {
+                const reason = fairValue.production_publish_block_reason || (fairValue.hard_fail_flags || []).join('、') || '未通過發布安全檢查';
+                return `<div class="bg-amber-50 dark:bg-amber-950/20 rounded-2xl border border-amber-200 dark:border-amber-800/40 p-5" data-testid="fair-value-detail"><h3 class="text-sm font-bold">估值需複核（${this.escapeHtml(this.currentSymbol)} ${this.escapeHtml(titleName)}）</h3><p class="text-xs text-amber-700 dark:text-amber-300 mt-2">未通過發布安全檢查：${this.escapeHtml(reason)}</p></div>`;
+            }
             const missing = fairValue?.missing_data?.length ? `資料不足：${fairValue.missing_data.join('、')}` : '資料不足，尚未產生公允價';
             return `<div class="bg-gray-50 dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 p-5" data-testid="fair-value-detail"><h3 class="text-sm font-bold">自有公允值（${this.escapeHtml(this.currentSymbol)} ${this.escapeHtml(titleName)}）</h3><p class="text-xs text-gray-500 mt-2">${this.escapeHtml(missing)}</p></div>`;
         }
@@ -320,7 +324,7 @@ export const StockDetail = {
                     <span class="text-[10px] px-2 py-1 rounded-full bg-orange-100 dark:bg-orange-900/40 text-orange-700 dark:text-orange-300">${this.escapeHtml(fairValue.confidence || '--')}</span>
                 </div>
                 <div class="grid grid-cols-2 md:grid-cols-7 gap-3">
-                    ${[['估值中樞', fairValue.fair_value, 'text-orange-600'], ['現價', fairValue.market_price, 'text-gray-900 dark:text-white'], ['上行空間', Number.isFinite(upside) ? `${(upside * 100).toFixed(1)}%` : '--', upsideClass], ['判定', signalLabel, signalClass], ['合理區間低', fairValue.range?.bear, 'text-gray-700 dark:text-gray-300'], ['合理區間中', fairValue.range?.base, 'text-gray-700 dark:text-gray-300'], ['合理區間高', fairValue.range?.bull, 'text-gray-700 dark:text-gray-300']].map(([label, value, cls]) => `<div class="bg-white/70 dark:bg-gray-900/50 rounded-xl p-3 border border-orange-100 dark:border-orange-900/30"><div class="text-[10px] text-gray-500 mb-1">${label}</div><div class="text-lg font-bold font-mono ${cls}">${typeof value === 'number' ? value.toFixed(1) : (value || '--')}</div></div>`).join('')}
+                    ${[['估值中樞', fairValue.fair_value, 'text-orange-600'], ['現價', fairValue.market_price, 'text-gray-900 dark:text-white'], ['模型估值差距', Number.isFinite(upside) ? `${(upside * 100).toFixed(1)}%` : '--', upsideClass], ['判定', signalLabel, signalClass], ['合理區間低', fairValue.range?.bear, 'text-gray-700 dark:text-gray-300'], ['合理區間中', fairValue.range?.base, 'text-gray-700 dark:text-gray-300'], ['合理區間高', fairValue.range?.bull, 'text-gray-700 dark:text-gray-300']].map(([label, value, cls]) => `<div class="bg-white/70 dark:bg-gray-900/50 rounded-xl p-3 border border-orange-100 dark:border-orange-900/30"><div class="text-[10px] text-gray-500 mb-1">${label}</div><div class="text-lg font-bold font-mono ${cls}">${typeof value === 'number' ? value.toFixed(1) : (value || '--')}</div></div>`).join('')}
                 </div>
                 <div class="mt-4 grid grid-cols-2 md:grid-cols-3 gap-2">${inputRows.map(([label, value, decimals]) => `<div class="bg-white/60 dark:bg-gray-900/40 rounded-lg px-3 py-2"><div class="text-[10px] text-gray-500">${label}</div><div class="text-xs font-mono font-bold">${typeof value === 'number' ? formatInput(value, decimals) : (value || '--')}</div></div>`).join('')}</div>
                 <div class="mt-3 text-[10px] text-gray-500">財報：${this.escapeHtml(fairValue.source_dates?.financials || '--')} · 價格：${this.escapeHtml(fairValue.source_dates?.price || '--')} · 結果為模型估計，不代表保證價格</div>
@@ -336,7 +340,7 @@ export const StockDetail = {
                 <details class="mt-4 border-t border-orange-200/70 dark:border-orange-800/40 pt-3">
                     <summary class="cursor-pointer text-xs font-bold text-orange-700 dark:text-orange-300">算法說明</summary>
                     <div class="mt-3 space-y-2 text-[11px] leading-relaxed text-gray-600 dark:text-gray-300">
-                        <p><b>估值中樞：多模型中位數</b>。各自計算 Residual Income、實際同業 P/E、實際同業 P/B 與 DDM；可用模型的基準值取中位數，不再固定套用 PE 20。</p>
+                        <p><b>模型整合：${this.escapeHtml(fairValue.model || '資料不足')}</b>。實際使用模型：${this.escapeHtml((fairValue.models_used || []).join('、') || '資料不足')}；模型族與安全狀態依本檔 runtime 欄位判定。</p>
                         <p><b>判定：</b>現價低於合理區間低點為低估（紅色），高於合理區間高點為高估（綠色），落在區間內為合理區間；本檔使用 ${fairValue.model_count || 0} 個模型，模型分歧 ${(Number(fairValue.model_spread || 0) * 100).toFixed(1)}%。</p>
                         <p><b>Residual Income：</b><code>RI_t = EPS_t − Ke × BVPS_(t−1)</code>，公允值為目前 BVPS 加上 5 年剩餘收益與終值的折現；P/E 模型會使用月營收錨定的近端 EPS nowcast（若資料完整）。</p>
                         <p><b>折現率：</b><code>Ke = 台灣無風險利率 + Beta × 台灣股票風險溢酬</code>。無法滿足必要條件時，不會把缺值當成零。</p>
@@ -1073,7 +1077,7 @@ export const StockDetail = {
                     </div>
                 </div>
 
-                ${fairValue?.status === 'ok' && fairValue.fair_value != null ? `
+                ${fairValue?.status === 'ok' && fairValue.fair_value != null && fairValue.production_publishable !== false && !(fairValue.hard_fail_flags || []).length ? `
                 <div class="bg-orange-50 dark:bg-orange-950/20 rounded-2xl border border-orange-200 dark:border-orange-800/40 p-5">
                     <div class="flex items-center justify-between gap-3 mb-4">
                         <div>
@@ -1086,7 +1090,7 @@ export const StockDetail = {
                         ${[
                             ['估值中樞', fairValue.fair_value, 'text-orange-600'],
                             ['現價', fairValue.market_price, 'text-gray-900 dark:text-white'],
-                            ['上行空間', fairValue.upside != null ? `${(fairValue.upside * 100).toFixed(1)}%` : '--', fairValue.upside >= 0 ? 'text-red-500' : 'text-green-500'],
+                            ['模型估值差距', fairValue.upside != null ? `${(fairValue.upside * 100).toFixed(1)}%` : '--', fairValue.upside >= 0 ? 'text-red-500' : 'text-green-500'],
                             ['判定', fairValue.valuation_signal_label || '--', fairValue.valuation_signal_label === '低估' ? 'text-red-500' : fairValue.valuation_signal_label === '高估' ? 'text-green-500' : 'text-orange-500'],
                             ['合理區間低', fairValue.range?.bear, 'text-gray-700 dark:text-gray-300'],
                             ['合理區間中', fairValue.range?.base, 'text-gray-700 dark:text-gray-300'],
@@ -1179,7 +1183,7 @@ export const StockDetail = {
                         </div>`).join('')}
                         ${etfHoldings.length > 5 ? `<div class="text-center text-[10px] text-gray-400 pt-1">...及其他 ${etfHoldings.length - 5} 檔 ETF</div>` : ''}
                     </div>
-                </div>` : ''}
+                </div>` : (fairValue?.production_publishable === false || (fairValue?.hard_fail_flags || []).length ? `<div class="bg-amber-50 dark:bg-amber-950/20 rounded-2xl border border-amber-200 dark:border-amber-800/40 p-5"><h4 class="text-sm font-bold text-amber-700 dark:text-amber-300">估值需複核（${this.escapeHtml(this.currentSymbol)} ${this.escapeHtml(stockInfo?.name || fairValue?.name || '')}）</h4><p class="text-xs text-amber-700 dark:text-amber-300 mt-2">未通過發布安全檢查：${this.escapeHtml(fairValue.production_publish_block_reason || (fairValue.hard_fail_flags || []).join('、') || '未通過發布安全檢查')}</p></div>` : '')}
 
                 <div class="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 p-5">
                     <h4 class="text-sm font-bold text-gray-700 dark:text-gray-300 mb-2 flex items-center">

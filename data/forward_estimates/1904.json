@@ -1,56 +1,106 @@
 {
-  "schema_version": "1.1",
+  "schema_version": "forward-estimate-v2",
+  "symbol": "1904",
   "stock_id": "1904",
-  "as_of": "2026-09-13",
+  "as_of": "2026-09-14",
+  "formula_version": "forward-estimate-v2-monthly-revenue-margin",
+  "revenue_path": [
+    {
+      "horizon_year": 1,
+      "calendar_year": 2026,
+      "revenue": 50503709083.03295,
+      "growth": 0.10650091177814952
+    },
+    {
+      "horizon_year": 2,
+      "calendar_year": 2027,
+      "revenue": 54268792828.89795,
+      "growth": 0.07455063824470466
+    },
+    {
+      "horizon_year": 3,
+      "calendar_year": 2028,
+      "revenue": 56493968057.08815,
+      "growth": 0.04100285103458757
+    },
+    {
+      "horizon_year": 4,
+      "calendar_year": 2029,
+      "revenue": 57420533559.727165,
+      "growth": 0.016401140413835027
+    }
+  ],
+  "eps_path": [
+    {
+      "horizon_year": 1,
+      "calendar_year": 2026,
+      "eps": 1.4887612913070603
+    },
+    {
+      "horizon_year": 2,
+      "calendar_year": 2027,
+      "eps": 1.5997493957680122
+    },
+    {
+      "horizon_year": 3,
+      "calendar_year": 2028,
+      "eps": 1.6653436819353598
+    },
+    {
+      "horizon_year": 4,
+      "calendar_year": 2029,
+      "eps": 1.6926572175000745
+    }
+  ],
   "core": {
     "revenue": {
       "2026": {
-        "value": 59147701577.40938,
+        "value": 50503709083.03295,
         "unit": "TWD",
-        "growth": 0.29588473625539513,
+        "growth": 0.10650091177814952,
         "source": "monthly_revenue_model",
         "confidence": 0.45
       },
       "2027": {
-        "value": 71398333034.35059,
+        "value": 54268792828.89795,
         "unit": "TWD",
-        "growth": 0.2071193153787766,
+        "growth": 0.07455063824470466,
         "source": "monthly_revenue_model",
         "confidence": 0.45
       },
       "2028": {
-        "value": 79531718655.8439,
+        "value": 56493968057.08815,
         "unit": "TWD",
-        "growth": 0.11391562345832713,
+        "growth": 0.04100285103458757,
         "source": "monthly_revenue_model",
         "confidence": 0.45
       },
       "2029": {
-        "value": 83155680782.00099,
+        "value": 57420533559.727165,
         "unit": "TWD",
-        "growth": 0.045566249383330856,
+        "growth": 0.016401140413835027,
         "source": "monthly_revenue_model",
         "confidence": 0.45
       }
     },
     "eps": {
       "2026": {
-        "value": 1.7435711193697627,
+        "value": 1.4887612913070603,
         "source": "revenue_margin_model",
         "confidence": 0.35
       },
       "2027": {
-        "value": 2.104698375927835,
+        "value": 1.5997493957680122,
         "source": "revenue_margin_model",
         "confidence": 0.35
       },
       "2028": {
-        "value": 2.344456403613383,
+        "value": 1.6653436819353598,
         "source": "revenue_margin_model",
         "confidence": 0.35
       },
       "2029": {
-        "value": 2.4512844887687772,
+        "value": 1.6926572175000745,
         "source": "revenue_margin_model",
         "confidence": 0.35
       }
@@ -58,7 +108,7 @@
     "margin": 0.03267,
     "inputs": {
       "revenue_ttm": 45642718000.0,
-      "eps_ttm": 2.3600000000000003,
+      "eps_ttm": 2.36,
       "growth_source": "monthly_revenue",
       "growth_fade_target": 0.0,
       "growth_fade_weights": [
@@ -73,52 +123,52 @@
     "model": {
       "revenue": {
         "2026": {
-          "value": 59147701577.40938,
+          "value": 50503709083.03295,
           "unit": "TWD",
-          "growth": 0.29588473625539513,
+          "growth": 0.10650091177814952,
           "source": "monthly_revenue_model",
           "confidence": 0.45
         },
         "2027": {
-          "value": 71398333034.35059,
+          "value": 54268792828.89795,
           "unit": "TWD",
-          "growth": 0.2071193153787766,
+          "growth": 0.07455063824470466,
           "source": "monthly_revenue_model",
           "confidence": 0.45
         },
         "2028": {
-          "value": 79531718655.8439,
+          "value": 56493968057.08815,
           "unit": "TWD",
-          "growth": 0.11391562345832713,
+          "growth": 0.04100285103458757,
           "source": "monthly_revenue_model",
           "confidence": 0.45
         },
         "2029": {
-          "value": 83155680782.00099,
+          "value": 57420533559.727165,
           "unit": "TWD",
-          "growth": 0.045566249383330856,
+          "growth": 0.016401140413835027,
           "source": "monthly_revenue_model",
           "confidence": 0.45
         }
       },
       "eps": {
         "2026": {
-          "value": 1.7435711193697627,
+          "value": 1.4887612913070603,
           "source": "revenue_margin_model",
           "confidence": 0.35
         },
         "2027": {
-          "value": 2.104698375927835,
+          "value": 1.5997493957680122,
           "source": "revenue_margin_model",
           "confidence": 0.35
         },
         "2028": {
-          "value": 2.344456403613383,
+          "value": 1.6653436819353598,
           "source": "revenue_margin_model",
           "confidence": 0.35
         },
         "2029": {
-          "value": 2.4512844887687772,
+          "value": 1.6926572175000745,
           "source": "revenue_margin_model",
           "confidence": 0.35
         }
@@ -135,44 +185,44 @@
     "bear": {
       "revenue": {
         "2026": {
-          "value": 59147701577.40938,
+          "value": 50503709083.03295,
           "source": "core_plus_probability_weighted_catalysts",
           "confidence": 0.45
         },
         "2027": {
-          "value": 71398333034.35059,
+          "value": 54268792828.89795,
           "source": "core_plus_probability_weighted_catalysts",
           "confidence": 0.45
         },
         "2028": {
-          "value": 79531718655.8439,
+          "value": 56493968057.08815,
           "source": "core_plus_probability_weighted_catalysts",
           "confidence": 0.45
         },
         "2029": {
-          "value": 83155680782.00099,
+          "value": 57420533559.727165,
           "source": "core_plus_probability_weighted_catalysts",
           "confidence": 0.45
         }
       },
       "eps": {
         "2026": {
-          "value": 1.7435711193697627,
+          "value": 1.4887612913070603,
           "source": "core_eps_plus_probability_weighted_catalyst_nopat",
           "confidence": 0.35
         },
         "2027": {
-          "value": 2.104698375927835,
+          "value": 1.5997493957680122,
           "source": "core_eps_plus_probability_weighted_catalyst_nopat",
           "confidence": 0.35
         },
         "2028": {
-          "value": 2.344456403613383,
+          "value": 1.6653436819353598,
           "source": "core_eps_plus_probability_weighted_catalyst_nopat",
           "confidence": 0.35
         },
         "2029": {
-          "value": 2.4512844887687772,
+          "value": 1.6926572175000745,
           "source": "core_eps_plus_probability_weighted_catalyst_nopat",
           "confidence": 0.35
         }
@@ -182,44 +232,44 @@
     "base": {
       "revenue": {
         "2026": {
-          "value": 59147701577.40938,
+          "value": 50503709083.03295,
           "source": "core_plus_probability_weighted_catalysts",
           "confidence": 0.45
         },
         "2027": {
-          "value": 71398333034.35059,
+          "value": 54268792828.89795,
           "source": "core_plus_probability_weighted_catalysts",
           "confidence": 0.45
         },
         "2028": {
-          "value": 79531718655.8439,
+          "value": 56493968057.08815,
           "source": "core_plus_probability_weighted_catalysts",
           "confidence": 0.45
         },
         "2029": {
-          "value": 83155680782.00099,
+          "value": 57420533559.727165,
           "source": "core_plus_probability_weighted_catalysts",
           "confidence": 0.45
         }
       },
       "eps": {
         "2026": {
-          "value": 1.7435711193697627,
+          "value": 1.4887612913070603,
           "source": "core_eps_plus_probability_weighted_catalyst_nopat",
           "confidence": 0.35
         },
         "2027": {
-          "value": 2.104698375927835,
+          "value": 1.5997493957680122,
           "source": "core_eps_plus_probability_weighted_catalyst_nopat",
           "confidence": 0.35
         },
         "2028": {
-          "value": 2.344456403613383,
+          "value": 1.6653436819353598,
           "source": "core_eps_plus_probability_weighted_catalyst_nopat",
           "confidence": 0.35
         },
         "2029": {
-          "value": 2.4512844887687772,
+          "value": 1.6926572175000745,
           "source": "core_eps_plus_probability_weighted_catalyst_nopat",
           "confidence": 0.35
         }
@@ -229,44 +279,44 @@
     "bull": {
       "revenue": {
         "2026": {
-          "value": 59147701577.40938,
+          "value": 50503709083.03295,
           "source": "core_plus_probability_weighted_catalysts",
           "confidence": 0.45
         },
         "2027": {
-          "value": 71398333034.35059,
+          "value": 54268792828.89795,
           "source": "core_plus_probability_weighted_catalysts",
           "confidence": 0.45
         },
         "2028": {
-          "value": 79531718655.8439,
+          "value": 56493968057.08815,
           "source": "core_plus_probability_weighted_catalysts",
           "confidence": 0.45
         },
         "2029": {
-          "value": 83155680782.00099,
+          "value": 57420533559.727165,
           "source": "core_plus_probability_weighted_catalysts",
           "confidence": 0.45
         }
       },
       "eps": {
         "2026": {
-          "value": 1.7435711193697627,
+          "value": 1.4887612913070603,
           "source": "core_eps_plus_probability_weighted_catalyst_nopat",
           "confidence": 0.35
         },
         "2027": {
-          "value": 2.104698375927835,
+          "value": 1.5997493957680122,
           "source": "core_eps_plus_probability_weighted_catalyst_nopat",
           "confidence": 0.35
         },
         "2028": {
-          "value": 2.344456403613383,
+          "value": 1.6653436819353598,
           "source": "core_eps_plus_probability_weighted_catalyst_nopat",
           "confidence": 0.35
         },
         "2029": {
-          "value": 2.4512844887687772,
+          "value": 1.6926572175000745,
           "source": "core_eps_plus_probability_weighted_catalyst_nopat",
           "confidence": 0.35
         }
