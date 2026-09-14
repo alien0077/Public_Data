@@ -1,46 +1,154 @@
 {
-  "schema_version": "fair-value-v7.2-release-v1",
-  "release_id": "fair-value-v7.2-2026-09-11-0ffab169e12e",
-  "release_content_id": "0ffab169e12e305661935dc89876962a70b71da1e8c3dd7c0bddc39d9708261a",
-  "generated_at": "2026-09-14T16:33:42.696418+00:00",
-  "source_code_repo_commit": "4828180b8f96734bb762f1e7420eb0fd54136952",
-  "data_input_repo_commit": "fb6cedf6a599610a8372686ecf667504e72d7057",
-  "peer_policy_version": "hierarchical-structural-v1",
-  "hashes": {
-    "v2": "a79a42db48e15f7732748ea5208d542625715b294eb7ce716c9742d29e367e45",
-    "v21": "75dd281af78abe874528f6afa05f6b2b4b11fe98cc3922c1e3656f53d0ed259e",
-    "summary": "7340e132a7d2a6a02284cff7a00b5dea59fc7f11d63173189d89172a9fa202c9",
-    "public": "ca137d1678695e4fa296b0e3d89b14656c90e7562db45f5e169487a3f103340f",
-    "stock_metrics": "e8e6cc77f13d132b0efbd0be712af8aa96fe1e45ea8e039d64053943a4842b85",
-    "calibration": "dd4209236eb08c812dce4ea99e9dfc20a4d2295b3b6a2b8104aa09586b06b66d",
-    "sector_calibration": "7d9d60c415b17119454bd52ba376db796ee610b14cc72365fa55316a7d83918b",
-    "backtest": "837a3c6c227e4de7fa78729579d147013bcf424f9354d69bdc542e1d98b0dbff",
-    "release_gate": "36618030532e7a5ed57d893c3b41dd74c23f8e7f92d467d6a0e94842a63e1924",
-    "v21_completion": "1aad91256633cb25dd28cf255906935d54610dfd7884e60a080b57f45ebe5624",
-    "v2_shard_manifest": "a42755c5bdbfc338b891d17f4f23c91ee97e318a0549923d5aacb3a93ed5ff36",
-    "v21_shard_manifest": "d0634eddbb902964405193176d5ea5a89271b327dd9d699e69cd46e5200c946f"
+  "schema_version": "1.0",
+  "promoted_at": "2026-09-14T23:47:11.435763+00:00",
+  "v1_snapshot": {
+    "path": "temp_repo/data/valuation/fair_value_v1_snapshot.json",
+    "sha256": "ca137d1678695e4fa296b0e3d89b14656c90e7562db45f5e169487a3f103340f"
   },
-  "records": {
-    "v2": 1943,
-    "v21": 1943,
-    "stock_metrics": 2342
+  "v2": {
+    "path": "temp_repo/data/valuation/fair_value_v2.json",
+    "sha256": "43e9ee1e14467945959c68b87702d404954a1ab92df68c71a6334a6daedd9aee",
+    "role": "independent_preview_and_rollback_input"
   },
-  "shards": {
-    "v2_shard_manifest": {
-      "source_sha256": "a79a42db48e15f7732748ea5208d542625715b294eb7ce716c9742d29e367e45",
-      "records": 1943,
-      "shard_count": 46,
-      "symbol_to_shard": true
+  "v21_final_public": {
+    "path": "temp_repo/data/valuation/fair_value_v2_1.json",
+    "sha256": "d3acddf88fd65b836a424ea058741e6c4e91784192326e4607eeda3302001abc",
+    "schema_version": "2.1"
+  },
+  "public": {
+    "path": "temp_repo/data/valuation/fair_value.json",
+    "sha256": "8a10ff4b8fde0097789817b3925f07acdf637fef6a4ee7ee99da82247bd30bce",
+    "schema_version": "2.1",
+    "version": "2.1-public"
+  },
+  "release_gate": {
+    "status": "passed",
+    "policy": "production_core",
+    "errors": [],
+    "warnings": [
+      "finmind_detail supplemental coverage: 0.000 (non-blocking; used only for absent official/MOPS fields)",
+      "catalyst probability calibration is not empirical until terminal outcomes are available",
+      "news full-text materialization remains incomplete: 189 rows",
+      "legacy readiness (non-blocking for production core): V1 rollback snapshot missing"
+    ],
+    "stocks": 1943,
+    "v21_public_consumer_stocks": 1943,
+    "official_fundamentals_coverage": 0.975811,
+    "detail_coverage": {
+      "mops_detail": 1.0,
+      "finmind_detail": 0.0
     },
-    "v21_shard_manifest": {
-      "source_sha256": "75dd281af78abe874528f6afa05f6b2b4b11fe98cc3922c1e3656f53d0ed259e",
-      "records": 1943,
-      "shard_count": 48,
-      "symbol_to_shard": true
+    "detail_observations": {
+      "mops_detail": {
+        "fact_count": 48415,
+        "companies_with_any_fact": 1939,
+        "company_denominator": 1939,
+        "company_coverage": 1.0,
+        "excluded_symbols": [
+          "9103",
+          "9105",
+          "9110",
+          "9136"
+        ],
+        "field_fact_counts": {
+          "accounts_payable": 45833,
+          "accounts_receivable": 45761,
+          "amortization": 44545,
+          "assets": 48413,
+          "availability_basis": 48415,
+          "basis": 2,
+          "bulk_report": 48413,
+          "capex": 47513,
+          "cash": 48415,
+          "cfo": 48415,
+          "depreciation": 48401,
+          "effective_available_at": 48415,
+          "eps": 48415,
+          "equity_parent": 42146,
+          "fetched_at": 48415,
+          "id": 48415,
+          "inventory": 44062,
+          "lease_liabilities": 45515,
+          "liabilities": 48412,
+          "long_term_debt": 30279,
+          "market": 48415,
+          "net_income": 48415,
+          "operating_income": 46787,
+          "parser_version": 48415,
+          "period": 48415,
+          "revenue": 46778,
+          "short_term_debt": 35568,
+          "source": 48415
+        }
+      },
+      "finmind_detail": {
+        "fact_count": 0,
+        "companies_with_any_fact": 0,
+        "company_denominator": 1943,
+        "company_coverage": 0.0,
+        "excluded_symbols": [],
+        "field_fact_counts": {}
+      }
+    },
+    "pit_history": {
+      "status": "ok",
+      "snapshot_count": 9,
+      "stock_rows": 17487,
+      "error_count": 0,
+      "errors": []
+    },
+    "backtest_observations": 37979,
+    "news_ledger": {
+      "status": "passed",
+      "errors": [],
+      "warnings": [],
+      "rows": 56068,
+      "text_status_counts": {
+        "deferred": 189,
+        "no_extractable_text": 51461,
+        "text_ok": 4418
+      },
+      "article_source_types": [
+        "event_seed_news",
+        "news"
+      ],
+      "article_rows": 19143,
+      "article_text_status_counts": {
+        "deferred": 189,
+        "no_extractable_text": 14536,
+        "text_ok": 4418
+      },
+      "article_text_ok": 4418,
+      "article_text_coverage": 0.230789,
+      "article_aggregator_only_excluded": 14428,
+      "article_eligible_rows": 4715,
+      "article_eligible_text_ok": 4418,
+      "article_eligible_text_coverage": 0.93701,
+      "article_coverage_denominators": {
+        "all_news": 19143,
+        "eligible_news": 4715
+      },
+      "official_structured_rows": 36925
+    },
+    "analyst": {
+      "documents": 6,
+      "events": 3,
+      "consensus": 3
+    },
+    "completion_gates": {
+      "artifact_build_gate": "PASS",
+      "schema_gate": "PASS",
+      "official_fundamental_gate": "PASS",
+      "analyst_reference_gate": "PASS",
+      "analyst_blend_gate": "DISABLED",
+      "catalyst_calibration_gate": "FAIL",
+      "macro_pit_gate": "FAIL",
+      "public_release_gate": "CONDITIONAL_PASS",
+      "v2_1_completion_gate": "FAIL"
+    },
+    "artifacts": {
+      "preview_sha256": "43e9ee1e14467945959c68b87702d404954a1ab92df68c71a6334a6daedd9aee",
+      "v21_sha256": "d3acddf88fd65b836a424ea058741e6c4e91784192326e4607eeda3302001abc"
     }
-  },
-  "validation": {
-    "all_hash_links_verified": true,
-    "atomic_release_status": "validated_after_generation"
   }
 }
