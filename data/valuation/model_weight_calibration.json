@@ -3,7 +3,10 @@
   "model_formula_version": "fv-v7-dcf-path-1",
   "forward_estimate_formula_version": "forward-estimate-v2-monthly-revenue-margin",
   "dividend_normalization_version": "dividend-normalization-v1",
-  "source_repo_commit": "a1e3aec41efd42d5b326a8be843c264f425ea28d",
+  "source_code_repo_commit": "d1aaa660eb405539a0d7547fe3c836f3819a11d2",
+  "data_input_repo_commit": "0e488f272e8a19847d2ba11546783d734db67249",
+  "source_repo_commit": "d1aaa660eb405539a0d7547fe3c836f3819a11d2",
+  "peer_policy_version": "hierarchical-structural-v1",
   "status": "ok",
   "method": "walk_forward_inverse_mape",
   "price_fit_method": "walk_forward_inverse_mape",
@@ -11,59 +14,103 @@
   "max_single_model_weight": 0.25,
   "observations": 315843,
   "models": {
-    "dividend_multistage": {
-      "observations": 32262,
-      "median_mape": 0.513958,
-      "direction_accuracy": 0.595375,
-      "eligible_for_weight": true
-    },
-    "epv": {
-      "observations": 37696,
-      "median_mape": 0.472731,
-      "direction_accuracy": 0.56372,
-      "eligible_for_weight": true
-    },
     "forward_pe": {
       "observations": 36817,
       "median_mape": 0.45781,
       "direction_accuracy": 0.520765,
-      "eligible_for_weight": true
+      "eligible_for_weight": true,
+      "production_weight": 0.153184,
+      "exclusion_reason": null
     },
-    "growth_adjusted_peer": {
-      "observations": 36817,
-      "median_mape": 0.45781,
-      "direction_accuracy": 0.520765,
-      "eligible_for_weight": true
-    },
-    "multi_stage_ddm": {
-      "observations": 32262,
-      "median_mape": 0.513958,
-      "direction_accuracy": 0.595375,
-      "eligible_for_weight": true
+    "historical_pe": {
+      "observations": 0,
+      "eligible_for_weight": false,
+      "production_weight": 0.0,
+      "exclusion_reason": "insufficient_pit_history"
     },
     "peer_pb": {
       "observations": 36890,
       "median_mape": 0.422907,
       "direction_accuracy": 0.513364,
-      "eligible_for_weight": true
+      "eligible_for_weight": true,
+      "production_weight": 0.165826,
+      "exclusion_reason": null
     },
-    "residual_income": {
-      "observations": 34969,
-      "median_mape": 0.670898,
-      "direction_accuracy": 0.559152,
-      "eligible_for_weight": true
+    "peer_ps": {
+      "observations": 0,
+      "eligible_for_weight": false,
+      "production_weight": 0.0,
+      "exclusion_reason": "insufficient_pit_history"
     },
-    "roe_adjusted_pb": {
-      "observations": 35868,
-      "median_mape": 0.452055,
-      "direction_accuracy": 0.513996,
-      "eligible_for_weight": true
+    "ev_revenue": {
+      "observations": 0,
+      "eligible_for_weight": false,
+      "production_weight": 0.0,
+      "exclusion_reason": "insufficient_pit_history"
     },
-    "stable_ddm": {
+    "ev_ebit": {
+      "observations": 0,
+      "eligible_for_weight": false,
+      "production_weight": 0.0,
+      "exclusion_reason": "insufficient_pit_history"
+    },
+    "ev_ebitda": {
+      "observations": 0,
+      "eligible_for_weight": false,
+      "production_weight": 0.0,
+      "exclusion_reason": "insufficient_pit_history"
+    },
+    "dcf_5y_revenue_exit": {
+      "observations": 0,
+      "eligible_for_weight": false,
+      "production_weight": 0.0,
+      "exclusion_reason": "insufficient_pit_history"
+    },
+    "dcf_10y_revenue_exit": {
+      "observations": 0,
+      "eligible_for_weight": false,
+      "production_weight": 0.0,
+      "exclusion_reason": "insufficient_pit_history"
+    },
+    "dcf_5y_ebitda_exit": {
+      "observations": 0,
+      "eligible_for_weight": false,
+      "production_weight": 0.0,
+      "exclusion_reason": "insufficient_pit_history"
+    },
+    "dcf_10y_ebitda_exit": {
+      "observations": 0,
+      "eligible_for_weight": false,
+      "production_weight": 0.0,
+      "exclusion_reason": "insufficient_pit_history"
+    },
+    "dcf_5y_terminal_growth": {
+      "observations": 0,
+      "eligible_for_weight": false,
+      "production_weight": 0.0,
+      "exclusion_reason": "insufficient_pit_history"
+    },
+    "dcf_10y_terminal_growth": {
+      "observations": 0,
+      "eligible_for_weight": false,
+      "production_weight": 0.0,
+      "exclusion_reason": "insufficient_pit_history"
+    },
+    "epv": {
+      "observations": 37696,
+      "median_mape": 0.472731,
+      "direction_accuracy": 0.56372,
+      "eligible_for_weight": true,
+      "production_weight": 0.148347,
+      "exclusion_reason": null
+    },
+    "dividend_multistage": {
       "observations": 32262,
-      "median_mape": 0.513644,
-      "direction_accuracy": 0.593051,
-      "eligible_for_weight": true
+      "median_mape": 0.513958,
+      "direction_accuracy": 0.595375,
+      "eligible_for_weight": true,
+      "production_weight": 0.136448,
+      "exclusion_reason": null
     }
   },
   "weights": {
