@@ -1,18 +1,18 @@
 {
   "schema_version": "1.2",
-  "generated_at": "2026-09-13T20:15:04+08:00",
+  "generated_at": "2026-09-14T08:11:17+08:00",
   "month": "2026-09",
   "scope": "semantic_research_only",
   "fair_value_policy": "Fair Value V2.1 is the sole valuation baseline. Semantic scores in this file must not directly overwrite official numeric macro series or Fair Value.",
-  "summary": "Material change since the prior snapshot: UKMTO reported another vessel struck by an unknown projectile while transiting the Strait of Hormuz, causing a fire and crew evacuation. Separately, Reuters reported that the still-shut Saudi East-West Pipeline could put roughly 4% of global oil supply at risk unless pumping resumes within days, according to traders and industry sources. This compounds maritime chokepoint risk with disruption to Saudi Arabia's main Hormuz-bypass route. No new U.S., Taiwan or China official macro release was identified since the prior snapshot; September 11 market closes remain the latest verified values.",
+  "summary": "Material change since the prior snapshot: the scheduled Oman meeting between Iran and Gulf Arab states on reopening the Strait of Hormuz was postponed, removing a near-term diplomatic de-escalation catalyst while Saudi bypass-pipeline and maritime risks remain active. Brent rose to about $107.84/bbl and WTI to about $102.85/bbl in early September 14 Asian trade. Separately, repeated Ukrainian strikes on Russian refineries have reduced fuel production, prompted a public U.S. request for Ukraine to stop targeting Russian diesel infrastructure, and add a second refined-product supply shock. No new U.S., Taiwan or China official macro release was identified since the prior snapshot.",
   "macro_summary": {
     "new_official_us_macro_release_since_prior_snapshot": false,
     "new_official_taiwan_macro_release_since_prior_snapshot": false,
     "new_official_china_macro_release_since_prior_snapshot": false,
     "new_material_geopolitical_energy_information": true,
     "policy_bias": "hawkish_risk_elevated",
-    "taiwan_equity_implication": "The combination of near-5% U.S. long yields and a worsening Middle East energy/logistics shock remains a valuation and margin headwind for Taiwan equities. The latest Hormuz vessel attack and risk to the Saudi bypass route strengthen imported-energy, freight, insurance, FX and inflation transmission. Strong AI/HPC export demand remains an offset.",
-    "notes": "Official numeric series remain authoritative. The Reuters-reported 4% supply-risk estimate is semantic evidence from traders/sources, not an official production series."
+    "taiwan_equity_implication": "The risk mix remains adverse for Taiwan equities: near-5% U.S. long yields, an 86% Reuters-reported market probability of a September Fed hike, renewed oil gains above $100, persistent Hormuz/Bab el-Mandeb disruption and a separate Russia-Ukraine refined-product shock all pressure valuation, freight, imported inflation and margins. Strong AI/HPC export demand remains the main offset.",
+    "notes": "Official numeric series remain authoritative. Reuters market probabilities, intraday oil observations and conflict-related supply estimates are semantic evidence only and must not overwrite deterministic macro series."
   },
   "monitored_series_status": {
     "US_CPI_CORE_CPI": {
@@ -78,7 +78,11 @@
       "status": "no_new_policy_action",
       "next_scheduled_meeting": "2026-09-15/16",
       "policy_tone": "hawkish_risk_rising",
-      "stale": false
+      "market_hike_probability_pct_reuters": 86,
+      "market_hike_probability_observed_on": "2026-09-14",
+      "market_hike_probability_is_official_series": false,
+      "stale": false,
+      "source_url": "https://www.reuters.com/world/china/global-markets-global-markets-2026-09-13/"
     },
     "US_2Y_10Y_CURVE": {
       "status": "current_official_close",
@@ -91,17 +95,17 @@
       "source_url": "https://home.treasury.gov/resource-center/data-chart-center/interest-rates/TextView?type=daily_treasury_yield_curve&field_tdr_date_value_month=202609"
     },
     "DXY": {
-      "status": "latest_reuters_observation",
+      "status": "latest_verified_repository_observation",
       "latest_observation": 99.1,
       "observed_on": "2026-09-11",
-      "stale": false,
+      "stale": true,
       "source_url": "https://www.reuters.com/world/china/global-markets-corrected-2026-09-11/"
     },
     "VIX": {
-      "status": "latest_reuters_close_observation",
+      "status": "latest_verified_repository_close",
       "close": 15.88,
       "close_date": "2026-09-11",
-      "stale": false,
+      "stale": true,
       "source_url": "https://www.reuters.com/business/wall-st-futures-recover-oil-slides-ahead-inflation-test-2026-09-11/"
     },
     "USD_TWD": {
@@ -111,12 +115,15 @@
       "stale": true
     },
     "WTI_BRENT": {
-      "status": "current_reuters_settlement",
-      "settlement_date": "2026-09-11",
-      "brent_usd_per_bbl": 104.61,
-      "wti_usd_per_bbl": 100.05,
+      "status": "current_reuters_intraday_observation",
+      "observed_on": "2026-09-14",
+      "brent_usd_per_bbl": 107.84,
+      "wti_usd_per_bbl": 102.85,
+      "last_verified_settlement_date": "2026-09-11",
+      "last_verified_settlement_brent_usd_per_bbl": 104.61,
+      "last_verified_settlement_wti_usd_per_bbl": 100.05,
       "stale": false,
-      "source_url": "https://www.reuters.com/business/energy/oil-prices-set-end-week-over-100-first-time-nearly-4-months-2026-09-11/"
+      "source_url": "https://www.reuters.com/world/china/global-markets-global-markets-2026-09-13/"
     },
     "COPPER": {
       "status": "no_new_authoritative_value_incorporated",
@@ -176,112 +183,92 @@
   },
   "key_drivers": [
     {
-      "name": "Fresh Strait of Hormuz vessel attack",
-      "observed": "UKMTO reported that a vessel transiting the Strait of Hormuz was struck by an unknown projectile, caught fire and required crew evacuation.",
-      "interpretation": "Commercial shipping risk through the chokepoint has re-escalated while alternative Saudi export infrastructure remains impaired.",
+      "name": "Hormuz diplomacy postponed as oil reprices higher",
+      "observed": "Reuters reported that the scheduled Oman meeting between Iran and Gulf Arab states on reopening the Strait of Hormuz was postponed. Brent was about $107.84/bbl and WTI about $102.85/bbl in early September 14 Asian trade.",
+      "interpretation": "A near-term diplomatic de-escalation catalyst has weakened while physical supply and shipping constraints remain active, raising persistence risk for imported energy inflation and freight costs.",
       "source_urls": [
-        "https://www.reuters.com/business/energy/new-report-attack-strait-hormuz-shipping-fans-fears-threats-oil-supplies-2026-09-13/"
+        "https://www.reuters.com/world/china/global-markets-global-markets-2026-09-13/",
+        "https://www.reuters.com/business/energy/oil-prices-jump-more-than-3-after-new-strikes-saudi-strait-hormuz-2026-09-13/"
       ]
     },
     {
-      "name": "Saudi East-West Pipeline outage now carries quantified supply risk",
-      "observed": "Reuters reported that traders and industry sources estimate roughly 4% of global oil supply could be at risk unless pumping through the East-West Pipeline resumes within days.",
-      "interpretation": "The main Saudi bypass around Hormuz is not merely security-exposed; a prolonged outage could become a material physical-supply constraint. The 4% estimate is not an official production statistic.",
+      "name": "Russia-Ukraine refinery attacks add a refined-product shock",
+      "observed": "Reuters reported repeated Ukrainian long-range drone strikes have reduced Russian fuel production. President Trump urged Ukraine to stop targeting Russian diesel infrastructure, while Russia has downgraded its 2026 oil-output forecast and fuel-export outlook because of the war.",
+      "interpretation": "This creates a second energy channel, focused on diesel/refining, which can reinforce freight, inflation and rate pressure independently of Middle East crude disruptions.",
       "source_urls": [
-        "https://www.reuters.com/business/energy/saudi-pipeline-outage-threatens-loss-4-global-oil-supply-2026-09-13/",
-        "https://www.reuters.com/world/middle-east/saudi-shares-drop-after-drone-attacks-target-key-oil-pipeline-2026-09-13/"
+        "https://www.reuters.com/business/energy/trump-tells-ukraines-zelenskiy-stop-hitting-russian-diesel-2026-09-13/"
       ]
     },
     {
       "name": "U.S. August CPI remains a hawkish-rate input",
       "observed": "Headline CPI rose 0.4% m/m and 3.4% y/y; core CPI rose 0.3% m/m and 2.4% y/y.",
-      "interpretation": "Near-term Fed tightening risk remains elevated and long-duration equity discount rates remain restrictive.",
+      "interpretation": "Reuters reported markets pricing an 86% chance of a 25 bp Fed hike on September 16; this is a market-implied probability, not an official Fed forecast.",
       "source_urls": [
-        "https://www.bls.gov/news.release/cpi.nr0.htm"
+        "https://www.bls.gov/news.release/cpi.nr0.htm",
+        "https://www.reuters.com/world/china/global-markets-global-markets-2026-09-13/"
       ]
     }
   ],
   "key_risks": [
-    "A sustained U.S. 10Y yield near 5% can compress long-duration semiconductor and AI hardware valuation multiples.",
-    "Fresh commercial-shipping attacks in Hormuz combined with the Saudi East-West Pipeline shutdown increase the probability of persistent delivered-energy, freight and insurance-cost pressure.",
-    "If the Saudi bypass pipeline remains shut for several days, Reuters-reported market estimates suggest a potentially material physical-supply impact; this estimate must remain semantic until deterministic official data confirm realized supply effects.",
-    "Taiwan's strong AI/HPC export cycle offsets but does not eliminate energy, FX and global-rate risks.",
-    "Copper and the latest USD/TWD close remain stale in this semantic snapshot because no sufficiently authoritative new value was inserted."
+    "A sustained U.S. 10Y yield near 5% and a possible renewed Fed hiking cycle can compress long-duration semiconductor and AI-hardware valuation multiples.",
+    "Postponed Hormuz diplomacy, attacks on Gulf shipping and the Saudi East-West Pipeline outage increase the probability of persistent delivered-energy, freight and insurance-cost pressure.",
+    "Russia-Ukraine attacks on refinery infrastructure add a refined-product/diesel shock that can raise trucking, shipping and industrial logistics costs even if crude supply stabilizes.",
+    "Taiwan's strong AI/HPC export cycle offsets but does not eliminate energy, FX, rates and global-demand risks.",
+    "DXY, VIX, copper and the latest USD/TWD close remain stale in this semantic snapshot because no sufficiently authoritative newer value was incorporated."
   ],
   "policy_tone": {
-    "fed": "Hawkish risk remains elevated after August CPI; no new FOMC action since the prior snapshot.",
-    "taiwan_central_bank": "No new decision. Imported-energy inflation, U.S. yields and FX pressures remain relevant ahead of the September 17 meeting.",
-    "global": "Energy-security risk is increasingly inflationary and growth-negative as both maritime chokepoints and bypass infrastructure face disruption."
+    "fed": "Hawkish risk is elevated after August CPI. Reuters reported markets pricing an 86% chance of a 25 bp hike at the September 15-16 FOMC meeting; no new official FOMC action has occurred yet.",
+    "taiwan_central_bank": "No new decision. Imported-energy inflation, U.S. yields and FX pressures remain important ahead of the September 17 meeting.",
+    "global": "Energy-security risk remains inflationary and growth-negative. Postponed Gulf-Iran diplomacy and Russia-Ukraine refinery disruptions broaden the energy shock from crude/chokepoints to refined products."
   },
   "geopolitical_global_risk": {
     "level": "VERY_HIGH",
-    "dominant_event": "2026-09-13-strait-hormuz-vessel-attack-saudi-supply-risk",
+    "dominant_event": "2026-09-14-hormuz-diplomacy-postponed-oil-repricing",
     "events": [
       {
-        "event_id": "2026-09-13-strait-hormuz-vessel-attack-saudi-supply-risk",
-        "event_type": "maritime_attack_energy_supply_escalation",
-        "regions": [
-          "Strait of Hormuz",
-          "Persian Gulf",
-          "Saudi Arabia",
-          "Middle East"
-        ],
-        "severity": 0.97,
-        "confidence": 0.97,
-        "escalation_score": 0.96,
-        "persistence_score": 0.93,
-        "observed_evidence": "UKMTO reported another vessel struck by an unknown projectile in the Strait of Hormuz, causing a fire and crew evacuation. Reuters separately reported that the still-shut Saudi East-West Pipeline could put roughly 4% of global oil supply at risk unless pumping resumes within days, according to traders and industry sources.",
-        "semantic_interpretation": "Maritime transit risk and bypass-pipeline risk are now simultaneous. This increases the probability of a persistent delivered-energy shock and associated inflation, freight, insurance, FX, rates and global-demand transmission. The Reuters 4% figure is a market-source estimate and not an official numeric macro/production series.",
-        "transmission_channels": [
-          "oil_supply",
-          "maritime_security",
-          "shipping",
-          "marine_insurance",
-          "freight",
-          "refined_products",
-          "inflation",
-          "rates",
-          "fx",
-          "global_trade",
-          "risk_sentiment"
-        ],
-        "affected_factors": [
-          "Brent",
-          "WTI",
-          "shipping_costs",
-          "marine_insurance",
-          "energy_inflation",
-          "US_2Y",
-          "US_10Y",
-          "USD_TWD",
-          "global_growth"
-        ],
-        "affected_taiwan_sectors": [
-          "航空運輸",
-          "貨櫃航運",
-          "散裝航運",
-          "塑膠",
-          "化工",
-          "鋼鐵",
-          "機械",
-          "電子製造",
-          "半導體"
-        ],
+        "event_id": "2026-09-14-hormuz-diplomacy-postponed-oil-repricing",
+        "event_type": "energy_supply_diplomacy_escalation",
+        "regions": ["Strait of Hormuz", "Persian Gulf", "Saudi Arabia", "Middle East"],
+        "severity": 0.96,
+        "confidence": 0.98,
+        "escalation_score": 0.93,
+        "persistence_score": 0.94,
+        "observed_evidence": "Reuters reported the Oman meeting between Iran and Gulf Arab states on reopening the Strait of Hormuz was postponed while the Saudi East-West Pipeline remained shut and new attacks had hit Saudi Arabia and Gulf shipping. Brent rose to about $107.84/bbl and WTI to about $102.85/bbl in early September 14 Asian trade.",
+        "semantic_interpretation": "The loss of a near-term diplomatic de-escalation catalyst, combined with unresolved physical supply and shipping constraints, raises the persistence probability of an imported-energy shock.",
+        "transmission_channels": ["oil_supply", "maritime_security", "shipping", "marine_insurance", "freight", "refined_products", "inflation", "rates", "fx", "global_trade", "risk_sentiment"],
+        "affected_factors": ["Brent", "WTI", "shipping_costs", "marine_insurance", "energy_inflation", "US_2Y", "US_10Y", "USD_TWD", "global_growth"],
+        "affected_taiwan_sectors": ["航空運輸", "貨櫃航運", "散裝航運", "塑膠", "化工", "鋼鐵", "機械", "電子製造", "半導體"],
         "source_urls": [
-          "https://www.reuters.com/business/energy/new-report-attack-strait-hormuz-shipping-fans-fears-threats-oil-supplies-2026-09-13/",
-          "https://www.reuters.com/business/energy/saudi-pipeline-outage-threatens-loss-4-global-oil-supply-2026-09-13/",
-          "https://www.reuters.com/world/middle-east/saudi-shares-drop-after-drone-attacks-target-key-oil-pipeline-2026-09-13/"
+          "https://www.reuters.com/world/china/global-markets-global-markets-2026-09-13/",
+          "https://www.reuters.com/business/energy/oil-prices-jump-more-than-3-after-new-strikes-saudi-strait-hormuz-2026-09-13/"
         ],
-        "first_seen_at": "2026-09-13T20:15:04+08:00",
-        "updated_at": "2026-09-13T20:15:04+08:00"
+        "first_seen_at": "2026-09-14T08:11:17+08:00",
+        "updated_at": "2026-09-14T08:11:17+08:00"
+      },
+      {
+        "event_id": "2026-09-14-russia-ukraine-refinery-diesel-supply-shock",
+        "event_type": "war_energy_infrastructure_supply_shock",
+        "regions": ["Russia", "Ukraine", "Europe", "Global refined-products market"],
+        "severity": 0.84,
+        "confidence": 0.95,
+        "escalation_score": 0.82,
+        "persistence_score": 0.86,
+        "observed_evidence": "Reuters reported that repeated Ukrainian drone attacks on Russian refineries have reduced fuel production and that Russia downgraded its 2026 oil-output forecast and fuel-export outlook because of the war. President Trump publicly urged Ukraine to stop targeting Russian diesel infrastructure.",
+        "semantic_interpretation": "A distinct refined-product supply shock is reinforcing the Middle East crude shock through diesel, freight, inflation and global industrial-demand channels.",
+        "transmission_channels": ["refinery_capacity", "diesel_supply", "freight", "shipping", "inflation", "rates", "global_trade", "industrial_demand"],
+        "affected_factors": ["diesel", "refined_product_cracks", "shipping_costs", "energy_inflation", "US_2Y", "US_10Y", "global_growth"],
+        "affected_taiwan_sectors": ["貨櫃航運", "散裝航運", "航空運輸", "物流", "塑膠", "化工", "鋼鐵", "機械", "電子製造"],
+        "source_urls": ["https://www.reuters.com/business/energy/trump-tells-ukraines-zelenskiy-stop-hitting-russian-diesel-2026-09-13/"],
+        "first_seen_at": "2026-09-14T08:11:17+08:00",
+        "updated_at": "2026-09-14T08:11:17+08:00"
       }
     ]
   },
   "confidence": 0.97,
   "source_urls": [
-    "https://www.reuters.com/business/energy/new-report-attack-strait-hormuz-shipping-fans-fears-threats-oil-supplies-2026-09-13/",
-    "https://www.reuters.com/business/energy/saudi-pipeline-outage-threatens-loss-4-global-oil-supply-2026-09-13/",
-    "https://www.reuters.com/world/middle-east/saudi-shares-drop-after-drone-attacks-target-key-oil-pipeline-2026-09-13/",
+    "https://www.reuters.com/world/china/global-markets-global-markets-2026-09-13/",
+    "https://www.reuters.com/business/energy/oil-prices-jump-more-than-3-after-new-strikes-saudi-strait-hormuz-2026-09-13/",
+    "https://www.reuters.com/business/energy/trump-tells-ukraines-zelenskiy-stop-hitting-russian-diesel-2026-09-13/",
     "https://www.bls.gov/news.release/cpi.nr0.htm",
     "https://home.treasury.gov/resource-center/data-chart-center/interest-rates/TextView?type=daily_treasury_yield_curve&field_tdr_date_value_month=202609"
   ]
