@@ -1,0 +1,69 @@
+{
+  "schema_version": "1.0",
+  "generated_at": "2026-09-15T07:03:48+08:00",
+  "window_start": "2026-09-14T08:57:05+08:00",
+  "window_end": "2026-09-15T07:03:48+08:00",
+  "production_verified": false,
+  "events": [
+    {
+      "event_id": "2364_20260914_media_guidance_clarification",
+      "stock_ids": ["2364"],
+      "company_name": "倫飛電腦實業股份有限公司",
+      "source_type": "mops_material_announcement",
+      "event_type": "media_forecast_clarification",
+      "title": "倫飛澄清全年業績雙位數成長等敘述為媒體及法人推測，非公司發布資訊",
+      "canonical_url": "https://pchome.megatime.com.tw/news/cat2/20260914/9700002364202609141.html",
+      "publisher": "公開資訊觀測站（由 PChome Online 股市鏡像揭露）",
+      "published_at": "2026-09-14T11:36:20+08:00",
+      "discovered_at": "2026-09-15T07:03:48+08:00",
+      "observed_facts": {
+        "clarified_media": "工商時報",
+        "reported_claims": [
+          "法人看好下半年出貨動能及營收表現優於上半年",
+          "全年業績朝雙位數年成長推進可期",
+          "往後幾年維持穩健成長走勢"
+        ],
+        "company_clarification": "上述報導係媒體及法人推測，並非公司發布之訊息；公司財務及業務資訊以公開資訊觀測站公告為主。"
+      },
+      "evidence_summary": "公司透過重大訊息明確否認將媒體/法人對全年雙位數成長與後續穩健成長的推測視為公司正式 guidance。此事件應阻止下游將該些市場敘述標記為 company guidance。",
+      "affected_inputs": [
+        "company_guidance_provenance",
+        "forward_revenue_source_quality",
+        "forward_estimate_sanity_check",
+        "catalyst_evidence_quality"
+      ],
+      "confidence": 0.99,
+      "priority": "high",
+      "requires_raw_fetch": true,
+      "raw_fetch_reason": "需由 GitHub Actions deterministic fetcher 取得正式 MOPS 公告原始 HTML/JSON、正式 source identifier、published_at 與 raw SHA-256；目前僅有公開 MOPS 鏡像可供 discovery cross-check。",
+      "production_verified": false,
+      "source_urls": [
+        "https://pchome.megatime.com.tw/news/cat2/20260914/9700002364202609141.html",
+        "https://pchome.megatime.com.tw/m/news/cat2/20260914/9700002364202609141.html"
+      ],
+      "content_hash": null,
+      "tags": [
+        "mops",
+        "guidance",
+        "provenance_guard",
+        "forward_estimate"
+      ],
+      "interpretation": {
+        "production_action": "Do not treat the cited double-digit annual growth or multi-year steady-growth statements as company guidance unless later primary company evidence explicitly confirms them.",
+        "valuation_action": "No direct Fair Value change in discovery layer."
+      }
+    }
+  ],
+  "excluded_candidates": [
+    {
+      "stock_id": "2548",
+      "company_name": "華固",
+      "reason": "2026-09-14 mirror announcement repeats the previously disclosed 2026-09-01 acquisition of 3,600 square meters of Xinzhuang Huanhan-section land for NT$1.15 billion; no material changed fact was verified, so it was excluded as duplicate/republication."
+    }
+  ],
+  "notes": [
+    "Discovery only; no normalized fundamentals, analyst consensus, catalyst probabilities, PIT production series or Fair Value files were modified.",
+    "Fair Value V2.1 remains the sole valuation baseline.",
+    "Search/mirror evidence is not production evidence; production_verified remains false until deterministic raw-source validation succeeds."
+  ]
+}
