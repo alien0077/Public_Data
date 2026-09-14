@@ -247,8 +247,14 @@ export const api = {
     async fetchFinancials(symbol, type = 'quarterly') { try { return await this.fetchLocalJson(`${type}/${symbol.split('.')[0]}.json`); } catch (e) { return null; } },
     async fetchFairValue(symbol) {
         try {
-            const data = await this.fetchFairValueSharded();
-            return data?.stocks?.[symbol.split('.')[0]] || null;
+            const key = symbol.split('.')[0];
+            const manifest = await this.fetchLocalJson('valuation/fair_value_v2_1_sharded/manifest.json');
+            const shardPath = manifest.symbol_to_shard?.[key];
+            if (!shardPath) return null;
+            const shard = manifest.compression === 'gzip'
+                ? await this.fetchLocalGzipJson(`valuation/fair_value_v2_1_sharded/${shardPath}`)
+                : await this.fetchLocalJson(`valuation/fair_value_v2_1_sharded/${shardPath}`);
+            return shard?.stocks?.[key] || null;
         } catch (e) {
             try {
                 const data = await this.fetchLocalJson('valuation/fair_value.json');
