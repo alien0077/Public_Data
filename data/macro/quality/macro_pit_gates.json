@@ -1,0 +1,44 @@
+{
+  "schema_version": "macro-pit-gates-v6",
+  "core_macro_pit_gate": "FAIL",
+  "ism_pit_gate": "PARTIAL",
+  "macro_backtest_mode": "disabled",
+  "macro_backtest_enabled": false,
+  "fair_value_v2_1_macro_effect": "disabled",
+  "ism": {
+    "expected_months": 126,
+    "production_usable_months": {
+      "US_ISM_MFG_PMI": 0,
+      "US_ISM_MFG_NEW_ORDERS": 0
+    },
+    "original_vintage_months": {
+      "US_ISM_MFG_PMI": 0,
+      "US_ISM_MFG_NEW_ORDERS": 0
+    },
+    "disabled_components": [
+      "US_ISM_MFG_NEW_ORDERS",
+      "US_ISM_MFG_PMI"
+    ]
+  },
+  "core_series": [
+    "TW_COINCIDENT_INDEX_LEVEL",
+    "TW_EXPORT_ORDERS_USD",
+    "TW_EXPORT_ORDERS_YOY",
+    "TW_LAGGING_INDEX_LEVEL",
+    "TW_LEADING_INDEX_LEVEL",
+    "TW_LEADING_INDEX_MOM",
+    "TW_MONITORING_SCORE",
+    "US_CORE_CPI_YOY",
+    "US_CPI_YOY",
+    "US_ISM_MFG_PRICES",
+    "US_ISM_SERVICES_NEW_ORDERS",
+    "US_ISM_SERVICES_PMI",
+    "US_ISM_SERVICES_PRICES",
+    "US_UNEMPLOYMENT_RATE"
+  ],
+  "rules": {
+    "no_synthetic_ism": true,
+    "minimum_growth_factor_coverage": 0.7,
+    "core_failure_fails_closed": true
+  }
+}
