@@ -1,36 +1,36 @@
 {
   "schema_version": "1.0",
-  "generated_at": "2026-09-13T21:04:35+08:00",
-  "window_start": "2026-09-12T07:56:01+08:00",
-  "window_end": "2026-09-13T21:04:35+08:00",
-  "event_file": "data/ingestion/discovery/events/2026/09/2026-09-13T130435Z.json",
+  "generated_at": "2026-09-14T08:57:05+08:00",
+  "window_start": "2026-09-13T21:04:35+08:00",
+  "window_end": "2026-09-14T08:57:05+08:00",
+  "event_file": "data/ingestion/discovery/events/2026/09/2026-09-14T005705Z_yttrium-semiconductor-supply-risk.json",
   "production_verified": false,
   "new_event_count": 1,
   "counts_by_source_type": {
     "reuters": 1
   },
   "counts_by_event_type": {
-    "energy_supply_shock": 1
+    "critical_material_supply_shock": 1
   },
-  "high_priority_stock_ids": ["2610", "2618", "2646"],
+  "high_priority_stock_ids": [],
   "fetch_queue": {
     "pending": 1,
     "verified": 0,
-    "rule": "production_verified remains false until deterministic evidence fetch saves required raw evidence/canonical URLs/published timestamps/SHA-256 and validates company-specific transmission inputs"
+    "rule": "production_verified remains false until deterministic evidence fetch stores canonical source bytes/metadata, published timestamp and SHA-256 and validates any company-specific Taiwan exposure"
   },
   "notable_candidates": [
     {
-      "event_id": "tw_airlines_20260913_hormuz_saudi_pipeline_fuel_cost_shock",
-      "stock_ids": ["2610", "2618", "2646"],
-      "summary": "Fresh Hormuz vessel attack plus Saudi East-West pipeline disruption and Red Sea chokepoint risk increase the probability of sustained jet-fuel, insurance and routing cost pressure for Taiwan airlines; no deterministic EPS/margin change is asserted."
+      "event_id": "semiconductor_20260914_yttrium_export_control_supply_risk",
+      "stock_ids": [],
+      "summary": "Reuters reported that persistent Chinese yttrium export controls are causing supply stress in semiconductor-related industries. Taiwan semiconductor exposure is treated as an industry-level risk only until company-specific primary evidence is verified."
     }
   ],
   "notes": [
     "Discovery/semantic catalyst only; no official numeric series, normalized fundamentals, catalyst probabilities or Fair Value files were modified.",
     "Fair Value V2.1 remains the sole valuation baseline.",
-    "Only material events published or materially changed after the previous generated_at cutoff were eligible for this run.",
-    "Observed evidence is separated from semantic interpretation; semantic scores do not directly modify production inputs.",
-    "Weekend articles that only repeated previously known company facts, unverified anonymous analyst claims, and deterministic monthly-revenue summaries were excluded.",
+    "Only material events published or materially changed after the previous generated_at cutoff were eligible.",
+    "No Taiwan stock ID was marked high priority because company-specific yttrium exposure was not verified from primary evidence in this run.",
+    "Observed evidence is separated from semantic interpretation and semantic scores do not directly modify production inputs.",
     "No paywall/login bypass or copyrighted full broker-report text was accessed or stored."
   ]
 }
