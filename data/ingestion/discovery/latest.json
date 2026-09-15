@@ -1,41 +1,27 @@
 {
   "schema_version": "1.0",
-  "generated_at": "2026-09-15T21:03:05+08:00",
-  "window_start": "2026-09-15T07:03:48+08:00",
-  "window_end": "2026-09-15T21:03:05+08:00",
-  "event_file": "data/ingestion/discovery/events/2026/09/2026-09-15T130305Z_catalyst-watch.json",
+  "generated_at": "2026-09-16T06:55:32+08:00",
+  "window_start": "2026-09-15T21:03:05+08:00",
+  "window_end": "2026-09-16T06:55:32+08:00",
+  "event_file": "data/ingestion/discovery/events/2026/09/2026-09-15T231424Z_6875-regulatory-milestone.json",
   "production_verified": false,
-  "new_event_count": 2,
-  "counts_by_source_type": {
-    "reuters_primary_crosscheck": 1,
-    "reuters": 1
-  },
-  "counts_by_event_type": {
-    "product_launch_advanced_node": 1,
-    "labor_dispute_production_disruption_risk": 1
-  },
-  "high_priority_stock_ids": ["2454", "2330"],
+  "new_event_count": 1,
+  "counts_by_source_type": {"mops_material_announcement": 1},
+  "counts_by_event_type": {"regulatory_milestone": 1},
+  "high_priority_stock_ids": ["6875"],
   "fetch_queue": {
-    "pending": 2,
+    "pending": 1,
     "verified": 0,
-    "rule": "production_verified remains false until deterministic GitHub Actions raw fetch/validation stores source bytes/metadata, published timestamp and SHA-256 and validates ticker/input mapping"
+    "rule": "production_verified remains false until deterministic GitHub Actions resolves/fetches primary MOPS/TPEX evidence and stores official source metadata, published timestamp, raw bytes and SHA-256"
   },
-  "notable_candidates": [
-    {
-      "event_id": "2454_2330_20260915_dimensity9600pro_2nm_launch",
-      "stock_ids": ["2454", "2330"],
-      "summary": "MediaTek launched Dimensity 9600 Pro using TSMC 2nm technology; positive premium-mobile and advanced-node demand evidence, without direct EPS/FV inference."
-    },
-    {
-      "event_id": "micron_taiwan_20260915_profitsharing_strike_risk",
-      "stock_ids": [],
-      "summary": "Micron Taiwan labor dispute keeps potential strike/DRAM-HBM supply disruption risk active; no Taiwan-listed peer ticker is assigned without deterministic exposure validation."
-    }
-  ],
+  "notable_candidates": [{
+    "event_id": "6875_20260915_regulatory_milestone",
+    "stock_ids": ["6875"],
+    "summary": "國邑*公告 L606 Re-Spire 第三期試驗取得中國 NMPA 核准執行；僅記錄監管/臨床里程碑，不直接推導成功率、EPS或Fair Value。"
+  }],
   "notes": [
-    "Catalyst/news discovery only; no official numeric series, normalized fundamentals, catalyst probabilities or Fair Value files were modified.",
+    "Company-specific primary-evidence discovery only; no normalized fundamentals, analyst consensus, catalyst probabilities or Fair Value files were modified.",
     "Fair Value V2.1 remains the sole valuation baseline.",
-    "Observed evidence is separated from semantic interpretation; both events remain production_verified=false pending deterministic GitHub Actions validation.",
-    "No analyst target/EPS/revenue/margin revision was stored unless publicly verifiable in this discovery window."
+    "Primary MOPS canonical URL/source ID and content SHA-256 remain pending deterministic GitHub Actions materialization."
   ]
 }
