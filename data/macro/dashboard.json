@@ -1,10 +1,10 @@
 {
   "schema_version": "macro-dashboard-v2",
-  "as_of": "2026-09-12T00:27:18.486007+00:00",
+  "as_of": "2026-09-15T00:47:16.894086+00:00",
   "formula_version": "macro-factors-v1",
   "trading_regime": {
     "state": "CAUTIOUS",
-    "score": 0.06352226666666666,
+    "score": 0.031689899999999986,
     "confidence": 1.0,
     "target_equity_exposure": 0.75,
     "reason": "hybrid_score",
@@ -18,22 +18,60 @@
     "state": "GOLDILOCKS",
     "growth_score": 0.504753,
     "inflation_score": 0.101598,
-    "liquidity_score": -0.06364,
-    "rates_score": -0.162852,
-    "fx_score": -0.110594,
-    "risk_score": 0.004667,
+    "liquidity_score": -0.07724,
+    "rates_score": -0.185576,
+    "fx_score": -0.333111,
+    "risk_score": -0.056486,
     "growth": 0.504753,
     "inflation": 0.101598,
-    "liquidity": -0.06364,
-    "rates": -0.162852,
-    "fx": -0.110594,
-    "risk": 0.004667
+    "liquidity": -0.07724,
+    "rates": -0.185576,
+    "fx": -0.333111,
+    "risk": -0.056486
+  },
+  "presentation": {
+    "regime_zh": "金髮女孩",
+    "stance_zh": "謹慎",
+    "factors": {
+      "growth": {
+        "trend": "improving",
+        "impact": "positive"
+      },
+      "inflation": {
+        "trend": "improving",
+        "impact": "positive"
+      },
+      "liquidity": {
+        "trend": "weakening",
+        "impact": "negative"
+      },
+      "rates": {
+        "trend": "weakening",
+        "impact": "negative"
+      },
+      "fx": {
+        "trend": "weakening",
+        "impact": "negative"
+      },
+      "risk": {
+        "trend": "weakening",
+        "impact": "negative"
+      }
+    }
   },
   "factors": {
     "growth_score": {
       "value": 0.504753,
-      "confidence": 1.0,
+      "status": "NORMAL",
       "coverage": 1.0,
+      "coverage_score": 1.0,
+      "freshness_score": 0.888889,
+      "quality_score": 1.0,
+      "confidence": 0.888889,
+      "confidence_score": 0.888889,
+      "configured_weight_sum": 1.0,
+      "valid_weight_sum": 1.0,
+      "missing_inputs": [],
       "contributing_inputs": [
         "TW_EXPORT_ORDERS_YOY",
         "TW_EXPORTS_YOY",
@@ -44,6 +82,53 @@
         "TW_LEADING_INDEX_LEVEL",
         "TW_COINCIDENT_INDEX_LEVEL",
         "TW_REAL_GDP_GROWTH"
+      ],
+      "input_quality": [
+        {
+          "series_id": "TW_EXPORT_ORDERS_YOY",
+          "release_at": "2026-09-07T11:07:19.950177+00:00",
+          "stale": false
+        },
+        {
+          "series_id": "TW_EXPORTS_YOY",
+          "release_at": "2026-07-16T00:00:00+08:00",
+          "stale": true
+        },
+        {
+          "series_id": "TW_PMI",
+          "release_at": "2026-09-07T11:07:22.711820+00:00",
+          "stale": false
+        },
+        {
+          "series_id": "US_ISM_MFG_PMI",
+          "release_at": "2026-09-07T15:37:59.440365+00:00",
+          "stale": false
+        },
+        {
+          "series_id": "US_ISM_MFG_NEW_ORDERS",
+          "release_at": "2026-09-07T15:37:59.440365+00:00",
+          "stale": false
+        },
+        {
+          "series_id": "TW_LEADING_INDEX_MOM",
+          "release_at": "2026-09-07T23:48:50.852849+00:00",
+          "stale": false
+        },
+        {
+          "series_id": "TW_LEADING_INDEX_LEVEL",
+          "release_at": "2026-09-07T23:48:50.852849+00:00",
+          "stale": false
+        },
+        {
+          "series_id": "TW_COINCIDENT_INDEX_LEVEL",
+          "release_at": "2026-09-07T23:48:50.852849+00:00",
+          "stale": false
+        },
+        {
+          "series_id": "TW_REAL_GDP_GROWTH",
+          "release_at": "2026-09-07T06:45:07.728145+00:00",
+          "stale": false
+        }
       ],
       "source_dates": [
         "2026-07",
@@ -56,19 +141,54 @@
         "2026-07",
         "2026-Q2"
       ],
-      "stale": false,
+      "stale": true,
       "formula_version": "macro-factors-v1"
     },
     "inflation_score": {
       "value": 0.101598,
-      "confidence": 1.0,
+      "status": "NORMAL",
       "coverage": 1.0,
+      "coverage_score": 1.0,
+      "freshness_score": 1.0,
+      "quality_score": 1.0,
+      "confidence": 1.0,
+      "confidence_score": 1.0,
+      "configured_weight_sum": 1.0,
+      "valid_weight_sum": 1.0,
+      "missing_inputs": [],
       "contributing_inputs": [
         "US_CPI_YOY",
         "US_CORE_CPI_YOY",
         "US_PCE_YOY",
         "US_CORE_PCE_YOY",
         "TW_CPI_YOY"
+      ],
+      "input_quality": [
+        {
+          "series_id": "US_CPI_YOY",
+          "release_at": "2026-09-07T06:48:05.025014+00:00",
+          "stale": false
+        },
+        {
+          "series_id": "US_CORE_CPI_YOY",
+          "release_at": "2026-09-07T06:48:05.025014+00:00",
+          "stale": false
+        },
+        {
+          "series_id": "US_PCE_YOY",
+          "release_at": "2026-09-07T11:07:06.295114+00:00",
+          "stale": false
+        },
+        {
+          "series_id": "US_CORE_PCE_YOY",
+          "release_at": "2026-09-07T11:07:06.295114+00:00",
+          "stale": false
+        },
+        {
+          "series_id": "TW_CPI_YOY",
+          "release_at": "2026-09-07T11:07:22.319842+00:00",
+          "stale": false
+        }
       ],
       "source_dates": [
         "2026-07",
@@ -81,9 +201,17 @@
       "formula_version": "macro-factors-v1"
     },
     "liquidity_score": {
-      "value": -0.06364,
-      "confidence": 1.0,
+      "value": -0.07724,
+      "status": "NORMAL",
       "coverage": 1.0,
+      "coverage_score": 1.0,
+      "freshness_score": 1.0,
+      "quality_score": 0.9,
+      "confidence": 0.9,
+      "confidence_score": 0.9,
+      "configured_weight_sum": 1.0,
+      "valid_weight_sum": 1.0,
+      "missing_inputs": [],
       "contributing_inputs": [
         "US2Y_CHANGE_20D",
         "US10Y_CHANGE_20D",
@@ -91,9 +219,36 @@
         "TW_M1B_YOY",
         "TW_M2_YOY"
       ],
+      "input_quality": [
+        {
+          "series_id": "US2Y_CHANGE_20D",
+          "release_at": "2026-09-07T06:06:59.579509+00:00",
+          "stale": false
+        },
+        {
+          "series_id": "US10Y_CHANGE_20D",
+          "release_at": "2026-09-15T00:47:14.351545+00:00",
+          "stale": false
+        },
+        {
+          "series_id": "US_BROAD_DOLLAR_INDEX",
+          "release_at": "2026-09-07T06:07:06.932706+00:00",
+          "stale": false
+        },
+        {
+          "series_id": "TW_M1B_YOY",
+          "release_at": "2026-09-07T15:38:01.263002+00:00",
+          "stale": false
+        },
+        {
+          "series_id": "TW_M2_YOY",
+          "release_at": "2026-09-07T15:38:01.263002+00:00",
+          "stale": false
+        }
+      ],
       "source_dates": [
         "2026-09",
-        "2026-09-11",
+        "2026-09-14",
         "2026-08",
         "2026-07",
         "2026-07"
@@ -102,18 +257,48 @@
       "formula_version": "macro-factors-v1"
     },
     "rates_score": {
-      "value": -0.162852,
-      "confidence": 1.0,
+      "value": -0.185576,
+      "status": "NORMAL",
       "coverage": 1.0,
+      "coverage_score": 1.0,
+      "freshness_score": 1.0,
+      "quality_score": 0.75,
+      "confidence": 0.75,
+      "confidence_score": 0.75,
+      "configured_weight_sum": 1.0,
+      "valid_weight_sum": 1.0,
+      "missing_inputs": [],
       "contributing_inputs": [
         "US10Y_MINUS_US2Y",
         "US10Y_CHANGE_20D",
         "TW_POLICY_RATE",
         "TW10Y_CHANGE_20D"
       ],
+      "input_quality": [
+        {
+          "series_id": "US10Y_MINUS_US2Y",
+          "release_at": "2026-09-03T23:59:59+00:00",
+          "stale": false
+        },
+        {
+          "series_id": "US10Y_CHANGE_20D",
+          "release_at": "2026-09-15T00:47:14.351545+00:00",
+          "stale": false
+        },
+        {
+          "series_id": "TW_POLICY_RATE",
+          "release_at": "2026-09-07T15:38:01.263002+00:00",
+          "stale": false
+        },
+        {
+          "series_id": "TW10Y_CHANGE_20D",
+          "release_at": "2026-09-07T15:38:01.263002+00:00",
+          "stale": false
+        }
+      ],
       "source_dates": [
         "2026-09-03",
-        "2026-09-11",
+        "2026-09-14",
         "2026-07",
         "2026-07"
       ],
@@ -121,28 +306,66 @@
       "formula_version": "macro-factors-v1"
     },
     "fx_score": {
-      "value": -0.110594,
-      "confidence": 1.0,
+      "value": -0.333111,
+      "status": "NORMAL",
       "coverage": 1.0,
+      "coverage_score": 1.0,
+      "freshness_score": 1.0,
+      "quality_score": 0.75,
+      "confidence": 0.75,
+      "confidence_score": 0.75,
+      "configured_weight_sum": 1.0,
+      "valid_weight_sum": 1.0,
+      "missing_inputs": [],
       "contributing_inputs": [
         "USD_TWD_CBC_CHANGE_20D",
         "USD_TWD_CHANGE_20D",
         "US_BROAD_DOLLAR_INDEX",
         "DXY_CHANGE_20D"
       ],
+      "input_quality": [
+        {
+          "series_id": "USD_TWD_CBC_CHANGE_20D",
+          "release_at": "2026-09-07T15:38:01.263002+00:00",
+          "stale": false
+        },
+        {
+          "series_id": "USD_TWD_CHANGE_20D",
+          "release_at": "2026-09-15T00:47:14.330281+00:00",
+          "stale": false
+        },
+        {
+          "series_id": "US_BROAD_DOLLAR_INDEX",
+          "release_at": "2026-09-07T06:07:06.932706+00:00",
+          "stale": false
+        },
+        {
+          "series_id": "DXY_CHANGE_20D",
+          "release_at": "2026-09-15T00:47:14.324369+00:00",
+          "stale": false
+        }
+      ],
       "source_dates": [
         "2025-12-31",
-        "2026-09-11",
+        "2026-09-15",
         "2026-08",
-        "2026-09-11"
+        "2026-09-15"
       ],
       "stale": false,
       "formula_version": "macro-factors-v1"
     },
     "risk_score": {
-      "value": 0.004667,
-      "confidence": 1.0,
+      "value": -0.056486,
+      "status": "NORMAL",
       "coverage": 1.0,
+      "coverage_score": 1.0,
+      "freshness_score": 1.0,
+      "quality_score": 0.8,
+      "confidence": 0.8,
+      "confidence_score": 0.8,
+      "configured_weight_sum": 1.0,
+      "valid_weight_sum": 1.0,
+      "missing_inputs": [],
       "contributing_inputs": [
         "VIX",
         "US_BROAD_DOLLAR_INDEX",
@@ -150,11 +373,38 @@
         "WTI_CHANGE_20D",
         "TW_UNEMPLOYMENT_RATE"
       ],
+      "input_quality": [
+        {
+          "series_id": "VIX",
+          "release_at": "2026-09-15T00:47:14.323159+00:00",
+          "stale": false
+        },
+        {
+          "series_id": "US_BROAD_DOLLAR_INDEX",
+          "release_at": "2026-09-07T06:07:06.932706+00:00",
+          "stale": false
+        },
+        {
+          "series_id": "TW_MONITORING_SCORE",
+          "release_at": "2026-09-07T23:48:50.852849+00:00",
+          "stale": false
+        },
+        {
+          "series_id": "WTI_CHANGE_20D",
+          "release_at": "2026-09-15T00:47:14.329047+00:00",
+          "stale": false
+        },
+        {
+          "series_id": "TW_UNEMPLOYMENT_RATE",
+          "release_at": "2026-09-07T06:45:08.214296+00:00",
+          "stale": false
+        }
+      ],
       "source_dates": [
-        "2026-09-11",
+        "2026-09-14",
         "2026-08",
         "2026-07",
-        "2026-09-11",
+        "2026-09-15",
         "2026-07"
       ],
       "stale": false,
@@ -165,7 +415,7 @@
   "indicators": [],
   "sector_scores": {
     "半導體": {
-      "score": 0.204849,
+      "score": 0.178681,
       "confidence": 1.0,
       "tailwind": true,
       "contributors": [
@@ -176,17 +426,17 @@
         },
         {
           "factor": "liquidity_score",
-          "value": -0.06364,
+          "value": -0.07724,
           "sensitivity": 0.25
         },
         {
           "factor": "rates_score",
-          "value": -0.162852,
+          "value": -0.185576,
           "sensitivity": -0.15
         },
         {
           "factor": "fx_score",
-          "value": -0.110594,
+          "value": -0.333111,
           "sensitivity": 0.1
         }
       ],
@@ -202,7 +452,7 @@
       }
     },
     "AI伺服器代工": {
-      "score": 0.204849,
+      "score": 0.178681,
       "confidence": 1.0,
       "tailwind": true,
       "contributors": [
@@ -213,17 +463,17 @@
         },
         {
           "factor": "liquidity_score",
-          "value": -0.06364,
+          "value": -0.07724,
           "sensitivity": 0.25
         },
         {
           "factor": "rates_score",
-          "value": -0.162852,
+          "value": -0.185576,
           "sensitivity": -0.15
         },
         {
           "factor": "fx_score",
-          "value": -0.110594,
+          "value": -0.333111,
           "sensitivity": 0.1
         }
       ],
@@ -239,23 +489,23 @@
       }
     },
     "金融": {
-      "score": -0.083667,
+      "score": -0.075999,
       "confidence": 1.0,
       "tailwind": false,
       "contributors": [
         {
           "factor": "rates_score",
-          "value": -0.162852,
+          "value": -0.185576,
           "sensitivity": 0.3
         },
         {
           "factor": "risk_score",
-          "value": 0.004667,
+          "value": -0.056486,
           "sensitivity": -0.25
         },
         {
           "factor": "liquidity_score",
-          "value": -0.06364,
+          "value": -0.07724,
           "sensitivity": 0.2
         }
       ],
@@ -270,7 +520,7 @@
       }
     },
     "貨櫃航運": {
-      "score": 0.30025,
+      "score": 0.270911,
       "confidence": 1.0,
       "tailwind": true,
       "contributors": [
@@ -281,12 +531,12 @@
         },
         {
           "factor": "risk_score",
-          "value": 0.004667,
+          "value": -0.056486,
           "sensitivity": -0.1
         },
         {
           "factor": "fx_score",
-          "value": -0.110594,
+          "value": -0.333111,
           "sensitivity": 0.1
         }
       ],
@@ -301,18 +551,18 @@
       }
     },
     "營建": {
-      "score": 0.06848,
+      "score": 0.076069,
       "confidence": 1.0,
       "tailwind": false,
       "contributors": [
         {
           "factor": "rates_score",
-          "value": -0.162852,
+          "value": -0.185576,
           "sensitivity": -0.35
         },
         {
           "factor": "liquidity_score",
-          "value": -0.06364,
+          "value": -0.07724,
           "sensitivity": 0.25
         }
       ],
@@ -326,18 +576,18 @@
       }
     },
     "高股息防禦": {
-      "score": 0.052123,
+      "score": 0.016133,
       "confidence": 1.0,
       "tailwind": false,
       "contributors": [
         {
           "factor": "risk_score",
-          "value": 0.004667,
+          "value": -0.056486,
           "sensitivity": 0.35
         },
         {
           "factor": "rates_score",
-          "value": -0.162852,
+          "value": -0.185576,
           "sensitivity": -0.15
         }
       ],
@@ -354,7 +604,7 @@
   "sector_tailwinds": [
     {
       "name": "貨櫃航運",
-      "score": 0.30025,
+      "score": 0.270911,
       "confidence": 1.0,
       "tailwind": true,
       "contributors": [
@@ -365,12 +615,12 @@
         },
         {
           "factor": "risk_score",
-          "value": 0.004667,
+          "value": -0.056486,
           "sensitivity": -0.1
         },
         {
           "factor": "fx_score",
-          "value": -0.110594,
+          "value": -0.333111,
           "sensitivity": 0.1
         }
       ],
@@ -386,7 +636,7 @@
     },
     {
       "name": "半導體",
-      "score": 0.204849,
+      "score": 0.178681,
       "confidence": 1.0,
       "tailwind": true,
       "contributors": [
@@ -397,17 +647,17 @@
         },
         {
           "factor": "liquidity_score",
-          "value": -0.06364,
+          "value": -0.07724,
           "sensitivity": 0.25
         },
         {
           "factor": "rates_score",
-          "value": -0.162852,
+          "value": -0.185576,
           "sensitivity": -0.15
         },
         {
           "factor": "fx_score",
-          "value": -0.110594,
+          "value": -0.333111,
           "sensitivity": 0.1
         }
       ],
@@ -424,7 +674,7 @@
     },
     {
       "name": "AI伺服器代工",
-      "score": 0.204849,
+      "score": 0.178681,
       "confidence": 1.0,
       "tailwind": true,
       "contributors": [
@@ -435,17 +685,17 @@
         },
         {
           "factor": "liquidity_score",
-          "value": -0.06364,
+          "value": -0.07724,
           "sensitivity": 0.25
         },
         {
           "factor": "rates_score",
-          "value": -0.162852,
+          "value": -0.185576,
           "sensitivity": -0.15
         },
         {
           "factor": "fx_score",
-          "value": -0.110594,
+          "value": -0.333111,
           "sensitivity": 0.1
         }
       ],
@@ -462,18 +712,18 @@
     },
     {
       "name": "營建",
-      "score": 0.06848,
+      "score": 0.076069,
       "confidence": 1.0,
       "tailwind": false,
       "contributors": [
         {
           "factor": "rates_score",
-          "value": -0.162852,
+          "value": -0.185576,
           "sensitivity": -0.35
         },
         {
           "factor": "liquidity_score",
-          "value": -0.06364,
+          "value": -0.07724,
           "sensitivity": 0.25
         }
       ],
@@ -488,18 +738,18 @@
     },
     {
       "name": "高股息防禦",
-      "score": 0.052123,
+      "score": 0.016133,
       "confidence": 1.0,
       "tailwind": false,
       "contributors": [
         {
           "factor": "risk_score",
-          "value": 0.004667,
+          "value": -0.056486,
           "sensitivity": 0.35
         },
         {
           "factor": "rates_score",
-          "value": -0.162852,
+          "value": -0.185576,
           "sensitivity": -0.15
         }
       ],
@@ -516,23 +766,23 @@
   "sector_headwinds": [
     {
       "name": "金融",
-      "score": -0.083667,
+      "score": -0.075999,
       "confidence": 1.0,
       "tailwind": false,
       "contributors": [
         {
           "factor": "rates_score",
-          "value": -0.162852,
+          "value": -0.185576,
           "sensitivity": 0.3
         },
         {
           "factor": "risk_score",
-          "value": 0.004667,
+          "value": -0.056486,
           "sensitivity": -0.25
         },
         {
           "factor": "liquidity_score",
-          "value": -0.06364,
+          "value": -0.07724,
           "sensitivity": 0.2
         }
       ],
@@ -548,18 +798,18 @@
     },
     {
       "name": "高股息防禦",
-      "score": 0.052123,
+      "score": 0.016133,
       "confidence": 1.0,
       "tailwind": false,
       "contributors": [
         {
           "factor": "risk_score",
-          "value": 0.004667,
+          "value": -0.056486,
           "sensitivity": 0.35
         },
         {
           "factor": "rates_score",
-          "value": -0.162852,
+          "value": -0.185576,
           "sensitivity": -0.15
         }
       ],
@@ -574,18 +824,18 @@
     },
     {
       "name": "營建",
-      "score": 0.06848,
+      "score": 0.076069,
       "confidence": 1.0,
       "tailwind": false,
       "contributors": [
         {
           "factor": "rates_score",
-          "value": -0.162852,
+          "value": -0.185576,
           "sensitivity": -0.35
         },
         {
           "factor": "liquidity_score",
-          "value": -0.06364,
+          "value": -0.07724,
           "sensitivity": 0.25
         }
       ],
@@ -600,7 +850,7 @@
     },
     {
       "name": "AI伺服器代工",
-      "score": 0.204849,
+      "score": 0.178681,
       "confidence": 1.0,
       "tailwind": true,
       "contributors": [
@@ -611,17 +861,17 @@
         },
         {
           "factor": "liquidity_score",
-          "value": -0.06364,
+          "value": -0.07724,
           "sensitivity": 0.25
         },
         {
           "factor": "rates_score",
-          "value": -0.162852,
+          "value": -0.185576,
           "sensitivity": -0.15
         },
         {
           "factor": "fx_score",
-          "value": -0.110594,
+          "value": -0.333111,
           "sensitivity": 0.1
         }
       ],
@@ -638,7 +888,7 @@
     },
     {
       "name": "半導體",
-      "score": 0.204849,
+      "score": 0.178681,
       "confidence": 1.0,
       "tailwind": true,
       "contributors": [
@@ -649,17 +899,17 @@
         },
         {
           "factor": "liquidity_score",
-          "value": -0.06364,
+          "value": -0.07724,
           "sensitivity": 0.25
         },
         {
           "factor": "rates_score",
-          "value": -0.162852,
+          "value": -0.185576,
           "sensitivity": -0.15
         },
         {
           "factor": "fx_score",
-          "value": -0.110594,
+          "value": -0.333111,
           "sensitivity": 0.1
         }
       ],
@@ -911,44 +1161,41 @@
   },
   "key_drivers": [
     {
-      "name": "U.S. August CPI firms on energy and core services",
-      "observed": "Headline CPI rose 0.4% m/m and 3.4% y/y. Core CPI rose 0.3% m/m and 2.4% y/y; the core monthly reading exceeded the Reuters-polled 0.2% expectation. Gasoline rose 3.9% m/m and shelter 0.3%.",
-      "interpretation": "The report strengthens the case for a near-term Fed hike and raises the discount-rate risk for high-duration Taiwan technology equities even though core year-on-year inflation eased slightly.",
-      "source_urls": [
-        "https://www.bls.gov/news.release/cpi.nr0.htm",
-        "https://www.reuters.com/world/us/us-consumer-inflation-picks-up-august-2026-09-11/"
-      ]
+      "name": "Middle East conflict broadens across Saudi Arabia and Red Sea",
+      "observed": "Reuters reported a new Houthi missile/drone wave against Saudi Arabia, 13 civilian injuries, Houthi control of Perim Island and effective control over almost the entire western Yemen coast. Saudi/Yemeni air strikes intensified while Gulf-Iran Hormuz talks remained postponed.",
+      "interpretation": "The simultaneous Hormuz, Saudi bypass-pipeline and Red Sea/Bab el-Mandeb risks increase the persistence of shipping, insurance, freight and delivered-energy stress.",
+      "source_url": "https://www.reuters.com/world/middle-east/houthis-strike-saudi-targets-anew-talks-over-strait-hormuz-stall-2026-09-15/"
     },
     {
-      "name": "Official U.S. yield curve reprices higher",
-      "observed": "Treasury's September 11 official par yields closed at 4.63% for 2Y and 4.96% for 10Y, a +33 bp 10Y-2Y slope.",
-      "interpretation": "Both front-end policy expectations and long-duration discount rates are restrictive for Taiwan growth-equity valuation multiples.",
-      "source_url": "https://home.treasury.gov/resource-center/data-chart-center/interest-rates/TextView?type=daily_treasury_yield_curve&field_tdr_date_value_month=202609"
+      "name": "Refined-product market remains tight",
+      "observed": "Exxon Mobil's 264,000-bpd Joliet refinery shut after a power outage. Reuters said the plant can produce about 11 million gallons/day of gasoline and diesel and reported U.S. average diesel had exceeded $6/gallon the prior week.",
+      "interpretation": "If prolonged, the outage would add to refined-product tightness already driven by the Iran war and attacks on Russian refineries; expected normalization by end-week limits current persistence assessment.",
+      "source_url": "https://www.reuters.com/business/energy/exxon-mobils-joliet-refinery-reports-upset-due-power-outage-2026-09-14/"
     },
     {
-      "name": "Record Gulf-to-Asia tanker freight",
-      "observed": "Reuters reported Gulf of Oman-to-China VLCC freight near Worldscale 450, around US$11.50 per barrel, a record for the series introduced earlier in 2026.",
-      "interpretation": "The Middle East shock is increasingly embedded in delivered-energy and logistics costs, not merely spot crude, raising imported inflation and margin risk for Taiwan manufacturers.",
-      "source_url": "https://www.reuters.com/business/energy/oil-tanker-rates-hit-record-highs-following-iran-us-shipping-attacks-2026-09-11/"
+      "name": "Fed hike pricing remains dominant rates risk",
+      "observed": "Reuters reported money markets at roughly 90% probability of a September 16 Fed hike; this is market pricing, not an official Fed forecast.",
+      "interpretation": "Energy inflation plus a near-5% 10Y yield keeps duration pressure elevated for Taiwan technology equities.",
+      "source_url": "https://www.reuters.com/world/asia-pacific/dollar-steady-yen-near-7-month-high-ahead-fed-boj-meetings-2026-09-14/"
     }
   ],
   "key_risks": [
-    "A sustained U.S. 10Y yield near 5% can compress long-duration semiconductor and AI hardware valuation multiples.",
-    "Record tanker freight, war-risk premiums and constrained Hormuz/Bab el-Mandeb flows can keep delivered energy costs elevated even if spot crude retreats.",
-    "Core PCE for August may be revised higher by CPI/PPI components; Reuters-cited economists expected about +0.3% m/m and 3.4% y/y, but this is an estimate and is not written into the official PCE series.",
-    "Taiwan's strong AI/HPC export cycle offsets but does not eliminate energy, FX and global-rate risks.",
-    "No new verified copper or September 11 USD/TWD close was inserted; those series remain stale in this semantic snapshot."
+    "Renewed Saudi-Houthi fighting and Houthi control of Perim Island broaden the maritime-security shock into the Red Sea/Bab el-Mandeb route.",
+    "The Saudi East-West pipeline remains offline with no restart date, while Hormuz remains largely blockaded.",
+    "A Fed hike and long yields near 5% can compress long-duration semiconductor and AI-hardware multiples.",
+    "Refined-product disruptions can raise freight and industrial logistics costs even if crude prices stabilize.",
+    "VIX, copper and USD/TWD remain stale in this semantic snapshot because no sufficiently authoritative newer exact value was incorporated."
   ],
   "analysis": {
-    "summary": "Material changes since the prior snapshot: U.S. August CPI was released at +0.4% m/m and +3.4% y/y, with core CPI +0.3% m/m and +2.4% y/y; the core monthly reading was above Reuters-polled expectations of +0.2%. Official Treasury closing yields for September 11 rose to 4.63% at 2Y and 4.96% at 10Y. Middle East conflict transmission broadened through record VLCC freight from the Gulf of Oman to China near Worldscale 450, about US$11.50/bbl. Brent settled at US$104.61 and WTI at US$100.05. No new Taiwan official macro release was identified since the prior snapshot.",
-    "confidence": 0.96,
+    "summary": "Material change since the prior snapshot: Reuters reported a new wave of Houthi missile/drone attacks on Saudi Arabia, 13 civilian injuries, Houthi control of Perim Island at the mouth of the Red Sea and effective control over almost the entire western Yemen coast. The Saudi East-West pipeline remains offline and Gulf-Iran Hormuz talks remain postponed. Separately, Exxon's 264,000-bpd Joliet refinery shut after a power outage, adding a temporary refined-product risk to an already tight fuel market. No new U.S., Taiwan or China official macro release was identified.",
+    "confidence": 0.98,
     "source_urls": [
+      "https://www.reuters.com/world/middle-east/houthis-strike-saudi-targets-anew-talks-over-strait-hormuz-stall-2026-09-15/",
+      "https://www.reuters.com/business/energy/oil-prices-jump-more-than-3-after-new-strikes-saudi-strait-hormuz-2026-09-13/",
+      "https://www.reuters.com/business/energy/exxon-mobils-joliet-refinery-reports-upset-due-power-outage-2026-09-14/",
+      "https://www.reuters.com/world/asia-pacific/dollar-steady-yen-near-7-month-high-ahead-fed-boj-meetings-2026-09-14/",
       "https://www.bls.gov/news.release/cpi.nr0.htm",
-      "https://home.treasury.gov/resource-center/data-chart-center/interest-rates/TextView?type=daily_treasury_yield_curve&field_tdr_date_value_month=202609",
-      "https://www.reuters.com/world/us/us-consumer-inflation-picks-up-august-2026-09-11/",
-      "https://www.reuters.com/business/energy/oil-prices-set-end-week-over-100-first-time-nearly-4-months-2026-09-11/",
-      "https://www.reuters.com/business/energy/oil-tanker-rates-hit-record-highs-following-iran-us-shipping-attacks-2026-09-11/",
-      "https://www.reuters.com/world/middle-east/yemens-houthis-reach-strategic-island-mouth-vital-shipping-lane-2026-09-11/"
+      "https://home.treasury.gov/resource-center/data-chart-center/interest-rates/TextView?type=daily_treasury_yield_curve&field_tdr_date_value_month=202609"
     ]
   },
   "quality": {
