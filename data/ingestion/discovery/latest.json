@@ -1,27 +1,27 @@
 {
   "schema_version": "1.0",
-  "generated_at": "2026-09-16T06:55:32+08:00",
-  "window_start": "2026-09-15T21:03:05+08:00",
-  "window_end": "2026-09-16T06:55:32+08:00",
-  "event_file": "data/ingestion/discovery/events/2026/09/2026-09-15T231424Z_6875-regulatory-milestone.json",
+  "generated_at": "2026-09-16T09:04:12+08:00",
+  "window_start": "2026-09-16T06:55:32+08:00",
+  "window_end": "2026-09-16T09:04:12+08:00",
+  "event_file": "data/ingestion/discovery/events/2026/09/2026-09-16T010412Z_2610-management-outlook.json",
   "production_verified": false,
   "new_event_count": 1,
-  "counts_by_source_type": {"mops_material_announcement": 1},
-  "counts_by_event_type": {"regulatory_milestone": 1},
-  "high_priority_stock_ids": ["6875"],
+  "counts_by_source_type": {"high_quality_news_management_interview": 1},
+  "counts_by_event_type": {"management_outlook_demand_shift": 1},
+  "high_priority_stock_ids": ["2610"],
   "fetch_queue": {
     "pending": 1,
     "verified": 0,
-    "rule": "production_verified remains false until deterministic GitHub Actions resolves/fetches primary MOPS/TPEX evidence and stores official source metadata, published timestamp, raw bytes and SHA-256"
+    "rule": "production_verified remains false until deterministic GitHub Actions fetches and validates source evidence, timestamps/raw content and SHA-256 as applicable"
   },
   "notable_candidates": [{
-    "event_id": "6875_20260915_regulatory_milestone",
-    "stock_ids": ["6875"],
-    "summary": "國邑*公告 L606 Re-Spire 第三期試驗取得中國 NMPA 核准執行；僅記錄監管/臨床里程碑，不直接推導成功率、EPS或Fair Value。"
+    "event_id": "2610_20260916_management_outlook_ai_cargo_longhaul",
+    "stock_ids": ["2610"],
+    "summary": "華航管理層表示近期月貨運收入約70-80億元、AI/半導體設備出口支撐貨運，中東衝突亦推動部分旅客改採直飛歐洲；高油價為主要抵銷風險。"
   }],
   "notes": [
-    "Company-specific primary-evidence discovery only; no normalized fundamentals, analyst consensus, catalyst probabilities or Fair Value files were modified.",
-    "Fair Value V2.1 remains the sole valuation baseline.",
-    "Primary MOPS canonical URL/source ID and content SHA-256 remain pending deterministic GitHub Actions materialization."
+    "Deduplicated against the prior latest discovery state generated at 2026-09-16T06:55:32+08:00 and repository code-search evidence available in this run.",
+    "Management commentary is semantic discovery evidence only; no deterministic official numeric series, normalized fundamentals, analyst consensus or catalyst probabilities were modified.",
+    "Fair Value V2.1 remains the sole valuation baseline."
   ]
 }
