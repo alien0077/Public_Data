@@ -1,27 +1,40 @@
 {
   "schema_version": "1.0",
-  "generated_at": "2026-09-16T09:04:12+08:00",
-  "window_start": "2026-09-16T06:55:32+08:00",
-  "window_end": "2026-09-16T09:04:12+08:00",
-  "event_file": "data/ingestion/discovery/events/2026/09/2026-09-16T010412Z_2610-management-outlook.json",
+  "generated_at": "2026-09-16T18:56:46+08:00",
+  "window_start": "2026-09-16T09:04:12+08:00",
+  "window_end": "2026-09-16T18:56:46+08:00",
+  "event_file": "data/ingestion/discovery/events/2026/09/2026-09-16T105646Z_corporate-primary-evidence.json",
   "production_verified": false,
-  "new_event_count": 1,
-  "counts_by_source_type": {"high_quality_news_management_interview": 1},
-  "counts_by_event_type": {"management_outlook_demand_shift": 1},
-  "high_priority_stock_ids": ["2610"],
-  "fetch_queue": {
-    "pending": 1,
-    "verified": 0,
-    "rule": "production_verified remains false until deterministic GitHub Actions fetches and validates source evidence, timestamps/raw content and SHA-256 as applicable"
+  "new_event_count": 2,
+  "counts_by_source_type": {
+    "mops_material_announcement": 2
   },
-  "notable_candidates": [{
-    "event_id": "2610_20260916_management_outlook_ai_cargo_longhaul",
-    "stock_ids": ["2610"],
-    "summary": "華航管理層表示近期月貨運收入約70-80億元、AI/半導體設備出口支撐貨運，中東衝突亦推動部分旅客改採直飛歐洲；高油價為主要抵銷風險。"
-  }],
+  "counts_by_event_type": {
+    "financing_syndicated_loan": 1,
+    "dividend_policy_revision": 1
+  },
+  "high_priority_stock_ids": ["3305", "3040"],
+  "fetch_queue": {
+    "pending": 2,
+    "verified": 0,
+    "rule": "production_verified remains false until deterministic GitHub Actions resolves the primary MOPS source, fetches/validates raw evidence and official timestamp, and saves SHA-256"
+  },
+  "notable_candidates": [
+    {
+      "event_id": "3305_20260916_board_syndicated_loan_25b",
+      "stock_ids": ["3305"],
+      "summary": "昇貿董事會通過新台幣25億元、首次動用日起3年的聯合授信案，用於充實中長期營運資金。"
+    },
+    {
+      "event_id": "3040_20260916_dividend_mix_revision",
+      "stock_ids": ["3040"],
+      "summary": "遠見董事會擬將原現金0.4元+股票3.1元的股利組成改為全現金3.5元；尚待股東臨時會通過。"
+    }
+  ],
   "notes": [
-    "Deduplicated against the prior latest discovery state generated at 2026-09-16T06:55:32+08:00 and repository code-search evidence available in this run.",
-    "Management commentary is semantic discovery evidence only; no deterministic official numeric series, normalized fundamentals, analyst consensus or catalyst probabilities were modified.",
-    "Fair Value V2.1 remains the sole valuation baseline."
+    "Deduplicated against prior latest state generated at 2026-09-16T09:04:12+08:00 and repository event-ID search for both candidates.",
+    "Public MOPS mirrors were used only for discovery; GitHub Actions must resolve and materialize primary MOPS evidence before production verification.",
+    "No quarterly MOPS XBRL ZIP was ingested and no historical backfill was performed.",
+    "No normalized fundamentals, analyst consensus, catalyst probability or Fair Value was modified; Fair Value V2.1 remains the sole valuation baseline."
   ]
 }
