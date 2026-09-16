@@ -1,0 +1,84 @@
+{
+  "schema_version": "1.0",
+  "generated_at": "2026-09-16T18:56:46+08:00",
+  "window_start": "2026-09-16T09:04:12+08:00",
+  "window_end": "2026-09-16T18:56:46+08:00",
+  "production_verified": false,
+  "events": [
+    {
+      "event_id": "3305_20260916_board_syndicated_loan_25b",
+      "stock_ids": ["3305"],
+      "company_name": "昇貿科技股份有限公司",
+      "source_type": "mops_material_announcement",
+      "event_type": "financing_syndicated_loan",
+      "title": "昇貿董事會決議通過新台幣25億元銀行聯貸案",
+      "canonical_url": "https://pchome.megatime.com.tw/news/cat2/20260916/9700003305202609161.html",
+      "publisher": "公開資訊觀測站（由公開鏡像轉載）",
+      "published_at": "2026-09-16T15:30:51+08:00",
+      "discovered_at": "2026-09-16T18:56:46+08:00",
+      "observed_facts": {
+        "board_decision_date": "2026-09-16",
+        "counterparty": "遠東國際商業銀行等聯合授信銀行團",
+        "facility_twd": 2500000000,
+        "term": "自首次動用日起算3年",
+        "purpose": "充實中長期營運資金"
+      },
+      "interpretation": {
+        "note": "新增中長期資金額度；在正式 MOPS raw evidence 驗證前不推論資金實際動用、用途細項或對估值之影響。"
+      },
+      "evidence_summary": "公開資訊觀測站公告鏡像顯示，昇貿董事會於115/09/16通過總額度新台幣25億元、首次動用日起3年的聯合授信合約，目的為充實中長期營運資金。",
+      "affected_inputs": ["financing", "liquidity", "net_debt", "capital_structure"],
+      "confidence": 0.97,
+      "priority": "high",
+      "requires_raw_fetch": true,
+      "raw_fetch_reason": "GitHub Actions must resolve the primary MOPS source identifier/canonical URL and save deterministic raw HTML/JSON, official published_at and SHA-256 before production verification.",
+      "production_verified": false,
+      "source_urls": ["https://pchome.megatime.com.tw/news/cat2/20260916/9700003305202609161.html"],
+      "content_hash": null
+    },
+    {
+      "event_id": "3040_20260916_dividend_mix_revision",
+      "stock_ids": ["3040"],
+      "company_name": "遠見科技股份有限公司",
+      "source_type": "mops_material_announcement",
+      "event_type": "dividend_policy_revision",
+      "title": "遠見董事會擬修正114年度盈餘分配：取消股票股利並改發現金",
+      "canonical_url": "https://pchome.megatime.com.tw/m/news/cat1/20260916/9700003040202609161.html",
+      "publisher": "公開資訊觀測站（由公開鏡像轉載）",
+      "published_at": "2026-09-16T15:01:46+08:00",
+      "discovered_at": "2026-09-16T18:56:46+08:00",
+      "observed_facts": {
+        "board_decision_date": "2026-09-16",
+        "original_cash_dividend_per_share_twd": 0.4,
+        "original_stock_dividend_per_share_twd": 3.1,
+        "original_total_dividend_per_share_twd": 3.5,
+        "proposed_cash_dividend_per_share_twd": 3.5,
+        "proposed_stock_dividend_per_share_twd": 0.0,
+        "reason": "考量公司整體資金規劃及股東權益",
+        "shareholder_approval_required": true
+      },
+      "interpretation": {
+        "note": "股利總額每股3.5元的組成擬由現金0.4元+股票3.1元改為全現金3.5元；尚待股東臨時會決議，不能視為最終生效。"
+      },
+      "evidence_summary": "公開資訊觀測站公告鏡像顯示，遠見董事會擬取消原股票股利3.1元並改以現金配發，使擬議現金股利變為每股3.5元；本案尚需股東臨時會通過。",
+      "affected_inputs": ["dividend", "cash_distribution", "shares_outstanding", "capital_structure"],
+      "confidence": 0.98,
+      "priority": "high",
+      "requires_raw_fetch": true,
+      "raw_fetch_reason": "GitHub Actions must resolve the primary MOPS source identifier/canonical URL and save deterministic raw HTML/JSON, official published_at and SHA-256 before production verification.",
+      "production_verified": false,
+      "source_urls": ["https://pchome.megatime.com.tw/m/news/cat1/20260916/9700003040202609161.html"],
+      "content_hash": null
+    }
+  ],
+  "dedupe": {
+    "checked_against_latest_generated_at": "2026-09-16T09:04:12+08:00",
+    "repository_event_id_search": ["3305_20260916", "3040_20260916"],
+    "duplicate_matches": 0
+  },
+  "notes": [
+    "These are primary-disclosure discoveries surfaced through public MOPS mirrors; mirror pages are discovery evidence only.",
+    "No quarterly MOPS XBRL ZIP was ingested.",
+    "No normalized fundamentals, analyst consensus, catalyst probability, production PIT series or Fair Value V2.1 values were modified."
+  ]
+}
