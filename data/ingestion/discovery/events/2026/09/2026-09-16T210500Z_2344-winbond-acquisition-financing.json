@@ -1,0 +1,81 @@
+{
+  "schema_version": "1.0",
+  "generated_at": "2026-09-17T07:05:02+08:00",
+  "window_start": "2026-09-16T18:56:46+08:00",
+  "window_end": "2026-09-17T07:05:02+08:00",
+  "production_verified": false,
+  "events": [
+    {
+      "event_id": "2344_20260916_infineon_nor_fram_acquisition",
+      "stock_ids": ["2344"],
+      "company_name": "華邦電子",
+      "source_type": "company_ir",
+      "event_type": "m_and_a_acquisition",
+      "title": "華邦電子簽署協議以11.2億美元現金取得英飛凌NOR Flash與F-RAM事業100%股權",
+      "canonical_url": null,
+      "publisher": "華邦電子股份有限公司",
+      "published_at": "2026-09-16T21:00:00+08:00",
+      "discovered_at": "2026-09-17T07:05:02+08:00",
+      "observed_facts": {
+        "transaction": "華邦電子與Infineon Technologies LLC簽署股份購買協議，以全現金方式取得英飛凌NOR Flash與F-RAM事業經重組後之100%股權。",
+        "base_purchase_price_usd": 1120000000,
+        "price_adjustment": "交割前依股份購買協議相關規定調整",
+        "board_approved": true,
+        "expected_closing": "2027年下半年",
+        "closing_conditions": "仍須符合股份購買協議交割條件，包括必要主管機關核准",
+        "post_closing_brand": "Spansion",
+        "post_closing_operation": "標的公司預計維持既有營運模式獨立營運，總部位於美國"
+      },
+      "interpretation": "重大海外併購，可能影響華邦電子產品組合、全球研發/供應能力、資本結構與未來現金流；僅作 affected-input routing，不直接修改估值。",
+      "evidence_summary": "公司公開新聞稿內容已被多家財經媒體逐項引用，並有同日晚間重大訊息記者會交叉確認；正式公司IR/MOPS raw bytes與SHA-256仍待 deterministic fetcher materialize。",
+      "affected_inputs": ["corporate_actions", "m_and_a", "cash_and_debt", "forward_business_mix", "risk_flags"],
+      "confidence": 0.98,
+      "priority": "critical",
+      "requires_raw_fetch": true,
+      "raw_fetch_reason": "Resolve official Winbond IR/MOPS canonical URL/source ID and persist exact raw HTML/PDF/JSON bytes, official timestamp and SHA-256 before production verification.",
+      "production_verified": false,
+      "source_urls": [
+        "https://www.marketscreener.com/news/winbond-electronics-to-acquire-100-equity-interest-in-infineona-s-nor-flash-and-f-ram-business-ce785bd2dc81f52c",
+        "https://news.nextapple.com/finance/20260916/7831EF412D8FD4F393B455CEF6F778DB"
+      ],
+      "content_hash": null,
+      "tags": ["corporate_evidence", "m_and_a", "affected_ticker"]
+    },
+    {
+      "event_id": "2344_20260916_cb_180b_capacity_rd_equipment",
+      "stock_ids": ["2344"],
+      "company_name": "華邦電子",
+      "source_type": "mops_material_announcement",
+      "event_type": "convertible_bond_financing",
+      "title": "華邦電子董事會決議第四、第五次無擔保可轉換公司債合計上限180億元",
+      "canonical_url": null,
+      "publisher": "華邦電子股份有限公司",
+      "published_at": "2026-09-16T21:00:00+08:00",
+      "discovered_at": "2026-09-17T07:05:02+08:00",
+      "observed_facts": {
+        "fourth_cb_face_value_cap_twd": 14000000000,
+        "fifth_cb_face_value_cap_twd": 4000000000,
+        "combined_face_value_cap_twd": 18000000000,
+        "term_years": 5,
+        "coupon_rate_percent": 0,
+        "use_of_proceeds": ["產能擴充", "研發先進製程", "購置生產所需機器設備"],
+        "fourth_cb_underwriting": "詢價圈購",
+        "fifth_cb_underwriting": "競價拍賣"
+      },
+      "interpretation": "重大融資與資本支出資金來源事件，可能影響稀釋、債務/現金與產能投資假設；不直接修改 Fair Value V2.1。",
+      "evidence_summary": "同日晚間公開報導引用公司公告之兩筆CB條件與用途；正式MOPS source ID/canonical URL、raw bytes及SHA-256待 GitHub Actions fetcher 驗證。",
+      "affected_inputs": ["financing", "convertible_bonds", "dilution_risk", "capex", "capacity_expansion", "cash_and_debt"],
+      "confidence": 0.96,
+      "priority": "high",
+      "requires_raw_fetch": true,
+      "raw_fetch_reason": "Fetch official MOPS disclosure(s), retain source IDs, exact terms, official published_at and SHA-256.",
+      "production_verified": false,
+      "source_urls": [
+        "https://news.nextapple.com/finance/20260916/7831EF412D8FD4F393B455CEF6F778DB",
+        "https://fnc.ebc.net.tw/fncnews/headline/218238"
+      ],
+      "content_hash": null,
+      "tags": ["corporate_evidence", "financing", "capex", "affected_ticker"]
+    }
+  ]
+}
