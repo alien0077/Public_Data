@@ -1,87 +1,63 @@
 {
   "schema_version": "1.2",
-  "generated_at": "2026-09-16T20:16:57+08:00",
+  "generated_at": "2026-09-17T08:12:07+08:00",
   "month": "2026-09",
   "scope": "semantic_research_only",
   "fair_value_policy": "Fair Value V2.1 is the sole valuation baseline. Semantic scores in this file must not directly overwrite official numeric macro series or Fair Value.",
-  "summary": "Material change since the morning snapshot is in global energy transmission rather than official macro releases. Reuters reported Saudi Arabia is now offering additional crude to Asian buyers via ship-to-ship loading off Sohar, Oman, outside the Strait of Hormuz, partially mitigating disruption from the damaged East-West Pipeline and halted Yanbu loadings. Separately, Reuters reported Russia decided to extend diesel-export restrictions for producers through end-October, increasing persistence of the refined-product shock. Oil prices eased on September 16 as Saudi alternative routing and higher U.S. inventories reduced immediate crude-scarcity fears, while diesel remained exceptionally tight. The Federal Reserve decision was still pending at this snapshot; no decision is pre-assumed.",
+  "summary": "Material change is dominated by the Federal Reserve's September 16 rate hike and a further Russia-Ukraine refined-product supply shock. The FOMC unanimously raised the target range 25 bp to 3.75%-4.00% and signaled that further tightening is likely; September projections point to 4.00%-4.25% at end-2026 and end-2027. Separately, Reuters confirmed Rosneft's Syzran and Saratov refineries stopped processing after Ukrainian drone attacks, with Syzran repairs potentially taking at least a month. Saudi alternative routing via Oman remains a partial mitigation to Middle East crude-supply risk, but refined-product and inflation risks remain elevated.",
   "macro_summary": {
-    "new_official_us_macro_release_since_prior_snapshot": false,
+    "new_official_us_macro_release_since_prior_snapshot": true,
     "new_official_taiwan_macro_release_since_prior_snapshot": false,
     "new_official_china_macro_release_since_prior_snapshot": false,
     "new_material_geopolitical_energy_information": true,
-    "policy_bias": "hawkish_risk_elevated",
-    "taiwan_equity_implication": "Saudi alternative routing is a partial de-escalation for crude availability, but persistent Russian diesel restrictions keep freight and refined-product inflation risk elevated. Airlines and energy-intensive manufacturers remain exposed to high fuel costs; shipping has mixed volume/rerouting and bunker-cost effects; long-duration technology remains sensitive to oil-driven inflation and bond yields.",
+    "policy_bias": "hawkish_tightening",
+    "taiwan_equity_implication": "The Fed hike and guidance for further tightening raise discount-rate, dollar and global-liquidity pressure on long-duration Taiwan technology equities. Persistent diesel and jet-fuel supply stress remains negative for airlines and energy-intensive manufacturers, while shipping has mixed rerouting/freight-rate benefits versus bunker-cost inflation.",
     "notes": "Official numeric series remain authoritative. Reuters market observations and semantic scores are research evidence only."
   },
   "monitored_series_status": {
     "US_CPI_CORE_CPI": {"status":"current_no_new_release","period":"2026-08","headline_mom_pct":0.4,"headline_yoy_pct":3.4,"core_mom_pct":0.3,"core_yoy_pct":2.4,"stale":false,"source_url":"https://www.bls.gov/news.release/cpi.nr0.htm"},
     "US_PCE_CORE_PCE": {"status":"current_no_new_release","latest_official":"July 2026: headline PCE +3.7% y/y; core PCE +3.3% y/y","next_release":"2026-09-30","stale":false,"source_url":"https://www.bea.gov/data/personal-consumption-expenditures-price-index"},
     "US_NFP_UNEMPLOYMENT": {"status":"current_no_new_release","latest_official":"August 2026 payrolls +162,000; unemployment 4.1%","stale":false,"source_url":"https://www.bls.gov/cps/"},
-    "US_INITIAL_CLAIMS": {"status":"current_no_new_release","latest_period":"week ending 2026-09-05","actual":206000,"previous_revised":207000,"continuing_claims":1774000,"consensus":null,"stale":false},
+    "US_INITIAL_CLAIMS": {"status":"release_due_2026-09-17_not_yet_incorporated","latest_period":"week ending 2026-09-05","actual":206000,"previous_revised":207000,"consensus":null,"stale":true},
     "US_ISM_MANUFACTURING_NEW_ORDERS_SERVICES": {"status":"current_no_new_release","manufacturing_pmi_aug":54.6,"manufacturing_new_orders_aug":53.7,"services_pmi_aug":55.4,"services_new_orders_aug":60.9,"stale":false,"source_url":"https://www.ismworld.org/supply-management-news-and-reports/reports/ism-pmi-reports/"},
-    "FED": {"status":"decision_pending_2026-09-16","market_context":"Reuters reported markets overwhelmingly expected a 25 bp hike, but the official FOMC decision had not yet been released at this snapshot.","stale":false,"source_url":"https://www.reuters.com/business/warshs-words-may-matter-more-than-anticipated-fed-rate-hike-2026-09-16/"},
-    "US_2Y_10Y_CURVE": {"status":"no_new_official_close_incorporated","latest_repository_context":"10Y recently breached 5%; exact newer official 2Y/10Y close not incorporated","stale":true},
-    "DXY": {"status":"new_reuters_intraday_context","latest_context":"Dollar eased from multi-week highs ahead of the Fed decision on 2026-09-16; no exact authoritative close incorporated.","stale":true,"source_url":"https://www.reuters.com/world/asia-pacific/dollar-girded-by-bets-us-hiking-cycle-2026-09-16/"},
+    "FED": {"status":"official_decision_2026-09-16","target_range_pct":"3.75-4.00","change_bp":25,"vote":"12-0","projection_context":"Reuters reported 16 of 18 policymakers anticipate at least one more 25 bp hike by end-2026; projected policy-rate range 4.00%-4.25% at end-2026 and end-2027.","policy_tone":"hawkish","stale":false,"source_url":"https://www.federalreserve.gov/monetarypolicy/files/monetary20260916a1.pdf"},
+    "US_2Y_10Y_CURVE": {"status":"post_fomc_curve_flattening_observed","latest_context":"Reuters reported 2Y yields surged to the highest in more than two years after the FOMC decision while longer yields were steadier, flattening the curve; exact authoritative closes not incorporated.","stale":true},
+    "DXY": {"status":"post_fomc_strength_observed","latest_context":"Reuters reported the dollar strengthened broadly after the FOMC hike; exact authoritative close not incorporated.","stale":true},
     "VIX": {"status":"no_new_authoritative_value_incorporated","stale":true},
     "USD_TWD": {"status":"no_new_authoritative_value_incorporated","stale":true},
-    "WTI_BRENT": {"status":"new_reuters_intraday_direction","latest_context":"Oil fell on 2026-09-16 as Saudi alternative Oman loading and higher U.S. inventories eased immediate supply concerns; no new settlement value incorporated.","stale":false,"source_url":"https://www.reuters.com/business/energy/oil-falls-us-crude-inventories-rise-despite-saudi-supply-concerns-2026-09-16/"},
+    "WTI_BRENT": {"status":"current_semantic_context","latest_context":"Saudi Oman routing mitigates some crude-supply risk, while Russian refinery outages and product restrictions sustain refined-product scarcity; no newer settlement value incorporated.","stale":true},
     "COPPER": {"status":"no_new_authoritative_value_incorporated","stale":true},
     "TW_PMI_NMI": {"status":"current_no_new_release","manufacturing_pmi_aug":62.5,"stale":false,"source_url":"https://www.cier.edu.tw/en/pmi-trend-en/"},
     "TW_EXPORTS": {"status":"current_no_new_release","period":"2026-08","exports_usd_billion":82.4,"exports_yoy_pct":41.0,"imports_usd_billion":60.1,"imports_yoy_pct":44.3,"trade_surplus_usd_billion":22.3,"stale":false},
     "TW_EXPORT_ORDERS": {"status":"current_no_new_release","latest_period":"2026-07","next_release":"2026-09-22","stale":false},
     "TW_LEADING_BUSINESS_CYCLE": {"status":"current_no_new_release","latest_period":"2026-07","monitoring_signal":"red","monitoring_score":41,"leading_index":104.63,"coincident_index":106.8,"next_release":"2026-09-29","stale":false},
-    "TW_CENTRAL_BANK": {"status":"decision_pending_2026-09-17","current_policy_rate_pct":2.0,"stale":false},
+    "TW_CENTRAL_BANK": {"status":"decision_due_2026-09-17_not_yet_released_at_snapshot","current_policy_rate_pct":2.0,"stale":false},
     "CHINA_PMI": {"status":"current_no_new_release","manufacturing_pmi_aug":49.8,"manufacturing_new_orders_aug":50.6,"nonmanufacturing_business_activity_aug":49.0,"composite_pmi_aug":49.5,"stale":false},
     "CHINA_ACTIVITY": {"status":"current_no_new_release","period":"2026-08","industrial_output_yoy_pct":5.2,"retail_sales_yoy_pct":0.4,"fixed_asset_investment_jan_aug_yoy_pct":-7.2,"urban_unemployment_pct":5.3,"stale":false}
   },
   "key_drivers": [
-    {"name":"Saudi alternative export routing via Oman","observed":"Reuters reported Saudi Arabia offered additional Arab Light, Medium and Heavy crude to Asian term buyers via ship-to-ship loading off Sohar, Oman, outside Hormuz. Gulf loadings at Ras Tanura and Juaymah were reported near 4 million bpd.","interpretation":"This is an observed mitigation channel that reduces complete-export-loss risk, but does not restore Yanbu or the East-West Pipeline and does not eliminate Hormuz/Red Sea logistics risk.","source_url":"https://www.reuters.com/business/energy/saudi-offers-more-crude-via-oman-loading-after-pipeline-attacks-sources-say-2026-09-16/"},
-    {"name":"Russia extends diesel export restrictions","observed":"Reuters reported Russia decided to extend diesel-export restrictions for producers through the end of October.","interpretation":"This raises persistence of the refined-product shock and supports diesel cracks, freight costs and energy-inflation risk even if crude scarcity eases.","source_url":"https://www.reuters.com/business/energy/russia-set-extend-diesel-export-ban-until-end-october-vedomosti-reports-2026-09-16/"},
-    {"name":"Fed and Taiwan central-bank event risk","observed":"The official Fed decision was still pending at this snapshot; Taiwan's central-bank decision is due September 17.","interpretation":"Policy-event risk remains high because energy inflation and elevated yields constrain easing and increase the probability of tighter policy."}
+    {"name":"Federal Reserve begins new tightening cycle","observed":"The FOMC voted 12-0 to raise the federal funds target range 25 bp to 3.75%-4.00%. Reuters reported 16 of 18 policymakers expect at least one more hike by year-end and the projected policy-rate range is 4.00%-4.25% at end-2026 and end-2027.","interpretation":"This materially raises global discount-rate and dollar pressure and makes a one-and-done hike less likely.","source_url":"https://www.federalreserve.gov/monetarypolicy/files/monetary20260916a1.pdf"},
+    {"name":"Russian refinery outages deepen","observed":"Reuters reported Syzran and Saratov refineries stopped processing after Ukrainian drone attacks; Syzran's main CDU representing about 71% of capacity was damaged and repairs could take at least a month.","interpretation":"This raises persistence of diesel/jet-fuel scarcity and freight/energy-inflation pressure.","source_url":"https://www.reuters.com/business/energy/russias-syzran-saratov-oil-refineries-hold-after-drone-attacks-sources-say-2026-09-16/"},
+    {"name":"Saudi alternative export routing via Oman","observed":"Saudi Arabia is offering additional crude via ship-to-ship loading off Sohar outside Hormuz.","interpretation":"Partial mitigation for crude availability, but not a resolution of Hormuz, Yanbu, East-West Pipeline or Red Sea risks.","source_url":"https://www.reuters.com/business/energy/saudi-offers-more-crude-via-oman-loading-after-pipeline-attacks-sources-say-2026-09-16/"}
   ],
-  "key_risks": [
-    "Saudi alternative routing proves insufficient or itself encounters security/logistics constraints.",
-    "Yanbu and East-West Pipeline outages persist longer than expected.",
-    "Russian diesel-export restrictions through end-October sustain global freight and refined-product inflation.",
-    "Hormuz and Bab el-Mandeb security risks remain unresolved despite alternative routing.",
-    "Fed and Taiwan central-bank decisions create immediate policy-event risk.",
-    "VIX, copper, USD/TWD and exact newer official Treasury closes remain stale in this semantic snapshot."
-  ],
-  "policy_tone": {
-    "fed":"Decision pending September 16; market expectations are not treated as an official decision.",
-    "taiwan_central_bank":"Decision pending September 17; current policy rate remains 2.0% until an official decision changes it.",
-    "china":"No new policy action incorporated.",
-    "global":"Energy shock remains inflationary and growth-negative, but Saudi alternative routing provides a partial crude-supply mitigation channel."
-  },
+  "key_risks": ["Further Fed hikes lift front-end yields, DXY and equity discount rates.","Energy inflation prevents monetary-policy relief and broadens beyond one-off supply effects.","Russian refinery outages and export restrictions sustain diesel/jet-fuel scarcity.","Hormuz and Bab el-Mandeb security risks remain unresolved.","Taiwan central-bank decision is due September 17 and was not pre-assumed.","VIX, copper, USD/TWD and exact post-FOMC Treasury closes remain stale in this semantic snapshot."],
+  "policy_tone": {"fed":"Hawkish tightening: target range raised to 3.75%-4.00%; further hikes indicated by September projections.","taiwan_central_bank":"Decision due September 17; current policy rate remains 2.0% until an official decision changes it.","china":"No new policy action incorporated.","global":"Energy shock remains inflationary and growth-negative while major central banks face renewed tightening pressure."},
   "geopolitical_global_risk": {
     "level":"VERY_HIGH",
-    "dominant_event":"2026-09-16-saudi-oman-routing-russia-diesel-ban",
-    "events":[
-      {
-        "event_id":"2026-09-16-saudi-oman-routing-russia-diesel-ban",
-        "event_type":"energy_supply_routing_and_refined_product_restriction",
-        "regions":["Saudi Arabia","Oman","Strait of Hormuz","Russia","Europe","Asia","Global"],
-        "severity":0.88,
-        "confidence":0.96,
-        "escalation_score":0.76,
-        "persistence_score":0.87,
-        "observed_evidence":"Saudi Arabia is offering additional crude via ship-to-ship loading off Sohar outside Hormuz; Russia decided to extend diesel-export restrictions for producers through end-October.",
-        "semantic_interpretation":"Saudi alternative routing partially mitigates crude-export impairment, while Russia's diesel restriction increases persistence of refined-product and freight inflation. Net energy risk remains very high but less one-sided than the morning snapshot.",
-        "transmission_channels":["oil_supply","alternative_export_routing","shipping","diesel_supply","refinery_capacity","freight","energy_inflation","rates","fx","global_growth"],
-        "affected_factors":["Brent","WTI","diesel_crack","physical_crude_premiums","shipping_costs","energy_inflation","US_10Y","DXY","USD_TWD","global_growth"],
-        "affected_taiwan_sectors":["航空運輸","貨櫃航運","散裝航運","物流","塑膠","化工","鋼鐵","機械","電子製造","半導體"],
-        "source_urls":["https://www.reuters.com/business/energy/saudi-offers-more-crude-via-oman-loading-after-pipeline-attacks-sources-say-2026-09-16/","https://www.reuters.com/business/energy/oil-falls-us-crude-inventories-rise-despite-saudi-supply-concerns-2026-09-16/","https://www.reuters.com/business/energy/russia-set-extend-diesel-export-ban-until-end-october-vedomosti-reports-2026-09-16/"],
-        "first_seen_at":"2026-09-16T20:16:57+08:00",
-        "updated_at":"2026-09-16T20:16:57+08:00"
-      }
-    ]
+    "dominant_event":"2026-09-17-russia-syzran-saratov-refinery-outages",
+    "events":[{
+      "event_id":"2026-09-17-russia-syzran-saratov-refinery-outages",
+      "event_type":"russia_ukraine_energy_infrastructure_escalation",
+      "regions":["Russia","Ukraine","Europe","Global"],
+      "severity":0.82,"confidence":0.94,"escalation_score":0.83,"persistence_score":0.86,
+      "observed_evidence":"Rosneft's Syzran and Saratov refineries stopped processing after Ukrainian drone attacks. Syzran's main CDU, about 71% of capacity, was damaged and repairs could take at least a month; Saratov has been halted since September 11.",
+      "semantic_interpretation":"Confirmed multi-week refinery impairment reinforces the Russian refined-product shock and adds diesel, jet-fuel, freight and inflation pressure to the existing Middle East energy shock.",
+      "transmission_channels":["refinery_capacity","diesel_supply","jet_fuel_supply","freight","energy_inflation","rates","global_growth"],
+      "affected_factors":["diesel_crack","jet_fuel","Brent","WTI","shipping_costs","energy_inflation","US_10Y"],
+      "affected_taiwan_sectors":["航空運輸","貨櫃航運","散裝航運","物流","塑膠","化工","鋼鐵","電子製造"],
+      "source_urls":["https://www.reuters.com/business/energy/russias-syzran-saratov-oil-refineries-hold-after-drone-attacks-sources-say-2026-09-16/"],
+      "first_seen_at":"2026-09-17T08:12:07+08:00","updated_at":"2026-09-17T08:12:07+08:00"
+    }]
   },
-  "source_urls": [
-    "https://www.reuters.com/business/energy/saudi-offers-more-crude-via-oman-loading-after-pipeline-attacks-sources-say-2026-09-16/",
-    "https://www.reuters.com/business/energy/oil-falls-us-crude-inventories-rise-despite-saudi-supply-concerns-2026-09-16/",
-    "https://www.reuters.com/business/energy/russia-set-extend-diesel-export-ban-until-end-october-vedomosti-reports-2026-09-16/",
-    "https://www.reuters.com/business/warshs-words-may-matter-more-than-anticipated-fed-rate-hike-2026-09-16/",
-    "https://www.reuters.com/world/asia-pacific/dollar-girded-by-bets-us-hiking-cycle-2026-09-16/"
-  ]
+  "source_urls":["https://www.federalreserve.gov/monetarypolicy/files/monetary20260916a1.pdf","https://www.federalreserve.gov/monetarypolicy/fomcpresconf20260916.htm","https://www.reuters.com/business/warshs-words-may-matter-more-than-anticipated-fed-rate-hike-2026-09-16/","https://www.reuters.com/business/energy/russias-syzran-saratov-oil-refineries-hold-after-drone-attacks-sources-say-2026-09-16/","https://www.reuters.com/business/energy/saudi-offers-more-crude-via-oman-loading-after-pipeline-attacks-sources-say-2026-09-16/"]
 }
