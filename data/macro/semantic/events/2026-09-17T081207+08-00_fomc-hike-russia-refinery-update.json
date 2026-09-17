@@ -1,0 +1,39 @@
+{
+  "schema_version": "1.2",
+  "event_id": "2026-09-17-fomc-hike-russia-refinery-update",
+  "generated_at": "2026-09-17T08:12:07+08:00",
+  "scope": "semantic_research_only",
+  "fair_value_policy": "Fair Value V2.1 is the sole valuation baseline; this event must not directly modify Fair Value or official numeric series.",
+  "macro_policy_event": {
+    "event_type": "fomc_rate_hike",
+    "observed_evidence": "The Federal Open Market Committee voted 12-0 on September 16, 2026 to raise the federal funds target range by 25 basis points to 3.75%-4.00%. The statement said economic activity was expanding at a solid pace, domestic spending was resilient, productivity growth strong, capital investment robust, and inflation remained elevated. Reuters reported the September projections showed 16 of 18 policymakers anticipating at least one additional 25 bp hike by year-end; the projected policy-rate range was 4.00%-4.25% at end-2026 and end-2027. Reuters reported 2026 PCE inflation projection at 3.7%, GDP growth at 2.3%, and unemployment at 4.1%.",
+    "semantic_interpretation": "This is a material hawkish regime change from the prior snapshot's decision-pending state. Higher front-end rates, a stronger dollar and a flatter curve increase discount-rate and FX pressure on long-duration Taiwan equities. The Fed also no longer framed elevated inflation primarily as a temporary supply-shock problem, increasing the persistence of restrictive-policy risk.",
+    "severity": 0.94,
+    "confidence": 0.99,
+    "transmission_channels": ["policy_rate","US_2Y","yield_curve","DXY","USD_TWD","equity_discount_rate","global_liquidity","growth"],
+    "affected_factors": ["Fed_policy_rate","US_2Y","US_10Y","2s10s_curve","DXY","USD_TWD","VIX","equity_risk_premium"],
+    "affected_taiwan_sectors": ["半導體","電子零組件","AI伺服器","高估值成長股","金融","出口製造"],
+    "source_urls": ["https://www.federalreserve.gov/monetarypolicy/files/monetary20260916a1.pdf","https://www.federalreserve.gov/monetarypolicy/fomcpresconf20260916.htm","https://www.reuters.com/business/warshs-words-may-matter-more-than-anticipated-fed-rate-hike-2026-09-16/"],
+    "first_seen_at": "2026-09-17T08:12:07+08:00",
+    "updated_at": "2026-09-17T08:12:07+08:00"
+  },
+  "geopolitical_events": [
+    {
+      "event_id": "2026-09-17-russia-syzran-saratov-refinery-outages",
+      "event_type": "russia_ukraine_energy_infrastructure_escalation",
+      "regions": ["Russia","Ukraine","Europe","Global"],
+      "severity": 0.82,
+      "confidence": 0.94,
+      "escalation_score": 0.83,
+      "persistence_score": 0.86,
+      "observed_evidence": "Reuters reported Rosneft's Syzran and Saratov refineries stopped processing after Ukrainian drone attacks. Syzran's CDU-6, about 71% of its processing capacity, was damaged and industry sources said repairs could take at least a month. Saratov has been halted since September 11. The refineries have nameplate capacities of about 150,000 bpd and 140,000 bpd respectively. Russia and Ukraine continued attacks on energy infrastructure despite an announced agreement to stop, and Russian gasoline, diesel and jet-fuel export restrictions were already in place.",
+      "semantic_interpretation": "The confirmed multi-week refinery outage materially reinforces the persistence of the Russian refined-product shock. It raises diesel/jet-fuel scarcity, freight and energy-inflation risk, adding to Middle East supply stress even where Saudi crude-routing mitigation is working.",
+      "transmission_channels": ["refinery_capacity","diesel_supply","jet_fuel_supply","freight","energy_inflation","oil_products","rates","global_growth"],
+      "affected_factors": ["diesel_crack","jet_fuel","Brent","WTI","shipping_costs","energy_inflation","US_10Y"],
+      "affected_taiwan_sectors": ["航空運輸","貨櫃航運","散裝航運","物流","塑膠","化工","鋼鐵","電子製造"],
+      "source_urls": ["https://www.reuters.com/business/energy/russias-syzran-saratov-oil-refineries-hold-after-drone-attacks-sources-say-2026-09-16/"],
+      "first_seen_at": "2026-09-17T08:12:07+08:00",
+      "updated_at": "2026-09-17T08:12:07+08:00"
+    }
+  ]
+}
