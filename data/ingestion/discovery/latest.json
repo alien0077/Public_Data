@@ -1,45 +1,40 @@
 {
   "schema_version": "1.0",
-  "generated_at": "2026-09-17T20:56:43+08:00",
-  "window_start": "2026-09-17T19:01:25+08:00",
-  "window_end": "2026-09-17T20:56:43+08:00",
-  "event_file": "data/ingestion/discovery/events/2026/09/2026-09-17T125643Z_catalyst-watch.json",
+  "generated_at": "2026-09-18T06:55:23+08:00",
+  "window_start": "2026-09-17T20:56:43+08:00",
+  "window_end": "2026-09-18T06:55:23+08:00",
+  "event_file": "data/ingestion/discovery/events/2026/09/2026-09-17T225523Z_primary-corporate-evidence.json",
   "production_verified": false,
-  "new_event_count": 3,
+  "new_event_count": 2,
   "counts_by_source_type": {
-    "company_investor_conference_reporting": 3
+    "mops_material_announcement": 2
   },
   "counts_by_event_type": {
-    "ai_hpc_demand_customer_product_ramp": 1,
-    "ai_hpc_customer_ramp_capacity_expansion": 1,
-    "ai_pcb_equipment_demand_capacity_expansion": 1
+    "strategic_equity_acquisition": 1,
+    "overseas_subsidiary_expansion": 1
   },
-  "high_priority_stock_ids": ["6933", "3605", "2493"],
+  "high_priority_stock_ids": ["2344", "3219"],
   "fetch_queue": {
-    "pending": 3,
+    "pending": 2,
     "verified": 0,
-    "rule": "production_verified remains false until deterministic GitHub Actions resolves primary company/MOPS investor-conference evidence, canonical source IDs/URLs, fetches raw evidence bytes, validates published_at and saves SHA-256"
+    "rule": "production_verified remains false until deterministic GitHub Actions resolves official MOPS source IDs/canonical URLs, fetches raw evidence bytes, validates published_at and saves SHA-256"
   },
   "notable_candidates": [
     {
-      "event_id": "6933_20260917_us_ai_accelerator_capacity_ramp",
-      "stock_ids": ["6933"],
-      "summary": "AMAX-KY法說報導指出美系AI加速器客戶新案量產，中壢廠擴產因應需求。"
+      "event_id": "2344_20260917_acquire_nuvoton_shares",
+      "stock_ids": ["2344", "4919"],
+      "summary": "華邦電取得新唐科技2,898,000股，交易總額新台幣331,778,468元；交易後公告持股比例49.61%。"
     },
     {
-      "event_id": "3605_20260917_ai_connector_power_outlook",
-      "stock_ids": ["3605"],
-      "summary": "宏致法說表示AI營收占比由Q2約20%朝Q4 30%提升，算力連接與電力產品同步成長。"
-    },
-    {
-      "event_id": "2493_20260917_pcb_semicap_equipment_outlook",
-      "stock_ids": ["2493"],
-      "summary": "揚博法說確認AI高階PCB/半導體設備需求、廠房擴充與先進封裝材料認證進展。"
+      "event_id": "3219_20260917_us_subsidiary_investment",
+      "stock_ids": ["3219"],
+      "summary": "倚強科通過設立美國子公司，董事長獲授權於美金300萬元投資額度內辦理，目的為北加州客戶與技術/售後支援布局。"
     }
   ],
   "notes": [
-    "Deduplicated against prior latest state generated at 2026-09-17T19:01:25+08:00 and repository searches for same-day ticker/event IDs.",
-    "Search snippets were discovery-only. Candidates remain production_verified=false until deterministic raw/primary-source verification.",
-    "No historical backfill was performed. No normalized fundamentals, analyst consensus, catalyst probabilities, official numeric series or Fair Value V2.1 were modified."
+    "Deduplicated against prior latest state ending 2026-09-17T20:56:43+08:00 and repository searches for candidate event IDs/content.",
+    "Search and public MOPS mirrors were discovery/cross-check evidence only; candidates remain production_verified=false pending deterministic official-source materialization.",
+    "No historical backfill or quarterly MOPS XBRL ZIP ingestion was performed.",
+    "No normalized fundamentals, analyst consensus, catalyst probabilities, production PIT series or Fair Value V2.1 were modified."
   ]
 }
