@@ -1,0 +1,27 @@
+{
+  "schema_version": "1.2",
+  "event_id": "2026-09-17-taiwan-cbc-hold-hormuz-traffic-update",
+  "event_type": "macro_policy_and_geopolitical_shipping_update",
+  "regions": ["Taiwan", "Middle East", "Strait of Hormuz", "Red Sea", "Global"],
+  "severity": 0.84,
+  "confidence": 0.96,
+  "escalation_score": 0.86,
+  "persistence_score": 0.82,
+  "first_seen_at": "2026-09-17T20:11:12+08:00",
+  "updated_at": "2026-09-17T20:11:12+08:00",
+  "observed_evidence": {
+    "taiwan_central_bank": "The Central Bank of the Republic of China (Taiwan) announced on September 17 that it kept the discount rate, secured-loan accommodation rate and short-term accommodation rate unchanged at 2.0%, 2.375% and 4.25%. It raised its 2026 real-GDP growth forecast to 11.48% and forecasts 5.82% for 2027. It forecasts 2026 headline CPI at 2.03% and core CPI at 2.16%, and 2027 headline/core CPI at 1.83%/1.89%. Effective September 18, the maximum LTV for a natural person's second home purchase rises from 60% to 70%, while no grace period remains.",
+    "hormuz_shipping": "Reuters reported preliminary ship-tracking data showing only three commercial vessels transited the Strait of Hormuz on Wednesday, down from 12 the previous day and below the recent 10-day average of 17. Bab el-Mandeb crossings were also lower at 21 versus 24 the previous day. AIS-dark traffic means observed counts may understate actual movements.",
+    "energy_market": "Reuters reported Brent around $104.33/bbl and WTI around $101.34/bbl on September 17 as Saudi alternative loading via Oman eased crude-supply fears, while diesel markets remained exceptionally tight because of Middle East and Russian refinery disruptions."
+  },
+  "semantic_interpretation": "Taiwan monetary policy is less restrictive than a Fed-following hike scenario: the policy rate stays at 2%, while the central bank materially upgraded Taiwan growth and modestly eased selected housing-credit restrictions. This is supportive for domestic liquidity and rate-sensitive sectors, but the Fed's renewed tightening and energy inflation constrain the room for future easing. The collapse in observed Hormuz vessel traffic is a material escalation in physical shipping impairment despite Saudi mitigation via Oman; it keeps tail risks high for crude/LNG availability, freight, insurance and Taiwan's imported-energy costs.",
+  "transmission_channels": ["Taiwan_policy_rate", "domestic_liquidity", "housing_credit", "USD_TWD", "global_rates", "Hormuz_shipping", "LNG", "crude_oil", "diesel", "freight", "insurance", "energy_inflation"],
+  "affected_factors": ["TW_policy_rate", "TW_growth", "TW_CPI", "USD_TWD", "Brent", "WTI", "LNG", "shipping_costs", "energy_inflation", "global_discount_rate"],
+  "affected_taiwan_sectors": ["銀行", "營建", "資產", "半導體", "AI伺服器", "電子製造", "航空運輸", "貨櫃航運", "散裝航運", "塑膠", "化工", "鋼鐵"],
+  "source_urls": [
+    "https://www.cbc.gov.tw/tw/cp-302-192864-4319f-1.html",
+    "https://www.reuters.com/world/middle-east/number-ships-transiting-strait-hormuz-falls-three-wednesday-data-shows-2026-09-17/",
+    "https://www.reuters.com/business/energy/oil-prices-extend-losses-fears-middle-east-supply-disruptions-ease-2026-09-17/"
+  ],
+  "production_note": "Semantic/research input only. Do not overwrite official numeric macro series from this event. GitHub Actions own deterministic validation and downstream factor/regime computation. Fair Value V2.1 remains the sole valuation baseline."
+}
