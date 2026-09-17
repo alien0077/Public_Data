@@ -1,46 +1,45 @@
 {
   "schema_version": "1.0",
-  "generated_at": "2026-09-17T19:01:25+08:00",
-  "window_start": "2026-09-17T09:03:06+08:00",
-  "window_end": "2026-09-17T19:01:25+08:00",
-  "event_file": "data/ingestion/discovery/events/2026/09/2026-09-17T110125Z_primary-corporate-evidence.json",
+  "generated_at": "2026-09-17T20:56:43+08:00",
+  "window_start": "2026-09-17T19:01:25+08:00",
+  "window_end": "2026-09-17T20:56:43+08:00",
+  "event_file": "data/ingestion/discovery/events/2026/09/2026-09-17T125643Z_catalyst-watch.json",
   "production_verified": false,
   "new_event_count": 3,
   "counts_by_source_type": {
-    "mops_material_announcement": 3
+    "company_investor_conference_reporting": 3
   },
   "counts_by_event_type": {
-    "capacity_expansion_real_estate_acquisition": 1,
-    "production_equipment_acquisition": 1,
-    "new_capacity_asset_entered_operation": 1
+    "ai_hpc_demand_customer_product_ramp": 1,
+    "ai_hpc_customer_ramp_capacity_expansion": 1,
+    "ai_pcb_equipment_demand_capacity_expansion": 1
   },
-  "high_priority_stock_ids": ["3008", "3711"],
+  "high_priority_stock_ids": ["6933", "3605", "2493"],
   "fetch_queue": {
     "pending": 3,
     "verified": 0,
-    "rule": "production_verified remains false until deterministic GitHub Actions resolves the formal MOPS source ID/canonical URL, fetches and stores raw evidence bytes, validates published_at, and saves SHA-256"
+    "rule": "production_verified remains false until deterministic GitHub Actions resolves primary company/MOPS investor-conference evidence, canonical source IDs/URLs, fetches raw evidence bytes, validates published_at and saves SHA-256"
   },
   "notable_candidates": [
     {
-      "event_id": "3008_20260917_nantun_factory_acquisition_1172m",
-      "stock_ids": ["3008"],
-      "summary": "大立光取得台中南屯土地與精科東路10號建物，交易總額新台幣11.72億元。"
+      "event_id": "6933_20260917_us_ai_accelerator_capacity_ramp",
+      "stock_ids": ["6933"],
+      "summary": "AMAX-KY法說報導指出美系AI加速器客戶新案量產，中壢廠擴產因應需求。"
     },
     {
-      "event_id": "3711_20260917_spil_equipment_1012438k",
-      "stock_ids": ["3711"],
-      "summary": "日月光投控子公司矽品取得41批營業用機器設備，交易總額新台幣10.12438億元。"
+      "event_id": "3605_20260917_ai_connector_power_outlook",
+      "stock_ids": ["3605"],
+      "summary": "宏致法說表示AI營收占比由Q2約20%朝Q4 30%提升，算力連接與電力產品同步成長。"
     },
     {
-      "event_id": "2637_20260917_paiwan_integrity_delivery",
-      "stock_ids": ["2637"],
-      "summary": "慧洋-KY之100%持股子公司40,000噸新造散裝貨輪MV Paiwan Integrity交船並加入營運。"
+      "event_id": "2493_20260917_pcb_semicap_equipment_outlook",
+      "stock_ids": ["2493"],
+      "summary": "揚博法說確認AI高階PCB/半導體設備需求、廠房擴充與先進封裝材料認證進展。"
     }
   ],
   "notes": [
-    "Deduplicated against prior latest state generated at 2026-09-17T09:03:06+08:00 and repository searches for specific event facts.",
-    "Retained events reproduce company-filed MOPS disclosures; formal MOPS raw materialization and hash verification remain delegated to deterministic GitHub Actions.",
-    "AMAX-KY 6933 same-day investor-call reporting was not written because primary company/MOPS evidence containing the newly reported operating claims was not resolved in this run.",
-    "No historical backfill/XBRL ZIP ingestion was performed. No normalized fundamentals, analyst consensus, catalyst probabilities or Fair Value V2.1 were modified."
+    "Deduplicated against prior latest state generated at 2026-09-17T19:01:25+08:00 and repository searches for same-day ticker/event IDs.",
+    "Search snippets were discovery-only. Candidates remain production_verified=false until deterministic raw/primary-source verification.",
+    "No historical backfill was performed. No normalized fundamentals, analyst consensus, catalyst probabilities, official numeric series or Fair Value V2.1 were modified."
   ]
 }
