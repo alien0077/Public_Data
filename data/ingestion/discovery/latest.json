@@ -1,41 +1,34 @@
 {
   "schema_version": "1.0",
-  "generated_at": "2026-09-17T07:05:02+08:00",
-  "window_start": "2026-09-16T18:56:46+08:00",
-  "window_end": "2026-09-17T07:05:02+08:00",
-  "event_file": "data/ingestion/discovery/events/2026/09/2026-09-16T210500Z_2344-winbond-acquisition-financing.json",
+  "generated_at": "2026-09-17T09:03:06+08:00",
+  "window_start": "2026-09-17T07:05:02+08:00",
+  "window_end": "2026-09-17T09:03:06+08:00",
+  "event_file": "data/ingestion/discovery/events/2026/09/2026-09-17T010306Z_3037-abf-cpo-capacity.json",
   "production_verified": false,
-  "new_event_count": 2,
+  "new_event_count": 1,
   "counts_by_source_type": {
-    "company_ir": 1,
-    "mops_material_announcement": 1
+    "high_quality_financial_press": 1
   },
   "counts_by_event_type": {
-    "m_and_a_acquisition": 1,
-    "convertible_bond_financing": 1
+    "capacity_expansion_and_product_ramp": 1
   },
-  "high_priority_stock_ids": ["2344"],
+  "high_priority_stock_ids": ["3037"],
   "fetch_queue": {
-    "pending": 2,
+    "pending": 1,
     "verified": 0,
-    "rule": "production_verified remains false until deterministic GitHub Actions resolves official Winbond/MOPS canonical sources, fetches and validates raw evidence and official timestamps, and saves SHA-256"
+    "rule": "production_verified remains false until deterministic GitHub Actions resolves/fetches underlying company IR or MOPS evidence where available, validates source timestamps and claims, and saves SHA-256"
   },
   "notable_candidates": [
     {
-      "event_id": "2344_20260916_infineon_nor_fram_acquisition",
-      "stock_ids": ["2344"],
-      "summary": "華邦電子董事會核准並簽署股份購買協議，以11.2億美元全現金取得英飛凌NOR Flash與F-RAM事業100%股權，預計2027年下半年完成，仍待必要主管機關核准。"
-    },
-    {
-      "event_id": "2344_20260916_cb_180b_capacity_rd_equipment",
-      "stock_ids": ["2344"],
-      "summary": "華邦電子董事會決議發行第四、第五次無擔保CB，上限140億元及40億元，合計180億元，用於產能擴充、先進製程研發及設備購置。"
+      "event_id": "3037_20260916_abf_capacity_cpo_shipments",
+      "stock_ids": ["3037"],
+      "summary": "欣興預估2027年ABF載板產能增加30%至40%；CPO載板已開始出貨且客戶不只一家，並有五年期產能預約與客戶預付款支持擴產。"
     }
   ],
   "notes": [
-    "Deduplicated against prior latest state generated at 2026-09-16T18:56:46+08:00 and repository search for 2344/Infineon/Spansion/11.2; no prior matching event was found.",
-    "Company/public disclosure content was used for discovery and cross-checked with multiple contemporaneous reports; official Winbond/MOPS raw evidence must still be materialized by GitHub Actions before production verification.",
-    "No quarterly MOPS XBRL ZIP was ingested and no historical backfill was performed.",
-    "No normalized fundamentals, analyst consensus, catalyst probability or Fair Value was modified; Fair Value V2.1 remains the sole valuation baseline."
+    "Deduplicated against prior latest state generated at 2026-09-17T07:05:02+08:00 and repository search for 3037/CPO/ABF/2027; no prior matching discovery event was found.",
+    "The new evidence is materially different from older generic AI-demand commentary because it adds quantified 2027 ABF capacity expansion, actual CPO shipment status, multiple customers, and long-term reservation/prepayment evidence.",
+    "Source is high-quality financial press and cross-checked against a second publication of the same reporting; underlying company IR/MOPS raw evidence remains required before production verification.",
+    "No historical backfill was performed. No official numeric series, normalized fundamentals, catalyst probability or Fair Value was modified; Fair Value V2.1 remains the sole valuation baseline."
   ]
 }
