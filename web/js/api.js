@@ -255,12 +255,7 @@ export const api = {
                 ? await this.fetchLocalGzipJson(`valuation/fair_value_v2_1_sharded/${shardPath}`)
                 : await this.fetchLocalJson(`valuation/fair_value_v2_1_sharded/${shardPath}`);
             return shard?.stocks?.[key] || null;
-        } catch (e) {
-            try {
-                const data = await this.fetchLocalJson('valuation/fair_value.json');
-                return data?.stocks?.[symbol.split('.')[0]] || null;
-            } catch (fallbackError) { return null; }
-        }
+        } catch (e) { return null; }
     },
     async fetchFairValueSharded() {
         if (!this._fairValueShardedCache) {
@@ -281,38 +276,11 @@ export const api = {
     async fetchFairValueMap() {
         if (!this._fairValueMap) {
             try {
-                const metrics = await this.fetchStockMetricsMap();
-                // List/card consumers only need the current valuation fields.
-                // Detail pages continue to call fetchFairValue() for full inputs/reasons.
-                this._fairValueMap = Object.fromEntries(Object.entries(metrics).map(([symbol, row]) => [symbol, {
-                    status: row.valuation_status,
-                    name: row.name,
-                    market_price: row.price,
-                    fair_value: row.fair_value,
-                    upside: row.fair_value_upside,
-                    valuation_signal: row.valuation_signal,
-                    valuation_signal_label: row.valuation_signal_label,
-                    model: row.valuation_model,
-                    confidence: row.valuation_confidence,
-                    source_dates: row.source_dates
-                    ,valuation_group: row.valuation_group
-                    ,valuation_group_id: row.valuation_group_id
-                    ,valuation_group_label: row.valuation_group_label
-                    ,valuation_group_version: row.valuation_group_version
-                    ,taxonomy_version: row.taxonomy_version
-                    ,classification: row.classification
-                    ,peer_selection: row.peer_selection
-                    ,core: row.valuation_core
-                    ,future: row.valuation_future
-                    ,market_implied: row.valuation_market_implied
-                    ,input_hash: row.valuation_input_hash
-                    ,model_version: row.valuation_model_version
-                }]));
+                const summary = await this.fetchLocalJson('valuation/fair_value_v2_1_summary.json');
+                this._fairValueMap = summary?.stocks || {};
             } catch (e) {
-                try {
-                    const data = await this.fetchFairValueSharded();
-                    this._fairValueMap = data?.stocks || {};
-                } catch (fallbackError) { this._fairValueMap = {}; }
+                const data = await this.fetchFairValueSharded();
+                this._fairValueMap = data?.stocks || {};
             }
         }
         return this._fairValueMap;
