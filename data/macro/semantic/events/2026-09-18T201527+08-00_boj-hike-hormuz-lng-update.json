@@ -1,0 +1,46 @@
+{
+  "schema_version": "1.2",
+  "generated_at": "2026-09-18T20:15:27+08:00",
+  "scope": "semantic_research_only",
+  "fair_value_policy": "Fair Value V2.1 is the sole valuation baseline. Semantic scores must not directly overwrite official numeric macro series or Fair Value.",
+  "events": [
+    {
+      "event_id": "2026-09-18-boj-rate-hike-125bp",
+      "event_type": "global_monetary_policy_tightening",
+      "regions": ["Japan", "Asia", "Global"],
+      "severity": 0.72,
+      "confidence": 0.99,
+      "escalation_score": 0.72,
+      "persistence_score": 0.78,
+      "observed_evidence": "The Bank of Japan changed its money-market guideline on September 18. Reuters reports the Policy Board raised the policy rate by 25 basis points to 1.25%, the highest in 31 years, by a 7-2 vote. Governor Kazuo Ueda said the Bank remained prepared to raise rates further if its outlook is realized, while the yen weakened after the decision as markets judged the guidance less hawkish than expected.",
+      "semantic_interpretation": "This extends the global tightening cycle after the September Fed hike and can raise global discount-rate and funding-cost pressure. The weak yen response limits immediate FX tightening from Japan and may preserve competitive pressure on Taiwan exporters in Japan-facing markets.",
+      "transmission_channels": ["global_rates", "JPY", "Asian_FX", "risk_premium", "funding_costs", "equity_discount_rates"],
+      "affected_factors": ["global_rates", "US_10Y", "DXY", "JPY", "USD_TWD", "equity_discount_rate"],
+      "affected_taiwan_sectors": ["半導體", "電子製造", "金融", "機械", "汽車零組件"],
+      "source_urls": [
+        "https://www.boj.or.jp/en/mopo/mpmdeci/mpr_2026/",
+        "https://www.reuters.com/world/asia-pacific/bank-japan-set-raise-interest-rates-31-year-high-2026-09-17/",
+        "https://www.reuters.com/world/asia-pacific/yen-weak-ahead-boj-decision-rate-hike-expected-2026-09-18/"
+      ],
+      "first_seen_at": "2026-09-18T20:15:27+08:00",
+      "updated_at": "2026-09-18T20:15:27+08:00"
+    },
+    {
+      "event_id": "2026-09-18-hormuz-traffic-lng-partial-reappearance",
+      "event_type": "middle_east_shipping_disruption_update",
+      "regions": ["Strait of Hormuz", "Persian Gulf", "Middle East", "Global"],
+      "severity": 0.89,
+      "confidence": 0.92,
+      "escalation_score": 0.84,
+      "persistence_score": 0.88,
+      "observed_evidence": "Reuters, citing preliminary Kpler data, reported only four commodity vessels transited the Strait of Hormuz on Thursday, versus six the prior day and a 10-day average of 16. Three LNG vessels reappeared outside the strait after several days, indicating some movement was resuming. Bab el-Mandeb commodity traffic was 23 vessels versus a 10-day average of 26. Some ships may transit with AIS transponders disabled, so observed counts are incomplete.",
+      "semantic_interpretation": "Physical Hormuz impairment remains severe despite a tentative LNG-flow improvement. The LNG-vessel reappearance is a partial de-escalation signal, not normalization; energy, marine-insurance and freight risk premia remain elevated for Taiwan importers and transport-intensive sectors.",
+      "transmission_channels": ["LNG_supply", "crude_supply", "shipping", "marine_insurance", "freight", "energy_inflation"],
+      "affected_factors": ["Asian_LNG", "Brent", "WTI", "shipping_costs", "energy_inflation", "USD_TWD"],
+      "affected_taiwan_sectors": ["航空運輸", "航運", "物流", "塑膠", "化工", "鋼鐵", "電子製造"],
+      "source_urls": ["https://www.reuters.com/world/middle-east/shipping-traffic-via-strait-hormuz-stays-below-10-day-average-data-shows-2026-09-18/"],
+      "first_seen_at": "2026-09-18T20:15:27+08:00",
+      "updated_at": "2026-09-18T20:15:27+08:00"
+    }
+  ]
+}
