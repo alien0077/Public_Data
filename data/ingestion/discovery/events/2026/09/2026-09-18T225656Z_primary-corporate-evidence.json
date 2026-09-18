@@ -1,0 +1,80 @@
+{
+  "schema_version": "1.0",
+  "generated_at": "2026-09-19T06:56:56+08:00",
+  "window_start": "2026-09-18T18:56:07+08:00",
+  "window_end": "2026-09-19T06:56:56+08:00",
+  "production_verified": false,
+  "events": [
+    {
+      "event_id": "2324_6674_20260918_cash_share_exchange",
+      "stock_ids": ["2324", "6674"],
+      "company_name": "仁寶電腦工業股份有限公司 / 鋐寶科技股份有限公司",
+      "source_type": "mops_material_announcement",
+      "event_type": "m_and_a_cash_share_exchange",
+      "title": "仁寶與鋐寶科技董事會通過現金股份轉換案",
+      "canonical_url": null,
+      "publisher": "公開資訊觀測站（待 deterministic fetcher 解析正式 source ID/canonical URL）",
+      "published_at": "2026-09-18T21:18:50+08:00",
+      "discovered_at": "2026-09-19T06:56:56+08:00",
+      "observed_facts": [
+        "仁寶與鋐寶科技於2026-09-18分別召開董事會，通過以現金為對價之股份轉換案。",
+        "仁寶目前直接持有鋐寶科技42.60%，本案擬取得鋐寶科技全部已發行且流通在外股份，使鋐寶科技成為仁寶100%持股子公司。",
+        "股份轉換對價為鋐寶科技普通股每股新台幣18.50元。",
+        "鋐寶科技公告指出，股份轉換案、終止上市及停止公開發行案尚須2026-11-09股東臨時會決議通過。",
+        "暫定股份轉換基準日為2026-12-31。"
+      ],
+      "evidence_summary": "董事會已通過集團內現金股份轉換；交易完成仍有股東會及相關程序條件，故不得解讀為已完成併購或已終止上市。",
+      "affected_inputs": ["corporate_action", "ownership_structure", "m_and_a", "listing_status_pending"],
+      "confidence": "high",
+      "priority": "high",
+      "requires_raw_fetch": true,
+      "raw_fetch_reason": "目前 discovery evidence 為公開 MOPS mirror/轉載；需 GitHub Actions 取得正式 MOPS source ID、canonical URL、raw bytes、官方 timestamp 並計算 SHA-256。",
+      "production_verified": false,
+      "source_urls": [
+        "https://news.ustv.com.tw/companynews/258328",
+        "https://news.ustv.com.tw/companynews/258327",
+        "https://news.ustv.com.tw/companynews/258325",
+        "https://news.ustv.com.tw/companynews/258323"
+      ],
+      "content_hash": null,
+      "interpretation": "若完成，鋐寶科技將私有化並成為仁寶全資子公司；此為 interpretation，非目前已完成之 observed fact。"
+    },
+    {
+      "event_id": "6986_20260918_treasury_share_buyback_authorization",
+      "stock_ids": ["6986"],
+      "company_name": "和迅生命科學股份有限公司",
+      "source_type": "mops_material_announcement",
+      "event_type": "treasury_share_buyback_authorization",
+      "title": "和迅董事會決議買回150萬股庫藏股供轉讓員工",
+      "canonical_url": null,
+      "publisher": "公開資訊觀測站（待 deterministic fetcher 解析正式 source ID/canonical URL）",
+      "published_at": "2026-09-18T19:05:14+08:00",
+      "discovered_at": "2026-09-19T06:56:56+08:00",
+      "observed_facts": [
+        "董事會於2026-09-18決議買回普通股，目的為轉讓股份予員工。",
+        "預定買回期間為2026-09-18至2026-11-17，預定買回1,500,000股，占已發行股份總數2.88%。",
+        "買回區間價格為每股新台幣28.20至58.00元；公告載明股價低於區間價格下限時仍將繼續買回。",
+        "公告所列買回股份總金額上限為535,890,034元；會議紀錄另說明本次按最高58元買進150萬股之所需金額上限為87,000,000元。"
+      ],
+      "evidence_summary": "董事會新授權庫藏股買回計畫；實際買回數量及金額尚待後續執行公告，不應將授權數量視為已買回。",
+      "affected_inputs": ["treasury_shares", "share_count_potential_change", "employee_equity_incentive"],
+      "confidence": "high",
+      "priority": "medium",
+      "requires_raw_fetch": true,
+      "raw_fetch_reason": "目前 discovery evidence 為公開 MOPS mirror/轉載；需 GitHub Actions 取得正式 MOPS source ID、canonical URL、raw bytes、官方 timestamp 並計算 SHA-256。",
+      "production_verified": false,
+      "source_urls": [
+        "https://news.ustv.com.tw/companynews/258321",
+        "https://stock.pchome.com.tw/m/news/cat2/20260918/9700006986202609181.html"
+      ],
+      "content_hash": null,
+      "interpretation": "庫藏股計畫可能影響後續流通股數與員工獎酬，但目前僅為買回授權，非實際執行結果。"
+    }
+  ],
+  "notes": [
+    "Incremental window only; no historical backfill or quarterly MOPS XBRL ZIP ingestion.",
+    "Discovery evidence was deduplicated against latest.json cutoff and repository event-ID searches.",
+    "Search/mirror pages are discovery/cross-check evidence only; production_verified remains false until deterministic raw-source validation.",
+    "No normalized fundamentals, analyst consensus, catalyst probabilities, production PIT series or Fair Value V2.1 were modified."
+  ]
+}
