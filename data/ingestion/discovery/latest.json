@@ -1,40 +1,38 @@
 {
   "schema_version": "1.0",
-  "generated_at": "2026-09-18T18:56:07+08:00",
-  "window_start": "2026-09-18T06:55:23+08:00",
-  "window_end": "2026-09-18T18:56:07+08:00",
-  "event_file": "data/ingestion/discovery/events/2026/09/2026-09-18T105607Z_primary-corporate-evidence.json",
+  "generated_at": "2026-09-19T06:56:56+08:00",
+  "window_start": "2026-09-18T18:56:07+08:00",
+  "window_end": "2026-09-19T06:56:56+08:00",
+  "event_file": "data/ingestion/discovery/events/2026/09/2026-09-18T225656Z_primary-corporate-evidence.json",
   "production_verified": false,
-  "new_event_count": 9,
+  "new_event_count": 2,
   "counts_by_source_type": {
-    "mops_material_announcement": 9
+    "mops_material_announcement": 2
   },
   "counts_by_event_type": {
-    "material_contract_settlement_termination": 1,
-    "regulatory_clinical_milestone": 2,
-    "production_equipment_acquisition": 2,
-    "cybersecurity_incident": 1,
-    "capital_expenditure_authorization_change": 1,
-    "financing_disclosure_correction": 1,
-    "treasury_share_buyback_progress": 1
+    "m_and_a_cash_share_exchange": 1,
+    "treasury_share_buyback_authorization": 1
   },
-  "high_priority_stock_ids": ["6499", "6875", "6919", "2408", "6213", "2332"],
+  "high_priority_stock_ids": ["2324", "6674"],
   "fetch_queue": {
-    "pending": 9,
+    "pending": 2,
     "verified": 0,
     "rule": "production_verified remains false until deterministic GitHub Actions resolves official MOPS event source IDs/canonical URLs, fetches raw evidence bytes, validates published_at and saves SHA-256"
   },
   "notable_candidates": [
-    {"event_id": "6499_20260918_terumo_settlement_termination", "stock_ids": ["6499"], "summary": "益安與Terumo達成Cross-Seal和解暨終止協議，將取得600萬美元和解金。"},
-    {"event_id": "6875_20260918_l608_fda_phase2_ind_clearance", "stock_ids": ["6875"], "summary": "國邑L608通過美國FDA多國多中心二期臨床試驗審查，預計收案40人。"},
-    {"event_id": "6919_20260918_cbl0302_health_canada_amendment_approved", "stock_ids": ["6919"], "summary": "康霈CBL-514樞紐三期CBL-0302加拿大CTA變更案核准執行，預計收案320人。"},
-    {"event_id": "2408_20260918_kokusai_production_equipment_acquisition", "stock_ids": ["2408"], "summary": "南亞科取得KOKUSAI ELECTRIC生產設備約10.57億元。"},
-    {"event_id": "6213_20260918_wuxi_production_equipment_acquisition", "stock_ids": ["6213"], "summary": "無錫聯茂取得營業用機器設備約6.15億元。"},
-    {"event_id": "2332_20260918_cybersecurity_login_attack", "stock_ids": ["2332"], "summary": "友訊揭露網站異常登入資安事件，目前公司評估對營運尚無重大影響。"}
+    {
+      "event_id": "2324_6674_20260918_cash_share_exchange",
+      "stock_ids": ["2324", "6674"],
+      "summary": "仁寶與鋐寶科技董事會通過每股18.50元現金股份轉換；鋐寶科技擬於條件完成後成為仁寶100%持股子公司並終止上市/停止公開發行。"
+    },
+    {
+      "event_id": "6986_20260918_treasury_share_buyback_authorization",
+      "stock_ids": ["6986"],
+      "summary": "和迅董事會授權2026-09-18至11-17買回150萬股庫藏股供轉讓員工，占已發行股份2.88%。"
+    }
   ],
   "notes": [
-    "Deduplicated against prior discovery state ending 2026-09-18T06:55:23+08:00 and repository searches for candidate event IDs/content.",
-    "Excluded emerging/public-only companies from the listed/OTC equity queue and excluded routine/repetitive securities trading disclosures unless directly material to operating evidence.",
+    "Deduplicated against prior discovery state ending 2026-09-18T18:56:07+08:00 and repository searches for candidate event IDs.",
     "Search and public MOPS mirrors were discovery/cross-check evidence only; all candidates remain production_verified=false pending deterministic official-source materialization.",
     "No historical backfill or quarterly MOPS XBRL ZIP ingestion was performed.",
     "No normalized fundamentals, analyst consensus, catalyst probabilities, production PIT series or Fair Value V2.1 were modified."
