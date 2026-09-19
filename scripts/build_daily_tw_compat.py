@@ -10,6 +10,8 @@ import numpy as np
 from datetime import datetime, timedelta, timezone
 from zoneinfo import ZoneInfo
 
+DATA_ROOT = os.getenv("PUBLIC_DATA_ROOT", "data")
+
 class PublicDataExporter:
     def __init__(self):
         self.base_path = DATA_ROOT
@@ -32,7 +34,6 @@ class PublicDataExporter:
 # 🚀 v1.33.1: 台股同步引擎 (支援還原價格與全指標導出)
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 pd.set_option('future.no_silent_downcasting', True)
-DATA_ROOT = os.getenv("PUBLIC_DATA_ROOT", "data")
 ACTIONS_DIR = os.path.join(DATA_ROOT, "meta/actions")
 
 def load_corporate_actions():
