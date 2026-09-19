@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.2",
+  "generated_at": "2026-09-19T08:14:28+08:00",
+  "scope": "semantic_research_only",
+  "fair_value_policy": "Fair Value V2.1 is the sole valuation baseline. Semantic events must not directly overwrite official numeric macro series or Fair Value.",
+  "events": [
+    {
+      "event_id": "2026-09-18-us-russia-iran-sanctions-act-signed",
+      "event_type": "sanctions_trade_policy_escalation",
+      "regions": ["United States", "Russia", "Iran", "China", "India", "Global"],
+      "severity": 0.86,
+      "confidence": 0.98,
+      "escalation_score": 0.88,
+      "persistence_score": 0.90,
+      "observed_evidence": "The White House confirmed that President Donald Trump signed H.R. 5334, the Lindsay O. Graham Sanctioning Russia and Iran Act of 2026, on September 18. The White House states that the law authorizes and expands statutory sanctions, tariffs and prohibitions on Russia and extends existing sanctions on Iran. Reuters separately reported the signing and described measures aimed at Russian energy, defense and sanctions-evasion shipping plus tariff authority affecting major Russian trading partners.",
+      "semantic_interpretation": "This changes the prior state from conditional/pending legislation to enacted statutory authority. Actual tariff and secondary-sanctions transmission still depends on implementation, so no assumed tariff rate or direct numeric macro-series adjustment is made. The law raises tail risk for Russian oil flows, China/India trade exposure, energy prices, freight and global inflation.",
+      "transmission_channels": ["sanctions", "tariffs", "Russian_energy_exports", "secondary_sanctions", "shipping", "oil_prices", "global_inflation", "trade"],
+      "affected_factors": ["Brent", "WTI", "diesel_crack", "shipping_costs", "energy_inflation", "US_10Y", "DXY", "USD_TWD", "global_growth"],
+      "affected_taiwan_sectors": ["航運", "航空運輸", "物流", "塑膠", "化工", "鋼鐵", "電子製造"],
+      "source_urls": ["https://www.whitehouse.gov/briefings-statements/2026/09/congressional-bill-h-r-5334-signed-into-law/", "https://www.reuters.com/world/us/trump-signs-russia-sanctions-bill-into-law-2026-09-18/"],
+      "first_seen_at": "2026-09-19T08:14:28+08:00",
+      "updated_at": "2026-09-19T08:14:28+08:00"
+    },
+    {
+      "event_id": "2026-09-18-saudi-aramco-gulf-exports-oman-sts-scale-up",
+      "event_type": "middle_east_energy_supply_partial_deescalation",
+      "regions": ["Saudi Arabia", "Oman", "Strait of Hormuz", "Asia", "Global"],
+      "severity": 0.78,
+      "confidence": 0.90,
+      "escalation_score": 0.58,
+      "persistence_score": 0.76,
+      "observed_evidence": "Reuters reported, citing traders, that Saudi Aramco plans roughly 60 million barrels of Gulf crude exports during September and October using ship-to-ship transfers off Oman's Sohar, averaging about 1-1.5 million barrels per day and helping offset impaired Yanbu exports. Brent settled September 18 at $104.87/bbl and WTI at $100.30/bbl as immediate Saudi supply fears eased.",
+      "semantic_interpretation": "The larger, quantified Oman-routing program is a meaningful partial mitigation of Saudi export disruption and reduces the immediate crude-supply tail risk versus the prior snapshot. It is not normalization: Hormuz traffic, East-West Pipeline damage, very high tanker freight and broader Middle East conflict remain active constraints.",
+      "transmission_channels": ["crude_supply", "Hormuz_bypass", "ship_to_ship_transfers", "freight", "marine_insurance", "energy_inflation"],
+      "affected_factors": ["Brent", "WTI", "shipping_costs", "energy_inflation", "Asian_refining_margins"],
+      "affected_taiwan_sectors": ["航空運輸", "航運", "物流", "塑膠", "化工", "電子製造"],
+      "source_urls": ["https://www.reuters.com/business/energy/aramco-boost-exports-strait-hormuz-60-million-bbl-september-october-traders-say-2026-09-18/", "https://www.reuters.com/business/energy/oil-prices-fall-1-hopes-limited-supply-disruptions-2026-09-18/"],
+      "first_seen_at": "2026-09-19T08:14:28+08:00",
+      "updated_at": "2026-09-19T08:14:28+08:00"
+    },
+    {
+      "event_id": "2026-09-18-black-sea-marine-high-risk-zone-expanded",
+      "event_type": "russia_ukraine_shipping_insurance_escalation",
+      "regions": ["Black Sea", "Russia", "Ukraine", "Europe", "Global"],
+      "severity": 0.74,
+      "confidence": 0.91,
+      "escalation_score": 0.78,
+      "persistence_score": 0.82,
+      "observed_evidence": "Reuters reported that London's Joint War Committee expanded its Black Sea high-risk designation to the entire Black Sea after increased attacks on commercial shipping. The corridor is important for grain, crude and refined-product trade, and the designation affects marine war-risk underwriting and voyage costs.",
+      "semantic_interpretation": "The insurance-zone expansion is evidence that Russia-Ukraine maritime risk has broadened beyond coastal waters. It raises persistence risk for freight, insurance, grain and energy logistics even without assuming a specific loss of physical export volume.",
+      "transmission_channels": ["marine_insurance", "shipping", "grain_trade", "crude_trade", "refined_products", "freight"],
+      "affected_factors": ["shipping_costs", "grain_prices", "Brent", "diesel_crack", "global_inflation"],
+      "affected_taiwan_sectors": ["航運", "物流", "食品", "航空運輸", "化工"],
+      "source_urls": ["https://www.reuters.com/business/londons-marine-insurers-widen-black-sea-high-risk-zone-shipping-attacks-surge-2026-09-18/"],
+      "first_seen_at": "2026-09-19T08:14:28+08:00",
+      "updated_at": "2026-09-19T08:14:28+08:00"
+    }
+  ]
+}
