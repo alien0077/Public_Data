@@ -595,19 +595,22 @@ def main():
             df_history = df_history[df_history['date'].astype(str) <= d_str].copy()
             
         if exporter.check_remote_exists("daily/tw", d_str):
-            if latest_existing and d_str < latest_existing:
-                latest_success = d_str
-                continue
-            # 檢查舊檔是否損壞或曾把上市來源失敗靜默寫成 0；後者也要回補。
+            # Golden production behavior: an existing historical daily file is
+            # authoritative. Migration must not reinterpret old content and
+            # trigger a fresh crawl. Only corrupt JSON is regenerated.
             local_path = os.path.join(DATA_ROOT, "daily/tw", f"{d_str}.json")
             try:
-                if is_complete_daily_file(local_path):
-                    latest_success = d_str; continue
-                print(f"\n⚠️ 偵測到不完整日檔，準備回補: {local_path}")
-            except (OSError, ValueError, TypeError, json.JSONDecodeError):
-                print(f"\n⚠️ 檢測到無法讀取的 JSON，準備重新生成: {local_path}")
+                with open(local_path, 'r', encoding='utf-8') as handle:
+                    json.load(handle)
+            except (OSError, json.JSONDecodeError):
+                print(f"\n⚠️ 檢測到損壞 JSON，重新生成: {local_path}")
+                try:
+                    os.remove(local_path)
+                except OSError:
+                    pass
             else:
-                pass
+                latest_success = d_str
+                continue
             
         if processed_count >= max_process: break
         print(f"🔍 處理日期: {d_str}...", end=" ", flush=True)
