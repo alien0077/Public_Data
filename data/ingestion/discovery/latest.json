@@ -1,40 +1,34 @@
 {
   "schema_version": "1.0",
-  "generated_at": "2026-09-19T06:56:56+08:00",
-  "window_start": "2026-09-18T18:56:07+08:00",
-  "window_end": "2026-09-19T06:56:56+08:00",
-  "event_file": "data/ingestion/discovery/events/2026/09/2026-09-18T225656Z_primary-corporate-evidence.json",
+  "generated_at": "2026-09-19T21:01:23+08:00",
+  "window_start": "2026-09-19T06:56:56+08:00",
+  "window_end": "2026-09-19T21:01:23+08:00",
+  "event_file": "data/ingestion/discovery/events/2026/09/2026-09-19T130123Z_3491-leo-satellite-demand.json",
   "production_verified": false,
-  "new_event_count": 2,
+  "new_event_count": 1,
   "counts_by_source_type": {
-    "mops_material_announcement": 2
+    "company_commentary_reported_by_high_quality_media": 1
   },
   "counts_by_event_type": {
-    "m_and_a_cash_share_exchange": 1,
-    "treasury_share_buyback_authorization": 1
+    "customer_demand_product_value_capacity_expansion": 1
   },
-  "high_priority_stock_ids": ["2324", "6674"],
+  "high_priority_stock_ids": ["3491"],
   "fetch_queue": {
-    "pending": 2,
+    "pending": 1,
     "verified": 0,
-    "rule": "production_verified remains false until deterministic GitHub Actions resolves official MOPS event source IDs/canonical URLs, fetches raw evidence bytes, validates published_at and saves SHA-256"
+    "rule": "production_verified remains false until deterministic GitHub Actions resolves/fetches raw primary evidence where available, validates timestamps and saves SHA-256"
   },
   "notable_candidates": [
     {
-      "event_id": "2324_6674_20260918_cash_share_exchange",
-      "stock_ids": ["2324", "6674"],
-      "summary": "仁寶與鋐寶科技董事會通過每股18.50元現金股份轉換；鋐寶科技擬於條件完成後成為仁寶100%持股子公司並終止上市/停止公開發行。"
-    },
-    {
-      "event_id": "6986_20260918_treasury_share_buyback_authorization",
-      "stock_ids": ["6986"],
-      "summary": "和迅董事會授權2026-09-18至11-17買回150萬股庫藏股供轉讓員工，占已發行股份2.88%。"
+      "event_id": "3491_20260919_leo_satellite_value_launch_ramp",
+      "stock_ids": ["3491"],
+      "summary": "昇達科表示大客戶新一代低軌衛星升空、單顆衛星供貨價值提升，營收可望逐月成長；公司並深化越南與美國布局以支援全球及北美客戶。"
     }
   ],
   "notes": [
-    "Deduplicated against prior discovery state ending 2026-09-18T18:56:07+08:00 and repository searches for candidate event IDs.",
-    "Search and public MOPS mirrors were discovery/cross-check evidence only; all candidates remain production_verified=false pending deterministic official-source materialization.",
-    "No historical backfill or quarterly MOPS XBRL ZIP ingestion was performed.",
-    "No normalized fundamentals, analyst consensus, catalyst probabilities, production PIT series or Fair Value V2.1 were modified."
+    "Deduplicated against prior discovery state ending 2026-09-19T06:56:56+08:00 and repository searches for 3491/昇達科 and the new evidence phrase.",
+    "Company 2026-04-28 investor presentation was used only to cross-check the pre-existing LEO demand, launch-ramp and higher-content thesis; the newly reported September management commentary remains production_verified=false pending deterministic raw-source materialization.",
+    "Micron Taiwan labor mediation was reviewed as a materially changing industry risk, but no Taiwan-listed/OTC issuer was assigned because direct ticker transmission was not sufficiently specific; no speculative competitor mapping was written.",
+    "No historical backfill, official numeric-series modification, normalized-fundamental modification, catalyst-probability modification or Fair Value modification was performed. Fair Value V2.1 remains the sole valuation baseline."
   ]
 }
