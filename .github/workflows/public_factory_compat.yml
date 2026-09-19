@@ -1,6 +1,11 @@
 name: Public Data Factory - Consumer Compatibility
 on:
   workflow_dispatch:
+  pull_request:
+    paths:
+      - 'scripts/build_daily_tw_compat.py'
+      - '.github/workflows/public_factory_compat.yml'
+      - 'requirements-public.txt'
   schedule:
     - cron: '30 12 * * 1-5'
 permissions:
