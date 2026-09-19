@@ -1,0 +1,50 @@
+name: Public Data Factory - Consumer Compatibility
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '30 12 * * 1-5'
+permissions:
+  contents: write
+concurrency:
+  group: public-data-factory
+  cancel-in-progress: false
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+          cache-dependency-path: requirements-public.txt
+      - run: pip install -r requirements-public.txt
+      - name: Build normalized daily TW compatibility contract
+        env:
+          PUBLIC_DATA_ROOT: data
+        run: python scripts/build_daily_tw_compat.py
+      - name: Validate consumer contract
+        run: |
+          python - <<'PY'
+          import json, pathlib
+          idx=json.loads(pathlib.Path("data/index.json").read_text())
+          day=idx["latest_daily_tw"]
+          p=pathlib.Path("data/daily/tw")/f"{day}.json"
+          x=json.loads(p.read_text())
+          rows=x.get("stocks") or x.get("data") or []
+          required={"id","o","h","l","c","v","f","it","d","mb","ms","mbl","pct","ma5","ma10","ma20","ma60","ma120","ma240","vma20","rsi","ts","rs"}
+          assert len(rows)>=2000, len(rows)
+          missing=required-set(rows[0])
+          assert not missing, sorted(missing)
+          print(day,len(rows),"contract=PASS")
+          PY
+      - name: Commit consumer-compatible public outputs
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/daily/tw data/meta/fast_history_tw.csv.gz data/index.json
+          git diff --cached --quiet && exit 0
+          git commit -m "data: update normalized TW daily contract"
+          git pull --rebase origin main
+          git push origin HEAD:main
