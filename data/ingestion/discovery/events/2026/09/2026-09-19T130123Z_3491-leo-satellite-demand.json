@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.0",
+  "generated_at": "2026-09-19T21:01:23+08:00",
+  "window_start": "2026-09-19T06:56:56+08:00",
+  "window_end": "2026-09-19T21:01:23+08:00",
+  "production_verified": false,
+  "new_event_count": 1,
+  "events": [
+    {
+      "event_id": "3491_20260919_leo_satellite_value_launch_ramp",
+      "stock_ids": ["3491"],
+      "company_names": ["昇達科技", "Universal Microwave Technology"],
+      "event_type": "customer_demand_product_value_capacity_expansion",
+      "source_type": "company_commentary_reported_by_high_quality_media",
+      "title": "昇達科稱低軌衛星單顆供貨價值提升、發射量增加，營收可望逐月成長並深化美越產能布局",
+      "canonical_url": "https://money.udn.com/money/story/11074/9763743",
+      "publisher": "經濟日報",
+      "published_at": "2026-09-18T23:32:18+08:00",
+      "discovered_at": "2026-09-19T21:01:23+08:00",
+      "observed_evidence": [
+        "經濟日報報導昇達科表示，大客戶新一代衛星升空且單顆衛星供貨價值提升，推升營收逐月成長。",
+        "報導指出公司除越南布局外，亦在美國設立子公司，以強化北美主要客戶的技術支援與服務。",
+        "公司2026-04-28官方投資人簡報已揭露低軌衛星訂單能見度超過兩季且持續增加、主要客戶將於2026/2027加速衛星發射，以及下一代衛星因頻譜增加而提高元件數與衛星內產值；本次報導提供後續需求與產品價值提升的新增確認。"
+      ],
+      "semantic_interpretation": "相較既有低軌衛星高成長展望，本次新增訊息在於大客戶新一代衛星實際升空後，管理層確認單顆衛星供貨價值提高且營收可望逐月增長；若發射節奏持續，將同時透過衛星數量與單星內容價值兩個維度推動3491營收。美國子公司與越南布局則降低北美客戶支援距離並增加中期產能彈性。這是正向營運催化，但未取得新的量化訂單金額或公司正式財測，因此不應直接轉換為營收/EPS或Fair Value假設。",
+      "catalyst_direction": "positive",
+      "severity": "medium_high",
+      "persistence_score": 0.82,
+      "confidence": 0.86,
+      "transmission_channels": [
+        "LEO satellite launch cadence",
+        "higher content value per satellite",
+        "customer production ramp",
+        "North America customer support",
+        "Vietnam and global capacity expansion"
+      ],
+      "affected_inputs": [
+        "satellite_component_volume",
+        "content_value_per_satellite",
+        "revenue_growth_visibility",
+        "capacity_utilization",
+        "customer_support_capacity"
+      ],
+      "affected_taiwan_sectors": [
+        "低軌衛星",
+        "衛星通訊",
+        "微波/毫米波元件",
+        "通信網路"
+      ],
+      "source_urls": [
+        "https://money.udn.com/money/story/11074/9763743",
+        "https://www.umt-tw.com/upload/Investors/3491_20260428.pdf"
+      ],
+      "content_hash": null,
+      "requires_raw_fetch": true,
+      "production_verified": false,
+      "verification_notes": "Media report was read as evidence, and the company's 2026-04-28 investor presentation cross-checks the pre-existing demand/next-generation satellite thesis. Deterministic GitHub Actions should fetch and hash raw source bytes, resolve any newer official company presentation/statement underlying the September commentary, and validate published_at before production use."
+    }
+  ],
+  "guardrails": {
+    "historical_backfill": false,
+    "official_numeric_series_modified": false,
+    "normalized_fundamentals_modified": false,
+    "catalyst_probabilities_modified": false,
+    "fair_value_modified": false,
+    "valuation_baseline": "Fair Value V2.1"
+  }
+}
