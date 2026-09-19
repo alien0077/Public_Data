@@ -582,6 +582,12 @@ def main():
         is_holiday = is_tw_non_trading_day(d_str, tw_holidays)
         if d_str == today_str and False: is_holiday = True
         if is_holiday: continue
+        # Normal production is strictly incremental. Historical holes before the
+        # newest published day belong to an explicit backfill/audit workflow and
+        # must never block today's production update. TW_DAILY_DATES remains the
+        # explicit escape hatch for targeted historical repair.
+        if not requested_dates and latest_existing and d_str < latest_existing:
+            continue
         # Historical replay must not let a newer fast-history cache row affect
         # indicators for this cutoff.  Keep the cache file intact; constrain
         # only the in-memory working set used for this date.
