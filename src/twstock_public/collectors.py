@@ -43,7 +43,7 @@ def sync_market(day: date, data_root: Path) -> Path:
     stamp = day.strftime("%Y%m%d")
     twse = _request("https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX", {"date": stamp, "type": "ALLBUT0999", "response": "json"}).json()
     tpex = _request("https://www.tpex.org.tw/www/zh-tw/afterTrading/dailyQuotes/download", {"d": f"{day.year - 1911}/{day.month:02d}/{day.day:02d}"}).content.decode("big5", errors="replace")
-    path = data_root / "daily" / "tw" / f"{day.isoformat()}.json"
+    path = data_root / "factory" / "raw" / "market" / f"{day.isoformat()}.json"
     _write_json(path, {"date": day.isoformat(), "source": "TWSE/TPEX official daily market", "twse": twse, "tpex_csv": tpex})
     return path
 
@@ -51,7 +51,7 @@ def sync_market(day: date, data_root: Path) -> Path:
 def sync_institutional(day: date, data_root: Path) -> Path:
     stamp = day.strftime("%Y%m%d")
     payload = _request("https://www.twse.com.tw/rwd/zh/fund/T86", {"date": stamp, "selectType": "ALLBUT0999", "response": "json"}).json()
-    path = data_root / "daily" / "institutional" / f"{day.isoformat()}.json"
+    path = data_root / "factory" / "raw" / "institutional" / f"{day.isoformat()}.json"
     _write_json(path, {"date": day.isoformat(), "source": "TWSE T86 official institutional trading", "payload": payload})
     return path
 
@@ -59,7 +59,7 @@ def sync_institutional(day: date, data_root: Path) -> Path:
 def sync_margin(day: date, data_root: Path) -> Path:
     stamp = day.strftime("%Y%m%d")
     payload = _request("https://www.twse.com.tw/rwd/zh/marginTrading/MI_MARGN", {"date": stamp, "selectType": "ALL", "response": "json"}).json()
-    path = data_root / "daily" / "tw_market_margin" / f"{day.isoformat()}.json"
+    path = data_root / "factory" / "raw" / "margin" / f"{day.isoformat()}.json"
     _write_json(path, {"date": day.isoformat(), "source": "TWSE MI_MARGN official margin", "payload": payload})
     return path
 
@@ -67,7 +67,7 @@ def sync_margin(day: date, data_root: Path) -> Path:
 def sync_calendar(data_root: Path) -> Path:
     payload = _request("https://www.twse.com.tw/holidaySchedule/holidaySchedule", {"response": "json"}).json()
     holidays = [row[0].strip() for row in payload.get("data", []) if len(row) >= 2 and "開始交易" not in row[1]]
-    path = data_root / "meta" / "calendar.json"
+    path = data_root / "factory" / "reference" / "calendar.json"
     _write_json(path, {"source": "TWSE official holidaySchedule", "holidays": sorted(set(holidays)), "raw": payload})
     return path
 
@@ -76,7 +76,7 @@ def sync_tdcc(data_root: Path) -> Path:
     response = _request("https://opendata.tdcc.com.tw/getOD.ashx?id=1-5", timeout=60)
     text = response.content.decode("utf-8-sig", errors="replace")
     rows = list(csv.reader(io.StringIO(text)))
-    path = data_root / "weekly" / "tdcc" / "latest.json"
+    path = data_root / "factory" / "raw" / "tdcc" / "latest.json"
     _write_json(path, {"source": "TDCC official open data id=1-5", "rows": rows})
     return path
 
@@ -91,7 +91,7 @@ def sync_financial(data_root: Path) -> Path:
         "tpex_balance": "https://www.tpex.org.tw/openapi/v1/mopsfin_t187ap07_O_ci",
     }
     payload = {name: _request(url).json() for name, url in endpoints.items()}
-    path = data_root / "fundamentals" / "official_latest.json"
+    path = data_root / "factory" / "raw" / "financial" / "latest.json"
     _write_json(path, {"source": "TWSE/TPEX official OpenAPI", "datasets": payload})
     return path
 
@@ -102,7 +102,7 @@ def sync_revenue(data_root: Path) -> Path:
         "tpex": "https://www.tpex.org.tw/openapi/v1/mopsfin_t187ap05_O",
     }
     payload = {name: _request(url).json() for name, url in endpoints.items()}
-    path = data_root / "monthly" / "revenue" / "latest.json"
+    path = data_root / "factory" / "raw" / "revenue" / "latest.json"
     _write_json(path, {"source": "TWSE/TPEX official monthly revenue", "datasets": payload})
     return path
 
@@ -126,7 +126,7 @@ def sync_etf(data_root: Path) -> Path:
             item["raw_available"] = True
         else:
             item["raw_available"] = False
-    path = data_root / "quant" / "etf" / "outputs" / "latest_snapshot.json"
+    path = data_root / "factory" / "raw" / "etf" / "latest.json"
     _write_json(path, {"updated_at": datetime.now(timezone.utc).isoformat(), "etfs": etfs, "source": "TWSE ETF universe + ETFInfo public holdings"})
     return path
 
@@ -145,7 +145,7 @@ def sync_fx(data_root: Path) -> Path:
             if close is not None:
                 day = datetime.fromtimestamp(stamp, timezone.utc).date().isoformat()
                 rows_by_date.setdefault(day, {"date": day})[label] = close
-    path = data_root / "meta" / "exchange_rate_history.json"
+    path = data_root / "factory" / "raw" / "fx" / "latest.json"
     _write_json(path, {"version": "2.2", "base": "TWD", "currencies": list(symbols) + ["TWD_TWD"], "data": [rows_by_date[k] for k in sorted(rows_by_date)], "source": "Yahoo Finance chart public endpoint"})
     return path
 
@@ -158,6 +158,6 @@ def sync_corporate_actions(data_root: Path, start: date | None = None, end: date
         payload = _request(f"https://www.twse.com.tw/rwd/zh/{endpoint}/{code}", {"startDate": start.strftime("%Y%m%d"), "endDate": end.strftime("%Y%m%d"), "response": "json"}).json()
         for row in payload.get("data", []):
             actions.append({"type": kind, "source": f"TWSE {code}", "raw": row, "fields": payload.get("fields", [])})
-    path = data_root / "meta" / "actions" / f"{end.year}.json"
+    path = data_root / "factory" / "raw" / "corporate_actions" / f"{end.year}.json"
     _write_json(path, {"source": "TWSE official corporate actions", "stocks": actions, "year": end.year})
     return path
