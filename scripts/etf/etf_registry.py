@@ -6,7 +6,8 @@ from datetime import datetime
 
 TWSE_ETF_API = "https://openapi.twse.com.tw/v1/opendata/t187ap47_L"
 TPEX_ETF_API = "https://info.tpex.org.tw/api/etfFilter"
-CACHE_DIR = os.path.join(os.path.dirname(__file__), "cache")
+DATA_ROOT = os.environ.get("PUBLIC_DATA_ROOT", os.path.join(os.path.dirname(__file__), "..", "..", "data"))
+CACHE_DIR = os.path.join(DATA_ROOT, "meta")
 UNIVERSE_JSON = os.path.join(CACHE_DIR, "etf_universe.json")
 
 
@@ -15,6 +16,9 @@ def load_universe():
     try:
         with open(UNIVERSE_JSON, 'r', encoding='utf-8') as f:
             return json.load(f)
+    except FileNotFoundError:
+        print(f"ℹ️ [ETF Registry] 尚無持久化 universe，使用即時交易所清單初始化")
+        return {"last_updated": None, "twse_count": 0, "tpex_count": 0, "etfs": {}}
     except Exception as e:
         print(f"⚠️ [ETF Registry] 讀取 cache 失敗: {e}")
         return {"last_updated": None, "twse_count": 0, "tpex_count": 0, "etfs": {}}
@@ -196,7 +200,7 @@ def sync_universe():
 
     if new_codes or removed_codes:
         save_universe(updated)
-        print(f"💾 [ETF Registry] 已更新 cache/etf_universe.json")
+        print(f"💾 [ETF Registry] 已更新 {UNIVERSE_JSON}")
     else:
         print(f"⏭️ [ETF Registry] 無異動，跳過寫入")
 
