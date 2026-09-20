@@ -1,0 +1,73 @@
+name: Public Data Catch-up 2026-09
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/public_catchup_2026_09.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: public-data-factory
+  cancel-in-progress: false
+
+jobs:
+  catchup:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+          cache-dependency-path: requirements-public.txt
+      - run: pip install -r requirements-public.txt
+
+      - name: Catch up September daily TW golden contract
+        env:
+          PUBLIC_DATA_ROOT: data
+          TW_DAILY_DATES: "2026-09-01,2026-09-02,2026-09-03,2026-09-04,2026-09-07,2026-09-08,2026-09-09,2026-09-10,2026-09-11,2026-09-14,2026-09-15,2026-09-16,2026-09-17,2026-09-18"
+        run: python scripts/build_daily_tw_compat.py
+
+      - name: Catch up monthly revenue available during September
+        env:
+          TW_MONTHLY_START: "2026-08"
+        run: python scripts/monthly_job.py
+
+      - name: Refresh latest TDCC week with golden collector
+        run: python scripts/weekly_job.py
+
+      - name: Validate catch-up
+        run: |
+          python - <<'PY'
+          import json, pathlib
+          root=pathlib.Path("data")
+          expected="2026-09-01 2026-09-02 2026-09-03 2026-09-04 2026-09-07 2026-09-08 2026-09-09 2026-09-10 2026-09-11 2026-09-14 2026-09-15 2026-09-16 2026-09-17 2026-09-18".split()
+          missing=[d for d in expected if not (root/"daily/tw"/f"{d}.json").exists()]
+          if missing:
+              raise SystemExit(f"missing September daily files: {missing}")
+          for d in expected:
+              x=json.loads((root/"daily/tw"/f"{d}.json").read_text())
+              rows=x.get("stocks") or x.get("data") or []
+              if len(rows)<2000:
+                  raise SystemExit(f"{d}: only {len(rows)} rows")
+          print("daily September contract PASS",len(expected))
+          idx=json.loads((root/"index.json").read_text())
+          print("latest_daily_tw",idx.get("latest_daily_tw"))
+          print("latest_monthly",idx.get("latest_monthly"),idx.get("latest_monthly_revenue"))
+          print("latest_weekly",idx.get("latest_weekly"))
+          PY
+
+      - name: Commit recovered public data
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/daily/tw data/meta/fast_history_tw.csv.gz data/monthly data/weekly data/index.json
+          git diff --cached --quiet && exit 0
+          git commit -m "data: catch up September public datasets"
+          git pull --rebase --autostash origin main
+          git push origin HEAD:main
