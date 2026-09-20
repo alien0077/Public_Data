@@ -65,7 +65,7 @@ jobs:
         run: |
           python - <<'PY'
           import json, pathlib, gzip
-          from datetime import datetime
+          from datetime import datetime, timedelta
           from zoneinfo import ZoneInfo
           root=pathlib.Path("data")
           idx=json.loads((root/"index.json").read_text())
@@ -79,15 +79,22 @@ jobs:
           # Periodic datasets are validated against their own materialized positions,
           # never against hard-coded calendar dates.
           weeks=idx.get("available_weeks", [])
-          months=idx.get("available_months", [])
           quarters=idx.get("available_quarters", [])
           if weeks and idx.get("latest_weekly") != max(weeks): raise SystemExit("weekly cursor mismatch")
-          if months and idx.get("latest_monthly_revenue") < max(months): raise SystemExit("monthly revenue cursor behind materialized months")
+          now=datetime.now(ZoneInfo("Asia/Taipei"))
+          first=now.replace(day=1)
+          prev=first-timedelta(days=1)
+          expected_revenue=prev.strftime("%Y-%m")
+          if idx.get("latest_monthly_revenue") != expected_revenue: raise SystemExit(f"monthly revenue incomplete: {idx.get('latest_monthly_revenue')} != {expected_revenue}")
           if quarters and idx.get("latest_quarterly") != max(quarters): raise SystemExit("quarterly cursor mismatch")
+          today=now.strftime("%Y-%m-%d")
+          if idx.get("latest_exchange_rate") != today: raise SystemExit(f"FX cursor stale: {idx.get('latest_exchange_rate')} != {today}")
+          if idx.get("latest_action") != today: raise SystemExit(f"corporate actions cursor stale: {idx.get('latest_action')} != {today}")
           etf=root/"quant/etf/outputs/latest_snapshot.json"
           if not etf.exists(): raise SystemExit("ETF snapshot missing")
           payload=json.loads(etf.read_text())
           if not payload: raise SystemExit("ETF snapshot empty")
+          if len(payload) < 20: raise SystemExit(f"ETF snapshot suspiciously small: {len(payload)}")
           print(json.dumps({
             "latest_daily_tw": idx.get("latest_daily_tw"),
             "latest_daily_tw_indices": idx.get("latest_daily_tw_indices"),
