@@ -372,13 +372,14 @@ class ETFPipeline:
         first_stocks = {s['id']: s for s in first_day.get('stocks', []) if isinstance(s, dict)}
         latest_stocks = {s['id']: s for s in latest_day.get('stocks', []) if isinstance(s, dict)}
 
-        universe_path = os.path.join(os.path.dirname(__file__), "cache", "etf_universe.json")
+        # Use the same persistent public universe as etf_registry; keep a
+        # defined fallback so year-performance never depends on an ephemeral
+        # scripts/etf/cache path.
+        from etf_registry import load_universe
+        universe = load_universe().get("etfs", {})
         etf_ids = list(latest_stocks.keys())
-        if os.path.exists(universe_path):
-            with open(universe_path, 'r', encoding='utf-8') as f:
-                universe = json.load(f).get("etfs", {})
-            if universe:
-                etf_ids = [eid for eid in universe.keys() if eid in latest_stocks]
+        if universe:
+            etf_ids = [eid for eid in universe.keys() if eid in latest_stocks]
 
         rows = []
         for etf_id in etf_ids:
