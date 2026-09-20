@@ -32,6 +32,12 @@ def parse_date(d):
         return f"{y}-{parts[1].zfill(2)}-{parts[2].zfill(2)}"
     return d
 
+def pick_field(row, names):
+    for name in names:
+        if name in row.index and pd.notna(row.get(name)):
+            return row.get(name)
+    raise KeyError(f"none of fields present: {names}; got={list(row.index)}")
+
 def pf(v):
     if v is None or pd.isna(v): return 0.0
     s = str(v).replace(',', '').strip()
@@ -51,6 +57,7 @@ def sync_corporate_actions():
     end_tpex = end_dt.strftime('%Y/%m/%d')
 
     all_actions = []
+    source_failures = []
 
     # --- 1. TWSE ---
     print(f"  📥 正在掃描 TWSE...", end=" ", flush=True)
@@ -61,7 +68,7 @@ def sync_corporate_actions():
             df = pd.DataFrame(res.json()['data'], columns=res.json()['fields'])
             for _, r in df.iterrows():
                 all_actions.append({
-                    "stock_id": clean_sid(r['股票代號']), "ex_date": parse_date(r['資料日期']), "type": "DIVIDEND",
+                    "stock_id": clean_sid(pick_field(r, ["股票代號", "代號"])), "ex_date": parse_date(pick_field(r, ["資料日期", "除權息日期", "日期"])), "type": "DIVIDEND",
                     "cash_dividend": pf(r.get('現金股利')), "stock_dividend": pf(r.get('無償配股率')) * 10.0,
                     "capital_reduction": 0.0, "split_ratio": 1.0
                 })
@@ -71,12 +78,13 @@ def sync_corporate_actions():
             df = pd.DataFrame(res.json()['data'], columns=res.json()['fields'])
             for _, r in df.iterrows():
                 all_actions.append({
-                    "stock_id": clean_sid(r['股票代號']), "ex_date": parse_date(r['資料日期']), "type": "REDUCTION",
+                    "stock_id": clean_sid(pick_field(r, ["股票代號", "代號"])), "ex_date": parse_date(pick_field(r, ["資料日期", "恢復買賣日期", "減資恢復買賣日期", "日期"])), "type": "REDUCTION",
                     "cash_dividend": 0.0, "stock_dividend": 0.0, "capital_reduction": 1.0, "split_ratio": 1.0
                 })
         print("✅")
     except Exception as e:
-        print(f"❌ (TWSE Err: {str(e)[:30]})")
+        source_failures.append(f"TWSE: {e}")
+        print(f"❌ (TWSE Err: {str(e)[:80]})")
 
     # --- 2. TPEX ---
     print(f"  📥 正在掃描 TPEX...", end=" ", flush=True)
@@ -96,7 +104,11 @@ def sync_corporate_actions():
                     })
         print("✅")
     except Exception as e:
-        print(f"❌ (TPEX Err: {str(e)[:30]})")
+        source_failures.append(f"TPEX: {e}")
+        print(f"❌ (TPEX Err: {str(e)[:80]})")
+
+    if source_failures:
+        raise RuntimeError("corporate actions partial source failure: " + " | ".join(source_failures))
 
     if not all_actions:
         print("💡 本次掃描無新資料。")
