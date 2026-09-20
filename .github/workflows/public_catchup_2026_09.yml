@@ -87,8 +87,12 @@ jobs:
           expected_revenue=prev.strftime("%Y-%m")
           if idx.get("latest_monthly_revenue") != expected_revenue: raise SystemExit(f"monthly revenue incomplete: {idx.get('latest_monthly_revenue')} != {expected_revenue}")
           if quarters and idx.get("latest_quarterly") != max(quarters): raise SystemExit("quarterly cursor mismatch")
+          fx_payload=json.loads((root/"meta/exchange_rate_history.json").read_text())
+          fx_dates=sorted(row.get("date") for row in fx_payload.get("data", []) if row.get("date"))
+          if not fx_dates: raise SystemExit("FX history empty")
+          expected_fx=fx_dates[-1]
+          if idx.get("latest_exchange_rate") != expected_fx: raise SystemExit(f"FX cursor mismatch: {idx.get('latest_exchange_rate')} != materialized {expected_fx}")
           today=now.strftime("%Y-%m-%d")
-          if idx.get("latest_exchange_rate") != today: raise SystemExit(f"FX cursor stale: {idx.get('latest_exchange_rate')} != {today}")
           if idx.get("latest_action") != today: raise SystemExit(f"corporate actions cursor stale: {idx.get('latest_action')} != {today}")
           etf=root/"quant/etf/outputs/latest_snapshot.json"
           if not etf.exists(): raise SystemExit("ETF snapshot missing")
@@ -111,7 +115,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/daily/tw data/daily/tw_indices data/meta/fast_history_tw.csv.gz data/meta/exchange_rate_history.json data/meta/actions data/monthly data/weekly data/quarterly data/raw_csvs/quarterly data/quant/etf/outputs data/index.json
+          git add data/daily/tw data/daily/tw_indices data/meta/fast_history_tw.csv.gz data/meta/exchange_rate_history.json data/meta/etf_universe.json data/meta/actions data/monthly data/weekly data/quarterly data/raw_csvs/quarterly data/quant/etf/outputs data/index.json
           git diff --cached --quiet && exit 0
           git commit -m "data: catch up September all public domains"
           for attempt in 1 2 3; do
