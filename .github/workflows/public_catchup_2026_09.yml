@@ -75,6 +75,11 @@ jobs:
           expected_latest=daily[-1]
           if idx.get("latest_daily_tw") != expected_latest: raise SystemExit("daily index cursor mismatch")
           if not indices or indices[-1] != expected_latest: raise SystemExit(f"TW indices lag daily TW: {indices[-1] if indices else None} != {expected_latest}")
+          repair_queue_path=root/"meta/tw_indices_repair_queue.json"
+          if repair_queue_path.exists():
+              repair_payload=json.loads(repair_queue_path.read_text())
+              unresolved=repair_payload.get("dates", [])
+              if unresolved: raise SystemExit(f"TW indices semantic repair queue not empty: {len(unresolved)} dates, first={unresolved[:5]}")
           with gzip.open(root/"meta/fast_history_tw.csv.gz","rt") as f: next(f)
           # Periodic datasets are validated against their own materialized positions,
           # never against hard-coded calendar dates.
@@ -115,7 +120,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/daily/tw data/daily/tw_indices data/meta/fast_history_tw.csv.gz data/meta/exchange_rate_history.json data/meta/etf_universe.json data/meta/actions data/monthly data/weekly data/quarterly data/raw_csvs/quarterly data/quant/etf/outputs data/index.json
+          git add data/daily/tw data/daily/tw_indices data/meta/fast_history_tw.csv.gz data/meta/exchange_rate_history.json data/meta/etf_universe.json data/meta/tw_indices_audit.json data/meta/tw_indices_repair_queue.json data/meta/actions data/monthly data/weekly data/quarterly data/raw_csvs/quarterly data/quant/etf/outputs data/index.json
           git diff --cached --quiet && exit 0
           git commit -m "data: catch up September all public domains"
           for attempt in 1 2 3; do
