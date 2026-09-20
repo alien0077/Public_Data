@@ -1,34 +1,35 @@
 {
   "schema_version": "1.0",
-  "generated_at": "2026-09-19T21:01:23+08:00",
-  "window_start": "2026-09-19T06:56:56+08:00",
-  "window_end": "2026-09-19T21:01:23+08:00",
-  "event_file": "data/ingestion/discovery/events/2026/09/2026-09-19T130123Z_3491-leo-satellite-demand.json",
+  "generated_at": "2026-09-20T20:56:12+08:00",
+  "window_start": "2026-09-19T21:01:23+08:00",
+  "window_end": "2026-09-20T20:56:12+08:00",
+  "event_file": "data/ingestion/discovery/events/2026/09/2026-09-20T125612Z_2408-cxmt-g5-lpddr5x-mass-production.json",
   "production_verified": false,
   "new_event_count": 1,
   "counts_by_source_type": {
-    "company_commentary_reported_by_high_quality_media": 1
+    "competitor_primary_announcement_cross_checked_by_reuters": 1
   },
   "counts_by_event_type": {
-    "customer_demand_product_value_capacity_expansion": 1
+    "competitive_product_process_ramp": 1
   },
-  "high_priority_stock_ids": ["3491"],
+  "high_priority_stock_ids": ["2408"],
   "fetch_queue": {
     "pending": 1,
     "verified": 0,
-    "rule": "production_verified remains false until deterministic GitHub Actions resolves/fetches raw primary evidence where available, validates timestamps and saves SHA-256"
+    "rule": "production_verified remains false until deterministic GitHub Actions resolves/fetches raw evidence, validates timestamps and saves SHA-256"
   },
   "notable_candidates": [
     {
-      "event_id": "3491_20260919_leo_satellite_value_launch_ramp",
-      "stock_ids": ["3491"],
-      "summary": "昇達科表示大客戶新一代低軌衛星升空、單顆衛星供貨價值提升，營收可望逐月成長；公司並深化越南與美國布局以支援全球及北美客戶。"
+      "event_id": "2408_20260920_cxmt_g5_lpddr5x_mass_production",
+      "stock_ids": ["2408"],
+      "summary": "CXMT announced mass production of its fifth-generation DRAM platform and two 24Gb LPDDR5X products. Nanya Technology has direct LPDDR5/5X product-category overlap, so this is tracked as medium-severity competitive-supply pressure without assuming customer loss, ASP decline or margin impact."
     }
   ],
   "notes": [
-    "Deduplicated against prior discovery state ending 2026-09-19T06:56:56+08:00 and repository searches for 3491/昇達科 and the new evidence phrase.",
-    "Company 2026-04-28 investor presentation was used only to cross-check the pre-existing LEO demand, launch-ramp and higher-content thesis; the newly reported September management commentary remains production_verified=false pending deterministic raw-source materialization.",
-    "Micron Taiwan labor mediation was reviewed as a materially changing industry risk, but no Taiwan-listed/OTC issuer was assigned because direct ticker transmission was not sufficiently specific; no speculative competitor mapping was written.",
+    "Deduplicated against discovery state through 2026-09-19T21:01:23+08:00 and repository searches for CXMT/長鑫; no prior discovery event ID or canonical Reuters URL match was found.",
+    "Reuters was cross-checked against reporting from the World Manufacturing Convention announcement and Nanya Technology's own product catalogue for product-category overlap.",
+    "CXMT's stated +50% figure is gross dies per wafer versus its prior platform on an 8Gb baseline; it is not treated as tested-good yield, shipment growth, market share or price change.",
+    "Other reviewed items did not clear the material-new-and-identifiable-Taiwan-ticker threshold in this window; no speculative ticker mapping was written.",
     "No historical backfill, official numeric-series modification, normalized-fundamental modification, catalyst-probability modification or Fair Value modification was performed. Fair Value V2.1 remains the sole valuation baseline."
   ]
 }
