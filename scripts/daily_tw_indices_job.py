@@ -500,6 +500,77 @@ def get_local_tw_dates():
         return set()
     return {f[:-5] for f in os.listdir(tw_dir) if f.endswith(".json")}
 
+
+def _indices_audit_paths():
+    meta_dir = os.path.join(exporter.base_path, "meta")
+    os.makedirs(meta_dir, exist_ok=True)
+    return (os.path.join(meta_dir, "tw_indices_audit.json"), os.path.join(meta_dir, "tw_indices_repair_queue.json"))
+
+
+def _index_file_semantically_complete(date_str):
+    """Require both indices and their generic technical fields to be materialized."""
+    path = os.path.join(exporter.base_path, "daily", "tw_indices", f"{date_str}.json")
+    try:
+        with open(path, "r", encoding="utf-8") as handle:
+            payload = json.load(handle)
+        rows = payload.get("data") or payload.get("stocks") or payload
+        if not isinstance(rows, list):
+            return False
+        by_id = {str(row.get("id")): row for row in rows if isinstance(row, dict)}
+        required = ("o", "h", "l", "c", "ma5", "ma10", "ma20", "vma20", "rsi", "pct")
+        for index_id in ("IX0001", "IX0043"):
+            row = by_id.get(index_id)
+            if not row or any(row.get(key) is None for key in required):
+                return False
+        return True
+    except (OSError, ValueError, TypeError, json.JSONDecodeError):
+        return False
+
+
+def _load_repair_queue(path):
+    try:
+        with open(path, "r", encoding="utf-8") as handle:
+            payload = json.load(handle)
+        return set(payload.get("dates", []))
+    except (OSError, ValueError, TypeError, json.JSONDecodeError):
+        return set()
+
+
+def _save_repair_queue(path, dates):
+    with open(path, "w", encoding="utf-8") as handle:
+        json.dump({"dates": sorted(dates)}, handle, ensure_ascii=False, indent=2)
+
+
+def _run_one_time_semantic_audit(trading_dates, supported_from):
+    """Audit historical coverage once per schema version, then persist only repair dates."""
+    audit_path, queue_path = _indices_audit_paths()
+    schema_version = 1
+    audited = False
+    try:
+        with open(audit_path, "r", encoding="utf-8") as handle:
+            state = json.load(handle)
+        audited = state.get("schema_version") == schema_version and state.get("audited_from") == supported_from
+    except (OSError, ValueError, TypeError, json.JSONDecodeError):
+        pass
+
+    queue = _load_repair_queue(queue_path)
+    if not audited:
+        print(f"🔎 一次性 semantic audit: {supported_from}+ ({len(trading_dates)} 個交易日)")
+        bad = {d for d in trading_dates if not _index_file_semantically_complete(d)}
+        queue.update(bad)
+        _save_repair_queue(queue_path, queue)
+        with open(audit_path, "w", encoding="utf-8") as handle:
+            json.dump({
+                "schema_version": schema_version,
+                "audited_from": supported_from,
+                "audited_through": max(trading_dates) if trading_dates else None,
+                "repair_count": len(queue),
+            }, handle, ensure_ascii=False, indent=2)
+        print(f"🔎 semantic audit 完成：repair queue={len(queue)}")
+    else:
+        print(f"⚡ 已完成 schema v{schema_version} 歷史 audit；正常排程不重掃歷史")
+    return queue, audit_path, queue_path
+
 def main():
     print("📡 啟動台股指數歷史同步引擎 (V1.3 - 智能對位版)...")
     now_tpe = get_now_tpe()
@@ -557,7 +628,12 @@ def main():
     # retrying pre-coverage dates or exchange holidays.
     indices_supported_from = "2024-01-01"
     trading_dates = {d for d in expected_tw_dates if d >= indices_supported_from}
-    missing_dates = sorted(trading_dates - existing_dates)
+    # Missing files are always incremental set-difference. Semantic history is
+    # scanned only once per audit schema; subsequent daily runs consume only
+    # the persisted repair queue, so middle holes remain repairable without a
+    # full historical scan on every run.
+    repair_queue, audit_path, repair_queue_path = _run_one_time_semantic_audit(trading_dates, indices_supported_from)
+    missing_dates = sorted((trading_dates - existing_dates) | (repair_queue & trading_dates))
 
     # 🚀 v1.3.8: 手動補償機制 (針對 Yahoo 損壞或缺失的歷史日期)
     HARDCODED_INJECTION = {
@@ -668,6 +744,9 @@ def main():
             exporter.export_to_json(df_indices, "daily/tw_indices", d_str)
             latest_success = d_str
             processed_count += 1
+            if d_str in repair_queue and _index_file_semantically_complete(d_str):
+                repair_queue.discard(d_str)
+                _save_repair_queue(repair_queue_path, repair_queue)
             print(f"✅ 成功")
         else:
             if not is_data_valid:
