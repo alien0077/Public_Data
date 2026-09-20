@@ -45,6 +45,7 @@ jobs:
       - name: Refresh TW indices
         env:
           FUGLE_API_KEY: ${{ secrets.FUGLE_API_KEY }}
+          TW_INDICES_CATCHUP_FROM: "2026-09-12"
         run: python scripts/daily_tw_indices_job.py
 
       - name: Refresh latest quarterly financials
