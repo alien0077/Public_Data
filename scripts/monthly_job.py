@@ -177,24 +177,18 @@ def main():
     print("📡 啟動月營收自動同步引擎 (V2.0 - 補洞版)...")
     now_tpe = get_now_tpe()
 
-    # 1. Production cursor comes from the materialized monthly contract, not
-    # a hard-coded calendar start. Historical holes are repaired explicitly.
+    # 1. 月資料保留原本補洞語意：從既有資料的最早支援月份到目前，
+    # 逐月與 materialized set 比對；中間缺月必須能被發現。
     remote_index = exporter.get_remote_index()
-    existing_months = sorted(set(remote_index.get("available_months", [])))
+    existing_months = set(remote_index.get("available_months", []))
     force_historical = os.getenv("TW_MONTHLY_FORCE_BACKFILL") == "1"
 
-    scan_months = []
-    if existing_months and not force_historical:
-        cursor_y, cursor_m = (int(value) for value in existing_months[-1].split("-"))
-        # Re-probe the latest materialized month because MOPS can revise it, then
-        # continue forward to the current month.
-        curr_y, curr_m = cursor_y, cursor_m
-        print(f"📍 月營收增量游標: {existing_months[-1]}")
+    if existing_months:
+        start_month = min(existing_months)
     else:
-        # Bootstrap/explicit historical repair keeps the legacy starting point.
         start_month = os.getenv("TW_MONTHLY_START", "2024-01")
-        curr_y, curr_m = (int(value) for value in start_month.split("-"))
-
+    curr_y, curr_m = (int(value) for value in start_month.split("-"))
+    scan_months = []
     while (curr_y < now_tpe.year) or (curr_y == now_tpe.year and curr_m <= now_tpe.month):
         m_str = f"{curr_y}-{curr_m:02d}"
         scan_months.append((curr_y, curr_m, m_str))
