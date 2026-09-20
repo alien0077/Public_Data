@@ -93,11 +93,18 @@ jobs:
           if idx.get("latest_monthly_revenue") != expected_revenue: raise SystemExit(f"monthly revenue incomplete: {idx.get('latest_monthly_revenue')} != {expected_revenue}")
           if quarters and idx.get("latest_quarterly") != max(quarters): raise SystemExit("quarterly cursor mismatch")
           fx_payload=json.loads((root/"meta/exchange_rate_history.json").read_text())
-          fx_dates=sorted(row.get("date") for row in fx_payload.get("data", []) if row.get("date"))
+          fx_rows=fx_payload.get("data", [])
+          fx_dates=sorted(row.get("date") for row in fx_rows if row.get("date"))
           if not fx_dates: raise SystemExit("FX history empty")
-          expected_fx=fx_dates[-1]
-          if idx.get("latest_exchange_rate") != expected_fx: raise SystemExit(f"FX cursor mismatch: {idx.get('latest_exchange_rate')} != materialized {expected_fx}")
           today=now.strftime("%Y-%m-%d")
+          if fx_dates[-1] != today: raise SystemExit(f"FX materialized coverage stale: {fx_dates[-1]} != {today}")
+          latest_fx_row=next((row for row in reversed(fx_rows) if row.get("date") == today), None)
+          required_fx=fx_payload.get("currencies", [])
+          if latest_fx_row is None: raise SystemExit("FX latest materialized row missing")
+          missing_fx=[key for key in required_fx if key not in latest_fx_row or latest_fx_row.get(key) is None]
+          if missing_fx: raise SystemExit(f"FX latest row missing currencies: {missing_fx}")
+          bad_fx=[key for key in required_fx if not isinstance(latest_fx_row.get(key), (int, float))]
+          if bad_fx: raise SystemExit(f"FX latest row has non-numeric currencies: {bad_fx}")
           if idx.get("latest_action") != today: raise SystemExit(f"corporate actions cursor stale: {idx.get('latest_action')} != {today}")
           etf=root/"quant/etf/outputs/latest_snapshot.json"
           if not etf.exists(): raise SystemExit("ETF snapshot missing")
