@@ -1,6 +1,11 @@
 name: Public Data Factory - Consumer Compatibility
 on:
   workflow_dispatch:
+    inputs:
+      dates:
+        description: "Optional comma-separated YYYY-MM-DD dates for explicit catch-up"
+        required: false
+        default: ""
   pull_request:
     paths:
       - 'scripts/build_daily_tw_compat.py'
@@ -28,6 +33,7 @@ jobs:
       - name: Build normalized daily TW compatibility contract
         env:
           PUBLIC_DATA_ROOT: data
+          TW_DAILY_DATES: ${{ inputs.dates || '' }}
         run: python scripts/build_daily_tw_compat.py
       - name: Validate consumer contract
         run: |
