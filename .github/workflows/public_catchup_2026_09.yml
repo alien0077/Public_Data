@@ -4,25 +4,23 @@ on:
   pull_request:
     paths:
       - 'docs/CATCHUP_TRIGGER.md'
-  push:
-    branches: [main]
-    paths:
-      - '.github/workflows/public_catchup_2026_09.yml'
   workflow_dispatch:
 
 permissions:
   contents: write
 
 concurrency:
-  group: public-data-factory
+  group: public-data-catchup
   cancel-in-progress: false
 
 jobs:
   catchup:
     runs-on: ubuntu-latest
-    timeout-minutes: 90
+    timeout-minutes: 120
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: main
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
@@ -36,41 +34,86 @@ jobs:
           TW_DAILY_DATES: "2026-09-01,2026-09-02,2026-09-03,2026-09-04,2026-09-07,2026-09-08,2026-09-09,2026-09-10,2026-09-11,2026-09-14,2026-09-15,2026-09-16,2026-09-17,2026-09-18"
         run: python scripts/build_daily_tw_compat.py
 
-      - name: Catch up monthly revenue available during September
+      - name: Catch up monthly revenue
         env:
           TW_MONTHLY_START: "2026-08"
         run: python scripts/monthly_job.py
 
-      - name: Refresh latest TDCC week with golden collector
+      - name: Refresh latest TDCC week
         run: python scripts/weekly_job.py
 
-      - name: Validate catch-up
+      - name: Refresh TW indices
+        env:
+          FUGLE_API_KEY: ${{ secrets.FUGLE_API_KEY }}
+        run: python scripts/daily_tw_indices_job.py
+
+      - name: Refresh latest quarterly financials
+        env:
+          QUARTERLY_LATEST_ONLY: "1"
+          QUARTERLY_RETRIES: "4"
+        run: python scripts/quarterly_job.py
+
+      - name: Refresh FX history
+        run: python scripts/fetch_exchange_rate.py
+
+      - name: Refresh corporate actions
+        run: python scripts/01_CorePipeline/fetch_corporate_actions_daily.py
+
+      - name: Refresh ETF acquisition and outputs
+        env:
+          PYTHONPATH: scripts/etf
+        run: python scripts/etf/etf_pipeline.py
+
+      - name: Validate all public domains
         run: |
           python - <<'PY'
-          import json, pathlib
+          import json, pathlib, gzip
           root=pathlib.Path("data")
           expected="2026-09-01 2026-09-02 2026-09-03 2026-09-04 2026-09-07 2026-09-08 2026-09-09 2026-09-10 2026-09-11 2026-09-14 2026-09-15 2026-09-16 2026-09-17 2026-09-18".split()
           missing=[d for d in expected if not (root/"daily/tw"/f"{d}.json").exists()]
-          if missing:
-              raise SystemExit(f"missing September daily files: {missing}")
+          if missing: raise SystemExit(f"missing September daily files: {missing}")
           for d in expected:
               x=json.loads((root/"daily/tw"/f"{d}.json").read_text())
               rows=x.get("stocks") or x.get("data") or []
-              if len(rows)<2000:
-                  raise SystemExit(f"{d}: only {len(rows)} rows")
-          print("daily September contract PASS",len(expected))
+              if len(rows)<2000: raise SystemExit(f"{d}: only {len(rows)} rows")
+          with gzip.open(root/"meta/fast_history_tw.csv.gz","rt") as f:
+              next(f)
           idx=json.loads((root/"index.json").read_text())
-          print("latest_daily_tw",idx.get("latest_daily_tw"))
-          print("latest_monthly",idx.get("latest_monthly"),idx.get("latest_monthly_revenue"))
-          print("latest_weekly",idx.get("latest_weekly"))
+          checks={
+            "latest_daily_tw": idx.get("latest_daily_tw"),
+            "latest_daily_tw_indices": idx.get("latest_daily_tw_indices"),
+            "latest_monthly_revenue": idx.get("latest_monthly_revenue"),
+            "latest_weekly": idx.get("latest_weekly"),
+            "latest_quarterly": idx.get("latest_quarterly"),
+            "latest_exchange_rate": idx.get("latest_exchange_rate"),
+            "latest_action": idx.get("latest_action"),
+          }
+          print(json.dumps(checks,ensure_ascii=False,indent=2))
+          if checks["latest_daily_tw"]!="2026-09-18": raise SystemExit("daily TW not current")
+          if checks["latest_daily_tw_indices"]!="2026-09-18": raise SystemExit("TW indices not current")
+          if checks["latest_weekly"]!="2026-W38": raise SystemExit("TDCC not current")
+          if checks["latest_monthly_revenue"]!="2026-08": raise SystemExit("monthly revenue not current")
+          if checks["latest_quarterly"]!="2026-Q2": raise SystemExit("quarterly not current")
+          if checks["latest_exchange_rate"] not in ("2026-09-19","2026-09-20"): raise SystemExit("FX not current")
+          if checks["latest_action"]!="2026-09-20": raise SystemExit("corporate actions not current")
+          etf=root/"quant/etf/outputs/latest_snapshot.json"
+          if not etf.exists() or len(json.loads(etf.read_text()))<50: raise SystemExit("ETF snapshot missing/too small")
+          print("ALL PUBLIC DOMAIN VALIDATION PASS")
           PY
 
-      - name: Commit recovered public data
+      - name: Publish recovered public data without rebase races
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/daily/tw data/meta/fast_history_tw.csv.gz data/monthly data/weekly data/index.json
+          git add data/daily/tw data/daily/tw_indices data/meta/fast_history_tw.csv.gz data/meta/exchange_rate_history.json data/meta/actions data/monthly data/weekly data/quarterly data/raw_csvs/quarterly data/quant/etf/outputs data/index.json
           git diff --cached --quiet && exit 0
-          git commit -m "data: catch up September public datasets"
-          git pull --rebase --autostash origin main
-          git push origin HEAD:main
+          git commit -m "data: catch up September all public domains"
+          for attempt in 1 2 3; do
+            if git push origin HEAD:main; then exit 0; fi
+            echo "main advanced; retrying from latest main without rebasing PR merge commits"
+            git fetch origin main
+            git reset --soft origin/main
+            git commit -m "data: catch up September all public domains"
+            sleep $((attempt*5))
+          done
+          exit 1
