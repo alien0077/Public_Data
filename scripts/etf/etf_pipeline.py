@@ -357,8 +357,10 @@ class ETFPipeline:
             return
 
         # Load corporate actions and compute dynamic adj_c (same as iOS AdjustmentEngine)
-        sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(__file__)), "scripts"))
-        from daily_tw_job import load_corporate_actions, apply_adjustments_to_df
+        # Reuse the public golden daily compatibility implementation. Do not depend
+        # on the private TWStockTracker daily_tw_job module.
+        sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
+        from build_daily_tw_compat import load_corporate_actions, apply_adjustments_to_df
         import pandas as pd
         all_actions = load_corporate_actions()
 
