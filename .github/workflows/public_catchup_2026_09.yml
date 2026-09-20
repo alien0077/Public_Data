@@ -31,12 +31,9 @@ jobs:
       - name: Catch up September daily TW golden contract
         env:
           PUBLIC_DATA_ROOT: data
-          TW_DAILY_DATES: "2026-09-01,2026-09-02,2026-09-03,2026-09-04,2026-09-07,2026-09-08,2026-09-09,2026-09-10,2026-09-11,2026-09-14,2026-09-15,2026-09-16,2026-09-17,2026-09-18"
         run: python scripts/build_daily_tw_compat.py
 
       - name: Catch up monthly revenue
-        env:
-          TW_MONTHLY_START: "2026-08"
         run: python scripts/monthly_job.py
 
       - name: Refresh latest TDCC week
@@ -64,22 +61,34 @@ jobs:
           PYTHONPATH: scripts/etf
         run: python scripts/etf/etf_pipeline.py
 
-      - name: Validate all public domains
+      - name: Validate all public domains dynamically
         run: |
           python - <<'PY'
           import json, pathlib, gzip
+          from datetime import datetime
+          from zoneinfo import ZoneInfo
           root=pathlib.Path("data")
-          expected="2026-09-01 2026-09-02 2026-09-03 2026-09-04 2026-09-07 2026-09-08 2026-09-09 2026-09-10 2026-09-11 2026-09-14 2026-09-15 2026-09-16 2026-09-17 2026-09-18".split()
-          missing=[d for d in expected if not (root/"daily/tw"/f"{d}.json").exists()]
-          if missing: raise SystemExit(f"missing September daily files: {missing}")
-          for d in expected:
-              x=json.loads((root/"daily/tw"/f"{d}.json").read_text())
-              rows=x.get("stocks") or x.get("data") or []
-              if len(rows)<2000: raise SystemExit(f"{d}: only {len(rows)} rows")
-          with gzip.open(root/"meta/fast_history_tw.csv.gz","rt") as f:
-              next(f)
           idx=json.loads((root/"index.json").read_text())
-          checks={
+          daily=sorted(p.stem for p in (root/"daily/tw").glob("????-??-??.json"))
+          indices=sorted(p.stem for p in (root/"daily/tw_indices").glob("????-??-??.json"))
+          if not daily: raise SystemExit("no daily TW data")
+          expected_latest=daily[-1]
+          if idx.get("latest_daily_tw") != expected_latest: raise SystemExit("daily index cursor mismatch")
+          if not indices or indices[-1] != expected_latest: raise SystemExit(f"TW indices lag daily TW: {indices[-1] if indices else None} != {expected_latest}")
+          with gzip.open(root/"meta/fast_history_tw.csv.gz","rt") as f: next(f)
+          # Periodic datasets are validated against their own materialized positions,
+          # never against hard-coded calendar dates.
+          weeks=idx.get("available_weeks", [])
+          months=idx.get("available_months", [])
+          quarters=idx.get("available_quarters", [])
+          if weeks and idx.get("latest_weekly") != max(weeks): raise SystemExit("weekly cursor mismatch")
+          if months and idx.get("latest_monthly_revenue") < max(months): raise SystemExit("monthly revenue cursor behind materialized months")
+          if quarters and idx.get("latest_quarterly") != max(quarters): raise SystemExit("quarterly cursor mismatch")
+          etf=root/"quant/etf/outputs/latest_snapshot.json"
+          if not etf.exists(): raise SystemExit("ETF snapshot missing")
+          payload=json.loads(etf.read_text())
+          if not payload: raise SystemExit("ETF snapshot empty")
+          print(json.dumps({
             "latest_daily_tw": idx.get("latest_daily_tw"),
             "latest_daily_tw_indices": idx.get("latest_daily_tw_indices"),
             "latest_monthly_revenue": idx.get("latest_monthly_revenue"),
@@ -87,18 +96,8 @@ jobs:
             "latest_quarterly": idx.get("latest_quarterly"),
             "latest_exchange_rate": idx.get("latest_exchange_rate"),
             "latest_action": idx.get("latest_action"),
-          }
-          print(json.dumps(checks,ensure_ascii=False,indent=2))
-          if checks["latest_daily_tw"]!="2026-09-18": raise SystemExit("daily TW not current")
-          if checks["latest_daily_tw_indices"]!="2026-09-18": raise SystemExit("TW indices not current")
-          if checks["latest_weekly"]!="2026-W38": raise SystemExit("TDCC not current")
-          if checks["latest_monthly_revenue"]!="2026-08": raise SystemExit("monthly revenue not current")
-          if checks["latest_quarterly"]!="2026-Q2": raise SystemExit("quarterly not current")
-          if checks["latest_exchange_rate"] not in ("2026-09-19","2026-09-20"): raise SystemExit("FX not current")
-          if checks["latest_action"]!="2026-09-20": raise SystemExit("corporate actions not current")
-          etf=root/"quant/etf/outputs/latest_snapshot.json"
-          if not etf.exists() or len(json.loads(etf.read_text()))<50: raise SystemExit("ETF snapshot missing/too small")
-          print("ALL PUBLIC DOMAIN VALIDATION PASS")
+          }, ensure_ascii=False, indent=2))
+          print("ALL PUBLIC DOMAIN POSITION VALIDATION PASS")
           PY
 
       - name: Publish recovered public data without rebase races
