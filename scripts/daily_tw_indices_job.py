@@ -501,6 +501,38 @@ def get_local_tw_dates():
     return {f[:-5] for f in os.listdir(tw_dir) if f.endswith(".json")}
 
 
+def _enrich_index_indicators_from_local(item, date_str, index_id):
+    """Fill generic indicators from prior materialized index closes when source fallback has OHLC only."""
+    needed = ("ma5", "ma10", "ma20", "ma60", "ma120", "ma240", "vma20", "rsi", "pct")
+    if item.get("c") is None or all(item.get(k) is not None for k in needed):
+        return item
+    indices_dir = os.path.join(exporter.base_path, "daily", "tw_indices")
+    history = []
+    for name in sorted(os.listdir(indices_dir)):
+        d = name[:-5] if name.endswith(".json") else ""
+        if not d or d >= date_str:
+            continue
+        try:
+            with open(os.path.join(indices_dir, name), "r", encoding="utf-8") as handle:
+                payload = json.load(handle)
+            rows = payload.get("data") or payload.get("stocks") or payload
+            row = next((r for r in rows if isinstance(r, dict) and str(r.get("id")) == index_id), None)
+            if row and row.get("c") is not None:
+                history.append({"date": d, "c": float(row["c"]), "v": float(row.get("v") or 0)})
+        except (OSError, ValueError, TypeError, json.JSONDecodeError):
+            continue
+    history = history[-239:]
+    history.append({"date": date_str, "c": float(item["c"]), "v": float(item.get("v") or 0)})
+    df = pd.DataFrame(history)
+    for w in (5, 10, 20, 60, 120, 240):
+        item[f"ma{w}"] = round(float(df["c"].rolling(w, min_periods=1).mean().iloc[-1]), 2)
+    item["vma20"] = round(float(df["v"].rolling(20, min_periods=1).mean().iloc[-1]), 0)
+    item["rsi"] = round(float(compute_rsi(df["c"], 14).iloc[-1]), 2)
+    if len(df) >= 2 and df["c"].iloc[-2] != 0:
+        item["pct"] = round((float(df["c"].iloc[-1]) / float(df["c"].iloc[-2]) - 1) * 100, 2)
+    return item
+
+
 def _indices_audit_paths():
     meta_dir = os.path.join(exporter.base_path, "meta")
     os.makedirs(meta_dir, exist_ok=True)
@@ -714,7 +746,9 @@ def main():
             vol = retry_volume("%5ETWII", "IX0001", d_str)
             if vol is not None:
                 fixed['v'] = vol
-        if fixed: recs.append(fixed)
+        if fixed:
+            fixed = _enrich_index_indicators_from_local(fixed, d_str, "IX0001")
+            recs.append(fixed)
         else: is_data_valid = False
             
         item = {"id": "IX0043"}
@@ -735,7 +769,9 @@ def main():
             vol = retry_volume("%5ETWOII", "IX0043", d_str)
             if vol is not None:
                 fixed['v'] = vol
-        if fixed: recs.append(fixed)
+        if fixed:
+            fixed = _enrich_index_indicators_from_local(fixed, d_str, "IX0043")
+            recs.append(fixed)
         else: is_data_valid = False
             
         if is_data_valid and len(recs) == 2:
