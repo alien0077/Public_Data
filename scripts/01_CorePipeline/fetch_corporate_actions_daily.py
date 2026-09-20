@@ -111,7 +111,10 @@ def sync_corporate_actions():
         raise RuntimeError("corporate actions partial source failure: " + " | ".join(source_failures))
 
     if not all_actions:
+        today_str = now.strftime("%Y-%m-%d")
+        exporter.update_index("latest_action", today_str)
         print("💡 本次掃描無新資料。")
+        print(f"🏁 監控完成。最新標記: {today_str}")
         return
 
     # --- 3. 處理與儲存 ---
