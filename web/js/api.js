@@ -3,6 +3,7 @@
  */
 
 const API_BASE = 'https://alienstocks.alien0077.workers.dev/api';
+export const PUBLIC_DATA_BASE_URL = 'https://alien0077.github.io/Public_Data/data';
 
 export const api = {
     getSecret() {
@@ -66,7 +67,7 @@ export const api = {
         let root = '../data/';
         if (window.location.pathname.includes('/temp_repo/web/')) root = '../data/';
         else if (window.location.pathname.includes('/web/')) root = '../temp_repo/data/';
-        const url = isLocal ? `${root}${path}` : `https://alien0077.github.io/Public_Data/data/${path}`;
+        const url = isLocal ? `${root}${path}` : `${PUBLIC_DATA_BASE_URL}/${path}`;
         const cb = isLocal && path.startsWith('meta/actions/') ? `?t=${Date.now()}` : '';
         try {
             const controller = new AbortController();
@@ -83,7 +84,7 @@ export const api = {
         let root = '../data/';
         if (window.location.pathname.includes('/temp_repo/web/')) root = '../data/';
         else if (window.location.pathname.includes('/web/')) root = '../temp_repo/data/';
-        const url = isLocal ? `${root}${path}` : `https://alien0077.github.io/Public_Data/data/${path}`;
+        const url = isLocal ? `${root}${path}` : `${PUBLIC_DATA_BASE_URL}/${path}`;
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), 8000);
         try {

@@ -2,6 +2,8 @@
  * Trends Module for TWStockTracker Web
  */
 
+import { PUBLIC_DATA_BASE_URL } from './api.js';
+
 export const trends = {
     heatmapInstance: null,
     scatterInstance: null,
@@ -37,7 +39,7 @@ export const trends = {
             const candidates = [
                     '../data/quant/theme_rotation.json',        // 🚀 v2.19.1: 新版解耦路徑
                     '../../data/quant/theme_rotation.json',     // 容錯
-                    'https://alien0077.github.io/Public_Data/data/quant/theme_rotation.json' // 直接遠端路徑
+                    `${PUBLIC_DATA_BASE_URL}/quant/theme_rotation.json` // 直接遠端路徑
                 ];
             
             let data = null;
