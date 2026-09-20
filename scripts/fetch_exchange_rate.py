@@ -45,7 +45,7 @@ def fetch_history_from_yfinance():
         try:
             print(f"📥 正在下載 {label} ({ticker})...")
             # 抓取資料
-            data = yf.download(ticker, start=start_date, end=end_date, progress=False)
+            data = yf.download(ticker, start=start_date, end=end_date, progress=False, auto_adjust=False)
             if not data.empty:
                 if isinstance(data.columns, pd.MultiIndex):
                     df_curr = data['Close'].iloc[:, 0].to_frame(name=label)
