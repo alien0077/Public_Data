@@ -51,5 +51,5 @@ jobs:
           git add data/daily/tw data/meta/fast_history_tw.csv.gz data/index.json
           git diff --cached --quiet && exit 0
           git commit -m "data: update normalized TW daily contract"
-          git pull --rebase origin main
+          git pull --rebase --autostash origin main
           git push origin HEAD:main
