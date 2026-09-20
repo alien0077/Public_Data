@@ -538,17 +538,11 @@ def main():
     if otc_history:
         print(f"  🔍 Yahoo OTC 最後 5 天: {sorted(list(otc_history.keys()))[-5:]}")
     
-    # 3. 所有台股日檔都必須有兩筆指數；Yahoo 只是來源，不是缺口判斷依據。
-    # Production incremental cursor: continue from the newest successfully
-    # materialized index file. Historical holes are repaired explicitly, never
-    # swept by normal daily/catch-up production.
-    if existing_dates:
-        cursor = max(existing_dates)
-        missing_dates = sorted(d for d in expected_tw_dates if d > cursor)
-        print(f"📍 指數增量游標: {cursor}，待補 {len(missing_dates)} 個新交易日")
-    else:
-        # First bootstrap only.
-        missing_dates = sorted(expected_tw_dates)
+    # 3. 交易日集合以已成功產出的 daily/tw JSON 為權威。
+    # 這同時保留「補中間缺洞」能力，並避免對週末/休市日做任何 retry。
+    # 不能只從最新 cursor 往後補，否則中間漏檔會永久遺失。
+    trading_dates = expected_tw_dates
+    missing_dates = sorted(trading_dates - existing_dates)
 
     # 🚀 v1.3.8: 手動補償機制 (針對 Yahoo 損壞或缺失的歷史日期)
     HARDCODED_INJECTION = {
