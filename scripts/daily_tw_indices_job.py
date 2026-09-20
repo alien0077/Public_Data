@@ -541,7 +541,12 @@ def main():
     # 3. 交易日集合以已成功產出的 daily/tw JSON 為權威。
     # 這同時保留「補中間缺洞」能力，並避免對週末/休市日做任何 retry。
     # 不能只從最新 cursor 往後補，否則中間漏檔會永久遺失。
-    trading_dates = expected_tw_dates
+    # Golden dataset coverage starts at the same boundary used by the
+    # historical Yahoo bulk fetch above. Use daily/tw JSONs only inside that
+    # supported coverage, so real trading-day holes are repaired without
+    # retrying pre-coverage dates or exchange holidays.
+    indices_supported_from = "2024-01-01"
+    trading_dates = {d for d in expected_tw_dates if d >= indices_supported_from}
     missing_dates = sorted(trading_dates - existing_dates)
 
     # 🚀 v1.3.8: 手動補償機制 (針對 Yahoo 損壞或缺失的歷史日期)
