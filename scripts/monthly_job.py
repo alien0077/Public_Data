@@ -173,23 +173,57 @@ def merge_symbol_monthly_files(data_root, frame, period, retrieved_at):
     return written
 
 
+def _materialized_revenue_months(data_root):
+    """Infer broadly materialized revenue periods from the actual per-symbol monthly files."""
+    target_dir = os.path.join(data_root, "monthly")
+    counts = {}
+    symbols = 0
+    if not os.path.isdir(target_dir):
+        return set()
+    for name in os.listdir(target_dir):
+        if not name.endswith(".json"):
+            continue
+        try:
+            with open(os.path.join(target_dir, name), encoding="utf-8") as handle:
+                payload = json.load(handle)
+            rows = payload.get("data", payload.get("stocks", [])) if isinstance(payload, dict) else []
+            periods = {_monthly_period(row) for row in rows if _monthly_period(row)}
+            if periods:
+                symbols += 1
+                for period in periods:
+                    counts[period] = counts.get(period, 0) + 1
+        except (OSError, json.JSONDecodeError):
+            continue
+    if not symbols:
+        return set()
+    # A month is materialized when it exists for a majority of the monthly universe.
+    # This is only the skip/index criterion; fetched source rows are still validated separately.
+    threshold = max(1, symbols // 2)
+    return {period for period, count in counts.items() if count >= threshold}
+
+
+def _previous_month(year, month):
+    if month == 1:
+        return year - 1, 12
+    return year, month - 1
+
+
 def main():
     print("📡 啟動月營收自動同步引擎 (V2.0 - 補洞版)...")
     now_tpe = get_now_tpe()
 
-    # 1. 月資料保留原本補洞語意：從既有資料的最早支援月份到目前，
-    # 逐月與 materialized set 比對；中間缺月必須能被發現。
-    remote_index = exporter.get_remote_index()
-    existing_months = set(remote_index.get("available_months", []))
+    # Golden crawler coverage starts at 2024-01. Hole detection is based on the
+    # actual monthly revenue files, not index.available_months (a different contract).
+    start_month = os.getenv("TW_MONTHLY_START", "2024-01")
+    existing_months = _materialized_revenue_months(exporter.base_path)
     force_historical = os.getenv("TW_MONTHLY_FORCE_BACKFILL") == "1"
 
-    if existing_months:
-        start_month = min(existing_months)
-    else:
-        start_month = os.getenv("TW_MONTHLY_START", "2024-01")
+    # MOPS monthly revenue for month M is complete in M+1. Never treat the
+    # current calendar month as an expected revenue period.
+    end_y, end_m = _previous_month(now_tpe.year, now_tpe.month)
     curr_y, curr_m = (int(value) for value in start_month.split("-"))
     scan_months = []
-    while (curr_y < now_tpe.year) or (curr_y == now_tpe.year and curr_m <= now_tpe.month):
+    while (curr_y < end_y) or (curr_y == end_y and curr_m <= end_m):
         m_str = f"{curr_y}-{curr_m:02d}"
         scan_months.append((curr_y, curr_m, m_str))
         curr_m += 1
@@ -197,16 +231,11 @@ def main():
             curr_m = 1
             curr_y += 1
 
-    latest_success = None
+    latest_success = max(existing_months) if existing_months else None
     processed_count = 0
+    failed_months = []
     for yr, month, m_str in scan_months:
-        # 🎯 補洞判斷：雲端不存在，或者是當月 (當月可能會有修正/更新)
-        if m_str in existing_months and m_str != now_tpe.strftime("%Y-%m") and not force_historical:
-            latest_success = m_str
-            continue
-
-        # 每月 10 號前不抓當月資料 (通常還沒出來)
-        if m_str == now_tpe.strftime("%Y-%m") and now_tpe.day < 10:
+        if m_str in existing_months and not force_historical:
             continue
 
         print(f"🔍 處理月份: {m_str}...", end=" ", flush=True)
@@ -215,17 +244,20 @@ def main():
         minimum_rows = int(os.getenv("TW_MONTHLY_MIN_ROWS", "1800"))
         if not df_new.empty and len(df_new) >= minimum_rows:
             written = merge_symbol_monthly_files(exporter.base_path, df_new, m_str, now_tpe.isoformat())
-            latest_success = m_str
+            latest_success = max(latest_success or m_str, m_str)
             processed_count += 1
             print(f"✅ 成功 ({len(df_new)} 筆，寫入 per-symbol={written})")
         else:
-            print(f"❌ 失敗 (筆數 {len(df_new)} 不足 {minimum_rows})，跳過補洞。")
+            print(f"❌ 失敗 (筆數 {len(df_new)} 不足 {minimum_rows})")
+            failed_months.append(m_str)
 
         time.sleep(3)
 
     if latest_success:
         exporter.update_index("latest_monthly_revenue", latest_success)
         print(f"🏁 同步結束，最新月份: {latest_success}, 本次更新: {processed_count} 筆")
+    if failed_months:
+        raise RuntimeError(f"月營收資料未完整產出：{', '.join(failed_months)}")
 
 
 if __name__ == "__main__":
