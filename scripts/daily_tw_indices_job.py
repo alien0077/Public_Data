@@ -539,7 +539,7 @@ def main():
         print(f"  🔍 Yahoo OTC 最後 5 天: {sorted(list(otc_history.keys()))[-5:]}")
     
     # 3. 所有台股日檔都必須有兩筆指數；Yahoo 只是來源，不是缺口判斷依據。
-    missing_dates = sorted(expected_tw_dates - existing_dates)
+    missing_dates = sorted(expected_tw_dates - existing_dates)\n    catchup_from = os.environ.get("TW_INDICES_CATCHUP_FROM", "").strip()\n    if catchup_from:\n        missing_dates = [d for d in missing_dates if d >= catchup_from]\n        print(f"🎯 Catch-up 範圍限制: {catchup_from} 起，共 {len(missing_dates)} 個缺口")
     
     # 🚀 v1.3.8: 手動補償機制 (針對 Yahoo 損壞或缺失的歷史日期)
     HARDCODED_INJECTION = {
