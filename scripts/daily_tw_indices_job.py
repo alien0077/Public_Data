@@ -351,6 +351,16 @@ def retry_index_close(yahoo_symbol, index_id, target_date, max_retries=5, delay=
     today_str = now_tpe.strftime("%Y-%m-%d")
     yesterday_str = (now_tpe - timedelta(days=1)).strftime("%Y-%m-%d")
 
+    # Yahoo's OTC symbols are currently unreliable/404. The official MIS endpoint
+    # is the proven fallback for IX0043 and avoids five guaranteed-failing retries
+    # for every real trading-day hole. If MIS has no record, preserve the original
+    # Yahoo retry/fallback chain below.
+    if yahoo_symbol in ("%5ETWOII", "^TWOII"):
+        official = fetch_twse_mis_index("otc", target_date)
+        if official:
+            print(f"🔁 TWSE MIS direct 成功 ({index_id})", end="", flush=True)
+            return official
+
     for attempt in range(max_retries):
         # --- 1. Narrow-range v8/finance/chart ---
         p1 = int((dt_target - timedelta(days=3)).timestamp())
