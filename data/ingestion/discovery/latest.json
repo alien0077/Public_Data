@@ -1,40 +1,34 @@
 {
   "schema_version": "1.0",
-  "generated_at": "2026-09-21T18:56:46+08:00",
-  "window_start": "2026-09-21T08:56:35+08:00",
-  "window_end": "2026-09-21T18:56:46+08:00",
-  "event_file": "data/ingestion/discovery/events/2026/09/2026-09-21T105646Z_primary-corporate-evidence.json",
+  "generated_at": "2026-09-21T21:06:06+08:00",
+  "window_start": "2026-09-21T18:56:46+08:00",
+  "window_end": "2026-09-21T21:06:06+08:00",
+  "event_file": "data/ingestion/discovery/events/2026/09/2026-09-21T130606Z_4763-cerdia-acquisition.json",
   "production_verified": false,
-  "new_event_count": 2,
+  "new_event_count": 1,
   "counts_by_source_type": {
-    "mops_material_announcement": 2
+    "company_material_event_press_report": 1
   },
   "counts_by_event_type": {
-    "ai_data_center_planning": 1,
-    "equity_and_convertible_bond_financing": 1
+    "m_and_a_acquisition": 1
   },
-  "high_priority_stock_ids": ["8038", "5434"],
+  "high_priority_stock_ids": ["4763"],
   "fetch_queue": {
-    "pending": 2,
+    "pending": 1,
     "verified": 0,
-    "rule": "production_verified remains false until deterministic public acquisition validates official source IDs/canonical URLs and timestamps, saves raw evidence bytes, and computes SHA-256"
+    "rule": "production_verified remains false until deterministic public acquisition resolves official MOPS evidence/canonical identifiers, saves raw evidence bytes and timestamps, and computes SHA-256"
   },
   "notable_candidates": [
     {
-      "event_id": "8038_20260921_ai_data_center_planning",
-      "stock_ids": ["8038"],
-      "summary": "長園科董事會通過AI算力中心前期規劃與籌備；公司明確表示尚屬前期階段，實際投資仍須後續審議。"
-    },
-    {
-      "event_id": "5434_20260921_equity_cb_financing",
-      "stock_ids": ["5434"],
-      "summary": "崇越董事會通過250萬股現增及20億元第三次無擔保可轉債，資金用途為償還銀行借款及充實營運資金。"
+      "event_id": "4763_20260921_cerdia_acquisition",
+      "stock_ids": ["4763"],
+      "summary": "材料*-KY董事會通過以約3.68億美元取得Cerdia Holding 100%股權；規劃約2.14億美元現金加約9.95%新股，交易仍待監管核准及交割條件完成。"
     }
   ],
   "notes": [
-    "Deduplicated against discovery state through 2026-09-21T08:56:35+08:00 and repository searches for the two event signatures; no prior matching event IDs were found.",
-    "Search/news and public announcement mirrors are discovery/cross-check evidence only; neither candidate is production_verified.",
-    "No historical/full-universe backfill, quarterly MOPS XBRL ZIP ingestion, normalized-fundamental modification, analyst-consensus modification, catalyst-probability modification, private Fair Value calculation, or TWStockTracker write was performed.",
+    "Deduplicated against discovery state through 2026-09-21T18:56:46+08:00 and repository search for 4763/Cerdia; no prior matching event ID was found.",
+    "Observed transaction terms are kept separate from interpretation; no EPS, synergy, final dilution or valuation assumptions were inferred.",
+    "No historical/full-universe backfill, official numeric-series modification, normalized-fundamental modification, catalyst-probability modification, private Fair Value calculation, or TWStockTracker write was performed.",
     "Fair Value V2.1 remains the sole valuation baseline; proprietary/private calculation remains outside Public_Data."
   ]
 }
