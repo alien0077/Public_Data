@@ -1,0 +1,55 @@
+{
+  "schema_version": "1.0",
+  "generated_at": "2026-09-22T07:03:25+08:00",
+  "window_start": "2026-09-21T21:06:06+08:00",
+  "window_end": "2026-09-22T07:03:25+08:00",
+  "production_verified": false,
+  "events": [
+    {
+      "event_id": "4763_20260921_cerdia_acquisition_primary_terms_revision",
+      "stock_ids": ["4763"],
+      "company_name": "材料*-KY（濟南大自然新材料股份有限公司）",
+      "source_type": "mops_material_announcement_discovery_mirror",
+      "event_type": "m_and_a_terms_revision",
+      "title": "材料*-KY Cerdia收購案MOPS公告補足股份交換精確條件",
+      "canonical_url": "https://stock.pchome.com.tw/m/news/cat2/20260921/9700004763202609211.html",
+      "publisher": "公開資訊觀測站（由公開鏡像轉載供discovery）",
+      "published_at": "2026-09-21T21:37:38+08:00",
+      "discovered_at": "2026-09-22T07:03:25+08:00",
+      "observed_facts": [
+        "MOPS公告內容顯示本案採現金收購及股份交換，收購標的為BCP VII Jade HoldCo (Cayman) Ltd.，交易相對人為BCP VII Jade TopCo (Cayman) Ltd.。",
+        "股份對價為材料*-KY新發行普通股109,294,940股，用以受讓標的公司普通股84股，約占標的已發行股份總數42%。",
+        "公告換股比例為每1股BCP VII Jade HoldCo普通股換發材料*-KY普通股約1,301,130股。",
+        "現金對價約2.14億美元，由公司自有資金支應；最終交易價金仍依股份購買協議於交割前決定。",
+        "公司另公告本次擬增資發行109,294,940股，每股面額新台幣1元，發行總金額約新台幣49億元。",
+        "交易預定完成時點視主管機關核准而定，公告預估為2027年初；目前尚未完成交割。"
+      ],
+      "evidence_summary": "前一輪已發現約3.68億美元收購Cerdia及約9.95%新股對價；本輪在前次cutoff後發布的MOPS公告轉載中取得精確新股股數、換股比例、標的持股比例、增資面額/總額及預估完成時點，屬同一重大併購事件的material evidence revision。",
+      "interpretation": "僅將新增精確交易條款標記為對既有併購事件的修訂證據；不自行推導EPS、最終稀釋、協同效益或估值影響。",
+      "affected_inputs": [
+        "m_and_a_watch",
+        "share_count_watch",
+        "cash_and_leverage_watch",
+        "transaction_timing_watch"
+      ],
+      "confidence": 0.96,
+      "priority": "high",
+      "requires_raw_fetch": true,
+      "raw_fetch_reason": "需由deterministic public acquisition解析正式MOPS canonical URL/source ID，保存官方raw HTML/JSON bytes、published_at並計算SHA-256；目前來源為完整MOPS公告之公開鏡像。",
+      "production_verified": false,
+      "source_urls": [
+        "https://stock.pchome.com.tw/m/news/cat2/20260921/9700004763202609211.html",
+        "https://stock.pchome.com.tw/m/news/cat2/20260921/9700004763202609212.html",
+        "https://tw.stock.yahoo.com/news/%E5%85%AC%E5%91%8A-%E6%9D%90%E6%96%99-ky%E8%91%A3%E4%BA%8B%E6%9C%83%E6%B1%BA%E8%AD%B0%E9%80%9A%E9%81%8E%E8%82%A1%E6%AC%8A%E6%94%B6%E8%B3%BC%E6%A1%88-135933920.html"
+      ],
+      "content_hash": null,
+      "dedup_against_event_ids": ["4763_20260921_cerdia_acquisition"]
+    }
+  ],
+  "notes": [
+    "Deduplicated against latest discovery state generated 2026-09-21T21:06:06+08:00 and repository search for 4763/109294940; exact share-count terms were not present in prior discovery files.",
+    "This is a material revision to an existing event, not a second acquisition event.",
+    "Search snippets were not treated as production evidence; production_verified remains false pending deterministic official-source acquisition and hashing.",
+    "No historical/full-universe backfill, MOPS XBRL ZIP ingestion, normalized-fundamental change, analyst-consensus change, catalyst-probability change, Fair Value calculation, or TWStockTracker write was performed."
+  ]
+}
