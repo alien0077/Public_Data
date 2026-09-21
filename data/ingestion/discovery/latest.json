@@ -1,18 +1,18 @@
 {
   "schema_version": "1.0",
-  "generated_at": "2026-09-20T20:56:12+08:00",
-  "window_start": "2026-09-19T21:01:23+08:00",
-  "window_end": "2026-09-20T20:56:12+08:00",
-  "event_file": "data/ingestion/discovery/events/2026/09/2026-09-20T125612Z_2408-cxmt-g5-lpddr5x-mass-production.json",
+  "generated_at": "2026-09-21T08:56:35+08:00",
+  "window_start": "2026-09-20T20:56:12+08:00",
+  "window_end": "2026-09-21T08:56:35+08:00",
+  "event_file": "data/ingestion/discovery/events/2026/09/2026-09-21T005635Z_2303-2027-broader-foundry-pricing.json",
   "production_verified": false,
   "new_event_count": 1,
   "counts_by_source_type": {
-    "competitor_primary_announcement_cross_checked_by_reuters": 1
+    "company_comment_reported_by_high_quality_local_press": 1
   },
   "counts_by_event_type": {
-    "competitive_product_process_ramp": 1
+    "pricing_power_demand_update": 1
   },
-  "high_priority_stock_ids": ["2408"],
+  "high_priority_stock_ids": ["2303"],
   "fetch_queue": {
     "pending": 1,
     "verified": 0,
@@ -20,16 +20,17 @@
   },
   "notable_candidates": [
     {
-      "event_id": "2408_20260920_cxmt_g5_lpddr5x_mass_production",
-      "stock_ids": ["2408"],
-      "summary": "CXMT announced mass production of its fifth-generation DRAM platform and two 24Gb LPDDR5X products. Nanya Technology has direct LPDDR5/5X product-category overlap, so this is tracked as medium-severity competitive-supply pressure without assuming customer loss, ASP decline or margin impact."
+      "event_id": "2303_20260921_2027_broader_mature_node_pricing",
+      "stock_ids": ["2303"],
+      "summary": "UMC says that if current tight supply-demand conditions persist, 2027 foundry price adjustments could be broader and more pronounced than the already-known 2H26 actions. This is recorded as an incremental pricing-power signal without inventing a 2027 hike percentage or earnings impact."
     }
   ],
   "notes": [
-    "Deduplicated against discovery state through 2026-09-19T21:01:23+08:00 and repository searches for CXMT/長鑫; no prior discovery event ID or canonical Reuters URL match was found.",
-    "Reuters was cross-checked against reporting from the World Manufacturing Convention announcement and Nanya Technology's own product catalogue for product-category overlap.",
-    "CXMT's stated +50% figure is gross dies per wafer versus its prior platform on an 8Gb baseline; it is not treated as tested-good yield, shipment growth, market share or price change.",
-    "Other reviewed items did not clear the material-new-and-identifiable-Taiwan-ticker threshold in this window; no speculative ticker mapping was written.",
+    "Deduplicated against discovery latest state through 2026-09-20T20:56:12+08:00 and repository search for UMC/聯電 2027 pricing language; no prior discovery event ID for this incremental 2027 signal was found.",
+    "UMC's 2H26 price increases were already public earlier in 2026 and are not treated as a new event. The material delta is the newly reported company indication that 2027 adjustments could be broader and more pronounced if supply-demand tightness persists.",
+    "Powerchip's reported potential ~40% increase was not written as a separate new event because the company declined to confirm the market rumor and had already disclosed substantial DRAM and mature-node price increases in July 2026.",
+    "Neousys (6922) high B/B and semiconductor/defense demand commentary was reviewed but did not clear the material-change threshold versus prior company guidance that 2026 B/B would remain above 1 and order visibility extended through year-end.",
+    "Micron Taiwan labor-dispute reporting reviewed in this window did not yet provide a verified outcome from the September 21 mediation; no speculative Taiwan-listed competitor mapping was written.",
     "No historical backfill, official numeric-series modification, normalized-fundamental modification, catalyst-probability modification or Fair Value modification was performed. Fair Value V2.1 remains the sole valuation baseline."
   ]
 }
