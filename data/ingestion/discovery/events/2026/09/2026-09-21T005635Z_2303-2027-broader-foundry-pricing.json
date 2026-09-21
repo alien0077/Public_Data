@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.0",
+  "generated_at": "2026-09-21T08:56:35+08:00",
+  "events": [
+    {
+      "event_id": "2303_20260921_2027_broader_mature_node_pricing",
+      "stock_ids": ["2303"],
+      "company_names": ["聯華電子", "United Microelectronics Corp."],
+      "event_type": "pricing_power_demand_update",
+      "source_type": "company_comment_reported_by_high_quality_local_press",
+      "title": "UMC says 2027 foundry price adjustments could be broader and more pronounced if tight supply-demand persists",
+      "canonical_url": "https://money.udn.com/money/amp/story/5612/9766923",
+      "publisher": "經濟日報",
+      "published_at": "2026-09-20T23:23:00+08:00",
+      "discovered_at": "2026-09-21T08:56:35+08:00",
+      "observed_evidence": "Economic Daily reported UMC saying recent order conditions are positive and that, if the current supply-demand trend persists, the magnitude and breadth of wafer-foundry price adjustments in 2027 would be more evident than in 2H26. The same report says UMC expects current-quarter wafer shipments to rise by a high-single-digit percentage sequentially, utilization to exceed 90%, and gross margin to remain in the mid-30% range, with 8-inch demand improving for PMIC, sensors and MCUs. UMC had already announced 2H26 pricing actions earlier in 2026; this event records only the incremental 2027 breadth/magnitude signal.",
+      "semantic_interpretation": "This is incremental evidence that mature-node pricing power may persist into 2027 rather than being limited to the already-known 2H26 increase. AI infrastructure demand for PMIC/control/sensing components is a plausible transmission channel, but no unreported price-increase percentage, revenue uplift, EPS uplift or margin uplift is inferred.",
+      "catalyst_direction": "positive",
+      "severity": "medium",
+      "persistence_score": 0.78,
+      "confidence": 0.84,
+      "transmission_channels": [
+        "mature_node_capacity_tightness",
+        "foundry_asp_pricing_power",
+        "AI_infrastructure_PMIC_MCU_sensor_demand",
+        "utilization_and_product_mix"
+      ],
+      "affected_inputs": [
+        "foundry_ASP",
+        "capacity_utilization",
+        "gross_margin",
+        "mature_node_demand"
+      ],
+      "affected_taiwan_sectors": [
+        "semiconductor_foundry",
+        "mature_node_semiconductors",
+        "power_management_and_control_IC_supply_chain"
+      ],
+      "source_urls": [
+        "https://money.udn.com/money/amp/story/5612/9766923",
+        "https://www.reuters.com/business/media-telecom/taiwan-chipmaker-umc-sees-headwinds-iran-war-predicts-resilient-demand-2026-04-29/"
+      ],
+      "content_hash": null,
+      "requires_raw_fetch": true,
+      "production_verified": false,
+      "deduplication": {
+        "canonical_url_checked": true,
+        "prior_event_id_checked": true,
+        "repository_search_checked": true,
+        "material_delta": "2027 pricing adjustment breadth/magnitude signal; prior public evidence already covered 2H26 price increases"
+      }
+    }
+  ],
+  "guardrails": {
+    "historical_backfill": false,
+    "official_numeric_series_modified": false,
+    "normalized_fundamentals_modified": false,
+    "catalyst_probabilities_modified": false,
+    "fair_value_modified": false,
+    "valuation_baseline": "Fair Value V2.1"
+  }
+}
