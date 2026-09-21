@@ -1,36 +1,40 @@
 {
   "schema_version": "1.0",
-  "generated_at": "2026-09-21T08:56:35+08:00",
-  "window_start": "2026-09-20T20:56:12+08:00",
-  "window_end": "2026-09-21T08:56:35+08:00",
-  "event_file": "data/ingestion/discovery/events/2026/09/2026-09-21T005635Z_2303-2027-broader-foundry-pricing.json",
+  "generated_at": "2026-09-21T18:56:46+08:00",
+  "window_start": "2026-09-21T08:56:35+08:00",
+  "window_end": "2026-09-21T18:56:46+08:00",
+  "event_file": "data/ingestion/discovery/events/2026/09/2026-09-21T105646Z_primary-corporate-evidence.json",
   "production_verified": false,
-  "new_event_count": 1,
+  "new_event_count": 2,
   "counts_by_source_type": {
-    "company_comment_reported_by_high_quality_local_press": 1
+    "mops_material_announcement": 2
   },
   "counts_by_event_type": {
-    "pricing_power_demand_update": 1
+    "ai_data_center_planning": 1,
+    "equity_and_convertible_bond_financing": 1
   },
-  "high_priority_stock_ids": ["2303"],
+  "high_priority_stock_ids": ["8038", "5434"],
   "fetch_queue": {
-    "pending": 1,
+    "pending": 2,
     "verified": 0,
-    "rule": "production_verified remains false until deterministic GitHub Actions resolves/fetches raw evidence, validates timestamps and saves SHA-256"
+    "rule": "production_verified remains false until deterministic public acquisition validates official source IDs/canonical URLs and timestamps, saves raw evidence bytes, and computes SHA-256"
   },
   "notable_candidates": [
     {
-      "event_id": "2303_20260921_2027_broader_mature_node_pricing",
-      "stock_ids": ["2303"],
-      "summary": "UMC says that if current tight supply-demand conditions persist, 2027 foundry price adjustments could be broader and more pronounced than the already-known 2H26 actions. This is recorded as an incremental pricing-power signal without inventing a 2027 hike percentage or earnings impact."
+      "event_id": "8038_20260921_ai_data_center_planning",
+      "stock_ids": ["8038"],
+      "summary": "長園科董事會通過AI算力中心前期規劃與籌備；公司明確表示尚屬前期階段，實際投資仍須後續審議。"
+    },
+    {
+      "event_id": "5434_20260921_equity_cb_financing",
+      "stock_ids": ["5434"],
+      "summary": "崇越董事會通過250萬股現增及20億元第三次無擔保可轉債，資金用途為償還銀行借款及充實營運資金。"
     }
   ],
   "notes": [
-    "Deduplicated against discovery latest state through 2026-09-20T20:56:12+08:00 and repository search for UMC/聯電 2027 pricing language; no prior discovery event ID for this incremental 2027 signal was found.",
-    "UMC's 2H26 price increases were already public earlier in 2026 and are not treated as a new event. The material delta is the newly reported company indication that 2027 adjustments could be broader and more pronounced if supply-demand tightness persists.",
-    "Powerchip's reported potential ~40% increase was not written as a separate new event because the company declined to confirm the market rumor and had already disclosed substantial DRAM and mature-node price increases in July 2026.",
-    "Neousys (6922) high B/B and semiconductor/defense demand commentary was reviewed but did not clear the material-change threshold versus prior company guidance that 2026 B/B would remain above 1 and order visibility extended through year-end.",
-    "Micron Taiwan labor-dispute reporting reviewed in this window did not yet provide a verified outcome from the September 21 mediation; no speculative Taiwan-listed competitor mapping was written.",
-    "No historical backfill, official numeric-series modification, normalized-fundamental modification, catalyst-probability modification or Fair Value modification was performed. Fair Value V2.1 remains the sole valuation baseline."
+    "Deduplicated against discovery state through 2026-09-21T08:56:35+08:00 and repository searches for the two event signatures; no prior matching event IDs were found.",
+    "Search/news and public announcement mirrors are discovery/cross-check evidence only; neither candidate is production_verified.",
+    "No historical/full-universe backfill, quarterly MOPS XBRL ZIP ingestion, normalized-fundamental modification, analyst-consensus modification, catalyst-probability modification, private Fair Value calculation, or TWStockTracker write was performed.",
+    "Fair Value V2.1 remains the sole valuation baseline; proprietary/private calculation remains outside Public_Data."
   ]
 }
