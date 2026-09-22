@@ -1,45 +1,51 @@
 {
   "schema_version": "1.0",
-  "generated_at": "2026-09-22T19:04:08+08:00",
-  "window_start": "2026-09-22T07:03:25+08:00",
-  "window_end": "2026-09-22T19:04:08+08:00",
-  "event_file": "data/ingestion/discovery/events/2026/09/2026-09-22T190408+0800_investor-conference-discovery.json",
+  "generated_at": "2026-09-23T07:03:18+08:00",
+  "window_start": "2026-09-22T19:04:08+08:00",
+  "window_end": "2026-09-23T07:03:18+08:00",
+  "event_file": "data/ingestion/discovery/events/2026/09/2026-09-23T070318+0800_primary-corporate-evidence.json",
   "production_verified": false,
-  "new_event_count": 2,
+  "new_event_count": 3,
   "counts_by_source_type": {
-    "high_quality_secondary_investor_conference_discovery": 2
+    "mops_material_announcement_discovery_mirror": 3
   },
   "counts_by_event_type": {
-    "guidance_risk_and_supply_response": 1,
-    "business_outlook_and_project_pipeline": 1
+    "business_demerger_and_holding_company_reorganization": 1,
+    "overseas_capacity_expansion_capex": 1,
+    "corporate_bond_financing_authorization": 1
   },
-  "high_priority_stock_ids": ["1702", "3031"],
+  "high_priority_stock_ids": ["2945", "2356", "2317"],
   "fetch_queue": {
-    "pending": 2,
+    "pending": 3,
     "verified": 0,
-    "rule": "production_verified remains false until deterministic public acquisition resolves primary company/MOPS evidence carrying the new facts, saves raw evidence bytes and official timestamps, and computes SHA-256"
+    "rule": "production_verified remains false until deterministic public acquisition resolves primary MOPS/company evidence, saves raw evidence bytes and official timestamps, and computes SHA-256"
   },
   "notable_candidates": [
     {
-      "event_id": "1702_20260922_investor_conference_oil_issue_q3_loss_supply_response",
-      "stock_ids": ["1702"],
-      "summary": "南僑9/22法說媒體現場報導揭露中聯問題油相關損失預計Q3認列、對福壽求償及由東南亞進口大豆油補足缺口；待primary材料驗證。"
+      "event_id": "2945_20260922_retail_business_demerger_holding_company_reorganization",
+      "stock_ids": ["2945"],
+      "summary": "三商家購董事會通過零售事業內部分割至100%子公司富達零售，規劃轉型投控；分割價值預計2.5億元，仍待股東臨時會等程序。"
     },
     {
-      "event_id": "3031_20260922_investor_conference_2027_strategy_projects",
-      "stock_ids": ["3031"],
-      "summary": "佰鴻9/22法說媒體現場報導揭露PCBA回升、新標案/工程專案管線、2027利基封裝方向及光通訊後段封裝選項；待primary材料驗證。"
+      "event_id": "2356_20260922_thailand_production_equipment_facility_capex",
+      "stock_ids": ["2356"],
+      "summary": "英業達董事會通過泰國子公司生產設備及廠務工程投資，公告總額泰銖24.38億元。"
+    },
+    {
+      "event_id": "2317_20260922_unsecured_corporate_bond_authorization_60bn",
+      "stock_ids": ["2317"],
+      "summary": "鴻海董事會決議無擔保普通公司債發行授權，上限新台幣600億元，用途為償還負債或充實營運資金。"
     }
   ],
   "source_registry_changes": {
-    "additions": ["namchow_ir"],
+    "additions": [],
     "health_changes": [],
-    "notes": ["Namchow official IR archive is healthy but had not yet posted the 2026-09-22 conference at verification time."]
+    "notes": ["No new stable primary source family was required; all three candidates route to the already-registered MOPS official source for deterministic acquisition."]
   },
   "notes": [
-    "Deduplicated against discovery state through 2026-09-22T07:03:25+08:00 and repository searches for the new 1702/3031 conference facts.",
-    "Search snippets were discovery-only; both candidates remain production_verified=false because primary materials carrying the new facts were not yet available in the searched sources.",
-    "Observed evidence is separated from interpretation; no unreported loss amount, order value, EPS, guidance range, catalyst probability or valuation impact was inferred.",
+    "Deduplicated against discovery state through 2026-09-22T19:04:08+08:00 and repository searches for the new event IDs/facts.",
+    "Search/news mirrors were discovery/cross-check only; all candidates remain production_verified=false pending canonical primary acquisition and hashing.",
+    "Observed evidence is separated from interpretation; no unreported revenue, EPS, utilization, customer allocation, issuance completion or valuation impact was inferred.",
     "No historical/full-universe backfill, quarterly MOPS XBRL ZIP ingestion, normalized-fundamental modification, analyst-consensus modification, catalyst-probability modification, private Fair Value calculation, or TWStockTracker write was performed.",
     "Fair Value V2.1 remains the sole valuation baseline; proprietary/private calculation remains outside Public_Data."
   ]
