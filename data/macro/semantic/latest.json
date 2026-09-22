@@ -1,18 +1,18 @@
 {
   "schema_version": "1.2",
-  "generated_at": "2026-09-22T08:10:53+08:00",
+  "generated_at": "2026-09-22T20:10:55+08:00",
   "month": "2026-09",
   "scope": "semantic_research_only",
   "fair_value_policy": "Fair Value V2.1 is the sole valuation baseline. Semantic scores must not directly overwrite official numeric macro series or Fair Value.",
-  "summary": "Material change: Reuters industry sources now report the Moscow refinery halted crude processing after the September 20 drone strike, with both primary crude-distillation units affected and repairs potentially taking several weeks. September 21 oil settlements fell on diplomacy and partial Saudi export recovery, while Hormuz physical traffic remains severely impaired. No newer U.S., Taiwan or China official macro release superseded the prior numeric vintages as of this snapshot.",
+  "summary": "Material changes: Taiwan August export orders reached a record $103.0 billion, up 71.4% y/y and above the verifiable Reuters consensus of +63.6%, led by AI/HPC/cloud demand. Hormuz physical traffic deteriorated to two reported commodity-vessel crossings on September 21 and two vessels were reported struck in separate incidents, while Iran offered a conditional seven-day reopening path and Saudi Arabia partially restarted its East-West Pipeline.",
   "macro_summary": {
     "new_official_us_macro_release_since_prior_snapshot": false,
-    "new_official_taiwan_macro_release_since_prior_snapshot": false,
+    "new_official_taiwan_macro_release_since_prior_snapshot": true,
     "new_official_china_macro_release_since_prior_snapshot": false,
-    "new_material_global_policy_information": false,
+    "new_material_global_policy_information": true,
     "new_material_geopolitical_energy_information": true,
     "policy_bias": "global_restrictive_with_china_lpr_hold_and_taiwan_hold",
-    "taiwan_equity_implication": "Fed and BOJ tightening keep discount rates elevated. Middle East diplomacy and partial Saudi export recovery reduced crude prices on September 21, but Hormuz traffic remains far below normal. The confirmed Moscow refinery outage adds refined-product and diesel-price risk relevant to Taiwan transport, petrochemical and manufacturing cost structures.",
+    "taiwan_equity_implication": "Record Taiwan export orders reinforce AI/HPC and server-chain demand strength. Middle East signals are mixed: Hormuz physical shipping remains severely impaired and vessel attacks increase freight/insurance risk, while Saudi bypass capacity is partially recovering and Iran has presented a conditional diplomatic reopening path.",
     "notes": "Official numeric series remain authoritative. Semantic observations and scores are research evidence only and do not directly change official series or Fair Value."
   },
   "monitored_series_status": {
@@ -22,15 +22,15 @@
     "US_INITIAL_CLAIMS": {"status":"current_no_new_release","period":"week ending 2026-09-12","actual":196000,"previous":206000,"consensus":null,"stale":false,"source_url":"https://www.reuters.com/business/us-weekly-jobless-claims-unexpectedly-fall-2026-09-17/"},
     "US_ISM_MANUFACTURING_NEW_ORDERS_SERVICES": {"status":"current_no_new_release","manufacturing_pmi_aug":54.6,"manufacturing_new_orders_aug":53.7,"services_pmi_aug":55.4,"services_new_orders_aug":60.9,"stale":false,"source_url":"https://www.ismworld.org/supply-management-news-and-reports/reports/ism-pmi-reports/"},
     "FED": {"status":"official_decision_2026-09-16","target_range_pct":"3.75-4.00","change_bp":25,"vote":"12-0","policy_tone":"hawkish","stale":false,"source_url":"https://www.federalreserve.gov/monetarypolicy/files/monetary20260916a1.pdf"},
-    "US_2Y_10Y_CURVE": {"status":"no_new_verified_close_incorporated","context":"Reuters reported the benchmark 10Y yield fell below 5% on September 21; exact 2Y/10Y closes not incorporated.","stale":true},
+    "US_2Y_10Y_CURVE": {"status":"no_new_verified_close_incorporated","context":"No exact authoritative 2Y/10Y close newly incorporated in this semantic run.","stale":true},
     "DXY": {"status":"no_new_authoritative_close_incorporated","stale":true},
     "VIX": {"status":"no_new_authoritative_value_incorporated","stale":true},
     "USD_TWD": {"status":"no_new_authoritative_value_incorporated","stale":true},
-    "WTI_BRENT": {"status":"reuters_settlement_2026-09-21","brent_nov_usd_bbl":100.34,"brent_change_pct":-3.4,"wti_oct_usd_bbl":95.78,"wti_change_pct":-4.51,"wti_nov_usd_bbl":92.47,"value_type":"settlement_except_wti_nov_context_quote","stale":false,"source_url":"https://www.reuters.com/business/energy/oil-rises-after-houthi-attack-saudi-capital-2026-09-20/"},
+    "WTI_BRENT": {"status":"reuters_intraday_2026-09-22","brent_nov_usd_bbl":98.33,"brent_change_pct":-2.0,"value_type":"intraday_not_settlement","stale":false,"source_url":"https://www.reuters.com/business/energy/oil-rises-slightly-ahead-potential-us-iran-talks-2026-09-22/"},
     "COPPER": {"status":"no_new_authoritative_value_incorporated","stale":true},
     "TW_PMI_NMI": {"status":"current_no_new_release","manufacturing_pmi_aug":62.5,"stale":false,"source_url":"https://www.cier.edu.tw/en/pmi-trend-en/"},
     "TW_EXPORTS": {"status":"current_no_new_release","period":"2026-08","exports_usd_billion":82.4,"exports_yoy_pct":41.0,"imports_usd_billion":60.1,"imports_yoy_pct":44.3,"trade_surplus_usd_billion":22.3,"stale":false},
-    "TW_EXPORT_ORDERS": {"status":"awaiting_scheduled_2026-09-22_release","latest_period":"2026-07","stale":false},
+    "TW_EXPORT_ORDERS": {"status":"released_2026-09-22","period":"2026-08","actual_usd_billion":103.0,"actual_yoy_pct":71.4,"previous_yoy_pct":61.9,"consensus_yoy_pct":63.6,"record_monthly_value":true,"consecutive_yoy_gain_months":19,"september_guidance_yoy_pct_range":[50.7,55.1],"full_year_guidance_usd_trillion":1.1,"stale":false,"source_url":"https://www.reuters.com/world/asia-pacific/taiwan-august-export-orders-hit-record-high-value-strong-ai-demand-leads-2026-09-22/"},
     "TW_LEADING_BUSINESS_CYCLE": {"status":"current_no_new_release","latest_period":"2026-07","monitoring_signal":"red","monitoring_score":41,"leading_index":104.63,"coincident_index":106.8,"next_release":"2026-09-29","stale":false},
     "TW_CENTRAL_BANK": {"status":"official_decision_2026-09-17","discount_rate_pct":2.0,"change_bp":0,"policy_tone":"hold_with_selective_credit_easing","gdp_forecast_2026_pct":11.48,"gdp_forecast_2027_pct":5.82,"cpi_forecast_2026_pct":2.03,"core_cpi_forecast_2026_pct":2.16,"second_home_max_ltv_pct":70,"stale":false,"source_url":"https://www.cbc.gov.tw/tw/cp-302-192864-4319f-1.html"},
     "CHINA_PMI": {"status":"current_no_new_release","manufacturing_pmi_aug":49.8,"manufacturing_new_orders_aug":50.6,"nonmanufacturing_business_activity_aug":49.0,"composite_pmi_aug":49.5,"stale":false,"source_url":"https://www.stats.gov.cn/english/PressRelease/202609/t20260901_1965170.html"},
@@ -38,15 +38,15 @@
     "BOJ": {"status":"official_decision_2026-09-18","policy_rate_pct":1.25,"change_bp":25,"vote":"7-2","policy_tone":"tightening_with_cautious_forward_guidance","stale":false,"source_url":"https://www.boj.or.jp/en/mopo/mpmdeci/mpr_2026/"}
   },
   "key_drivers": [
-    {"name":"Moscow refinery outage confirmed by Reuters industry sources","observed":"Reuters reported that the Moscow refinery halted crude processing after fires affected both primary crude-distillation units; sources said restoration could take several weeks. The plant processed about 230,000 bpd in 2024.","interpretation":"This upgrades the prior event from physical damage with unknown throughput impact to a material refined-product outage, increasing diesel/gasoline and European energy-risk pressure without implying an equal global crude-supply loss.","source_urls":["https://www.reuters.com/business/energy/moscow-oil-refinery-output-halted-after-sunday-drone-attack-sources-say-2026-09-21/"]},
-    {"name":"Oil settles lower on diplomacy hopes and partial Saudi recovery","observed":"Reuters reported November Brent settled at $100.34/bbl on September 21, down 3.4%; expiring October WTI settled at $95.78, down 4.51%. Saudi oil moving through Hormuz averaged 2.9 million bpd over six days versus 0.7 million bpd in August.","interpretation":"Saudi adaptation and diplomacy expectations reduce immediate crude-price pressure, but do not normalize Hormuz shipping or eliminate Middle East tail risk.","source_urls":["https://www.reuters.com/business/energy/oil-rises-after-houthi-attack-saudi-capital-2026-09-20/"]},
-    {"name":"U.S. reiterates Taiwan Strait stability ahead of Trump-Xi summit","observed":"The U.S., Japan and South Korea emphasized peace and stability across the Taiwan Strait and resistance to arbitrary export restrictions ahead of the September 24 Trump-Xi summit.","interpretation":"This is a policy-signaling watch item rather than a new military or export-control shock.","source_urls":["https://www.reuters.com/world/china/rubio-meets-japanese-korean-allies-ahead-trump-china-summit-2026-09-21/"]}
+    {"name":"Taiwan August export orders exceed $100 billion for first time","observed":"MOEA data reported by Reuters show August export orders rose 71.4% y/y to $103.0 billion versus a verifiable analyst expectation of +63.6% and July's +61.9%. Telecom orders rose 100.5% y/y and electronic products 83.9%; U.S. orders rose 88.9%.","interpretation":"The release strengthens evidence of broad AI/HPC/cloud demand and Taiwan's semiconductor/server supply-chain momentum without directly changing company Fair Value inputs.","source_urls":["https://www.reuters.com/world/asia-pacific/taiwan-august-export-orders-hit-record-high-value-strong-ai-demand-leads-2026-09-22/"]},
+    {"name":"Hormuz traffic falls to two and two vessels reported struck","observed":"Reuters reported preliminary data showing two commodity-vessel crossings on September 21 versus 10 a day earlier and roughly 125 large commercial vessels daily before the conflict. Marisks reported separate strikes on a crude tanker and LPG tanker; both continued and responsibility remains unconfirmed.","interpretation":"Physical shipping and marine-insurance risk worsened despite ongoing workarounds; attribution is not inferred.","source_urls":["https://www.reuters.com/world/middle-east/hormuz-vessel-traffic-falls-two-data-shows-2026-09-22/"]},
+    {"name":"Saudi East-West Pipeline partially restarts while Iran offers conditional Hormuz reopening","observed":"Reuters sources said Saudi Arabia restarted the East-West Pipeline at a low rate, with full restoration potentially taking weeks. Separately, a senior Iranian official said Hormuz could reopen within seven days if U.S. military pressure eases and the blockade on Iranian ports is lifted.","interpretation":"Bypass capacity and diplomatic optionality reduce the probability of a prolonged maximum oil-export constraint, but neither constitutes normalized Hormuz shipping.","source_urls":["https://www.reuters.com/business/energy/saudi-arabia-restarts-east-west-oil-pipeline-resume-exports-yanbu-sources-say-2026-09-22/","https://www.reuters.com/world/middle-east/iran-ready-reopen-strait-hormuz-if-us-eases-military-pressure-lifts-blockade-2026-09-22/"]}
   ],
   "key_risks": [
-    "Russia-Ukraine energy-infrastructure attacks now include a reported multi-week Moscow refinery outage, adding refined-product supply pressure.",
-    "Hormuz commodity-vessel traffic remains far below pre-conflict norms despite Saudi crude-export workarounds.",
-    "Saudi/Houthi and broader U.S.-Iran/Middle East hostilities continue to threaten oil, LNG, Red Sea/Hormuz shipping and insurance costs.",
-    "Black Sea commercial shipping remains exposed to war-risk insurance and direct disruption.",
+    "Hormuz commodity-vessel traffic remains extremely depressed and two vessels were reported struck in separate incidents, raising shipping and insurance risk.",
+    "Saudi East-West Pipeline restart is partial and full restoration may take weeks.",
+    "Iran's seven-day Hormuz reopening statement is conditional on U.S. actions and is not an implemented agreement.",
+    "Russia-Ukraine energy-infrastructure attacks include the reported Moscow refinery outage, adding refined-product supply pressure.",
     "Taiwan-specific security-policy uncertainty remains elevated ahead of the Trump-Xi summit.",
     "Fed and BOJ tightening keep global discount rates and funding costs elevated.",
     "VIX, copper, USD/TWD and exact U.S. 2Y/10Y closes remain stale in this semantic snapshot."
@@ -57,23 +57,25 @@
     "boj":"Tightening; policy rate 1.25% after September 18 hike.",
     "china":"September LPR unchanged at 3.00% one-year and 3.50% five-year; no fresh broad easing impulse.",
     "us_china":"Trump-Xi summit remains the key near-term trade, AI, critical-mineral and Taiwan-policy watch point; no verified new high-end AI-chip control change in this run.",
+    "middle_east":"High conflict risk with conditional diplomatic opening; physical Hormuz shipping remains severely disrupted.",
     "global":"Restrictive developed-market central-bank bias with persistent Middle East and Russia-Ukraine energy risk."
   },
   "geopolitical_global_risk": {
     "level":"VERY_HIGH_MULTI_REGION_ENERGY_AND_SHIPPING_RISK",
-    "dominant_event":"2026-09-22-moscow-refinery-outage-confirmed",
+    "dominant_event":"2026-09-22-hormuz-traffic-attacks-saudi-pipeline-restart",
     "events":[
+      {"event_id":"2026-09-22-hormuz-traffic-attacks-saudi-pipeline-restart","event_type":"middle_east_energy_shipping_disruption_and_partial_bypass_recovery","regions":["Strait of Hormuz","Saudi Arabia","Red Sea","Persian Gulf","Middle East"],"severity":0.88,"confidence":0.95,"escalation_score":0.82,"persistence_score":0.84,"transmission_channels":["oil_supply","LNG_supply","shipping_capacity","marine_insurance","freight_costs","energy_inflation","Saudi_bypass_pipeline"],"affected_factors":["Brent","WTI","LNG","shipping_costs","global_inflation","Taiwan_equity_risk_premium"],"affected_taiwan_sectors":["航運","航空運輸","塑膠","化工","電子製造","公用事業"],"source_urls":["https://www.reuters.com/world/middle-east/hormuz-vessel-traffic-falls-two-data-shows-2026-09-22/","https://www.reuters.com/world/middle-east/iran-ready-reopen-strait-hormuz-if-us-eases-military-pressure-lifts-blockade-2026-09-22/","https://www.reuters.com/business/energy/saudi-arabia-restarts-east-west-oil-pipeline-resume-exports-yanbu-sources-say-2026-09-22/"],"first_seen_at":"2026-09-22T20:10:55+08:00","updated_at":"2026-09-22T20:10:55+08:00"},
       {"event_id":"2026-09-22-moscow-refinery-outage-confirmed","event_type":"russia_ukraine_energy_infrastructure_outage","regions":["Russia","Moscow","Ukraine","Europe"],"severity":0.91,"confidence":0.96,"escalation_score":0.92,"persistence_score":0.86,"transmission_channels":["refined_product_supply","diesel_and_gasoline_prices","refinery_utilization","energy_inflation","war_risk_premium","European_energy_logistics"],"affected_factors":["Brent","WTI","refined_product_cracks","diesel_prices","global_inflation","Taiwan_equity_risk_premium"],"affected_taiwan_sectors":["航運","航空運輸","塑膠","化工","電子製造"],"source_urls":["https://www.reuters.com/business/energy/moscow-oil-refinery-output-halted-after-sunday-drone-attack-sources-say-2026-09-21/"],"first_seen_at":"2026-09-20T20:16:37+08:00","updated_at":"2026-09-22T08:10:53+08:00"},
-      {"event_id":"2026-09-21-hormuz-shipping-update","event_type":"middle_east_energy_shipping_disruption","regions":["Strait of Hormuz","Persian Gulf","Middle East"],"severity":0.84,"confidence":0.95,"escalation_score":0.70,"persistence_score":0.82,"transmission_channels":["oil_supply","LNG_supply","shipping_capacity","marine_insurance","freight_costs","energy_inflation"],"affected_factors":["Brent","WTI","LNG","shipping_costs","global_inflation","Taiwan_equity_risk_premium"],"affected_taiwan_sectors":["航運","航空運輸","塑膠","化工","電子製造","公用事業"],"source_urls":["https://www.reuters.com/world/middle-east/vessels-trickle-through-strait-hormuz-mideast-tension-persists-2026-09-21/"],"first_seen_at":"2026-09-21T20:17:27+08:00","updated_at":"2026-09-21T20:17:27+08:00"},
       {"event_id":"2026-09-19-us-taiwan-arms-package-delay-confirmed","event_type":"taiwan_strait_security_policy_uncertainty","regions":["Taiwan","United States","China","Indo-Pacific"],"severity":0.72,"confidence":0.92,"escalation_score":0.66,"persistence_score":0.77,"transmission_channels":["Taiwan_security_risk_premium","defence_procurement","US_China_negotiations","technology_export_controls","FX_risk_premium"],"affected_factors":["Taiwan_equity_risk_premium","USD_TWD","semiconductor_risk_premium","defence_spending"],"affected_taiwan_sectors":["半導體","電子製造","國防軍工","無人機","通訊網路"],"source_urls":["https://www.reuters.com/world/china/defence-firm-anduril-says-us-delay-taiwan-arms-sales-affecting-its-business-2026-09-19/"],"first_seen_at":"2026-09-19T20:14:04+08:00","updated_at":"2026-09-19T20:14:04+08:00"}
     ]
   },
   "confidence":"high",
   "source_urls":[
+    "https://www.reuters.com/world/asia-pacific/taiwan-august-export-orders-hit-record-high-value-strong-ai-demand-leads-2026-09-22/",
+    "https://www.reuters.com/world/middle-east/hormuz-vessel-traffic-falls-two-data-shows-2026-09-22/",
+    "https://www.reuters.com/world/middle-east/iran-ready-reopen-strait-hormuz-if-us-eases-military-pressure-lifts-blockade-2026-09-22/",
+    "https://www.reuters.com/business/energy/saudi-arabia-restarts-east-west-oil-pipeline-resume-exports-yanbu-sources-say-2026-09-22/",
     "https://www.reuters.com/business/energy/moscow-oil-refinery-output-halted-after-sunday-drone-attack-sources-say-2026-09-21/",
-    "https://www.reuters.com/business/energy/oil-rises-after-houthi-attack-saudi-capital-2026-09-20/",
-    "https://www.reuters.com/world/middle-east/vessels-trickle-through-strait-hormuz-mideast-tension-persists-2026-09-21/",
-    "https://www.reuters.com/world/china/rubio-meets-japanese-korean-allies-ahead-trump-china-summit-2026-09-21/",
     "https://www.federalreserve.gov/monetarypolicy/files/monetary20260916a1.pdf",
     "https://www.cbc.gov.tw/tw/cp-302-192864-4319f-1.html",
     "https://www.stats.gov.cn/english/PressRelease/202609/t20260901_1965170.html"
