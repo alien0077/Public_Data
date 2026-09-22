@@ -1,0 +1,108 @@
+{
+  "schema": "twstock-public-source-registry-v1",
+  "updated_at": "2026-09-22T13:46:00+08:00",
+  "purpose": "Canonical registry of useful public acquisition/discovery sources for Taiwan-stock corporate evidence, catalyst discovery, historical expectation backfill and source-health monitoring. Public sources/evidence only; no private Fair Value logic.",
+  "rules": {
+    "record_new_useful_sources_before_pipeline_use": true,
+    "preserve_exact_urls_or_url_templates": true,
+    "record_pit_quality_and_historical_depth": true,
+    "search_snippets_are_discovery_only": true,
+    "paid_or_copyrighted_fulltext_must_not_be_republished": true,
+    "target_price_absolute_level_is_not_intrinsic_fair_value": true
+  },
+  "sources": [
+    {
+      "source_id": "mops_official",
+      "name": "公開資訊觀測站 MOPS",
+      "domain": "mops.twse.com.tw",
+      "canonical_url": "https://mops.twse.com.tw/mops/",
+      "source_type": "primary_official",
+      "priority": "highest",
+      "use_cases": ["material_announcements", "investor_conference", "monthly_revenue", "financial_statements", "guidance", "corporate_actions"],
+      "pit_quality": "PRIMARY_TIMESTAMPED",
+      "historical_backfill": true,
+      "schedule_tags": ["corporate_evidence", "catalyst", "source_health"]
+    },
+    {
+      "source_id": "twse_official",
+      "name": "Taiwan Stock Exchange",
+      "domain": "twse.com.tw",
+      "canonical_url": "https://www.twse.com.tw/",
+      "source_type": "primary_official",
+      "priority": "highest",
+      "use_cases": ["market_data", "margin_short", "listed_company_disclosures", "corporate_actions"],
+      "pit_quality": "PRIMARY_TIMESTAMPED",
+      "historical_backfill": true,
+      "schedule_tags": ["corporate_evidence", "market_data", "source_health"]
+    },
+    {
+      "source_id": "tpex_official",
+      "name": "Taipei Exchange",
+      "domain": "tpex.org.tw",
+      "canonical_url": "https://www.tpex.org.tw/",
+      "source_type": "primary_official",
+      "priority": "highest",
+      "use_cases": ["otc_market_data", "margin_short", "otc_company_disclosures", "corporate_actions"],
+      "pit_quality": "PRIMARY_TIMESTAMPED",
+      "historical_backfill": true,
+      "schedule_tags": ["corporate_evidence", "market_data", "source_health"]
+    },
+    {
+      "source_id": "cnyes_foreign_rating",
+      "name": "鉅亨網外資評等",
+      "domain": "cnyes.com",
+      "url_template": "https://www.cnyes.com/twstock/foreignrating.aspx?code={symbol}",
+      "source_type": "public_analyst_consensus_snapshot",
+      "priority": "high",
+      "use_cases": ["historical_eps_estimate", "target_price_revision", "rating_change", "broker_consensus_history"],
+      "fields_verified": ["rating_date", "broker", "rating", "eps_estimate", "eps_year", "target_price"],
+      "pit_quality": "PUBLIC_DATED_SNAPSHOT",
+      "historical_backfill": true,
+      "earliest_verified_examples": "at least 2024 for major names; some pages extend earlier",
+      "limitations": ["coverage varies by symbol", "target price absolute level must not directly enter intrinsic FV", "retain 180-day stale-gap guard for revision velocity"],
+      "schedule_tags": ["catalyst", "analyst_revision", "historical_backfill", "source_health"]
+    },
+    {
+      "source_id": "cnyes_factset_news",
+      "name": "鉅亨網 FactSet 最新調查歷史新聞",
+      "domain": "news.cnyes.com",
+      "url_pattern": "https://news.cnyes.com/news/id/{article_id}",
+      "discovery_query": "Factset 最新調查 {company_or_symbol} EPS 預估",
+      "source_type": "public_consensus_news_snapshot",
+      "priority": "high",
+      "use_cases": ["historical_eps_consensus", "historical_revenue_consensus", "analyst_count", "consensus_revision", "target_price_context"],
+      "fields_verified": ["published_at", "analyst_count", "eps_previous", "eps_current", "eps_by_year_median", "revenue_by_year_median", "target_price"],
+      "pit_quality": "PUBLIC_TIMESTAMPED_SNAPSHOT",
+      "historical_backfill": true,
+      "earliest_verified_examples": "2023",
+      "limitations": ["must parse article timestamp and table by forecast year", "deduplicate repeat articles", "target price absolute level is context only"],
+      "schedule_tags": ["analyst_revision", "historical_backfill", "source_health"]
+    },
+    {
+      "source_id": "trendforce",
+      "name": "TrendForce",
+      "domain": "trendforce.com",
+      "canonical_url": "https://www.trendforce.com/",
+      "source_type": "industry_research_public",
+      "priority": "high",
+      "use_cases": ["memory", "hbm", "advanced_packaging", "substrate", "server_demand", "supply_tightness", "pricing", "capacity"],
+      "pit_quality": "DATED_SECONDARY_INDUSTRY_EVIDENCE",
+      "historical_backfill": true,
+      "limitations": ["do not reproduce paid/full copyrighted reports", "store structured facts, metadata, timestamps and URLs only"],
+      "schedule_tags": ["catalyst", "industry_propagation", "source_health"]
+    },
+    {
+      "source_id": "reuters",
+      "name": "Reuters",
+      "domain": "reuters.com",
+      "canonical_url": "https://www.reuters.com/",
+      "source_type": "high_quality_secondary_news",
+      "priority": "high",
+      "use_cases": ["cross_check", "supply_chain_shock", "geopolitics", "export_controls", "orders", "capacity", "industry_demand"],
+      "pit_quality": "PUBLIC_TIMESTAMPED_NEWS",
+      "historical_backfill": true,
+      "limitations": ["prefer primary sources for official numeric facts", "store metadata/derived facts rather than copyrighted fulltext"],
+      "schedule_tags": ["catalyst", "macro", "source_health"]
+    }
+  ]
+}
