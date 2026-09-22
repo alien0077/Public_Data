@@ -1,0 +1,30 @@
+{
+  "schema_version": "1.2",
+  "scope": "semantic_research_only",
+  "fair_value_policy": "Fair Value V2.1 is the sole valuation baseline. Semantic scores must not directly overwrite official numeric macro series or Fair Value.",
+  "event_id": "2026-09-22-moscow-refinery-outage-confirmed",
+  "event_type": "russia_ukraine_energy_infrastructure_outage",
+  "regions": ["Russia", "Moscow", "Ukraine", "Europe"],
+  "severity": 0.91,
+  "confidence": 0.96,
+  "escalation_score": 0.92,
+  "persistence_score": 0.86,
+  "observed_evidence": [
+    "Reuters reported on September 21 that three industry sources said Gazprom Neft's Moscow refinery halted crude processing after fires at both primary crude-distillation units following the September 20 drone attack.",
+    "The sources said repairs and restoration could take several weeks. The AVT-6 unit is rated at 21,400 metric tons per day, 53% of refinery capacity, and the EURO+ crude-processing facility at 18,800 tons per day, the remaining 47%.",
+    "Reuters reported that fuel from the refinery had not been offered on the St. Petersburg International Mercantile Exchange since September 21. The plant processed 11.6 million metric tons of crude in 2024, about 230,000 barrels per day.",
+    "Gazprom Neft had not commented to Reuters at publication time; the operating outage and repair estimate therefore rely on Reuters' industry sources rather than an operator statement."
+  ],
+  "semantic_interpretation": "This materially upgrades the prior Moscow-refinery event from confirmed physical damage with unknown operating impact to a reported full crude-processing outage with a multi-week repair horizon. It increases refined-product supply, diesel/gasoline price and European energy-risk pressure. It is not treated as a one-for-one global crude-supply loss because refinery outages can redirect crude flows and actual restoration timing remains uncertain.",
+  "transmission_channels": ["refined_product_supply", "diesel_and_gasoline_prices", "refinery_utilization", "energy_inflation", "war_risk_premium", "European_energy_logistics", "sanctions_and_trade_flows"],
+  "affected_factors": ["Brent", "WTI", "refined_product_cracks", "diesel_prices", "European_energy_risk_premium", "global_inflation", "Taiwan_equity_risk_premium"],
+  "affected_taiwan_sectors": ["航運", "航空運輸", "塑膠", "化工", "電子製造"],
+  "source_urls": [
+    "https://www.reuters.com/business/energy/moscow-oil-refinery-output-halted-after-sunday-drone-attack-sources-say-2026-09-21/",
+    "https://www.reuters.com/world/europe/two-dead-moscow-region-drones-hit-oil-refinery-russian-capital-2026-09-20/"
+  ],
+  "first_seen_at": "2026-09-20T20:16:37+08:00",
+  "updated_at": "2026-09-22T08:10:53+08:00",
+  "production_numeric_override": false,
+  "notes": "Append-only material update to the September 20 event. Do not infer global crude loss or exact restoration date. Official numeric macro series remain authoritative."
+}
