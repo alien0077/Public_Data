@@ -1,33 +1,45 @@
 {
   "schema_version": "1.0",
-  "generated_at": "2026-09-22T07:03:25+08:00",
-  "window_start": "2026-09-21T21:06:06+08:00",
-  "window_end": "2026-09-22T07:03:25+08:00",
-  "event_file": "data/ingestion/discovery/events/2026/09/2026-09-22T070325+0800_4763-cerdia-primary-terms-revision.json",
+  "generated_at": "2026-09-22T19:04:08+08:00",
+  "window_start": "2026-09-22T07:03:25+08:00",
+  "window_end": "2026-09-22T19:04:08+08:00",
+  "event_file": "data/ingestion/discovery/events/2026/09/2026-09-22T190408+0800_investor-conference-discovery.json",
   "production_verified": false,
-  "new_event_count": 1,
+  "new_event_count": 2,
   "counts_by_source_type": {
-    "mops_material_announcement_discovery_mirror": 1
+    "high_quality_secondary_investor_conference_discovery": 2
   },
   "counts_by_event_type": {
-    "m_and_a_terms_revision": 1
+    "guidance_risk_and_supply_response": 1,
+    "business_outlook_and_project_pipeline": 1
   },
-  "high_priority_stock_ids": ["4763"],
+  "high_priority_stock_ids": ["1702", "3031"],
   "fetch_queue": {
-    "pending": 1,
+    "pending": 2,
     "verified": 0,
-    "rule": "production_verified remains false until deterministic public acquisition resolves official MOPS canonical URL/source ID, saves raw evidence bytes and official timestamps, and computes SHA-256"
+    "rule": "production_verified remains false until deterministic public acquisition resolves primary company/MOPS evidence carrying the new facts, saves raw evidence bytes and official timestamps, and computes SHA-256"
   },
   "notable_candidates": [
     {
-      "event_id": "4763_20260921_cerdia_acquisition_primary_terms_revision",
-      "stock_ids": ["4763"],
-      "summary": "材料*-KY Cerdia收購案之MOPS公告補足精確股份對價109,294,940股、換股比例、約42%標的股份交換部分、約2.14億美元現金對價及預估2027年初完成等條款；視為既有併購事件的material revision。"
+      "event_id": "1702_20260922_investor_conference_oil_issue_q3_loss_supply_response",
+      "stock_ids": ["1702"],
+      "summary": "南僑9/22法說媒體現場報導揭露中聯問題油相關損失預計Q3認列、對福壽求償及由東南亞進口大豆油補足缺口；待primary材料驗證。"
+    },
+    {
+      "event_id": "3031_20260922_investor_conference_2027_strategy_projects",
+      "stock_ids": ["3031"],
+      "summary": "佰鴻9/22法說媒體現場報導揭露PCBA回升、新標案/工程專案管線、2027利基封裝方向及光通訊後段封裝選項；待primary材料驗證。"
     }
   ],
+  "source_registry_changes": {
+    "additions": ["namchow_ir"],
+    "health_changes": [],
+    "notes": ["Namchow official IR archive is healthy but had not yet posted the 2026-09-22 conference at verification time."]
+  },
   "notes": [
-    "Deduplicated against discovery state through 2026-09-21T21:06:06+08:00 and repository search for 4763/109294940; exact share-count terms were not present in prior discovery files.",
-    "Observed facts are separated from interpretation; no EPS, final dilution, synergy, catalyst probability or valuation impact was inferred.",
+    "Deduplicated against discovery state through 2026-09-22T07:03:25+08:00 and repository searches for the new 1702/3031 conference facts.",
+    "Search snippets were discovery-only; both candidates remain production_verified=false because primary materials carrying the new facts were not yet available in the searched sources.",
+    "Observed evidence is separated from interpretation; no unreported loss amount, order value, EPS, guidance range, catalyst probability or valuation impact was inferred.",
     "No historical/full-universe backfill, quarterly MOPS XBRL ZIP ingestion, normalized-fundamental modification, analyst-consensus modification, catalyst-probability modification, private Fair Value calculation, or TWStockTracker write was performed.",
     "Fair Value V2.1 remains the sole valuation baseline; proprietary/private calculation remains outside Public_Data."
   ]
