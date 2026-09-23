@@ -1,20 +1,20 @@
 {
   "schema_version": "1.0",
-  "generated_at": "2026-09-23T07:03:18+08:00",
-  "window_start": "2026-09-22T19:04:08+08:00",
-  "window_end": "2026-09-23T07:03:18+08:00",
-  "event_file": "data/ingestion/discovery/events/2026/09/2026-09-23T070318+0800_primary-corporate-evidence.json",
+  "generated_at": "2026-09-23T19:03:56+08:00",
+  "window_start": "2026-09-23T07:03:18+08:00",
+  "window_end": "2026-09-23T19:03:56+08:00",
+  "event_file": "data/ingestion/discovery/events/2026/09/2026-09-23T190356+0800_primary-corporate-evidence.json",
   "production_verified": false,
   "new_event_count": 3,
   "counts_by_source_type": {
     "mops_material_announcement_discovery_mirror": 3
   },
   "counts_by_event_type": {
-    "business_demerger_and_holding_company_reorganization": 1,
-    "overseas_capacity_expansion_capex": 1,
-    "corporate_bond_financing_authorization": 1
+    "material_real_estate_sale_and_acquisition": 1,
+    "major_customer_insolvency_and_credit_risk": 1,
+    "subsidiary_subordinated_bond_financing_authorization": 1
   },
-  "high_priority_stock_ids": ["2945", "2356", "2317"],
+  "high_priority_stock_ids": ["9945", "2883", "3447"],
   "fetch_queue": {
     "pending": 3,
     "verified": 0,
@@ -22,30 +22,30 @@
   },
   "notable_candidates": [
     {
-      "event_id": "2945_20260922_retail_business_demerger_holding_company_reorganization",
-      "stock_ids": ["2945"],
-      "summary": "三商家購董事會通過零售事業內部分割至100%子公司富達零售，規劃轉型投控；分割價值預計2.5億元，仍待股東臨時會等程序。"
+      "event_id": "9945_2883_20260923_yucheng_plaza_sale_acquisition",
+      "stock_ids": ["9945", "2883"],
+      "summary": "潤泰新子公司擬處分玉成廣場予凱基人壽；賣方公告未稅交易總額202.18311億元、預計處分利益99.19443億元（含售後租回），買方公告取得價206億元。"
     },
     {
-      "event_id": "2356_20260922_thailand_production_equipment_facility_capex",
-      "stock_ids": ["2356"],
-      "summary": "英業達董事會通過泰國子公司生產設備及廠務工程投資，公告總額泰銖24.38億元。"
+      "event_id": "3447_20260923_cambium_administration_customer_credit_risk",
+      "stock_ids": ["3447"],
+      "summary": "展達客戶Cambium進入英國Administration；應收帳款約480萬美元，公司揭露預付款保障、主要業務承接安排及其餘業務最大潛在損失約110萬美元。"
     },
     {
-      "event_id": "2317_20260922_unsecured_corporate_bond_authorization_60bn",
-      "stock_ids": ["2317"],
-      "summary": "鴻海董事會決議無擔保普通公司債發行授權，上限新台幣600億元，用途為償還負債或充實營運資金。"
+      "event_id": "2883_20260923_kgi_futures_subordinated_bond_authorization_6bn",
+      "stock_ids": ["2883"],
+      "summary": "凱基期貨董事會通過最高60億元有擔保暨無擔保次順位普通公司債發行授權，用於強化資本及財務結構。"
     }
   ],
   "source_registry_changes": {
     "additions": [],
     "health_changes": [],
-    "notes": ["No new stable primary source family was required; all three candidates route to the already-registered MOPS official source for deterministic acquisition."]
+    "notes": ["No new stable primary source family was required; candidates route to the already-registered MOPS official source for deterministic acquisition."]
   },
   "notes": [
-    "Deduplicated against discovery state through 2026-09-22T19:04:08+08:00 and repository searches for the new event IDs/facts.",
-    "Search/news mirrors were discovery/cross-check only; all candidates remain production_verified=false pending canonical primary acquisition and hashing.",
-    "Observed evidence is separated from interpretation; no unreported revenue, EPS, utilization, customer allocation, issuance completion or valuation impact was inferred.",
+    "Deduplicated against discovery state through 2026-09-23T07:03:18+08:00 and repository searches for the material transaction/customer-risk facts.",
+    "Search/discovery mirrors were discovery/cross-check only; all candidates remain production_verified=false pending canonical primary acquisition and hashing.",
+    "Observed evidence is separated from interpretation; no unreported earnings, valuation impact, issuance completion or realized credit loss was inferred.",
     "No historical/full-universe backfill, quarterly MOPS XBRL ZIP ingestion, normalized-fundamental modification, analyst-consensus modification, catalyst-probability modification, private Fair Value calculation, or TWStockTracker write was performed.",
     "Fair Value V2.1 remains the sole valuation baseline; proprietary/private calculation remains outside Public_Data."
   ]
