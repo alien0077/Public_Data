@@ -1,0 +1,101 @@
+{
+  "schema_version": "1.0",
+  "discovered_at": "2026-09-23T07:03:18+08:00",
+  "window_start": "2026-09-22T19:04:08+08:00",
+  "window_end": "2026-09-23T07:03:18+08:00",
+  "production_verified": false,
+  "events": [
+    {
+      "event_id": "2945_20260922_retail_business_demerger_holding_company_reorganization",
+      "stock_ids": ["2945"],
+      "company_name": "三商家購",
+      "source_type": "mops_material_announcement_discovery_mirror",
+      "event_type": "business_demerger_and_holding_company_reorganization",
+      "title": "董事會通過零售事業分割予富達零售並規劃轉型投資控股公司",
+      "canonical_url": null,
+      "publisher": "三商家購 / MOPS (primary filing pending deterministic acquisition)",
+      "published_at": "2026-09-22",
+      "discovered_at": "2026-09-23T07:03:18+08:00",
+      "observed_facts": [
+        "董事會通過將美廉社、心樸市集、美廉便利架、Go美廉等零售通路相關資產、負債及營業，以分割方式移轉予100%持股子公司富達零售。",
+        "分割讓與營業價值預計為新台幣2.5億元，三商家購換取富達零售新發行普通股2,500萬股。",
+        "分割基準日暫定2027-01-01。",
+        "公司規劃轉型為投資控股公司並更名為眾聯投資控股；股票代號維持2945。",
+        "相關議案預計提交2026-11-18股東臨時會討論決議。"
+      ],
+      "evidence_summary": "重大組織重整：核心零售通路業務擬內部分割至100%子公司，母公司轉型投控；仍待股東臨時會等程序。",
+      "affected_inputs": ["corporate_structure", "business_segments", "corporate_action", "subsidiary_structure"],
+      "confidence": "high_discovery_pending_primary_raw",
+      "priority": "high",
+      "requires_raw_fetch": true,
+      "production_verified": false,
+      "source_urls": [
+        "https://www.cnyes.com/news/id/6613335",
+        "https://www.moneydj.com/kmdj/news/newsviewer.aspx?a=a693b2cc-6ec2-4aa6-af82-716be151e6e1"
+      ],
+      "content_hash": null,
+      "interpretation": "This is an internal reorganization proposal, not a completed disposal or change of control; no revenue, EPS or valuation impact is inferred."
+    },
+    {
+      "event_id": "2356_20260922_thailand_production_equipment_facility_capex",
+      "stock_ids": ["2356"],
+      "company_name": "英業達",
+      "source_type": "mops_material_announcement_discovery_mirror",
+      "event_type": "overseas_capacity_expansion_capex",
+      "title": "董事會通過泰國子公司購置生產設備及廠務工程",
+      "canonical_url": null,
+      "publisher": "英業達 / MOPS (primary filing pending deterministic acquisition)",
+      "published_at": "2026-09-22",
+      "discovered_at": "2026-09-23T07:03:18+08:00",
+      "observed_facts": [
+        "董事會於2026-09-22通過泰國子公司 Inventec Electronics (Thailand) Co., Ltd. 配合業務發展購置生產設備及進行廠務工程。",
+        "公告交易總金額為泰銖24.38億元。",
+        "交易相對人尚未確定，待確定後另行公告。"
+      ],
+      "evidence_summary": "泰國子公司新增重大生產設備與廠務工程投資，屬海外產能/設備資本支出。",
+      "affected_inputs": ["capex", "capacity", "geographic_capacity", "fixed_assets"],
+      "confidence": "high_discovery_pending_primary_raw",
+      "priority": "high",
+      "requires_raw_fetch": true,
+      "production_verified": false,
+      "source_urls": [
+        "https://tw.stock.yahoo.com/quote/2356/announcement",
+        "https://news.cnyes.com/news/id/6613236"
+      ],
+      "content_hash": null,
+      "interpretation": "The filing establishes approved capex but does not by itself establish incremental revenue, utilization, customer allocation or earnings contribution."
+    },
+    {
+      "event_id": "2317_20260922_unsecured_corporate_bond_authorization_60bn",
+      "stock_ids": ["2317"],
+      "company_name": "鴻海",
+      "source_type": "mops_material_announcement_discovery_mirror",
+      "event_type": "corporate_bond_financing_authorization",
+      "title": "董事會決議發行無擔保普通公司債總額不超過新台幣600億元",
+      "canonical_url": null,
+      "publisher": "鴻海 / MOPS (primary filing pending deterministic acquisition)",
+      "published_at": "2026-09-22",
+      "discovered_at": "2026-09-23T07:03:18+08:00",
+      "observed_facts": [
+        "董事會決議發行無擔保普通公司債，發行總額不超過新台幣600億元。",
+        "公開公告資訊指出募集資金用途為償還負債或充實營運資金。"
+      ],
+      "evidence_summary": "新增大型無擔保普通公司債發行授權，屬融資與資本結構事件。",
+      "affected_inputs": ["financing", "debt", "liquidity", "capital_structure"],
+      "confidence": "high_discovery_pending_primary_raw",
+      "priority": "high",
+      "requires_raw_fetch": true,
+      "production_verified": false,
+      "source_urls": [
+        "https://money.udn.com/money/story/5612/9771304"
+      ],
+      "content_hash": null,
+      "interpretation": "The authorization is not treated as completed issuance, and no assumption is made that proceeds fund any specific capacity expansion beyond the disclosed use of proceeds."
+    }
+  ],
+  "notes": [
+    "Deduplicated against Public_Data latest state generated at 2026-09-22T19:04:08+08:00 and repository searches for these event IDs/facts.",
+    "Registered MOPS remains the preferred primary acquisition source. Search/news mirrors were used only to discover/cross-check; canonical MOPS URLs/source IDs, raw bytes and content hashes remain pending deterministic acquisition.",
+    "No historical backfill, quarterly MOPS XBRL ingestion, normalized-fundamental changes, analyst-consensus changes, catalyst-probability changes, Fair Value calculation or TWStockTracker write was performed."
+  ]
+}

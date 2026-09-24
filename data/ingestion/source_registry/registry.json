@@ -1,6 +1,6 @@
 {
   "schema": "twstock-public-source-registry-v1",
-  "updated_at": "2026-09-22T13:46:00+08:00",
+  "updated_at": "2026-09-22T19:04:08+08:00",
   "purpose": "Canonical registry of useful public acquisition/discovery sources for Taiwan-stock corporate evidence, catalyst discovery, historical expectation backfill and source-health monitoring. Public sources/evidence only; no private Fair Value logic.",
   "rules": {
     "record_new_useful_sources_before_pipeline_use": true,
@@ -103,6 +103,23 @@
       "historical_backfill": true,
       "limitations": ["prefer primary sources for official numeric facts", "store metadata/derived facts rather than copyrighted fulltext"],
       "schedule_tags": ["catalyst", "macro", "source_health"]
+    },
+    {
+      "source_id": "namchow_ir",
+      "name": "南僑集團投資人專區－法人說明會",
+      "domain": "namchow.com.tw",
+      "canonical_url": "https://www.namchow.com.tw/zh/investor-relations/earnings-call/",
+      "source_type": "company_ir_primary",
+      "priority": "high",
+      "use_cases": ["investor_conference", "investor_presentation", "management_outlook", "company_disclosure_cross_check"],
+      "fields_verified": ["conference_date", "conference_description", "location", "presentation_links", "video_links", "mops_link"],
+      "pit_quality": "PRIMARY_COMPANY_IR_ARCHIVE",
+      "historical_backfill": true,
+      "earliest_verified_history": "2015-08-31",
+      "limitations": ["page observed on 2026-09-22 did not yet list the 2026-09-22 investor conference", "MOPS remains preferred for official event timestamps and newly filed conference materials"],
+      "schedule_tags": ["corporate_evidence", "investor_conference", "source_health"],
+      "last_verified_at": "2026-09-22T19:04:08+08:00",
+      "health_status": "healthy_archive_current_event_lag"
     }
   ]
 }
