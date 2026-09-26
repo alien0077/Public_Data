@@ -1,6 +1,6 @@
 {
   "schema": "twstock-public-source-registry-v1",
-  "updated_at": "2026-09-25T08:56:07+08:00",
+  "updated_at": "2026-09-26T12:10:00+08:00",
   "purpose": "Canonical registry of useful public acquisition/discovery sources for Taiwan-stock corporate evidence, catalyst discovery, historical expectation backfill and source-health monitoring. Public sources/evidence only; no private Fair Value logic.",
   "rules": {
     "record_new_useful_sources_before_pipeline_use": true,
@@ -283,6 +283,48 @@
       ],
       "last_verified_at": "2026-09-25T08:56:07+08:00",
       "health_status": "healthy"
+    },
+    {
+      "source_id": "cnyes_timestamped_analyst_news",
+      "name": "鉅亨網歷史外資／法人報告新聞",
+      "domain": "news.cnyes.com",
+      "url_pattern": "https://news.cnyes.com/news/id/{article_id}",
+      "discovery_query": "{symbol_or_company} EPS 目標價 外資 site:news.cnyes.com",
+      "source_type": "public_timestamped_analyst_news",
+      "priority": "high",
+      "use_cases": [
+        "historical_eps_estimate",
+        "target_price_revision",
+        "rating_change",
+        "historical_expectation_backfill"
+      ],
+      "fields_verified": [
+        "published_at",
+        "symbol",
+        "fiscal_year",
+        "eps_estimate_when_explicit",
+        "target_price_when_explicit",
+        "rating_when_explicit",
+        "broker_region_or_description_when_reported"
+      ],
+      "pit_quality": "PUBLIC_TIMESTAMPED_ANALYST_REPORT_SECONDARY",
+      "historical_backfill": true,
+      "earliest_verified_history": "2021-04-27",
+      "limitations": [
+        "not equivalent to FactSet multi-analyst consensus; keep separate provenance tier",
+        "analyst/broker identity may be anonymized as 美系/歐系/日系外資",
+        "only store numeric estimates explicitly stated in full timestamped article",
+        "search snippets are discovery only",
+        "target price is context only and must not directly enter intrinsic FV"
+      ],
+      "schedule_tags": [
+        "analyst_revision",
+        "historical_backfill",
+        "source_health"
+      ],
+      "last_verified_at": "2026-09-26T12:10:00+08:00",
+      "verification_context": "Verified full timestamped Cnyes articles provide explicit historical EPS/target-price evidence before FactSet-news coverage: examples include 2454 on 2021-04-27, 2303 on 2021-06-04, 2330 on 2021-06-10 and multiple 2330 reports in 2022.",
+      "health_status": "healthy_historical_archive"
     }
   ]
 }
