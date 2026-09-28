@@ -12,7 +12,7 @@ from datetime import datetime, timedelta, timezone
 from github_utils import GitHubDataExporter
 from collections import OrderedDict
 
-# 🚀 v2.5.0: 季報同步引擎 (環境自適應 + 穩定對位版)
+# 🚀 v2.6.0: 季報同步引擎 (CSV + HTML fallback + market provenance)
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 exporter = GitHubDataExporter()
 
@@ -47,9 +47,11 @@ def fetch_all_mops_csvs(session, ajax_url, payload, referer, q_str):
         except: pass
     
     filenames = sorted(list(set(all_filenames)))
-    if not filenames: return None
     
-    # 🚀 v2.4: 依季度分目錄存檔 (對齊環境路徑)
+    # v2.6: Prefer the legacy CSV export when available, but do not discard a
+    # valid MOPS financial table merely because the page no longer exposes the
+    # old hidden filename contract.  ajax_t163sb04/t163sb05 can return the full
+    # table directly as HTML.
     raw_dir = os.path.join(exporter.base_path, "raw_csvs/quarterly", q_str.replace("-", ""))
     os.makedirs(raw_dir, exist_ok=True)
     
@@ -61,8 +63,25 @@ def fetch_all_mops_csvs(session, ajax_url, payload, referer, q_str):
             with open(os.path.join(raw_dir, fn), 'w', encoding='cp950') as f: f.write(dl_resp.text)
             df = pd.read_csv(io.StringIO(dl_resp.text), thousands=',', skiprows=0, on_bad_lines='skip', engine='python')
             if not df.empty: all_dfs.append(df)
-        except: pass
-    return pd.concat(all_dfs, ignore_index=True) if all_dfs else None
+        except Exception:
+            pass
+    if all_dfs:
+        return pd.concat(all_dfs, ignore_index=True)
+
+    # HTML fallback.  Use the already-fetched response only; never issue a
+    # second data request here.  Keep only tables that actually contain a
+    # company-id column, avoiding navigation/summary tables.
+    html_dfs = []
+    try:
+        tables = pd.read_html(io.StringIO(resp.text), thousands=',')
+        for df in tables:
+            cols = [re.sub(r'[\s\(\)（）]', '', str(c)) for c in df.columns]
+            if any("公司代號" in c for c in cols):
+                df.columns = cols
+                html_dfs.append(df)
+    except (ValueError, ImportError):
+        pass
+    return pd.concat(html_dfs, ignore_index=True) if html_dfs else None
 
 def cln(df, mapping):
     if df is None or df.empty: return pd.DataFrame()
@@ -163,6 +182,9 @@ def main():
                 if is_df is not None and bs_df is not None:
                     m = pd.merge(cln(is_df, is_map), cln(bs_df, bs_map), on="sid")
                     if not m.empty:
+                        # Preserve the market provenance that is already known
+                        # from the MOPS TYPEK query.
+                        m["market"] = "TWSE" if mkt == "sii" else "TPEX"
                         print(f"[{mkt}: {len(m)} 檔]", end=" ", flush=True)
                         all_merged.append(m)
                 else:
@@ -176,7 +198,7 @@ def main():
                         rev, gp, op, ni, eps = r['rev'], r['gp'], r['op'], r['ni'], r['eps']
                         assets, equity, bvps = r['assets'], r['equity'], r['bvps']
                         results.append({
-                            "id": r['sid'], "eps": round(eps, 2),
+                            "id": r['sid'], "market": r.get('market'), "eps": round(eps, 2),
                             "gm": round(gp/rev*100, 2) if rev>0 else 0,
                             "om": round(op/rev*100, 2) if rev>0 else 0,
                             "nm": round(ni/rev*100, 2) if rev>0 else 0,
@@ -184,7 +206,7 @@ def main():
                             "roa": round(ni/assets*100, 2) if assets > 0 else 0,
                             "bvps": round(bvps, 2)
                         })
-                    exporter.export_to_json(pd.DataFrame(results), "quarterly", q_str, meta={"fiscal_period": q_str, "expected_companies": expected_companies, "coverage": round(len(results) / expected_companies, 6), "minimum_coverage": min_coverage})
+                    exporter.export_to_json(pd.DataFrame(results), "quarterly", q_str, meta={"fiscal_period": q_str, "expected_companies": expected_companies, "coverage": round(len(results) / expected_companies, 6), "minimum_coverage": min_coverage, "source_semantics": "current_mops_history_not_strict_pit", "market_provenance": "MOPS_TYPEK"})
                     latest_q = q_str; success = True; print(f"✅ 完成 {len(results)} 檔"); break
                 else: print(f"⚠️ 筆數不足 ({len(final_df)}/{minimum_rows}; expected={expected_companies}, coverage={len(final_df) / expected_companies:.1%})...", end=" ", flush=True)
             else: print("❌ 失敗...", end=" ", flush=True)
