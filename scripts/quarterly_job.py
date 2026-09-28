@@ -152,13 +152,40 @@ def main():
             
     latest_q = None
     latest_only = os.getenv("QUARTERLY_LATEST_ONLY") == "1"
+
+    def quarter_needs_v26_refresh(q_str):
+        """Old quarter files are not considered complete until v2.6 provenance exists."""
+        path = os.path.join(exporter.base_path, "quarterly", f"{q_str}.json")
+        try:
+            with open(path, encoding="utf-8") as fh:
+                obj = json.load(fh)
+            meta = obj.get("meta", {})
+            data = obj.get("data", obj.get("stocks", []))
+            if meta.get("market_provenance") != "MOPS_TYPEK":
+                return True
+            if meta.get("source_semantics") != "current_mops_history_not_strict_pit":
+                return True
+            if not data:
+                return True
+            # A completed v2.6 quarter must retain market and BVPS fields for
+            # every emitted row. Values may legitimately be <= 0.
+            return any("market" not in r or "bvps" not in r for r in data)
+        except (OSError, json.JSONDecodeError, TypeError):
+            return True
+
     for yr, q in quarters:
         q_str = f"{yr+1911}-Q{q}"
         # Latest-only mode is a freshness probe: an existing aggregate may
         # predate a late filing, amendment, or newly completed market batch.
         # Historical backfills remain incremental and skip completed files.
         if not latest_only and exporter.check_remote_exists("quarterly", q_str):
-            latest_q = q_str; continue
+            # v2.6 self-healing backfill: existence alone is no longer enough.
+            # Legacy/incomplete quarters are refreshed once; after they carry
+            # the v2.6 completeness/provenance contract they are skipped.
+            if not quarter_needs_v26_refresh(q_str):
+                latest_q = q_str
+                continue
+            print(f"  ♻️ {q_str} 存在但缺少 v2.6 BVPS/market provenance，重新補抓。")
         
         date_key = f"{yr + 1911}-{str(q*3).zfill(2)}-{['31','30','30','31'][q-1]}"
         if datetime.strptime(date_key, "%Y-%m-%d") > now_tpe.replace(tzinfo=None): continue
