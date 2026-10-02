@@ -10,19 +10,42 @@ import io
 import json
 import os
 import tempfile
+import time
 from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
-from urllib.parse import urlencode
+from typing import Any
 
 import requests
 
 HEADERS = {"User-Agent": "Public_Data-Factory/1.0", "Accept": "application/json,text/plain,*/*"}
 
 
-def _request(url: str, params: dict | None = None, timeout: int = 30) -> requests.Response:
-    response = requests.get(url, params=params, headers=HEADERS, timeout=timeout)
-    response.raise_for_status()
-    return response
+def _request(
+    url: str, params: dict[str, Any] | None = None, timeout: int = 30
+) -> requests.Response:
+    # Adapter retries do not cover errors while consuming the response body.
+    # Retry the complete GET, including truncated/chunked downloads.
+    for attempt in range(4):
+        response = None
+        try:
+            response = requests.get(
+                url, params=params, headers=HEADERS, timeout=timeout
+            )
+            response.raise_for_status()
+            _ = response.content
+            return response
+        except requests.RequestException:
+            permanent = (
+                response is not None
+                and 400 <= response.status_code < 500
+                and response.status_code not in (408, 429)
+            )
+            if response is not None:
+                response.close()
+            if permanent or attempt == 3:
+                raise
+            time.sleep(2 ** attempt)
+    raise AssertionError("unreachable")
 
 
 def _write_json(path: Path, payload: object) -> None:
@@ -42,7 +65,15 @@ def sync_market(day: date, data_root: Path) -> Path:
     """Fetch TWSE MI_INDEX and TPEX daily quotes into the raw public domain."""
     stamp = day.strftime("%Y%m%d")
     twse = _request("https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX", {"date": stamp, "type": "ALLBUT0999", "response": "json"}).json()
-    tpex = _request("https://www.tpex.org.tw/www/zh-tw/afterTrading/dailyQuotes/download", {"d": f"{day.year - 1911}/{day.month:02d}/{day.day:02d}"}).content.decode("big5", errors="replace")
+    tpex = _request(
+        "https://www.tpex.org.tw/www/zh-tw/afterTrading/dailyQuotes/download",
+        {"date": f"{day.year - 1911}/{day.month:02d}/{day.day:02d}",
+         "id": "", "response": "csv"},
+    ).content.decode("big5", errors="replace")
+    if twse.get("stat") != "OK" or not twse.get("tables"):
+        raise ValueError(f"TWSE market unavailable for {day}: {twse.get('stat')}")
+    if "代號" not in tpex or "名稱" not in tpex:
+        raise ValueError(f"TPEX market CSV unavailable for {day}")
     path = data_root / "factory" / "raw" / "market" / f"{day.isoformat()}.json"
     _write_json(path, {"date": day.isoformat(), "source": "TWSE/TPEX official daily market", "twse": twse, "tpex_csv": tpex})
     return path
@@ -66,7 +97,10 @@ def sync_margin(day: date, data_root: Path) -> Path:
 
 def sync_calendar(data_root: Path) -> Path:
     payload = _request("https://www.twse.com.tw/holidaySchedule/holidaySchedule", {"response": "json"}).json()
-    holidays = [row[0].strip() for row in payload.get("data", []) if len(row) >= 2 and "開始交易" not in row[1]]
+    holidays = [
+        row[0].strip() for row in payload.get("data", [])
+        if len(row) >= 2 and "開始交易" not in row[1] and "最後交易" not in row[1]
+    ]
     path = data_root / "factory" / "reference" / "calendar.json"
     _write_json(path, {"source": "TWSE official holidaySchedule", "holidays": sorted(set(holidays)), "raw": payload})
     return path
@@ -136,7 +170,7 @@ def sync_fx(data_root: Path) -> Path:
     symbols = {"USD_TWD": "USDTWD=X", "JPY_TWD": "JPYTWD=X", "EUR_TWD": "EURTWD=X"}
     end = int(datetime.now(timezone.utc).timestamp())
     start = int((datetime.now(timezone.utc) - timedelta(days=380)).timestamp())
-    rows_by_date: dict[str, dict] = {}
+    rows_by_date: dict[str, dict[str, Any]] = {}
     for label, symbol in symbols.items():
         payload = _request(f"https://query1.finance.yahoo.com/v8/finance/chart/{symbol}", {"period1": start, "period2": end, "interval": "1d"}).json()
         result = payload["chart"]["result"][0]
