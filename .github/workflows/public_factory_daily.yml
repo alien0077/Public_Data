@@ -10,7 +10,7 @@ concurrency:
   cancel-in-progress: false
 jobs:
   sync:
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, Linux, X64, acer-worker, public-data, n100]
     timeout-minutes: 45
     steps:
       - uses: actions/checkout@v4
