@@ -2,7 +2,7 @@
   "confidence": "high_for_official_data_only",
   "coverage_status": "partial_verified_snapshot_with_explicit_gaps",
   "fair_value_policy": "Production Fair Value unchanged; semantic evidence does not directly overwrite official numeric macro series.",
-  "generated_at": "2026-10-09T12:24:01Z",
+  "generated_at": "2026-10-09T13:18:27Z",
   "geopolitical": {
     "event_date": "2026-10-08",
     "event_type": "us_iran_shadow_fleet_sanctions",
@@ -15,24 +15,28 @@
   },
   "ism_strict_pit": {
     "gate_status": "PENDING_REBUILD_NOT_ASSUMED_PASS",
-    "historical_source_discovery": "2016-01 through 2016-09 and 2016-11 through 2016-12 issuer-origin release-day press releases found",
-    "months_submitted": 11,
-    "unresolved_in_this_scope": [
-      "2016-10"
-    ]
+    "historical_source_discovery": "2016-01 through 2016-12 original/same-day archive issuer releases available; 2017-01 through 2017-09 newly added; later months remain for future discovery.",
+    "months_submitted": 21,
+    "remaining_research_scope": "2017-10 onward, strict-PIT quality report not yet recomputed",
+    "unresolved_in_this_scope": []
   },
   "macro_summary": {
     "confidence": "high_for_cited_release_values_only",
     "latest_verified_policy_rates": {
       "JP_BOJ": 1.25,
-      "KR_BOK": 3
+      "KR_BOK": 3,
+      "US_FED_TARGET_LOWER_PCT": 3.75,
+      "US_FED_TARGET_UPPER_PCT": 4
     },
-    "new_material_geopolitical_energy_information": true,
-    "new_official_china_macro_release_since_prior_snapshot": true,
-    "new_official_japan_macro_release_since_prior_snapshot": true,
-    "new_official_korea_macro_release_since_prior_snapshot": true,
-    "new_official_taiwan_macro_release_since_prior_snapshot": true,
-    "new_official_us_macro_release_since_prior_snapshot": true,
+    "new_material_geopolitical_energy_information": false,
+    "new_official_china_macro_release_since_prior_snapshot": false,
+    "new_official_japan_macro_release_since_prior_snapshot": false,
+    "new_official_korea_macro_release_since_prior_snapshot": false,
+    "new_official_taiwan_macro_release_since_prior_snapshot": false,
+    "new_official_us_macro_release_since_prior_snapshot": false,
+    "new_verified_ism_release_vintages": 10,
+    "new_verified_korean_bop_observation": true,
+    "new_verified_us_fed_policy_observations": 2,
     "valuation_effect": "none; research-only"
   },
   "monitored_series_status": {
@@ -67,6 +71,13 @@
       "stale": true,
       "status": "not_freshly_verified_in_this_run"
     },
+    "KR_CURRENT_ACCOUNT": {
+      "period": "2026-08",
+      "published_at": "2026-10-08T08:00:00+09:00",
+      "revision": "preliminary",
+      "source_url": "https://www.bok.or.kr/portal/bbs/B0000501/view.do?menuNo=201264&nttId=11065371",
+      "surplus_usd_billion": 46.11
+    },
     "KR_EXPORTS": {
       "exports_usd_billion": 120.94,
       "exports_yoy_pct": 83.5,
@@ -94,9 +105,23 @@
       "period": "2026-08",
       "source_url": "https://www.bls.gov/news.release/cpi.htm"
     },
+    "US_FED_TARGET": {
+      "lower_pct": 3.75,
+      "period": "2026-09",
+      "published_at": "2026-09-16T14:00:00-04:00",
+      "source_url": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20260916a.htm",
+      "upper_pct": 4
+    },
     "US_FED_TREASURY_YIELDS_DXY_VIX_OIL_COPPER": {
       "stale": true,
       "status": "not_freshly_verified_in_this_run"
+    },
+    "US_FOMC_MINUTES": {
+      "meeting_dates": "2026-09-15/2026-09-16",
+      "period": "2026-09",
+      "policy_outlook": "Most participants assessed another rate increase likely appropriate by year-end, contingent on data.",
+      "published_at": "2026-10-07T14:00:00-04:00",
+      "source_url": "https://www.federalreserve.gov/monetarypolicy/fomcminutes20260916.htm"
     },
     "US_ISM_MANUFACTURING": {
       "new_orders": 55.3,
@@ -139,7 +164,11 @@
     "https://www.stat.go.jp/data/cpi/sokuhou/tsuki/index-z.html",
     "https://english.motir.go.kr/eng/article/EATCLdfa319ada/2743/view",
     "https://www.bok.or.kr/eng/main/main.do",
-    "https://home.treasury.gov/news/press-releases/sb0653/"
+    "https://home.treasury.gov/news/press-releases/sb0653/",
+    "https://www.bok.or.kr/portal/bbs/B0000501/view.do?menuNo=201264&nttId=11065371",
+    "https://www.federalreserve.gov/newsevents/pressreleases/monetary20260916a.htm",
+    "https://www.federalreserve.gov/monetarypolicy/fomcminutes20260916.htm",
+    "https://www.marketscreener.com/news/latest/PMI-at-51-9-October-Manufacturing-ISM-Report-On-Business-New-Orders-Production-and-Employm-23315943/"
   ],
-  "summary": "Official data verified through 2026-10-09: US September payroll +29,000 and unemployment 4.2%; August PCE headline 3.4% y/y and core 3.0%; September ISM manufacturing 54.5/new orders 55.3 and services 54.9/new orders 59.8. Taiwan September exports US$87.22bn (+60.9% y/y). China September manufacturing PMI 50.1. Japan BOJ policy rate 1.25% and August CPI 1.9% y/y. Korea BOK base rate 3.00%, September exports US$120.94bn (+83.5%), semiconductor exports US$60.30bn (+262.8%). US Treasury on October 8 sanctioned 17 Iranian shadow-fleet vessels. Missing current closes or unverified data are not inferred."
+  "summary": "Official-data follow-up on 2026-10-09: newly verified Korea August 2026 current account surplus USD 46.11bn (preliminary), September 2026 US FOMC target range 3.75%-4.00%, and immutable ISM manufacturing original-release evidence for October 2016 and January-September 2017. Existing US/TW/CN/JP/KR observations retained; core macro and ISM strict-PIT gates not rebuilt and not assumed PASS."
 }
