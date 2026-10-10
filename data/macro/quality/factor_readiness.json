@@ -1,0 +1,97 @@
+{
+  "core_macro_pit_gate": "FAIL",
+  "evaluated_at": "2026-10-10T09:59:37.624851+00:00",
+  "factors": {
+    "fx_score": {
+      "contributing_inputs": [
+        "USD_TWD_CBC_CHANGE_20D",
+        "USD_TWD_CHANGE_20D",
+        "US_BROAD_DOLLAR_INDEX",
+        "DXY_CHANGE_20D"
+      ],
+      "coverage": 1.0,
+      "freshness_score": 1.0,
+      "missing_inputs": [],
+      "status": "NORMAL"
+    },
+    "growth_score": {
+      "contributing_inputs": [
+        "TW_EXPORT_ORDERS_YOY",
+        "TW_EXPORTS_YOY",
+        "TW_PMI",
+        "US_ISM_MFG_PMI",
+        "US_ISM_MFG_NEW_ORDERS",
+        "TW_LEADING_INDEX_MOM",
+        "TW_LEADING_INDEX_LEVEL",
+        "TW_COINCIDENT_INDEX_LEVEL",
+        "TW_REAL_GDP_GROWTH"
+      ],
+      "coverage": 1.0,
+      "freshness_score": 1.0,
+      "missing_inputs": [],
+      "status": "NORMAL"
+    },
+    "inflation_score": {
+      "contributing_inputs": [
+        "US_CPI_YOY",
+        "US_CORE_CPI_YOY",
+        "US_PCE_YOY",
+        "US_CORE_PCE_YOY",
+        "TW_CPI_YOY"
+      ],
+      "coverage": 1.0,
+      "freshness_score": 1.0,
+      "missing_inputs": [],
+      "status": "DEGRADED"
+    },
+    "liquidity_score": {
+      "contributing_inputs": [
+        "US2Y_CHANGE_20D",
+        "US10Y_CHANGE_20D",
+        "US_BROAD_DOLLAR_INDEX",
+        "TW_M1B_YOY",
+        "TW_M2_YOY"
+      ],
+      "coverage": 1.0,
+      "freshness_score": 1.0,
+      "missing_inputs": [],
+      "status": "NORMAL"
+    },
+    "rates_score": {
+      "contributing_inputs": [
+        "US10Y_MINUS_US2Y",
+        "US10Y_CHANGE_20D",
+        "TW_POLICY_RATE",
+        "TW10Y_CHANGE_20D"
+      ],
+      "coverage": 1.0,
+      "freshness_score": 1.0,
+      "missing_inputs": [],
+      "status": "NORMAL"
+    },
+    "risk_score": {
+      "contributing_inputs": [
+        "VIX",
+        "US_BROAD_DOLLAR_INDEX",
+        "TW_MONITORING_SCORE",
+        "WTI_CHANGE_20D",
+        "TW_UNEMPLOYMENT_RATE"
+      ],
+      "coverage": 1.0,
+      "freshness_score": 1.0,
+      "missing_inputs": [],
+      "status": "NORMAL"
+    }
+  },
+  "ism_pit_gate": "PARTIAL",
+  "production_approved": false,
+  "requirements": {
+    "core_macro_pit_gate": "PASS",
+    "growth_factor_input_coverage": 0.7,
+    "other_factor_minimum_coverage": 0.5,
+    "strict_ism_pit_gate_for_full_macro": "PASS"
+  },
+  "schema_version": "macro-factor-readiness-v1",
+  "source_rows_loaded": 428159,
+  "status": "research_diagnostic_only"
+}
