@@ -5472,9 +5472,30 @@
         "US_ISM_MFG_NEW_ORDERS": 53.7,
         "US_ISM_MFG_PMI": 54.6
       }
+    },
+    {
+      "discovery_status": "published_evidence_pending_strict_pit_gate",
+      "missing_series": [
+        "US_ISM_MFG_PMI",
+        "US_ISM_MFG_NEW_ORDERS"
+      ],
+      "next_action": "verify issuer original-release PIT evidence and recompute strict-PIT gate",
+      "period": "2026-09",
+      "published_vintage_paths": [
+        "data/macro/ism/vintages/2026-09/d149459a5a49a1c85ddcb913cbf54e642691bebbfa7b912a27663807a7c45292.json"
+      ],
+      "required_series": [
+        "US_ISM_MFG_PMI",
+        "US_ISM_MFG_NEW_ORDERS"
+      ],
+      "resolved": {
+        "US_ISM_MFG_NEW_ORDERS": false,
+        "US_ISM_MFG_PMI": false
+      },
+      "status": "evidence_pending_strict_pit_gate"
     }
   ],
   "schema_version": "ism-pit-backfill-queue-v2",
   "source_policy": "official_release_evidence_before_license; no_revised_history_as_pit",
-  "target_months": 128
+  "target_months": 129
 }
