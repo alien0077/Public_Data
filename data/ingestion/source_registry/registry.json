@@ -1,6 +1,6 @@
 {
   "schema": "twstock-public-source-registry-v1",
-  "updated_at": "2026-10-12T12:43:53.435Z",
+  "updated_at": "2026-10-13T07:43:42+08:00",
   "purpose": "Canonical registry of useful public acquisition/discovery sources for Taiwan-stock corporate evidence, catalyst discovery, historical expectation backfill and source-health monitoring. Public sources/evidence only; no private Fair Value logic.",
   "rules": {
     "record_new_useful_sources_before_pipeline_use": true,
@@ -356,6 +356,42 @@
       "last_verified_at": "2026-10-12T12:43:53.435Z",
       "verification_context": "Opened 2026-10-12 Q3 official company release, verified 2408 issuer identity, unaudited revenue/net income/EPS, AI mix, future fab capacity guidance",
       "health_status": "healthy_current"
+    },
+    {
+      "source_id": "marketscreener_mt_newswires",
+      "name": "MarketScreener / MT Newswires 公開券商評等標題",
+      "domain": "marketscreener.com",
+      "url_pattern": "https://uk.marketscreener.com/news/{article_slug}",
+      "source_type": "public_attributed_analyst_rating_headline",
+      "priority": "medium",
+      "use_cases": [
+        "named_broker_rating",
+        "target_price",
+        "coverage_initiation"
+      ],
+      "fields_verified": [
+        "symbol",
+        "broker",
+        "public_article_date",
+        "rating",
+        "target_price_when_explicit_in_headline"
+      ],
+      "pit_quality": "PUBLIC_DATED_SECONDARY_HEADLINE_NOT_STRICT_PIT",
+      "historical_backfill": true,
+      "limitations": [
+        "Full MT Newswires article requires membership; only use public headline and timestamp, not paywalled body",
+        "Original brokerage report not independently accessed; report_date is a public article date proxy",
+        "Do not infer EPS, revenue, valuation method, horizon, or signed contracts from headline",
+        "Target price is an external cross-check, never intrinsic FV"
+      ],
+      "schedule_tags": [
+        "analyst_revision",
+        "corporate_evidence",
+        "source_health"
+      ],
+      "last_verified_at": "2026-10-13T07:43:42+08:00",
+      "verification_context": "Opened public MT Newswires/MarketScreener article dated 2026-10-09, DBS Bank starts 2454 MediaTek Buy at NT$6,200; full report unavailable",
+      "health_status": "public_headline_only"
     }
   ]
 }
