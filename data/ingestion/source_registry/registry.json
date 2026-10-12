@@ -1,6 +1,6 @@
 {
   "schema": "twstock-public-source-registry-v1",
-  "updated_at": "2026-09-26T12:10:00+08:00",
+  "updated_at": "2026-10-12T12:43:53.435Z",
   "purpose": "Canonical registry of useful public acquisition/discovery sources for Taiwan-stock corporate evidence, catalyst discovery, historical expectation backfill and source-health monitoring. Public sources/evidence only; no private Fair Value logic.",
   "rules": {
     "record_new_useful_sources_before_pipeline_use": true,
@@ -325,6 +325,37 @@
       "last_verified_at": "2026-09-26T12:10:00+08:00",
       "verification_context": "Verified full timestamped Cnyes articles provide explicit historical EPS/target-price evidence before FactSet-news coverage: examples include 2454 on 2021-04-27, 2303 on 2021-06-04, 2330 on 2021-06-10 and multiple 2330 reports in 2022.",
       "health_status": "healthy_historical_archive"
+    },
+    {
+      "source_id": "nanya_2408_official_ir",
+      "name": "南亞科技（2408）官方投資人關係／新聞稿",
+      "domain": "nanya.com",
+      "canonical_url": "https://www.nanya.com/tw/Ir",
+      "source_type": "primary_issuer_ir",
+      "priority": "highest",
+      "use_cases": [
+        "quarterly_self_reported_financials",
+        "investor_conference",
+        "production_capacity_guidance",
+        "technology_roadmap",
+        "capital_spending_guidance"
+      ],
+      "pit_quality": "PRIMARY_ISSUER_DATE_ONLY_UNLESS_TIMESTAMP_ARCHIVED",
+      "historical_backfill": true,
+      "limitations": [
+        "Company page may display publication date without time; do not certify intraday strict PIT",
+        "Self-reported consolidated figures may be unaudited",
+        "Management capacity targets are not realized production or contracted revenue",
+        "Preserve source locator and observed date; no paid text republication"
+      ],
+      "schedule_tags": [
+        "corporate_evidence",
+        "issuer_fv_bridge",
+        "source_health"
+      ],
+      "last_verified_at": "2026-10-12T12:43:53.435Z",
+      "verification_context": "Opened 2026-10-12 Q3 official company release, verified 2408 issuer identity, unaudited revenue/net income/EPS, AI mix, future fab capacity guidance",
+      "health_status": "healthy_current"
     }
   ]
 }
