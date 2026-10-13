@@ -1,6 +1,6 @@
 {
   "schema": "twstock-public-source-registry-v1",
-  "updated_at": "2026-10-14T03:43:52+08:00",
+  "updated_at": "2026-10-14T05:40:11+08:00",
   "purpose": "Canonical registry of useful public acquisition/discovery sources for Taiwan-stock corporate evidence, catalyst discovery, historical expectation backfill and source-health monitoring. Public sources/evidence only; no private Fair Value logic.",
   "rules": {
     "record_new_useful_sources_before_pipeline_use": true,
@@ -485,6 +485,43 @@
       ],
       "first_verified_at": "2026-10-14T03:43:52+08:00",
       "production_verified": false
+    },
+    {
+      "source_id": "ftnn_public_broker_attributed_news",
+      "name": "FTNN 新聞網公開券商具名與匿名法人財務報導",
+      "domain": "ftnn.com.tw",
+      "url_pattern": "https://www.ftnn.com.tw/news/{article_id}",
+      "source_type": "public_timestamped_secondary_attribution",
+      "priority": "medium",
+      "use_cases": [
+        "broker_target_discovery",
+        "analyst_revisions",
+        "company_financial_forecast_crosscheck",
+        "fv_model_bridge"
+      ],
+      "fields_verified": [
+        "published_at",
+        "issuer_symbol",
+        "attributed_broker_when_named",
+        "numeric_claim_with_body_locator"
+      ],
+      "pit_quality": "PUBLIC_TIMESTAMPED_SECONDARY_NOT_STRICT_PIT",
+      "historical_backfill": true,
+      "limitations": [
+        "article timestamp is not original brokerage report_date",
+        "unnamed analyst cannot become named broker sidecar",
+        "verify issuer and body text; search snippet only discovery",
+        "news financial figures can differ from MOPS actual; reconcile",
+        "never reproduce copyrighted report text",
+        "first observed now; no historical availability certification"
+      ],
+      "schedule_tags": [
+        "broker_valuations",
+        "corporate_evidence",
+        "historical_backfill",
+        "source_health"
+      ],
+      "first_verified_at": "2026-10-14T05:40:11+08:00"
     }
   ]
 }
