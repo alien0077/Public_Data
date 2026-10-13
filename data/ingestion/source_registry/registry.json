@@ -1,6 +1,6 @@
 {
   "schema": "twstock-public-source-registry-v1",
-  "updated_at": "2026-10-13T07:43:42+08:00",
+  "updated_at": "2026-10-14T01:27:30+08:00",
   "purpose": "Canonical registry of useful public acquisition/discovery sources for Taiwan-stock corporate evidence, catalyst discovery, historical expectation backfill and source-health monitoring. Public sources/evidence only; no private Fair Value logic.",
   "rules": {
     "record_new_useful_sources_before_pipeline_use": true,
@@ -392,6 +392,58 @@
       "last_verified_at": "2026-10-13T07:43:42+08:00",
       "verification_context": "Opened public MT Newswires/MarketScreener article dated 2026-10-09, DBS Bank starts 2454 MediaTek Buy at NT$6,200; full report unavailable",
       "health_status": "public_headline_only"
+    },
+    {
+      "source_id": "tsmc_official_ir",
+      "name": "TSMC Investor Relations",
+      "domain": "investor.tsmc.com",
+      "canonical_url": "https://investor.tsmc.com/",
+      "source_type": "primary_official",
+      "priority": "highest",
+      "use_cases": [
+        "earnings_transcripts",
+        "quarterly_results",
+        "management_guidance",
+        "hpc_and_advanced_packaging"
+      ],
+      "pit_quality": "PRIMARY_DATED_UNARCHIVED",
+      "historical_backfill": true,
+      "schedule_tags": [
+        "backfill_v2",
+        "corporate_evidence"
+      ]
+    },
+    {
+      "source_id": "ftv_2025_broker_attributed",
+      "name": "Formosa Television Finance",
+      "domain": "ftvnews.com.tw",
+      "canonical_url": "https://www.ftvnews.com.tw/",
+      "source_type": "secondary_attributed",
+      "priority": "secondary",
+      "use_cases": [
+        "historical_broker_target_price"
+      ],
+      "pit_quality": "PUBLIC_ARTICLE_TIMESTAMP_NOT_STRICT_PIT",
+      "historical_backfill": true,
+      "schedule_tags": [
+        "backfill_v2"
+      ]
+    },
+    {
+      "source_id": "ptt_stock_historical_reposts",
+      "name": "PTT Stock reposts with original publisher attribution",
+      "domain": "ptt.cc",
+      "canonical_url": "https://www.ptt.cc/bbs/Stock/",
+      "source_type": "tertiary_attributed_repost",
+      "priority": "low",
+      "use_cases": [
+        "historical_broker_target_price_secondary_crosscheck"
+      ],
+      "pit_quality": "PUBLIC_REPOST_TIMESTAMP_NOT_STRICT_PIT",
+      "historical_backfill": true,
+      "schedule_tags": [
+        "backfill_v2"
+      ]
     }
   ]
 }
