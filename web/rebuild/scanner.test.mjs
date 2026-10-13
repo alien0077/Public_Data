@@ -1,0 +1,14 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {emptyScanner,validateScanner,filterScannerRows,readScannerPreference} from './scanner.mjs';
+const rows=[{symbol:'2330',name:'台積電',sector:'半導體',market:'TWSE',price:100,volume:1000},{symbol:'6488',name:'環球晶',sector:'半導體',market:'TPEX',price:200,volume:0},{symbol:'9999',name:'缺值',market:'TWSE',price:null,volume:null}];
+const run=input=>filterScannerRows(rows,validateScanner({...emptyScanner(),...input}).filter).map(r=>r.symbol);
+test('empty or whitespace criteria preserve all eligible input rows without mutation',()=>{assert.deepEqual(run({}),['2330','6488','9999']);assert.deepEqual(run({minPrice:' ',query:' '}),['2330','6488','9999']);assert.equal(rows.length,3);});
+test('query matches name symbol sector and case insensitive text',()=>{assert.deepEqual(run({query:'台積'}),['2330']);assert.deepEqual(run({query:'6488'}),['6488']);assert.deepEqual(run({query:'半導體'}),['2330','6488']);assert.equal(filterScannerRows([{name:'ABC'}],validateScanner({query:'abc'}).filter).length,1);});
+test('combined market raw-price volume filters include exact boundaries',()=>{assert.deepEqual(run({market:'TWSE',minPrice:'100',maxPrice:'100',minVolume:'1000'}),['2330']);assert.deepEqual(run({market:'TPEX',minVolume:'0'}),['6488']);});
+test('active numeric filters exclude missing or non-finite values only for that field',()=>{assert.deepEqual(run({minVolume:'0'}),['2330','6488']);assert.deepEqual(run({maxPrice:'200'}),['2330','6488']);assert.deepEqual(filterScannerRows([{price:NaN},{price:Infinity},{price:'100'},{price:0}],validateScanner({minPrice:'0'}).filter),[{price:0}]);});
+test('invalid negative non-finite values and inverted ranges return errors',()=>{for(const key of ['minPrice','maxPrice','minVolume'])for(const value of ['-1','NaN','Infinity','1e999','bad','0x10'])assert.ok(validateScanner({[key]:value}).error,`${key}=${value}`);assert.ok(validateScanner({minPrice:'201',maxPrice:'200'}).error);assert.ok(validateScanner({market:'unknown'}).error);});
+test('decimal zero and finite exponent are valid and inputs remain unchanged',()=>{const input={minPrice:'.5',maxPrice:'2e2',minVolume:'0'};assert.deepEqual(validateScanner(input).filter,{query:'',market:'',minPrice:.5,maxPrice:200,minVolume:0});assert.equal(input.minPrice,'.5');});
+
+test('market comparison ignores source case',()=>{assert.equal(filterScannerRows([{market:'twse'}],validateScanner({market:'TWSE'}).filter).length,1);});
+test('persisted criteria are revalidated and corrupt or invalid data falls back safely',()=>{const read=value=>readScannerPreference({getItem:()=>value});assert.equal(read(JSON.stringify({minPrice:'10'})).minPrice,'10');for(const value of ['bad','null','[]',JSON.stringify({minPrice:'-1'}),JSON.stringify({minPrice:'20',maxPrice:'10'})])assert.deepEqual(read(value),emptyScanner());});

@@ -1,0 +1,43 @@
+@media(min-width:1100px){
+ .workspace:has(.desktop-page){display:block;max-width:1900px;margin-inline:auto}
+ .workspace:has(.desktop-page)>.workspace-divider,.workspace:has(.desktop-page)>.desktop-inspector,.workspace:has(.desktop-page)>.desktop-research-detail{display:none}
+ .workspace:has(.desktop-page)>.page{width:100%;max-width:none}
+ .topbar:has(+.workspace .desktop-page) .workspace-controls{display:none}
+ .desktop-page{display:grid;gap:var(--space,16px);align-items:start;min-width:0}
+ .desktop-page>*,.desktop-page section,.desktop-page aside{min-width:0}
+ .desktop-page .card{margin-top:0}
+ .desktop-market{grid-template-columns:minmax(0,3fr) minmax(0,2fr);grid-template-areas:'indices indices' 'intraday intraday' 'primary secondary' 'breadth tools' 'ranking ranking'}
+ .desk-indices{grid-area:indices;display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:16px}
+ .desk-intraday{grid-area:intraday}.desk-primary{grid-area:primary}.desk-secondary{grid-area:secondary}.desk-breadth{grid-area:breadth}.desk-tools{grid-area:tools}.desk-ranking{grid-area:ranking}
+ .desktop-explore{grid-template-columns:minmax(190px,.65fr) minmax(320px,1.4fr) minmax(320px,1fr)}
+ .desktop-explore .desk-filter .stack{gap:12px}.desktop-explore .desk-lab svg{width:100%;height:auto}
+ .desktop-assets{grid-template-columns:minmax(0,1.8fr) minmax(290px,1fr)}
+ .desktop-assets .desk-asset-summary,.desktop-assets .desk-asset-nav{grid-column:1/-1}
+ .desktop-assets .desk-asset-summary .metric-grid{grid-template-columns:repeat(auto-fit,minmax(140px,1fr))}
+ .desktop-assets .desk-trades button{width:100%;text-align:left;white-space:normal;margin-bottom:8px}
+ .desktop-assets .desk-trades button[aria-pressed=true]{outline:2px solid var(--blue)}
+}
+
+@media(min-width:1100px){
+ .desktop-settings{grid-template-columns:minmax(180px,.55fr) minmax(0,3fr)}
+ .desk-settings-top,.desk-settings-bottom{display:grid;gap:16px;align-items:start;min-width:0}
+ .desk-settings-top{grid-template-columns:minmax(230px,.7fr) minmax(0,1.5fr)}
+ .desk-settings-bottom{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .desk-settings-top>*,.desk-settings-bottom>*{min-width:0}
+ .desktop-etf{grid-template-columns:minmax(200px,.7fr) minmax(350px,1.5fr) minmax(260px,1fr)}
+}
+
+.desktop-panel-controls,.desktop-panel-divider{display:none}
+@media(min-width:1100px){
+ .desktop-panel-controls{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+ .desktop-panel-controls>.toolbar,.desktop-panel-controls>p{grid-column:1/-1}
+ .desktop-page{position:relative}
+ .desktop-panel-divider{display:block;position:absolute;top:0;bottom:0;width:12px;z-index:4;cursor:col-resize;touch-action:none;border-radius:6px}
+ .desktop-panel-divider:hover,.desktop-panel-divider:focus-visible{background:var(--selected);outline:2px solid var(--blue)}
+ .desktop-panel-controls input[type=range]{padding:0}
+}
+
+@media(min-width:1100px){
+ .workspace:has(.desktop-page)>.desktop-inspector.inspector-overlay{display:flex;position:fixed;inset:76px 16px 16px auto;width:min(560px,48vw);max-height:none;z-index:45;background:var(--bg);padding:16px;border:1px solid var(--line);border-radius:16px;box-shadow:0 12px 40px #0004;resize:none;overflow:auto}
+ .inspector-overlay>.toolbar{position:sticky;top:-16px;background:var(--bg);padding-block:12px;z-index:1}
+}

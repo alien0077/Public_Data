@@ -1,0 +1,7 @@
+const SHELL='twstock-rebuild-shell-v1';
+const assets=['./','./index.html','./style.css','./app.mjs','./personal-records.mjs','./core.mjs','./storage.mjs','./features.mjs','./periods.mjs','./market.mjs','./index-history.mjs','./index-intraday.mjs','./services.mjs','./transfer.mjs','./import-compat.mjs','./research-panel.mjs','./workspace-keys.mjs','./chart.mjs','./comparison.mjs','./heatmap.mjs','./scanner.mjs','./cashflow.mjs','./research.mjs','./rotation.mjs','./desktop.mjs','./desktop-pages.mjs','./panel-layout.mjs','./column-widths.mjs','./desktop-pages.css','./strategy-evaluator.mjs','./etf.mjs','./assets.mjs','./explore.mjs','./patterns.mjs','./flow-history.mjs','./news.mjs','./routes.json'];
+self.addEventListener('install',event=>event.waitUntil(caches.open(SHELL).then(cache=>cache.addAll(assets)).then(()=>self.skipWaiting())));
+self.addEventListener('activate',event=>event.waitUntil(self.clients.claim()));
+self.addEventListener('fetch',event=>{const url=new URL(event.request.url);if(event.request.method!=='GET'||url.origin!==self.location.origin||!url.pathname.startsWith(new URL('./',self.location).pathname))return;if(url.pathname.endsWith('/listing-eligibility.json'))return;
+ event.respondWith(fetch(event.request).then(response=>{if(response.ok){const copy=response.clone();event.waitUntil(caches.open(SHELL).then(cache=>cache.put(event.request,copy)));}return response;}).catch(async()=>{const cached=await caches.match(event.request);if(cached)return cached;throw new Error('離線快取尚未建立');}));
+});
