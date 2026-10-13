@@ -1,6 +1,6 @@
 {
   "schema": "twstock-public-source-registry-v1",
-  "updated_at": "2026-10-14T01:27:30+08:00",
+  "updated_at": "2026-10-14T03:43:52+08:00",
   "purpose": "Canonical registry of useful public acquisition/discovery sources for Taiwan-stock corporate evidence, catalyst discovery, historical expectation backfill and source-health monitoring. Public sources/evidence only; no private Fair Value logic.",
   "rules": {
     "record_new_useful_sources_before_pipeline_use": true,
@@ -444,6 +444,47 @@
       "schedule_tags": [
         "backfill_v2"
       ]
+    },
+    {
+      "source_id": "investing_public_broker_ratings",
+      "name": "Investing.com public analyst ratings / target-price table",
+      "domain": "investing.com",
+      "canonical_url": "https://www.investing.com/equities/wistron-corp-consensus-estimates",
+      "source_type": "public_attributed_broker_rating_aggregator",
+      "priority": "medium",
+      "use_cases": [
+        "broker_target_price",
+        "broker_rating",
+        "target_price_revision",
+        "broker_report_date_discovery",
+        "external_valuation_crosscheck"
+      ],
+      "fields_verified": [
+        "broker",
+        "report_date_displayed",
+        "rating",
+        "target_price_twd",
+        "previous_target_price_twd",
+        "rating_action",
+        "12_month_page_context"
+      ],
+      "source_access": "public_attributed_summary",
+      "pit_quality": "CURRENT_DYNAMIC_VIEW_NOT_HISTORICAL_PIT_CERTIFIED",
+      "historical_backfill": false,
+      "effective_available_at_policy": "Use actual independently verified observation date; dynamic table row date alone is not an archived historical publication proof.",
+      "limitations": [
+        "Page may update or adjust historical targets after corporate actions",
+        "No original broker report or forecast inputs",
+        "Do not infer PE/DCF/FCF or issuer orders from target prices",
+        "Not a replacement for company-specific fair value"
+      ],
+      "schedule_tags": [
+        "corporate_evidence",
+        "broker_valuations",
+        "source_health"
+      ],
+      "first_verified_at": "2026-10-14T03:43:52+08:00",
+      "production_verified": false
     }
   ]
 }
