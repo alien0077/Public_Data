@@ -1,0 +1,54 @@
+{
+  "schemaVersion": 1,
+  "purpose": "official quarter-end TWSE/TPEx security name-to-symbol identity files for MOPS 2026Q3 name-only holdings",
+  "matchingRule": "normalized exact security name; only unique name-to-symbol matches accepted; no current listing master or fuzzy aliases",
+  "sources": [
+    {
+      "path": "raw/2026Q3/security-identities/twse-2026-09-30.json",
+      "sourceURL": "https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX?date=20260930&type=ALLBUT0999&response=json",
+      "sha256": "e7fb4c7d537c1c3c4c8aea32e1feaf21c4fd6060ff8403410d05294df3771b47",
+      "bytes": 246887,
+      "asOf": "2026-09-30",
+      "encoding": "utf-8"
+    },
+    {
+      "path": "raw/2026Q3/security-identities/tpex-2026-09-30.csv",
+      "sourceURL": "https://www.tpex.org.tw/www/zh-tw/afterTrading/dailyQuotes/download?date=115%2F09%2F30&id=&response=csv",
+      "sha256": "d6acd12c1da3f5c845d0117315c238d48564298dac2b651b89aee9a0edfdf183",
+      "bytes": 1703508,
+      "asOf": "2026-09-30",
+      "encoding": "cp950"
+    }
+  ],
+  "matchResults": [
+    {
+      "fund": "元大櫃買ETF傘型證券投資信託基金之富櫃50證券投資信託基金",
+      "matched": 51,
+      "total": 51
+    },
+    {
+      "fund": "永豐台灣ESG永續優質ETF證券投資信託基金",
+      "matched": 56,
+      "total": 56
+    },
+    {
+      "fund": "中國信託上櫃ESG 30 ETF證券投資信託基金",
+      "matched": 30,
+      "total": 30
+    }
+  ],
+  "limitations": [
+    "This only confirms constituent security identity mapping for the three observed MOPS reports.",
+    "It does not prove completeness of the ETF reporting universe or full-portfolio scope.",
+    "Canonical ETF symbol for the 永豐 report and integration into the production quarterly index remain unresolved.",
+    "Issuer daily actual portfolios and other MOPS filing routes remain unintegrated."
+  ],
+  "mopsReportRawSource": {
+    "path": "raw/2026Q3/security-identities/mops-o_t78sb01_new-2026Q3.html",
+    "sourceURL": "https://mopsov.twse.com.tw/mops/web/o_t78sb01_new",
+    "sha256": "6bca7b973cc543649b0bfd5ed665f0b7ac6f2af7111099ffca0711e83274f3ea",
+    "bytes": 40312,
+    "asOf": "2026Q3",
+    "encoding": "utf-8-sig"
+  }
+}

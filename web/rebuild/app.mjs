@@ -1,5 +1,5 @@
 import {createPersonalRecords} from './personal-records.mjs';
-import {fundDisclosure,fundSnapshotDate} from './etf.mjs';
+import {fundDisclosure,fundSnapshotDate,quarterlyFundHoldingsPanel} from './etf.mjs';
 import {mountComparison} from './comparison.mjs';
 import {mountWorkspaceKeys,markWorkspaceSelection} from './workspace-keys.mjs';
 import {mountPanelLayout} from './panel-layout.mjs';
@@ -104,6 +104,25 @@ async function json(url){
   cache.set(absolute,{data,expiresAt:Date.now()+ttl});if('caches'in window){try{const c=await caches.open('twstock-rebuild-v1');await c.put(absolute,new Response(JSON.stringify(data),{headers:{'Content-Type':'application/json'}}));}catch{}}return data;}
  catch(error){if('caches'in window){const saved=await caches.match(absolute);if(saved){const data=await saved.json();state.offline=true;state.error='來源連線失敗，顯示快取與原始資料日期。上市狀態仍依今日有效期驗證。';cache.set(absolute,{data,expiresAt:Date.now()+15000});return data;}}throw error;}
 }
+const byteCache=new Map();
+async function publicBytes(path){
+ const absolute=new URL(`../../data/${path}`,location.href).href;
+ if(byteCache.has(absolute))return byteCache.get(absolute);
+ const pending=(async()=>{
+  let response;
+  try{
+   response=await fetch(absolute,{cache:'no-cache',signal:AbortSignal.timeout(20000)});
+   if(!response.ok)throw new Error(`原始來源讀取失敗（${response.status}）`);
+   if('caches'in window){try{const c=await caches.open('twstock-rebuild-v1');await c.put(absolute,response.clone());}catch{}}
+  }catch(error){
+   if('caches'in window){const saved=await caches.match(absolute);if(saved)response=saved;else throw error;}
+   else throw error;
+  }
+  return new Uint8Array(await response.arrayBuffer());
+ })();
+ byteCache.set(absolute,pending);
+ try{return await pending;}catch(error){byteCache.delete(absolute);throw error;}
+}
 async function publicData(path){return json(new URL(`../../data/${path}`,location.href).href);}
 async function loadMarket(){
   state.index=await publicData('index.json');
@@ -186,7 +205,8 @@ async function security(id,symbol){
     const disclosure=fundDisclosure(etf);
     const holdings=etf.holdings??[],total=holdings.reduce((s,r)=>s+(Number.isFinite(r.weight)?r.weight:0),0);
     const rows=holdings.filter(r=>resolveListingStatus(r.stock_id,taipeiDay(),state.listing).eligible).map(r=>({...state.rows.find(x=>x.symbol===r.stock_id),...identity(r.stock_id,{name:r.stock_name},state.listing.stocks[r.stock_id]),weight:r.weight}));
-    return top+card('揭露狀態',`<p>${e(etf.data_mode??'揭露完整性未知')}・原始權重合計 ${number(total)}%</p><p>${disclosure.complete?'來源已附完整揭露證明':'部分揭露或完整性未確認'}</p><p>成分揭露日期：${e(disclosure.date??'來源未提供')}；成分來源：${e(disclosure.source??'來源未提供')}</p><p>持倉來源狀態：${e(disclosure.origin)}；來源擷取時間：${e(disclosure.retrievedAt??'未提供')}${disclosure.reusedAt?`；沿用時間：${e(disclosure.reusedAt)}`:''}</p><p class="muted">原始權重未正規化成100%，權重合計不代表完整性證明。可列入台股行情 ${rows.length}／來源 ${holdings.length} 筆；未通過台股資格的資產不列入行情，亦不視為不存在。</p>`)+rowList(rows,`constituents.${symbol}`);
+    const quarterly=await quarterlyFundHoldingsPanel({state,publicData,publicBytes,status,card,rowList},symbol,{name:etf.name});
+    return top+card('揭露狀態',`<p>${e(etf.data_mode??'揭露完整性未知')}・原始權重合計 ${number(total)}%</p><p>${disclosure.complete?'來源已附完整揭露證明':'部分揭露或完整性未確認'}</p><p>成分揭露日期：${e(disclosure.date??'來源未提供')}；成分來源：${e(disclosure.source??'來源未提供')}</p><p>持倉來源狀態：${e(disclosure.origin)}；來源擷取時間：${e(disclosure.retrievedAt??'未提供')}${disclosure.reusedAt?`；沿用時間：${e(disclosure.reusedAt)}`:''}</p><p class="muted">原始權重未正規化成100%，權重合計不代表完整性證明。可列入台股行情 ${rows.length}／來源 ${holdings.length} 筆；未通過台股資格的資產不列入行情，亦不視為不存在。</p>`)+rowList(rows,`constituents.${symbol}`)+quarterly;
   }
   return top+unfinished(id);
 }
@@ -212,7 +232,7 @@ async function content(id,symbol){
   if(['preflight','upgrade'].includes(id))return card('資料保留狀態',`<p>原 IndexedDB：TWStockTrackerDB／trades</p><p>原有交易 ${state.checkpoint?.count??0} 筆</p><p class="source muted">備份 checksum：${e(state.checkpoint?.hash??'尚未完成')}</p><p>目前採相容讀取，未變更原有儲存格式。</p><button data-action="diagnostics">匯出診斷摘要</button><p class="muted">摘要僅含檢查階段、筆數與 checksum，不含交易內容或服務金鑰。</p>`);
   return unfinished(id);
 }
-const modules=featureModules({state,card,metric,status,rowList,link,publicData,title,transactions,navigate,fieldsEditor,chooseRows,refresh:render});
+const modules=featureModules({state,card,metric,status,rowList,link,publicData,publicBytes,title,transactions,navigate,fieldsEditor,chooseRows,refresh:render});
 modules.listen(app);
 function launch(){return`<main id="main"><section class="launch" data-route="launch"><div class="brandmark" aria-hidden="true">↗</div><div><h1>TWStockTracker</h1><p class="muted">看懂市場，掌握每一步。</p></div>${card('您的投資紀錄，就在這裡','<p>◇ 沿用原有自選與交易資料</p><p>▦ 市場・自選・探索・資產</p>')}${state.showStartupCompletion?status('本機資料檢查完成','原有紀錄仍保留在原位置。','✓'):''}<button class="primary" data-action="start">開始使用</button><p class="muted">資料不足或離線時，會清楚標示資料狀態。</p></section></main>`;}
 let workspaceCleanup,panelCleanup;

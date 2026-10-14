@@ -99,6 +99,95 @@ export function fundDisclosure(fund){
   return {date,source,complete,origin,retrievedAt,reusedAt};
 }
 
+function quarterlyPeriod(value){
+ if(typeof value!=='string'||!/^20\d{2}Q[1-4]$/.test(value))return false;
+ const [year,quarter]=[Number(value.slice(0,4)),Number(value.slice(-1))],today=taipeiDay();
+ const currentYear=Number(today.slice(0,4)),currentQuarter=Math.floor((Number(today.slice(5,7))-1)/3)+1;
+ return year<currentYear||(year===currentYear&&quarter<=currentQuarter);
+}
+
+async function latestQuarterlyFund(publicData,symbol){
+ const index=await publicData('rebuild/etf-quarterly-holdings/index.json');
+ if(index?.schemaVersion!==1||!Array.isArray(index.reports))throw Error('MOPS ETF 季報索引格式不符');
+ const reports=index.reports.filter(item=>quarterlyPeriod(item?.period)&&/^[a-z0-9_]+$/.test(item?.route??'')&&item.path===`data/rebuild/etf-quarterly-holdings/${item.period}-${item.route}.json`&&(item.symbols==null||Array.isArray(item.symbols)&&item.symbols.includes(symbol))).sort((a,b)=>b.period.localeCompare(a.period)||a.route.localeCompare(b.route));
+ for(const item of reports){
+  const payload=await publicData(item.path.slice('data/'.length));
+  if(payload?.schemaVersion!==1||payload.period!==item.period||payload.reportUniverseCoverage!=='UNVERIFIED'||payload.scope!=='quarterly Taiwan equity disclosure only; not a full multi-asset portfolio'||!/^https:\/\/mopsov\.twse\.com\.tw\/mops\/web\/[a-z0-9_]+$/.test(payload.source??'')||!/^[0-9a-f]{64}$/.test(payload.sourceSHA256??'')||!/^[0-9a-f]{64}$/.test(payload.parserSHA256??'')||!payload.funds||typeof payload.funds!=='object')throw Error(`MOPS ETF 季報 ${item.period} 契約不符`);
+  if(payload.source!==`https://mopsov.twse.com.tw/mops/web/${item.route}`)throw Error(`MOPS ETF 季報 ${item.period} 路由來源不符`);
+  const fund=payload.funds[symbol];
+  if(!fund)continue;
+  if(fund.symbol!==symbol||fund.period!==item.period||fund.holdingsScope!=='TWSE_TPEX_REPORTED_EQUITY_SECURITIES_ONLY'||fund.completeForReportedTaiwanEquityScope!==true||fund.completeForFullFundPortfolio!==false||!Array.isArray(fund.holdings)||!Number.isFinite(fund.reportedTotalWeightPercent))throw Error(`MOPS ETF 季報 ${item.period} 基金身份或涵蓋範圍不符`);
+  const seen=new Set();
+  for(const holding of fund.holdings){
+   if(typeof holding.stock_id!=='string'||!/^[0-9A-Z]{4,6}$/.test(holding.stock_id)||typeof holding.stock_name!=='string'||!holding.stock_name.trim()||!Number.isFinite(holding.weight)||holding.weight<0||holding.weight>100||seen.has(holding.stock_id))throw Error(`MOPS ETF 季報 ${item.period} 含無效或重複持股列`);
+   seen.add(holding.stock_id);
+  }
+  const total=fund.holdings.reduce((sum,holding)=>sum+holding.weight,0);
+  const roundingTolerance=Math.max(0.006,0.005*(fund.holdings.length+1)+1e-9);
+  if(!fund.holdings.length||Math.abs(total-fund.reportedTotalWeightPercent)>roundingTolerance)throw Error(`MOPS ETF 季報 ${item.period} 權重與官方合計不符`);
+  return {period:item.period,source:payload.source,sourceSHA256:payload.sourceSHA256,payload,fund};
+ }
+ return null;
+}
+
+export async function quarterlyFundHoldingsPanel(ctx,symbol,row){
+ const {state,publicData,publicBytes,status,card,rowList}=ctx;
+ if(!resolveListingStatus(symbol,taipeiDay(),state.listing).eligible)return status('ETF 上市資格尚未確認','停止載入基金的官方季報成分。');
+ let disclosure;
+ try{disclosure=await latestQuarterlyFund(publicData,symbol);}
+ catch(error){return status('官方 ETF 季報暫不可用',error.message,'↗',true);}
+ if(!disclosure)return status('尚無此 ETF 的官方季報','沒有已保存且可對應本基金的 MOPS 季報；這不表示基金沒有持股。');
+ const {period,fund,payload}=disclosure;
+ try{await verifyQuarterlyProvenance(publicBytes,period,payload,fund,symbol);}
+ catch(error){return status('官方 ETF 季報來源驗證失敗',error.message);}
+ const eligible=s=>resolveListingStatus(s,taipeiDay(),state.listing).eligible;
+ const rows=fund.holdings.filter(item=>eligible(item.stock_id)).map(item=>({...state.rows.find(candidate=>candidate.symbol===item.stock_id),...identity(item.stock_id,{name:item.stock_name},state.listing?.stocks?.[item.stock_id]),weight:item.weight}));
+ const source=`<a class="directory-link" href="${e(disclosure.source)}" target="_blank" rel="noopener noreferrer">開啟 MOPS 官方來源 ↗</a>`;
+ const summary=`<p>${e(row.name||fund.fundName||symbol)} ${e(symbol)}・民國季別 ${e(period)}</p><p>台灣股票揭露權重 ${n(fund.reportedTotalWeightPercent)}%・來源列 ${fund.holdings.length} 筆・可連結目前上市證券 ${rows.length} 筆。</p><p class="muted">MOPS 季報僅呈現其申報的台灣股票列，不代表海外資產、債券、現金、衍生品或整檔基金部位已完整。權重保留原值，不重新正規化。原始 HTML SHA-256：${e(disclosure.sourceSHA256)}。</p>${source}`;
+ return card('MOPS 官方季度持股明細',summary)+(rows.length?rowList(rows,`quarterly-constituents.${symbol}`):status('季報未含可連結的目前上市股票','來源持股保留於官方資料；未通過上市資格的項目不會當成目前行情列。'));
+}
+
+async function verifyQuarterlyProvenance(publicBytes,period,payload,fund,symbol){
+ if(typeof publicBytes!=='function')throw Error('目前入口未提供原始來源驗證器');
+ const hash=async bytes=>{
+  if(!globalThis.crypto?.subtle)throw Error('此瀏覽器不支援 SHA-256 驗證');
+  const digest=await crypto.subtle.digest('SHA-256',bytes);
+  return [...new Uint8Array(digest)].map(value=>value.toString(16).padStart(2,'0')).join('');
+ };
+ const archivePrefix=`data/rebuild/etf-quarterly-holdings/raw/${period}/`;
+ const rawPath=payload.rawArchive;
+ if(typeof rawPath!=='string'||!rawPath.startsWith(archivePrefix)||rawPath!==`${archivePrefix}${payload.sourceSHA256}.html`)throw Error('MOPS 原始檔路徑或檔名與來源雜湊不符');
+ if(await hash(await publicBytes(rawPath.slice('data/'.length)))!==payload.sourceSHA256)throw Error('MOPS 原始 HTML SHA-256 不符');
+ if(payload.securityIdentityManifest==null&&payload.fundIdentityCrosswalk==null)return;
+ const identityPath=`data/rebuild/etf-quarterly-holdings/raw/${period}/security-identities/manifest.json`;
+ if(payload.securityIdentityManifest!==identityPath||!/^[0-9a-f]{64}$/.test(payload.securityIdentityManifestSHA256??''))throw Error('季度末證券身份 manifest 路徑或雜湊不符');
+ const identityBytes=await publicBytes(identityPath.slice('data/'.length));
+ if(await hash(identityBytes)!==payload.securityIdentityManifestSHA256)throw Error('季度末證券身份 manifest SHA-256 不符');
+ let identityManifest;
+ try{identityManifest=JSON.parse(new TextDecoder().decode(identityBytes));}catch{throw Error('季度末證券身份 manifest 格式錯誤');}
+ const cutoff=new Date(Date.UTC(Number(period.slice(0,4)),Number(period.slice(-1))*3,0)).toISOString().slice(0,10);
+ const sources=identityManifest?.sources;
+ if(identityManifest?.schemaVersion!==1||!Array.isArray(sources)||sources.length!==2)throw Error('季度末官方交易所身份來源不足或 manifest 契約不符');
+ for(const source of sources){
+  const path=source?.path;
+  if(typeof path!=='string'||!new RegExp(`^raw/${period}/security-identities/(?:twse|tpex)-${cutoff}\\.(?:json|csv)$`).test(path)||source.asOf!==cutoff||!/^https:\/\/(?:www\.twse\.com\.tw|www\.tpex\.org\.tw)\//.test(source.sourceURL??'')||!/^[0-9a-f]{64}$/.test(source.sha256??''))throw Error('季度末官方身份來源欄位或日期不合法');
+  const bytes=await publicBytes(`rebuild/etf-quarterly-holdings/${path}`);
+  if(await hash(bytes)!==source.sha256)throw Error('季度末官方交易所身份原始檔 SHA-256 不符');
+ }
+ const crosswalkPath=`data/rebuild/etf-quarterly-holdings/${period}/fund-symbol-crosswalk.json`;
+ if(payload.fundIdentityCrosswalk!==crosswalkPath||!/^[0-9a-f]{64}$/.test(payload.fundIdentityCrosswalkSHA256??''))throw Error('基金代號交叉表路徑或雜湊不符');
+ const crosswalkBytes=await publicBytes(crosswalkPath.slice('data/'.length));
+ if(await hash(crosswalkBytes)!==payload.fundIdentityCrosswalkSHA256)throw Error('基金代號交叉表 SHA-256 不符');
+ let crosswalk;
+ try{crosswalk=JSON.parse(new TextDecoder().decode(crosswalkBytes));}catch{throw Error('基金代號交叉表格式錯誤');}
+ const norm=value=>String(value??'').normalize('NFKC').replace(/[\s　]/g,'').replaceAll('臺','台').toLowerCase();
+ const matches=(crosswalk.fundMappings??[]).filter(item=>item?.period===period&&item?.symbol===symbol&&item?.issuerCode===fund.issuerCode&&norm(item?.mopsFundName)===norm(fund.fundName)&&item?.sourceURL===fund.fundIdentitySource&&item?.listingDate<=cutoff);
+ if(crosswalk?.schemaVersion!==1||crosswalk.period!==period||matches.length!==1)throw Error('基金法律名稱、代號或上市日期與官方交叉表不符');
+ for(const holding of fund.holdings){
+  if(!['TWSE','TPEX'].includes(holding.market)||typeof holding.stock_name!=='string'||typeof holding.stock_id!=='string')throw Error('上櫃季報持股缺少來源市場或股票身份');
+ }
+}
+
 export async function fundInformation(ctx,symbol,row){
  const allowed=()=>resolveListingStatus(symbol,taipeiDay(),ctx.state.listing).eligible;
  if(!allowed())return ctx.status('上市資格尚未確認','請同步資料後重新載入。');

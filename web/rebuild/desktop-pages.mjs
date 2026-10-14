@@ -1,4 +1,4 @@
-import {fundDisclosure,fundInformation} from './etf.mjs';
+import {fundDisclosure,fundInformation,quarterlyFundHoldingsPanel} from './etf.mjs';
 import {indexHistory} from './index-history.mjs';
 import {indexIntraday} from './index-intraday.mjs';
 import {etfPerformanceView} from './research.mjs';
@@ -45,7 +45,8 @@ export function createDesktopPages(ctx,explore,transfer){
   const changeView=comparison?card('兩期權重變化',`<p>儲存快照日期：${e(data.baseDate)} → ${e(data.date)}</p><p>此為儲存日期，不是基金揭露日期。</p><p class="muted">${comparison.complete?'兩期完整揭露，缺列可視為零。':'完整性未確認，只比較共同成分；不能判斷新增或移除。'}權重差是百分點，不是資金流。</p>`)+(comparison.complete?card('新增成分',changeList(changes.filter(x=>x.beforeWeight===0&&x.afterWeight>0)))+card('移除成分',changeList(changes.filter(x=>x.afterWeight===0&&x.beforeWeight>0))):'')+card('權重增減',changeList(changes.filter(x=>x.beforeWeight>0&&x.afterWeight>0))):status('兩期比較資料不足',comparisonResult.status==='rejected'?comparisonResult.reason.message:'尚無可核對日期的成分比較。');
   const disclosure=fund?fundDisclosure(fundFacts):null;
   const holdingsPanel=snapshotResult.status==='rejected'?status('基金成分暫不可用',snapshotResult.reason.message,'↗',true):!fund?status('基金成分資料不足','來源沒有這檔基金的揭露。'):card('基金成分',`<p class="source">成分揭露日期：${e(disclosure.date??'來源未提供')}；成分來源：${e(disclosure.source??'來源未提供')}</p><p>持倉來源狀態：${e(disclosure.origin)}；原始擷取時間：${e(disclosure.retrievedAt??'未提供')}${disclosure.reusedAt?`；沿用時間：${e(disclosure.reusedAt)}`:''}</p><p>${disclosure.complete?'來源已附完整揭露證明':'部分揭露或完整性未確認'} · 原始權重合計 ${n(total)}%</p><p class="muted">${all.length-rows.length} 筆境外、非股票、缺值或上市資格未確認資產未列入目前台股行情；不能當作不存在。</p>${rowList(rows,'constituents.'+symbol)}`);
-  return `<div class="desktop-page desktop-etf"><aside>${quote}${card('前十大持股權重',rows.slice(0,10).map(r=>`<p>${e(r.name)} ${e(r.symbol)} · ${n(r.weight)}%</p><div class="allocation-bar"><i style="width:${Math.min(100,r.weight)}%"></i></div>`).join('')||'資料不足')}${card('已揭露台股產業配置',[...sectors].sort((a,b)=>b[1]-a[1]).map(([name,weight])=>`<p>${e(name)} ${n(weight)}%</p>`).join('')+'<p class="muted">按原始權重加總，未正規化至100%。分類缺漏另列。</p>')}</aside><section>${holdingsPanel}</section><aside>${performance}${fundInfoView}${changeView}${card('資料來源','<p class="muted">基金成分與兩期比較各自保留來源日期；不把未標日期的最新檔自動當作比較迄日。</p>')}</aside></div>`;
+  const quarterlyPanel=await quarterlyFundHoldingsPanel(ctx,symbol,row);
+  return `<div class="desktop-page desktop-etf"><aside>${quote}${card('前十大持股權重',rows.slice(0,10).map(r=>`<p>${e(r.name)} ${e(r.symbol)} · ${n(r.weight)}%</p><div class="allocation-bar"><i style="width:${Math.min(100,r.weight)}%"></i></div>`).join('')||'資料不足')}${card('已揭露台股產業配置',[...sectors].sort((a,b)=>b[1]-a[1]).map(([name,weight])=>`<p>${e(name)} ${n(weight)}%</p>`).join('')+'<p class="muted">按原始權重加總，未正規化至100%。分類缺漏另列。</p>')}</aside><section>${holdingsPanel}${quarterlyPanel}</section><aside>${performance}${fundInfoView}${changeView}${card('資料來源','<p class="muted">基金成分與兩期比較各自保留來源日期；不把未標日期的最新檔自動當作比較迄日。</p>')}</aside></div>`;
  }
  return {handles,page,listen,etf};
 }
