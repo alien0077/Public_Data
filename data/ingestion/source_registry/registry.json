@@ -1,6 +1,6 @@
 {
   "schema": "twstock-public-source-registry-v1",
-  "updated_at": "2026-10-14T05:40:11+08:00",
+  "updated_at": "2026-10-14T13:42:05.434Z",
   "purpose": "Canonical registry of useful public acquisition/discovery sources for Taiwan-stock corporate evidence, catalyst discovery, historical expectation backfill and source-health monitoring. Public sources/evidence only; no private Fair Value logic.",
   "rules": {
     "record_new_useful_sources_before_pipeline_use": true,
@@ -522,6 +522,27 @@
         "source_health"
       ],
       "first_verified_at": "2026-10-14T05:40:11+08:00"
+    },
+    {
+      "source_id": "udn_economic_daily_broker_attributed",
+      "name": "經濟日報公開具名券商報導",
+      "domain": "money.udn.com",
+      "canonical_url": "https://money.udn.com/",
+      "source_type": "public_attributed_summary",
+      "priority": "secondary",
+      "use_cases": [
+        "broker_valuations",
+        "forward_eps_revenue_assumptions",
+        "asic_hpc_model_drivers"
+      ],
+      "pit_quality": "PUBLIC_ARTICLE_DATE_NOT_STRICT_PIT",
+      "historical_backfill": true,
+      "schedule_tags": [
+        "broker_valuations",
+        "corporate_evidence",
+        "source_health"
+      ],
+      "notes": "Open exact public article; retain URL, timestamp and locator only, never copyrighted full text. Broker report date/horizon not certified from article timestamp. Source is discovery until verified and N100 remote readback."
     }
   ]
 }
