@@ -593,6 +593,34 @@
         "backfill_v2",
         "broker_valuations"
       ]
+    },
+    {
+      "source_id": "yahoo_tw_stock_public_attributed_broker_reposts",
+      "name": "Yahoo Taiwan Stock / attributed original publisher news",
+      "domain": "tw.stock.yahoo.com",
+      "canonical_url": "https://tw.stock.yahoo.com/",
+      "source_type": "secondary_public_attributed_broker_news",
+      "priority": "medium",
+      "use_cases": [
+        "historical_broker_target_price",
+        "forward_business_mix_estimates",
+        "broker_assumptions_crosscheck"
+      ],
+      "pit_quality": "PUBLIC_REPOST_DATE_NOT_INDEPENDENT_STRICT_PIT",
+      "historical_backfill": true,
+      "limitations": [
+        "Must open and verify full article; search snippets discovery only",
+        "Original broker report date not established; use public article date proxy",
+        "Attribution to original publisher and named broker required",
+        "Record observation date conservatively; no retroactive PIT",
+        "Do not republish article or broker research fulltext"
+      ],
+      "schedule_tags": [
+        "backfill_v2",
+        "broker_valuations"
+      ],
+      "last_verified_at": "2026-10-16T22:25:48+08:00",
+      "verification_context": "Opened 2025-02-27 China Times Commercial Times attributed Yahoo article naming KGI Investment Advisory 3231 target TWD135 and server revenue mix forecast."
     }
   ]
 }
