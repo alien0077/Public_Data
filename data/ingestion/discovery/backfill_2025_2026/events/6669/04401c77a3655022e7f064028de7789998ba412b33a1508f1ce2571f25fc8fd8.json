@@ -1,0 +1,137 @@
+{
+  "canonical_url": "https://www.ftnn.com.tw/news/588095",
+  "effective_available_at": "2026-10-18",
+  "event_group_id": "6669:20261017:EPS_BASIS_AND_SPLIT_RECONCILIATION",
+  "event_type": "2027_unnamed_analyst_eps_vs_factset_and_202609_stock_rights_share_basis",
+  "handoff_batch": "api-72cbdf707b9adc0d466500102e89820f22f29a1b0c52ec76330d6da8023a7826.json",
+  "llm_fv_evidence": {
+    "effective_available_at": "2026-10-18",
+    "finance_claims": [
+      {
+        "claim_kind": "third_party_estimate",
+        "currency": "TWD",
+        "effective_available_at": "2026-10-18",
+        "fiscal_year": 2027,
+        "metric": "6669_unnamed_analyst_2027_eps",
+        "scale": 1,
+        "scope": "FTNN unnamed analyst 2027 EPS, not named broker, not consensus, no target-price attribution",
+        "source_locator": "FTNN 2026-10-17 15:30 lines 96-105",
+        "source_url": "https://www.ftnn.com.tw/news/588095",
+        "strict_pit_certified": false,
+        "unit": "TWD per share",
+        "value": 223.3
+      },
+      {
+        "claim_kind": "third_party_estimate",
+        "currency": "TWD",
+        "effective_available_at": "2026-10-18",
+        "fiscal_year": 2027,
+        "metric": "6669_factset_2027_eps_median",
+        "scale": 1,
+        "scope": "FactSet median of analysts' 2027 EPS as quoted by Cnyes, separate from unnamed 223.3 forecast; existing consensus repeated only as bridge",
+        "source_locator": "Cnyes 2026-10-17 08:10 lines 11-17, EPS median 2027",
+        "source_url": "https://news.cnyes.com/news/id/6632607",
+        "strict_pit_certified": false,
+        "unit": "TWD per share",
+        "value": 185.64
+      },
+      {
+        "claim_kind": "realized_actual",
+        "currency": "TWD",
+        "effective_available_at": "2026-10-18",
+        "fiscal_year": 2025,
+        "metric": "6669_2026_stock_dividend_per_old_share",
+        "scale": 1,
+        "scope": "Wiwynn official shareholder services dividend history: 2025 dividend-year stock dividend 19.827946 TWD per pre-ex-rights share, ex-rights 2026-09-02",
+        "source_locator": "Wiwynn official Shareholders Services lines 172-186",
+        "source_url": "https://www.wiwynn.com/investors/shareholders-services",
+        "strict_pit_certified": false,
+        "unit": "TWD per old share",
+        "value": 19.827946
+      }
+    ],
+    "first_verified_observed_date": "2026-10-18",
+    "interpretation": "Current Public_Data fundamentals as_of 2026-09-15 contains shares_outstanding=557522373 post-rights, net_income_ttm=58285926000 and eps_ttm=313.51 on apparent old-share basis. net_income_ttm/shares_outstanding=104.54455, ratio to stored EPS=2.9988. Forward EPS output is already computed on post-rights shares (2026 forecast 167.21985 = forecast revenue*0.054075/557522373); do NOT claim forward EPS itself is threefold inflated. Must normalize historical EPS TTM, stock rights, broker targets and weighted diluted share basis before FV/OOS.",
+    "issuer_entity_status": "VERIFIED_6669_WIWYNN_IR_AND_TWO_PUBLIC_FORECAST_SOURCES",
+    "missing_fields": [
+      "Original named analyst identity for 223.3 EPS",
+      "Exact diluted weighted-average share counts by fiscal period",
+      "Historical PIT snapshot for pre-rights EPS and post-rights adjustment",
+      "6669 dividends.json currently omits 2026-09-02 stock dividend; repair requires separate data pipeline validation",
+      "ASIC vs GPU/General server margin and baseline overlap"
+    ],
+    "production_verified": false,
+    "qualitative_claims": [
+      {
+        "claim_kind": "realized_actual",
+        "description": "Official Wiwynn ex-rights 2026-09-02; 19.827946 TWD stock dividend / TWD10 par => 1.9827946 new shares per old share; total share factor 2.9827946. This is derived and cross-checked against split-history, not fresh earnings growth.",
+        "metric": "6669_20260902_ex_rights_share_factor",
+        "source_locator": "Wiwynn official lines 172-186",
+        "source_url": "https://www.wiwynn.com/investors/shareholders-services",
+        "value": null
+      }
+    ],
+    "review_status": "SECONDARY_ATTRIBUTED",
+    "strict_pit_certified": false
+  },
+  "llm_structured_review_available": true,
+  "model_bridge": {
+    "annual_ebit_twd": {
+      "2027": null
+    },
+    "annual_eps_twd_per_share": {
+      "2027": null
+    },
+    "annual_fcf_twd": {
+      "2027": null
+    },
+    "annual_revenue_twd": {
+      "2027": null
+    },
+    "baseline_2026_eps_twd_per_share": 167.21984631950593,
+    "baseline_2026_revenue_twd": 1724064827235.2522,
+    "baseline_2027_eps_twd_per_share": 218.98476719381074,
+    "baseline_2027_revenue_twd": 2257769894715.597,
+    "baseline_forecast_as_of": "2026-09-21",
+    "baseline_forecast_overlap_status": "UNKNOWN",
+    "baseline_vs_factset_2027_eps_gap_pct": 17.960981034158,
+    "capex_twd": null,
+    "data_dividends_6669_stock_rights_missing": true,
+    "depreciation_twd": null,
+    "derived_2026_09_02_stock_rights_factor": 2.9827946,
+    "diagnostic_net_income_over_current_shares_eps": 104.5445507170705,
+    "eps_ttm_old_new_basis_ratio_diagnostic": 2.9988172300673406,
+    "factset_2027_eps_median_twd_per_share": 185.64,
+    "forward_2026_eps_formula": "1724064827235.2522*0.054075/557522373 = 167.2198463195",
+    "forward_eps_uses_post_rights_shares": true,
+    "fundamentals_as_of": "2026-09-15",
+    "fundamentals_eps_ttm_raw": 313.51,
+    "fundamentals_net_income_ttm_twd": 58285926000,
+    "fundamentals_shares_outstanding": 557522373,
+    "incremental_delta_fv": null,
+    "model_family": "6669_WIWYNN_AI_ASIC_GPU_GENERAL_SERVER_SEGMENT_MARGIN_FCFF_DCF",
+    "nwc_twd": null,
+    "production_write": false,
+    "strict_pit_certified": false,
+    "tax_twd": null,
+    "unnamed_analyst_2027_eps_twd_per_share": 223.3,
+    "unnamed_vs_factset_2027_eps_gap_pct": 20.286576168929127,
+    "valuation_status": "SHADOW_ONLY"
+  },
+  "observed_at": "2026-10-17T19:40:23.928Z",
+  "production_verified": false,
+  "production_write": false,
+  "published_at": "2026-10-17T15:30:00+08:00",
+  "publisher": "FTNN; Cnyes/FactSet; Wiwynn official IR",
+  "requires_raw_fetch": true,
+  "schema_version": "chatgpt-discovery-backfill-v1",
+  "source_locator": "FTNN lines 90-105; Cnyes lines 7-25; Wiwynn official IR lines 172-186",
+  "source_type": "public_analyst_attributed_and_primary_issuer_corporate_action",
+  "source_urls": [
+    "https://www.ftnn.com.tw/news/588095",
+    "https://news.cnyes.com/news/id/6632607",
+    "https://www.wiwynn.com/investors/shareholders-services"
+  ],
+  "strict_pit_certified": false,
+  "symbol": "6669"
+}
