@@ -25,7 +25,7 @@ import {desktopSecurityWatchRows} from './desktop-pages.mjs?v=71';
 import {desktopSecurityUnavailableContent} from './desktop-security-unavailable.mjs?v=1';
 import {featureModules} from './features.mjs?v=131';
 import {number,escapeHTML as e,taipeiDay,resolveListingStatus,identity,rawRow,searchDirectoryRows,canonicalUSIndexRows,withPriceReference,validPriceReferenceContract,limitStatus,defaultPreference,normalizePreference,sortRows,readChart,loadRecentDailyChart,changeFromRecentRawCloses,withPreviousRawClose,updateExchangeClocks} from './core.mjs?v=51';
-import {preflight,favorites,mutateFavorites,recoverStorage,migrateLegacyFavorites,migrateLegacyListPreferences,exportBackup} from './storage.mjs?v=2';
+import {preflight,favorites,mutateFavorites,recoverStorage,migrateLegacyListPreferences,exportBackup} from './storage.mjs?v=3';
 const app=document.querySelector('#app');
 setInterval(()=>updateExchangeClocks(document),15_000);
 const LISTING_EXPIRY_MESSAGE='目前無法讀取 Public_Data meta/stocks.json，股票現行清單暫停顯示；請重新載入資料。';
@@ -588,11 +588,10 @@ async function start(){
  try{
   await recoverStorage();state.startupStage='route-contract';state.contract=await json('./routes.json');
   state.startupStage='safety-checkpoint';state.checkpoint=await preflight();
-  state.startupStage='watchlist-migration';
-  const favoritesMigration=await migrateLegacyFavorites();
+  // Legacy favorites remain untouched in browser storage; a new Web watchlist starts empty.
   state.startupStage='list-preference-migration';
   const listMigration=await migrateLegacyListPreferences(legacyListPreferenceMigrations());
-  if(favoritesMigration.migrated||listMigration.migrated)state.checkpoint=await preflight();
+  if(listMigration.migrated)state.checkpoint=await preflight();
   state.startupStage='listing-boundary';state.listing=await loadCanonicalListingSnapshot(publicData);
   document.documentElement.dataset.theme=themeForRoute('');
   state.startupStage='market-sources';try{await loadMarket();}catch(error){state.error=error.message;}
@@ -605,7 +604,7 @@ async function start(){
 }
 let eligibilityDay=taipeiDay();setInterval(()=>{if(taipeiDay()!==eligibilityDay){eligibilityDay=taipeiDay();state.rows=[];state.error='交易日期已變更，請重新載入 Public_Data 股票名冊與行情。';render();}},30000);
 window.addEventListener('online',async()=>{if(!state.startupReady)return;state.offline=false;state.error=null;cache.clear();try{state.listing=await loadCanonicalListingSnapshot(publicData);await loadMarket();}catch(error){state.error=error.message;}await render();});
-if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=139',{scope:'./'}).catch(()=>{});
+if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=140',{scope:'./'}).catch(()=>{});
 await start();
 app.addEventListener('change',async event=>{const t=event.target;if(!t.dataset.memberMove||!t.value)return;const source=t.dataset.group,destination=t.value,symbol=t.dataset.memberMove;try{await mutateFavorites(groups=>{if(Object.hasOwn(groups,destination)&&Object.hasOwn(groups,source)){groups[source]=groups[source].filter(x=>x!==symbol);groups[destination]=[...new Set([...groups[destination],symbol])];}return groups;});document.querySelector('dialog').innerHTML=groupMembers(source);}catch(error){state.error=error.message;await render();}});
 app.addEventListener('submit',async event=>{if(event.target.id!=='group-add-member')return;event.preventDefault();const form=event.target,key=form.dataset.group,query=String(new FormData(form).get('symbol')).trim().toLocaleLowerCase(),row=searchDirectory().find(item=>item.symbol.toLocaleLowerCase()===query||item.name.toLocaleLowerCase()===query);if(!row){form.querySelector('[role=status]').textContent='請從 Public_Data 有效股票名冊中選擇建議；無效代號不會加入自選。';return;}try{await mutateFavorites(groups=>{if(Object.hasOwn(groups,key))groups[key]=[...new Set([...groups[key],row.symbol])];return groups;});document.querySelector('dialog').innerHTML=groupMembers(key);}catch(error){form.querySelector('[role=status]').textContent=error.message;}});

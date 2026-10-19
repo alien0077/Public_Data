@@ -79,7 +79,7 @@ async function safetyList(){const db=await safetyDB();try{return await requestVa
 async function journals(){const db=await safetyDB();try{return (await requestValue(db.transaction('checkpoints','readonly').objectStore('checkpoints').getAll())).filter(r=>r.kind==='restore-v2'&&r.phase!=='COMPLETED');}finally{db.close();}}
 async function locked(action){if(!globalThis.navigator?.locks?.request)throw Error('此瀏覽器無法提供跨分頁安全鎖；請使用支援 Web Locks 的瀏覽器進行寫入或還原');return navigator.locks.request(lockName,{mode:'exclusive'},action);}
 function preferences(){return Object.fromEntries(Object.keys(localStorage).filter(isPreference).sort().map(k=>[k,localStorage.getItem(k)]));}
-export function favorites(){const raw=localStorage.getItem(favoritesKey)??localStorage.getItem('twstock_favorite_data');return normalizeFavorites(raw?JSON.parse(raw):null);}
+export function favorites(){const raw=localStorage.getItem(favoritesKey);return normalizeFavorites(raw?JSON.parse(raw):null);}
 function validateGroups(value){
  if(!value||typeof value!=='object'||Array.isArray(value))throw Error('自選分類格式不正確');
  for(const [key,rows] of Object.entries(value)){if(dangerous.has(key)||!Array.isArray(rows)||rows.some(x=>typeof x!=='string'||!x.trim()))throw Error('自選分類或證券代號格式不正確');}
@@ -125,43 +125,6 @@ async function snapshotUnlocked(){
 // recoverStorage() before enabling any mutation or presenting restore success.
 export async function readTrades(){return readTradesUnlocked();}
 export async function preflight(){return locked(async()=>{await recoverUnlocked();return snapshotUnlocked();});}
-/**
- * Switch the rebuilt Web reader to its namespaced favorites key only after a
- * checksummed snapshot exists. The original key is intentionally retained so
- * a rollback can still read the exact pre-migration value. A durable journal
- * makes the one-key cutover resumable after a tab or browser interruption.
- */
-export async function migrateLegacyFavorites(){
- return locked(async()=>{
-  await recoverUnlocked();
-  const rebuilt=localStorage.getItem(favoritesKey);
-  if(rebuilt!==null){
-   try{validateGroups(JSON.parse(rebuilt));}
-   catch(error){throw Error(`新版自選資料無法安全讀取；原有新舊資料均已保留，請匯出診斷後復原：${error.message}`);}
-   return {migrated:false};
-  }
-  const legacy=localStorage.getItem('twstock_favorite_data');
-  // Category labels and their order are a separate legacy source key. Even
-  // though the rebuilt map stores labels as object keys, guard both inputs so
-  // an older open tab cannot rename/reorder categories while the new key is
-  // being switched from a stale snapshot.
-  const legacyCategories=localStorage.getItem('twstock_favorite_categories');
-  if(legacy===null&&legacyCategories===null)return {migrated:false};
-  let groups;
-  try{
-   groups=normalizeLegacyFavoritesPayload(legacy,legacyCategories);
-  }
-  catch(error){throw Error(`舊版自選資料無法安全升級，原始資料已保留：${error.message}`);}
-  const before=await snapshotUnlocked();
-  const after=JSON.stringify(groups);
-  const plan={rows:[],patches:[{key:favoritesKey,before:null,after}],guards:[{key:'twstock_favorite_data',value:legacy},{key:'twstock_favorite_categories',value:legacyCategories}],beforeHash:before.hash,kind:'legacy-favorites-v1-to-v2'};
-  const op={hash:'migration:'+crypto.randomUUID(),kind:'restore-v2',phase:'PREPARED',createdAt:new Date().toISOString(),plan,planHash:await digest(plan),result:{added:0,skipped:0,beforeHash:before.hash,migration:'LEGACY_FAVORITES_TO_REBUILT_V1',legacyCategorySourceHash:await digest(legacyCategories)}};
-  await safetyPut(op);
-  try{await resume(op);}
-  catch(error){throw Error(`自選資料切換尚未完成；來源與恢復日誌均已保留，重新啟動可接續：${error.message}`);}
-  return {migrated:true,sourceCount:Object.values(groups).reduce((sum,items)=>sum+items.length,0)};
- });
-}
 export function exportBackup(checkpoint){if(checkpoint?.backup?.version!==2)throw Error('請重新建立完整備份快照');return clone(checkpoint.backup);}
 export async function verifyBackup(payload){
  if(payload?.version!==2||payload.platform!=='web')throw Error('僅 v2 備份涵蓋完整 checksum；v1 可另行預覽，但不能完整還原，請從原裝置重新匯出');

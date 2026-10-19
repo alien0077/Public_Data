@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {webcrypto} from 'node:crypto';
-import {canonicalJSON,normalizeLegacyFavoritesPayload,mergeFavoriteGroups,mergeLegacySourceRecords,verifyBackup,previewLegacyBackup} from './storage.mjs';
+import {canonicalJSON,favorites,normalizeLegacyFavoritesPayload,mergeFavoriteGroups,mergeLegacySourceRecords,verifyBackup,previewLegacyBackup} from './storage.mjs';
 
 async function backupWithTradeCurrency(currency){
  const trade={id:'trade-1',date:'2026-10-01',type:'買入',symbol:'2330',name:'台積電',shares:1,price:500,fee:0,tax:0};
@@ -32,6 +32,19 @@ test('supplemental source archive merges idempotently and rejects source-hash co
  const first=mergeLegacySourceRecords(null,{schemaVersion:1,sources:[source]});
  assert.deepEqual(mergeLegacySourceRecords(first,{schemaVersion:1,sources:[{...source,filename:'renamed.json'}]}),first);
  assert.throws(()=>mergeLegacySourceRecords(first,{schemaVersion:1,sources:[{...source,normalizedTrades:[{rawID:'different'}]}]}),/同一來源 SHA-256/);
+});
+
+test('new Web watchlists start empty and do not surface saved legacy defaults',()=>{
+ const previous=globalThis.localStorage;
+ const values=new Map([['twstock_favorite_data',JSON.stringify({'我的最愛':['2330','2317'],'觀察中':['0050']})]]);
+ globalThis.localStorage={getItem:key=>values.has(key)?values.get(key):null};
+ try{
+  assert.deepEqual(favorites(),{});
+  assert.equal(values.has('twstock_favorite_data'),true);
+ }finally{
+  if(previous===undefined)delete globalThis.localStorage;
+  else globalThis.localStorage=previous;
+ }
 });
 
 test('legacy favorite migration preserves category order and empty categories',()=>{
