@@ -8,7 +8,7 @@ test('manual watchlist ordering survives preference normalization without mutati
  assert.deepEqual(rows.map(r=>r.symbol),['2330','2317']);
 });
 import assert from 'node:assert/strict';
-import {rawRow,rawPercent,resolveListingStatus,normalizeTradeRecord,tradeProjection,normalizeFavorites,limitStatus,readChart,readDailyChartSnapshots,loadRecentDailyChart,changeFromRecentRawCloses,withPreviousRawClose,exchangeDateLabel,exchangeClockLabel,updateExchangeClocks,searchDirectoryRows,canonicalUSIndexRows,validPriceReferenceContract,withPriceReference} from './core.mjs';
+import {favoriteSearchCandidates,rawRow,rawPercent,resolveListingStatus,normalizeTradeRecord,tradeProjection,normalizeFavorites,limitStatus,readChart,readDailyChartSnapshots,loadRecentDailyChart,changeFromRecentRawCloses,withPreviousRawClose,exchangeDateLabel,exchangeClockLabel,updateExchangeClocks,searchDirectoryRows,canonicalUSIndexRows,validPriceReferenceContract,withPriceReference} from './core.mjs';
 test('price reference accepts a valid publication cutoff after the latest market day',()=>{
  const raw={id:'2330',date:'2026-10-16',c:100};
  const payload={schemaVersion:1,date:'2026-10-16',cutoff:'2026-10-18',basis:'official_raw_close_minus_signed_change',stocks:{'2330':{symbol:'2330',date:'2026-10-16',close:100,change:2,referencePrice:98}}};
@@ -45,6 +45,14 @@ test('canonical US daily index cards use exact Public_Data trading dates and adj
  assert.deepEqual(canonicalUSIndexRows({stocks:[{id:'^SOX',date:'2026-10-15',c:120}]},null,'2026-10-16'),[],'mismatched source date is not relabeled as current');
 });
 test('adjusted daily pct never becomes an actual market change',()=>{const r=rawRow({id:'2330',c:100,pct:10,adj_c:200},{name:'台積電'},{},'2026-10-03');assert.equal(r.changePercent,null);assert.equal(r.change,null);assert.equal(r.price,100);assert.equal(rawPercent({c:100,previous_close:90}),null);});
+test('favorite autocomplete uses current stock identities, filters by name or symbol, and caps visible choices',()=>{
+ const directory=[{symbol:'2330',name:'台積電'},{symbol:'2317',name:'鴻海'},{symbol:'0050',name:'元大台灣50'}];
+ assert.deepEqual(favoriteSearchCandidates(directory,'台積').rows.map(row=>row.symbol),['2330']);
+ assert.deepEqual(favoriteSearchCandidates(directory,'2317').rows.map(row=>row.name),['鴻海']);
+ const results=favoriteSearchCandidates(directory,'0',[],1);assert.equal(results.total,2);assert.deepEqual(results.rows.map(row=>row.symbol),['0050']);
+ assert.deepEqual(favoriteSearchCandidates(directory,'台積',['2330']).rows,[]);
+ assert.equal(favoriteSearchCandidates(directory,'').total,0);
+});
 test('exchange reference alone yields raw same-scale percent',()=>{assert.ok(Math.abs(rawPercent({c:110,referencePrice:100})-10)<1e-10);for(const x of [0,-1,null,undefined])assert.equal(rawPercent({c:110,referencePrice:x}),null);});
 test('expired, unknown and delisted listing evidence fail closed',()=>{const s={cutoff:'2026-10-03',validThrough:'2026-10-03',stocks:{'2330':{status:'LISTED',eligible:true},'1111':{status:'DELISTED',eligible:false}}};assert.equal(resolveListingStatus('2330','2026-10-03',s).eligible,true);assert.equal(resolveListingStatus('2330','2026-10-04',s).eligible,false);assert.equal(resolveListingStatus('missing','2026-10-03',s).eligible,false);assert.equal(resolveListingStatus('1111','2026-10-03',s).eligible,false);});
 test('search directory includes every current Public_Data security without inventing missing quotes',()=>{

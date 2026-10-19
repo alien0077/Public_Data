@@ -57,6 +57,18 @@ export function rawRow(raw, meta, listing, date) {
     foreignNet:finite(raw.f),trustNet:finite(raw.it),dealerNet:finite(raw.d),open:finite(raw.o),high:finite(raw.h),low:finite(raw.l),
     referencePrice:finite(raw.referencePrice),limitUp:finite(raw.limitUp),limitDown:finite(raw.limitDown)};
 }
+export function favoriteSearchCandidates(directory, query, categoryMembers = [], limit = 50) {
+  const needle = String(query ?? '').trim().toLocaleLowerCase();
+  if (!needle) return {rows:[], total:0};
+  const excluded = new Set(Array.isArray(categoryMembers) ? categoryMembers : []);
+  const matches = (Array.isArray(directory) ? directory : []).filter(row => {
+    const symbol = String(row?.symbol ?? row?.stock_id ?? '').trim();
+    const name = String(row?.name ?? '').trim();
+    return symbol && name && !excluded.has(symbol) && (name + ' ' + symbol).toLocaleLowerCase().includes(needle);
+  });
+  return {rows:matches.slice(0,Math.max(0,limit)), total:matches.length};
+}
+
 export function searchDirectoryRows(dailyRows, metadata, listing, cutoff) {
   const metadataProvided = metadata instanceof Map || Array.isArray(metadata?.stocks);
   const stockMetadata = metadata instanceof Map
