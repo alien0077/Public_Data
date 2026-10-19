@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {allocationDonutMarkup,cashflowChartMarkup,matchesAssetTradeFilter,prepareAssetTradeReplacement} from './assets.mjs';
+import {allocationDonutMarkup,cashflowChartMarkup,matchesAssetTradeFilter,prepareAssetTradeReplacement,profitLossClass} from './assets.mjs';
 
 test('M11 transaction filters separate buys, sells, and all corporate actions',()=>{
  assert.equal(matchesAssetTradeFilter('配息',''),true);
@@ -69,4 +69,12 @@ test('M09 cashflow chart caps dense history at the latest twelve transaction mon
  const html=cashflowChartMarkup(months);
  assert.equal((html.match(/data-kind="buy"/g)||[]).length,12);
  assert.match(html,/最近 12 個有交易月份/);
+});
+
+
+test('Taiwan portfolio profit/loss colors positive red and negative green',()=>{
+ assert.equal(profitLossClass(1),'pnl-positive');
+ assert.equal(profitLossClass(-1),'pnl-negative');
+ assert.equal(profitLossClass(0),'pnl-neutral');
+ assert.equal(profitLossClass(null),'pnl-neutral');
 });
