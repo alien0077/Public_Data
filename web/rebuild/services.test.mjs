@@ -1,3 +1,4 @@
+import {readFileSync} from 'node:fs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {aggregateIntradayRows,calendarConfirmsMarketOpen,createServicesModule,hasPreOpenCalendarConfirmation,hasSameDayOpenMarketConfirmation,isPreOpenCalendarRefreshWindow,readIntraday,readYahooIntraday,readYahooUSMarketQuote,readYahooTWIndexQuote,readYahooMarketSnapshot,readFugleIndexMessage,renderValuationEvidenceTabs,isTaiwanTradingDateAfterOpen,isTaiwanTradingSession,reserveRequestWindow} from './services.mjs';
@@ -215,10 +216,23 @@ test('Web stock intraday uses the restricted N100 endpoint and renders Yahoo quo
  try{
   const module=createServicesModule({state:{listing:{cutoff:today,validThrough:today,stocks:{'2330':{status:'LISTED',eligible:true,market:'TWSE'}}}},card:(title,body)=>'<article>'+title+body+'</article>',metric:(label,value)=>'<span>'+label+':'+value+'</span>',status:(title,message)=>title+':'+message,link:()=>'',publicData:async()=>calendar});
   const html=await module.intraday('2330',{symbol:'2330',name:'台積電',asOf:'2026-10-16'});
+  const candle=await module.provisionalCandle('2330',{symbol:'2330',name:'台積電',asOf:'2026-10-16'});
+  assert.deepEqual(candle,{date:today,time:open,open:100,high:102,low:99,close:101,volume:50,provider:'Yahoo Finance'});
   assert.ok(request.url.includes('https://acer-worker.tail5f9e3f.ts.net/v1/market/yahoo/chart?symbol=2330'));
   assert.equal(request.options.mode,'cors');assert.equal(request.options.credentials,'omit');
   assert.match(html,/Yahoo 最新報價 101/);assert.match(html,/可能延遲 15 分鐘，非即時/);assert.match(html,/Yahoo Finance 本日 1 分原始 OHLCV/);
  }finally{globalThis.Date=NativeDate;for(const key of Object.keys(previous)){if(previous[key]===undefined)delete globalThis[key];else globalThis[key]=previous[key];}}
+});
+
+test('K-line route requests a provisional same-day raw candle and labels provider and Yahoo delay',()=>{
+ const source=readFileSync(new URL('./services.mjs',import.meta.url),'utf8');
+ const app=readFileSync(new URL('./app.mjs',import.meta.url),'utf8');
+ assert.match(source,/async function provisionalCandle\(symbol,row\)/);
+ assert.match(source,/time:Math\.floor\(first\.time\/1000\)/);
+ assert.match(app,/provisionalEligible=allowed&&\['TWSE','TPEX'\]\.includes\(row\.market\)&&row\.securityType!=='fund'/);
+ assert.match(app,/modules\.provisionalCandle\(symbol,row\)/);
+ assert.match(app,/interactiveChart\(chartRows,row/);
+ assert.match(app,/可能延遲 15 分鐘，非即時/);
 });
 
 test('Yahoo request budget enforces one per symbol and ten globally per rolling minute',()=>{

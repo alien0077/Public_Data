@@ -24,7 +24,7 @@ import {transactionStockActions} from './transaction-actions.mjs?v=1';
 import {desktopCompanyFinancials} from './desktop-company-financials.mjs';
 import {desktopSecurityWatchRows} from './desktop-pages.mjs?v=71';
 import {desktopSecurityUnavailableContent} from './desktop-security-unavailable.mjs?v=1';
-import {featureModules} from './features.mjs?v=132';
+import {featureModules} from './features.mjs?v=133';
 import {number,escapeHTML as e,taipeiDay,resolveListingStatus,identity,rawRow,searchDirectoryRows,canonicalUSIndexRows,withPriceReference,validPriceReferenceContract,limitStatus,defaultPreference,normalizePreference,sortRows,readChart,loadRecentDailyChart,changeFromRecentRawCloses,withPreviousRawClose,updateExchangeClocks} from './core.mjs?v=51';
 import {preflight,favorites,mutateFavorites,recoverStorage,migrateLegacyListPreferences,exportBackup} from './storage.mjs?v=3';
 const app=document.querySelector('#app');
@@ -269,8 +269,11 @@ async function security(id,symbol){
   id=({'dark-security':'security','dark-etf':'etf'})[id]??id;
   if(id==='security'&&symbol)id=securityTarget(symbol);
   if(!symbol)return status('請先選擇證券','由股票列表開啟個股或ETF，即可查看此分區。','⌕')+card('',link('search'));
-  const row=state.rows.find(r=>r.symbol===symbol)??{...identity(symbol,state.stockMetadata?.get(symbol),state.listing?.stocks?.[symbol])};
+  let row=state.rows.find(r=>r.symbol===symbol)??{...identity(symbol,state.stockMetadata?.get(symbol),state.listing?.stocks?.[symbol])};
   const allowed=resolveListingStatus(symbol,taipeiDay(),state.listing).eligible;
+  const provisionalEligible=allowed&&['TWSE','TPEX'].includes(row.market)&&row.securityType!=='fund'&&['security','candles'].includes(id)&&String(row.asOf??'').slice(0,10)!==taipeiDay();
+  const provisionalCandle=provisionalEligible?await modules.provisionalCandle(symbol,row):null;
+  if(provisionalCandle)row={...row,price:provisionalCandle.close,open:provisionalCandle.open,high:provisionalCandle.high,low:provisionalCandle.low,volume:provisionalCandle.volume,change:null,changePercent:null,referencePrice:null,asOf:provisionalCandle.date,quoteSource:provisionalCandle.provider};
   const isSaved=Object.values(favorites()).some(items=>items.includes(symbol));
   const liveBand=allowed&&['security','etf'].includes(id)?await modules.priceBand(symbol,row):null;
   const sourceBand=String(row.asOf??'').slice(0,10)===taipeiDay()&&[row.referencePrice,row.limitUp,row.limitDown].every(Number.isFinite)&&row.referencePrice>0&&row.limitUp>row.referencePrice&&row.limitDown>0&&row.limitDown<row.referencePrice;
@@ -283,10 +286,10 @@ async function security(id,symbol){
     const heading=`<h2>${e(displayRow.name)} <small>${e(symbol)}</small></h2><button data-action="favorite" data-symbol="${e(symbol)}" aria-pressed="${isSaved}" aria-label="${isSaved?'從所有自選分類移除':'加入預設自選分類'} ${e(displayRow.name)} ${e(symbol)}">${isSaved?'★ 已加入自選':'☆ 加入自選'}</button>`;
     const marketBadge=displayRow.market==='TWSE'?'上市':displayRow.market==='TPEX'?'上櫃':displayRow.market||'市場資料不足';
     const identityTags=`<div class="security-identity-tags"><span>${e(marketBadge)}</span><span>${e(displayRow.industry||displayRow.sector||'產業資料不足')}</span><span>指數成分・資料不足</span></div>`;
-    const desktopQuote=allowed?`<div class="hero-value ${movement(displayRow.changePercent)}">${number(displayRow.price)}</div><p class="${movement(displayRow.changePercent)}">漲跌 ${format(displayRow,'change')}・${format(displayRow,'changePercent')}</p><p>成交量 ${format(displayRow,'volume')}</p><small>原始市場價格・${e(displayRow.asOf??'尚未同步')}</small>${limitHint}`:desktopSecurityOverview?'<strong class="hero-value muted">資料不足</strong><p>上市資格尚未確認・暫停顯示市場報價</p><small>Public_Data 資格 sidecar 未通過</small>':'<p>上市狀態尚未確認或不符合目前市場資格；僅保留個人歷史紀錄。</p>';
+    const desktopQuote=allowed?`<div class="hero-value ${movement(displayRow.changePercent)}">${number(displayRow.price)}</div><p class="${movement(displayRow.changePercent)}">漲跌 ${format(displayRow,'change')}・${format(displayRow,'changePercent')}</p><p>成交量 ${format(displayRow,'volume')}</p><small>${displayRow.quoteSource?`${e(displayRow.quoteSource)}・當日暫行行情${displayRow.quoteSource==='Yahoo Finance'?'・可能延遲 15 分鐘，非即時':''}`:`原始市場價格・${e(displayRow.asOf??'尚未同步')}`}</small>${limitHint}`:desktopSecurityOverview?'<strong class="hero-value muted">資料不足</strong><p>上市資格尚未確認・暫停顯示市場報價</p><small>Public_Data 資格 sidecar 未通過</small>':'<p>上市狀態尚未確認或不符合目前市場資格；僅保留個人歷史紀錄。</p>';
     const reference=Number.isFinite(displayRow.price)&&Number.isFinite(displayRow.change)?number(displayRow.price-displayRow.change):'資料不足';
     const movementLabel=Number.isFinite(displayRow.change)?`${displayRow.change>0?'▲ ':displayRow.change<0?'▼ ':''}${displayRow.change>0?'+':''}${number(displayRow.change)}（${format(displayRow,'changePercent')}）`:'資料不足';
-    const mobileQuote=allowed?`<div class="hero-value ${movement(displayRow.changePercent)}">${number(displayRow.price)}</div><p class="${movement(displayRow.changePercent)}">參考價 ${reference}・${movementLabel}</p><small>原始市場價格・${e(displayRow.asOf??'尚未同步')}</small>${limitHint}`:'<p>上市狀態尚未確認或不符合目前市場資格；僅保留個人歷史紀錄。</p>';
+    const mobileQuote=allowed?`<div class="hero-value ${movement(displayRow.changePercent)}">${number(displayRow.price)}</div><p class="${movement(displayRow.changePercent)}">參考價 ${reference}・${movementLabel}</p><small>${displayRow.quoteSource?`${e(displayRow.quoteSource)}・當日暫行行情${displayRow.quoteSource==='Yahoo Finance'?'・可能延遲 15 分鐘，非即時':''}`:`原始市場價格・${e(displayRow.asOf??'尚未同步')}`}</small>${limitHint}`:'<p>上市狀態尚未確認或不符合目前市場資格；僅保留個人歷史紀錄。</p>';
     const keyMetrics=`<div class="desktop-security-key-stats">${['open','high','low','volume','sector','market'].map((k,i)=>metric(['開盤','最高','最低','成交量','產業','市場'][i],typeof row[k]==='string'?e(row[k]||'資料不足'):number(row[k]))).join('')}</div>`,unavailableKeyMetrics=`<div class="desktop-security-key-stats">${['開盤','最高','最低','成交量','產業','市場'].map(label=>metric(label,'資料不足')).join('')}</div>`;
     const body=desktopSecurityOverview?`<div class="desktop-security-quote"><div class="desktop-security-quote-heading">${heading}</div><div class="desktop-security-quote-price">${desktopQuote}</div>${allowed?keyMetrics:unavailableKeyMetrics}</div>`:`${heading}${identityTags}${mobileQuote}`;
     return securityNavigation(symbol,id,isETFDetail)+card('',body);
@@ -323,10 +326,10 @@ async function security(id,symbol){
     if(id==='intraday')return makeSummary()+(isETFDetail?'':securityChartModes(symbol,id))+await modules.intraday(symbol,row);
     const desktopOverview=matchMedia('(min-width:1100px)').matches;
     try {
-      const recent=await loadRecentDailyChart(symbol,state.index,publicData),movement=changeFromRecentRawCloses(row,state.index,recent),displayRow=movement?{...row,...movement}:row,summary=makeSummary(makeTop(displayRow),displayRow),detail=`Public_Data 最近30日 raw 日 OHLCV・${recent.observedDates.length}/${recent.requestedDates.length} 個交易日${recent.missingDates.length?`・無個股列資料：${recent.missingDates.join('、')}`:''}；未使用 adj_close。`;
-      if(id==='security'&&!desktopOverview){const events=await desktopSecurityEvents(symbol),liveQuote=isETFDetail?'':await modules.intraday(symbol,row);return summary+card('近期重大事件（Public_Data）',events+link('news','更多重大事件',symbol))+liveQuote;}
+      const recent=await loadRecentDailyChart(symbol,state.index,publicData),movement=changeFromRecentRawCloses(row,state.index,recent),previous=recent.rows.at(-1)?.close,liveMovement=provisionalCandle&&Number.isFinite(previous)&&previous>0?{change:provisionalCandle.close-previous,changePercent:(provisionalCandle.close-previous)/previous*100}:null,displayRow=liveMovement?{...row,...liveMovement}:movement?{...row,...movement}:row,summary=makeSummary(makeTop(displayRow),displayRow),detail=`Public_Data 最近30日 raw 日 OHLCV・${recent.observedDates.length}/${recent.requestedDates.length} 個交易日${recent.missingDates.length?`・無個股列資料：${recent.missingDates.join('、')}`:''}；未使用 adj_close。`,chartRows=provisionalCandle&&recent.rows.at(-1)?.date<provisionalCandle.date?[...recent.rows,{...provisionalCandle,gapBefore:false}]:recent.rows;
+      if(id==='security'&&!desktopOverview){const events=await desktopSecurityEvents(symbol);return summary+card('近期重大事件（Public_Data）',events+link('news','更多重大事件',symbol));}
       const intradayView=desktopOverview?`<div id="desktop-intraday-chart">${await modules.intraday(symbol,row)}</div>`:'';
-      return summary+(isETFDetail?'':securityChartModes(symbol,id))+card('原始日線（最近30日）',`<p class="muted">${e(detail)}</p>`)+interactiveChart(recent.rows,row,{desktopOverview,symbol,market:row.market})+intradayView+tradeActions;
+      return summary+(isETFDetail?'':securityChartModes(symbol,id))+card('原始日線（最近30日）',`<p class="muted">${e(detail)}</p>`)+interactiveChart(chartRows,row,{desktopOverview,symbol,market:row.market})+(provisionalCandle?'<p class="source muted">圖表末端為本日暫行盤中日 K・'+e(provisionalCandle.provider)+(provisionalCandle.provider==='Yahoo Finance'?'・可能延遲 15 分鐘，非即時':'')+'；Public_Data 發布後由 canonical 日線取代。</p>':'')+intradayView+tradeActions;
     } catch(error) {return makeSummary()+status('歷史圖表暫時無法載入',`${error.message}。基本行情仍可查閱，請稍後重試。`,'↗',true)+tradeActions;}
   }
   const extra=await modules.detail(id,symbol,row);if(extra!==null)return top+extra;
@@ -605,7 +608,7 @@ async function start(){
 }
 let eligibilityDay=taipeiDay();setInterval(()=>{if(taipeiDay()!==eligibilityDay){eligibilityDay=taipeiDay();state.rows=[];state.error='交易日期已變更，請重新載入 Public_Data 股票名冊與行情。';render();}},30000);
 window.addEventListener('online',async()=>{if(!state.startupReady)return;state.offline=false;state.error=null;cache.clear();try{state.listing=await loadCanonicalListingSnapshot(publicData);await loadMarket();}catch(error){state.error=error.message;}await render();});
-if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=142',{scope:'./'}).catch(()=>{});
+if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=143',{scope:'./'}).catch(()=>{});
 await start();
 app.addEventListener('change',async event=>{const t=event.target;if(!t.dataset.memberMove||!t.value)return;const source=t.dataset.group,destination=t.value,symbol=t.dataset.memberMove;try{await mutateFavorites(groups=>{if(Object.hasOwn(groups,destination)&&Object.hasOwn(groups,source)){groups[source]=groups[source].filter(x=>x!==symbol);groups[destination]=[...new Set([...groups[destination],symbol])];}return groups;});document.querySelector('dialog').innerHTML=groupMembers(source);}catch(error){state.error=error.message;await render();}});
 app.addEventListener('submit',async event=>{if(event.target.id!=='group-add-member')return;event.preventDefault();const form=event.target,key=form.dataset.group,query=String(new FormData(form).get('symbol')).trim().toLocaleLowerCase(),row=searchDirectory().find(item=>item.symbol.toLocaleLowerCase()===query||item.name.toLocaleLowerCase()===query);if(!row){form.querySelector('[role=status]').textContent='請從 Public_Data 有效股票名冊中選擇建議；無效代號不會加入自選。';return;}try{await mutateFavorites(groups=>{if(Object.hasOwn(groups,key))groups[key]=[...new Set([...groups[key],row.symbol])];return groups;});document.querySelector('dialog').innerHTML=groupMembers(key);}catch(error){form.querySelector('[role=status]').textContent=error.message;}});

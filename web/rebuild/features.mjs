@@ -2,7 +2,7 @@ import {createDesktopPages} from './desktop-pages.mjs?v=71';
 import {createFlowHistory} from './flow-history.mjs';
 import {createNewsPage} from './news.mjs?v=49';
 import {createTransferModule} from './transfer.mjs?v=9';
-import {createServicesModule,renderValuationEvidenceTabs} from './services.mjs?v=61';
+import {createServicesModule,renderValuationEvidenceTabs} from './services.mjs?v=62';
 import {periodHistory} from './periods.mjs?v=46';
 import {valuationRange} from './valuation-range.mjs';
 import {shareholderDistributionPage} from './shareholders.mjs?v=45';
@@ -307,5 +307,5 @@ export function featureModules(ctx){
   app.addEventListener('change',async ev=>{if(ev.target.id==='briefing-date'){briefingDate=ev.target.value;briefingIndex=0;briefingShowAll=false;await ctx.refresh();return;}if(ev.target.id==='sector-select'){selectedSector=ev.target.value;await ctx.refresh();}});
   app.addEventListener('click',async ev=>{const swap=ev.target.closest('[data-fx-swap]');if(swap){const form=document.querySelector('#fx-form'),from=form?.elements.namedItem('from'),to=form?.elements.namedItem('to');if(from&&to){const old=from.value;from.value=to.value;to.value=old;from.dispatchEvent(new Event('change',{bubbles:true}));}return;}const fxButton=ev.target.closest('[data-fx-range]');if(fxButton){fxRange=fxButton.dataset.fxRange;const rows=(fxData?.data||[]).filter(row=>row.date).sort((a,b)=>a.date.localeCompare(b.date));document.querySelector('#fx-trend-chart').innerHTML=fxTrendChart(fxRangePoints(rows,fxRange,taipeiDay()));document.querySelectorAll('[data-fx-range]').forEach(button=>{button.setAttribute('aria-pressed',String(button===fxButton));button.classList.toggle('primary',button===fxButton);});return;}const style=ev.target.closest('[data-quant-style]');if(style){quantStrategyMode=style.dataset.quantStyle;await ctx.refresh();return;}const mode=ev.target.closest('[data-quant-mode]');if(mode){quantSelection=mode.dataset.quantMode;await ctx.refresh();return;}const source=ev.target.closest('[data-research-source]');if(source){institutionalSource=source.dataset.researchSource;await ctx.refresh();}});
  }
- return {page,detail,listen,intraday:services.intraday,priceBand:services.priceBand,marketQuotes:services.marketQuotes,marketIndexQuotes:services.marketIndexQuotes};
+ return {page,detail,listen,intraday:services.intraday,provisionalCandle:services.provisionalCandle,priceBand:services.priceBand,marketQuotes:services.marketQuotes,marketIndexQuotes:services.marketIndexQuotes};
 }
