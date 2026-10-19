@@ -46,10 +46,10 @@ test('canonical US daily index cards use exact Public_Data trading dates and adj
 });
 test('adjusted daily pct never becomes an actual market change',()=>{const r=rawRow({id:'2330',c:100,pct:10,adj_c:200},{name:'台積電'},{},'2026-10-03');assert.equal(r.changePercent,null);assert.equal(r.change,null);assert.equal(r.price,100);assert.equal(rawPercent({c:100,previous_close:90}),null);});
 test('favorite autocomplete uses current stock identities, filters by name or symbol, and caps visible choices',()=>{
- const directory=[{symbol:'2330',name:'台積電'},{symbol:'2317',name:'鴻海'},{symbol:'0050',name:'元大台灣50'}];
+ const directory=[{symbol:'2330',name:'台積電'},{symbol:'2317',name:'鴻海'},{symbol:'0050',name:'元大台灣50'},{symbol:'0051',name:'元大中型100'}];
  assert.deepEqual(favoriteSearchCandidates(directory,'台積').rows.map(row=>row.symbol),['2330']);
  assert.deepEqual(favoriteSearchCandidates(directory,'2317').rows.map(row=>row.name),['鴻海']);
- const results=favoriteSearchCandidates(directory,'0',[],1);assert.equal(results.total,2);assert.deepEqual(results.rows.map(row=>row.symbol),['0050']);
+ const results=favoriteSearchCandidates(directory,'005',[],1);assert.equal(results.total,2);assert.deepEqual(results.rows.map(row=>row.symbol),['0050']);
  assert.deepEqual(favoriteSearchCandidates(directory,'台積',['2330']).rows,[]);
  assert.equal(favoriteSearchCandidates(directory,'').total,0);
 });
