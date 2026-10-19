@@ -93,6 +93,25 @@ export function readYahooTWIndexQuote(payload,symbol,now=new Date()){
  return {symbol,price,change,changePercent:change/prior*100,date:marketDate,time:new Intl.DateTimeFormat('zh-TW',{timeZone:'Asia/Taipei',hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false}).format(date),source:'Yahoo Finance',isIntraday:inSession};
 }
 
+export function readYahooMarketSnapshot(payload,symbol,now=new Date()){
+ const expectedMarket=['IX0001','IX0043'].includes(symbol)?'tw':'us',forUS=expectedMarket==='us';
+ if(payload?.schemaVersion!==1||payload?.source!=='yahoo.chart.1m'||!Array.isArray(payload?.quotes))throw new Error('Yahoo Public_Data 快照格式不符');
+ const generated=Date.parse(payload.generatedAt);if(!Number.isFinite(generated)||generated>now.getTime()+60_000)throw new Error('Yahoo Public_Data 快照時間無效');
+ const rows=payload.quotes.filter(row=>row?.symbol===symbol);
+ if(rows.length!==1)throw new Error('Yahoo Public_Data 快照代號重複或不存在');
+ const row=rows[0],today=exchangeDateTime(now,forUS).date;
+ if(row.market!==expectedMarket||row.source!=='Yahoo Finance'||row.dataDate!==today)throw new Error('Yahoo Public_Data 快照市場或日期不符');
+ const timestamp=Number(row.timestamp)*1000,price=Number(row.price),prior=Number(row.previousClose);
+ if(!Number.isFinite(timestamp)||timestamp<=0||timestamp>now.getTime()+120_000||!Number.isFinite(price)||price<=0||!Number.isFinite(prior)||prior<=0)throw new Error('Yahoo Public_Data 報價欄位不足');
+ if(timestamp>generated+60_000)throw new Error('Yahoo Public_Data 報價時間晚於快照時間');
+ const local=exchangeDateTime(now,forUS),marketTime=exchangeDateTime(new Date(timestamp),forUS);
+ if(marketTime.date!==today)throw new Error('Yahoo Public_Data 報價交易日不符');
+ const inSession=forUS?local.minutes>=570&&local.minutes<960:local.minutes>=540&&local.minutes<810,age=now.getTime()-timestamp;
+ if(inSession&&(age< -120_000||age>30*60_000))throw new Error('Yahoo Public_Data 盤中報價過舊');
+ const formatter=new Intl.DateTimeFormat('zh-TW',{timeZone:forUS?'America/New_York':'Asia/Taipei',hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false});
+ return {symbol,price,change:price-prior,changePercent:(price-prior)/prior*100,date:today,time:formatter.format(new Date(timestamp)),source:'Yahoo Finance',isIntraday:inSession};
+}
+
 export function readFugleIndexMessage(message,symbolsByMarket,now=new Date()){
  const data=message?.data,market=Object.entries(symbolsByMarket??{}).find(([,symbol])=>symbol===data?.symbol)?.[0];
  if(message?.event!=='data'||(message.channel??data?.channel)!=='indices'||data?.type!=='INDEX'||!market||data.exchange!==(market==='TWSE'?'TWSE':'TPEX'))throw new Error('Fugle 指數身份不符');
@@ -202,6 +221,14 @@ export function createServicesModule(ctx){
    return output;
   }catch{return {};}
  }
+ async function yahooSnapshotQuotes(symbols,market,now){
+  const output={};let snapshot;
+  try{snapshot=await ctx.publicData('rebuild/index-intraday.json');}catch{return output;}
+  for(const symbol of symbols){
+   try{const quote=readYahooMarketSnapshot(snapshot,symbol,now);if((market==='tw'&&['IX0001','IX0043'].includes(symbol))||(market==='us'&&!['IX0001','IX0043'].includes(symbol)))output[symbol]=quote;}catch{}
+  }
+  return output;
+ }
  async function marketIndexQuotes(state){
   const now=new Date(),today=exchangeDateTime(now,false).date,minutes=exchangeDateTime(now,false).minutes;
   if(minutes<540)return {};
@@ -210,11 +237,9 @@ export function createServicesModule(ctx){
   if(!calendar)return {};
   const output={};
   if(key&&isTaiwanTradingSession(now,calendar))Object.assign(output,await fetchFugleIndexQuotes(now));
-  for(const symbol of missing){if(output[symbol])continue;const cached=yahooIndexCache.get(symbol);if(cached&&Date.now()-cached.at<60_000&&cached.quote.date===today){output[symbol]=cached.quote;continue;}
-   const at=Date.now();if(!reserveRequestWindow(localStorage,yahooCallsKey,at,10,60_000)||!reserveRequestWindow(localStorage,`${yahooCallsKey}.${symbol}`,at,1,60_000))continue;
-   try{const yahooSymbol=symbol==='IX0001'?'^TWII':'^TWOII',response=await fetch(`https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(yahooSymbol)}?range=1d&interval=1m&events=div%2Csplits`,{cache:'no-store',credentials:'omit',signal:AbortSignal.timeout(10000)});if(!response.ok)continue;const quote=readYahooTWIndexQuote(await response.json(),symbol,now);yahooIndexCache.set(symbol,{quote,at:Date.now()});output[symbol]=quote;}catch{}
-  }
-  return Object.fromEntries(Object.entries(output).filter(([symbol,quote])=>missing.includes(symbol)&&quote.date===today));
+  const snapshot=await yahooSnapshotQuotes(missing,'tw',now);
+  for(const symbol of missing)if(!output[symbol]&&snapshot[symbol])output[symbol]=snapshot[symbol];
+  return output;
  }
  async function marketQuotes(state){
   const now=new Date(),today=exchangeDateTime(now,true).date,minutes=exchangeDateTime(now,true).minutes;
@@ -223,16 +248,7 @@ export function createServicesModule(ctx){
   if(!missing.length)return {};
   const calendar=await confirmMarketForQuotes(true,now);
   if(!calendar)return {};
-  const output={};
-  for(const symbol of missing){
-   const at=Date.now();if(!reserveRequestWindow(localStorage,yahooCallsKey,at,10,60_000)||!reserveRequestWindow(localStorage,`${yahooCallsKey}.${symbol}`,at,1,60_000))continue;
-   try{
-    const response=await fetch(`https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(symbol)}?range=1d&interval=1m&events=div%2Csplits`,{cache:'no-store',credentials:'omit',signal:AbortSignal.timeout(10000)});
-    if(!response.ok)continue;
-    output[symbol]=readYahooUSMarketQuote(await response.json(),symbol,now);
-   }catch{}
-  }
-  return output;
+  return yahooSnapshotQuotes(missing,'us',now);
  }
  function stampServiceResult(message){return `${message}・${new Date().toLocaleString('zh-TW',{timeZone:'Asia/Taipei',hour12:false})}`;}
  window.addEventListener('pagehide',()=>{key='';priceBands.clear();intradayCache.clear();try{fugleIndexSocket?.close();}catch{}fugleIndexSocket=null;fugleIndexAuthenticated=false;});

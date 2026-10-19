@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {aggregateIntradayRows,calendarConfirmsMarketOpen,createServicesModule,hasPreOpenCalendarConfirmation,hasSameDayOpenMarketConfirmation,isPreOpenCalendarRefreshWindow,readIntraday,readYahooIntraday,readYahooUSMarketQuote,readYahooTWIndexQuote,readFugleIndexMessage,renderValuationEvidenceTabs,isTaiwanTradingDateAfterOpen,isTaiwanTradingSession,reserveRequestWindow} from './services.mjs';
+import {aggregateIntradayRows,calendarConfirmsMarketOpen,createServicesModule,hasPreOpenCalendarConfirmation,hasSameDayOpenMarketConfirmation,isPreOpenCalendarRefreshWindow,readIntraday,readYahooIntraday,readYahooUSMarketQuote,readYahooTWIndexQuote,readYahooMarketSnapshot,readFugleIndexMessage,renderValuationEvidenceTabs,isTaiwanTradingDateAfterOpen,isTaiwanTradingSession,reserveRequestWindow} from './services.mjs';
 import {taipeiDay} from './core.mjs';
 
 function storage(seed={}){const values=new Map(Object.entries(seed));return {getItem:key=>values.get(key)??null,setItem:(key,value)=>values.set(key,value),values};}
@@ -73,23 +73,29 @@ test('live-market authorization requires a same-date calendar fetched during tha
  assert.equal(hasPreOpenCalendarConfirmation({date:'2026-10-20',calendar,confirmed:true,checkedAt:Date.parse('2026-10-20T09:31:00-04:00')},usNow,true),false);
 });
 
-test('market quote services reload the same-day calendar when the pre-open window was missed',async()=>{
+test('market quote services use the Public_Data Yahoo snapshot and never call browser Yahoo endpoints',async()=>{
  const NativeDate=globalThis.Date,previous={window:globalThis.window,localStorage:globalThis.localStorage,fetch:globalThis.fetch},fixedNow=Date.parse('2026-10-20T10:00:00-04:00');
- let calendarReads=0,providerReads=0;
+ let calendarReads=0,snapshotReads=0,providerReads=0;
  globalThis.Date=class extends NativeDate{constructor(...args){super(...(args.length?args:[fixedNow]));}static now(){return fixedNow;}};
  globalThis.localStorage=storage();globalThis.window={addEventListener(){},setInterval(){return 1;}};
- globalThis.fetch=async url=>{
-  providerReads++;const symbol=decodeURIComponent(new URL(url).pathname.split('/').at(-1));
-  const regularMarketTime=symbol==='^TWII'||symbol==='^TWOII'?Date.parse('2026-10-20T13:30:00+08:00')/1000:fixedNow/1000;
-  return {ok:true,json:async()=>({chart:{result:[{meta:{symbol,regularMarketTime,regularMarketPrice:101,chartPreviousClose:100}}]}})};
- };
+ globalThis.fetch=async()=>{providerReads++;throw new Error('browser Yahoo direct request forbidden');};
+ const twTimestamp=Date.parse('2026-10-20T13:30:00+08:00')/1000,usTimestamp=fixedNow/1000;
+ const snapshot={schemaVersion:1,source:'yahoo.chart.1m',generatedAt:new Date(fixedNow).toISOString(),quotes:[
+  ...['IX0001','IX0043'].map(symbol=>({symbol,market:'tw',source:'Yahoo Finance',dataDate:'2026-10-20',timestamp:twTimestamp,price:101,previousClose:100})),
+  ...['^DJI','^IXIC','^GSPC','^SOX','TSM'].map(symbol=>({symbol,market:'us',source:'Yahoo Finance',dataDate:'2026-10-20',timestamp:usTimestamp,price:101,previousClose:100})),
+ ]};
  try{
-  const module=createServicesModule({state:{indices:[]},publicData:async()=>{calendarReads++;return {meta:{today:{tw:{date:'2026-10-20',is_closed:false},us:{date:'2026-10-20',is_closed:false}},years:{'2026':{tw:[],us:[]}}}};}});
+  const module=createServicesModule({state:{indices:[]},publicData:async(path,options)=>{
+   if(path==='meta/calendar.json'){calendarReads++;assert.equal(options.reload,true);return {meta:{today:{tw:{date:'2026-10-20',is_closed:false},us:{date:'2026-10-20',is_closed:false}},years:{'2026':{tw:[],us:[]}}}};}
+   if(path==='rebuild/index-intraday.json'){snapshotReads++;return snapshot;}
+   throw Error('unexpected Public_Data path '+path);
+  }});
   const us=await module.marketQuotes({indices:[]}),tw=await module.marketIndexQuotes({indices:[]});
   assert.equal(Object.keys(us).length,5);assert.ok(Object.values(us).every(item=>item.source==='Yahoo Finance'));
   assert.equal(Object.keys(tw).length,2);assert.ok(Object.values(tw).every(item=>item.source==='Yahoo Finance'));
-  assert.equal(calendarReads,2,'one exact-date canonical calendar reload for each exchange');
-  assert.equal(providerReads,7,'only the missing same-day market quotes are requested');
+  assert.equal(calendarReads,2,'one fresh calendar reload for each exchange');
+  assert.equal(snapshotReads,2,'one canonical Yahoo snapshot read per market');
+  assert.equal(providerReads,0,'the browser makes no direct Yahoo request');
  }finally{
   globalThis.Date=NativeDate;
   for(const key of Object.keys(previous)){if(previous[key]===undefined)delete globalThis[key];else globalThis[key]=previous[key];}
@@ -141,6 +147,25 @@ test('Taiwan Yahoo index fallback validates both index identities, local date an
   assert.throws(()=>readYahooTWIndexQuote(payload,symbol,new Date('2026-10-20T02:31:00Z')),/時間過舊/);
  }
  assert.throws(()=>readYahooTWIndexQuote({chart:{result:[{meta:{symbol:'^DJI',regularMarketTime,regularMarketPrice:1,chartPreviousClose:1}}]}},'IX0001',now),/身份不符/);
+});
+
+test('Yahoo Public_Data snapshot validates market, symbol, exchange date, and source quote time',()=>{
+ const twNow=new Date('2026-10-20T02:00:00Z'),usNow=new Date('2026-10-20T15:00:00Z');
+ const twTimestamp=Date.parse('2026-10-20T01:59:00Z')/1000,usTimestamp=Date.parse('2026-10-20T14:59:00Z')/1000;
+ const twRow={symbol:'IX0001',market:'tw',source:'Yahoo Finance',dataDate:'2026-10-20',timestamp:twTimestamp,price:25001,previousClose:24900};
+ const usRow={symbol:'^SOX',market:'us',source:'Yahoo Finance',dataDate:'2026-10-20',timestamp:usTimestamp,price:5001,previousClose:4950};
+ const snapshot=(generatedAt,quotes)=>({schemaVersion:1,source:'yahoo.chart.1m',generatedAt,quotes});
+ const twSnapshot=snapshot('2026-10-20T01:59:30Z',[twRow]),usSnapshot=snapshot('2026-10-20T14:59:30Z',[usRow]);
+ const tw=readYahooMarketSnapshot(twSnapshot,'IX0001',twNow),us=readYahooMarketSnapshot(usSnapshot,'^SOX',usNow);
+ assert.equal(tw.source,'Yahoo Finance');assert.equal(tw.time,'09:59:00');assert.equal(tw.change,101);assert.equal(tw.isIntraday,true);
+ assert.equal(us.source,'Yahoo Finance');assert.equal(us.time,'10:59:00');assert.equal(us.change,51);assert.equal(us.isIntraday,true);
+ assert.throws(()=>readYahooMarketSnapshot(snapshot('bad',[twRow]),'IX0001',twNow),/快照時間/);
+ assert.throws(()=>readYahooMarketSnapshot(snapshot('2026-10-20T02:02:00Z',[twRow]),'IX0001',twNow),/快照時間/);
+ assert.throws(()=>readYahooMarketSnapshot(snapshot('2026-10-20T01:59:30Z',[twRow,{...twRow}]),'IX0001',twNow),/重複/);
+ assert.throws(()=>readYahooMarketSnapshot(snapshot('2026-10-20T01:59:30Z',[{...twRow,symbol:'^SOX',market:'us'}]),'^SOX',twNow),/市場或日期/);
+ assert.throws(()=>readYahooMarketSnapshot(snapshot('2026-10-20T01:59:30Z',[{...twRow,dataDate:'2026-10-19'}]),'IX0001',twNow),/市場或日期/);
+ assert.throws(()=>readYahooMarketSnapshot(snapshot('2026-10-20T01:59:30Z',[{...twRow,timestamp:twTimestamp-3600}]),'IX0001',twNow),/報價過舊/);
+ assert.throws(()=>readYahooMarketSnapshot(snapshot('2026-10-20T01:59:30Z',[{...twRow,timestamp:twTimestamp+120}]),'IX0001',twNow),/晚於快照時間/);
 });
 
 test('Fugle Taiwan indices parser accepts authenticated index payload shape and rejects stale or wrong exchange',()=>{
