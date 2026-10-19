@@ -324,7 +324,7 @@ async function security(id,symbol){
     const desktopOverview=matchMedia('(min-width:1100px)').matches;
     try {
       const recent=await loadRecentDailyChart(symbol,state.index,publicData),movement=changeFromRecentRawCloses(row,state.index,recent),displayRow=movement?{...row,...movement}:row,summary=makeSummary(makeTop(displayRow),displayRow),detail=`Public_Data 最近30日 raw 日 OHLCV・${recent.observedDates.length}/${recent.requestedDates.length} 個交易日${recent.missingDates.length?`・無個股列資料：${recent.missingDates.join('、')}`:''}；未使用 adj_close。`;
-      if(id==='security'&&!desktopOverview){const events=await desktopSecurityEvents(symbol);return summary+card('近期重大事件（Public_Data）',events+link('news','更多重大事件',symbol));}
+      if(id==='security'&&!desktopOverview){const events=await desktopSecurityEvents(symbol),liveQuote=isETFDetail?'':await modules.intraday(symbol,row);return summary+card('近期重大事件（Public_Data）',events+link('news','更多重大事件',symbol))+liveQuote;}
       const intradayView=desktopOverview?`<div id="desktop-intraday-chart">${await modules.intraday(symbol,row)}</div>`:'';
       return summary+(isETFDetail?'':securityChartModes(symbol,id))+card('原始日線（最近30日）',`<p class="muted">${e(detail)}</p>`)+interactiveChart(recent.rows,row,{desktopOverview,symbol,market:row.market})+intradayView+tradeActions;
     } catch(error) {return makeSummary()+status('歷史圖表暫時無法載入',`${error.message}。基本行情仍可查閱，請稍後重試。`,'↗',true)+tradeActions;}
@@ -605,7 +605,7 @@ async function start(){
 }
 let eligibilityDay=taipeiDay();setInterval(()=>{if(taipeiDay()!==eligibilityDay){eligibilityDay=taipeiDay();state.rows=[];state.error='交易日期已變更，請重新載入 Public_Data 股票名冊與行情。';render();}},30000);
 window.addEventListener('online',async()=>{if(!state.startupReady)return;state.offline=false;state.error=null;cache.clear();try{state.listing=await loadCanonicalListingSnapshot(publicData);await loadMarket();}catch(error){state.error=error.message;}await render();});
-if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=141',{scope:'./'}).catch(()=>{});
+if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=142',{scope:'./'}).catch(()=>{});
 await start();
 app.addEventListener('change',async event=>{const t=event.target;if(!t.dataset.memberMove||!t.value)return;const source=t.dataset.group,destination=t.value,symbol=t.dataset.memberMove;try{await mutateFavorites(groups=>{if(Object.hasOwn(groups,destination)&&Object.hasOwn(groups,source)){groups[source]=groups[source].filter(x=>x!==symbol);groups[destination]=[...new Set([...groups[destination],symbol])];}return groups;});document.querySelector('dialog').innerHTML=groupMembers(source);}catch(error){state.error=error.message;await render();}});
 app.addEventListener('submit',async event=>{if(event.target.id!=='group-add-member')return;event.preventDefault();const form=event.target,key=form.dataset.group,query=String(new FormData(form).get('symbol')).trim().toLocaleLowerCase(),row=searchDirectory().find(item=>item.symbol.toLocaleLowerCase()===query||item.name.toLocaleLowerCase()===query);if(!row){form.querySelector('[role=status]').textContent='請從 Public_Data 有效股票名冊中選擇建議；無效代號不會加入自選。';return;}try{await mutateFavorites(groups=>{if(Object.hasOwn(groups,key))groups[key]=[...new Set([...groups[key],row.symbol])];return groups;});document.querySelector('dialog').innerHTML=groupMembers(key);}catch(error){form.querySelector('[role=status]').textContent=error.message;}});

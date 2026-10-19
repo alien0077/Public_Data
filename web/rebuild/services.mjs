@@ -64,7 +64,15 @@ export function readYahooIntraday(payload,symbol,market,today=taipeiDay()){
   const row={date:date.toISOString(),open:quote.open?.[i],high:quote.high?.[i],low:quote.low?.[i],close:quote.close?.[i],volume:quote.volume?.[i]};
   rows.push(row);
  }
- return readIntraday({symbol,date:today,data:rows},symbol);
+ const parsed=readIntraday({symbol,date:today,data:rows},symbol),meta=result.meta??{},marketTime=Number(meta.regularMarketTime),price=Number(meta.regularMarketPrice),prior=Number(meta.chartPreviousClose??meta.previousClose);
+ let currentQuote=null;
+ if(Number.isFinite(marketTime)&&marketTime>0&&Number.isFinite(price)&&price>0&&Number.isFinite(prior)&&prior>0){
+  const quotedAt=new Date(marketTime*1000),age=Date.now()-quotedAt.getTime(),marketDate=taipeiDay(quotedAt),minutes=exchangeDateTime(new Date(),false).minutes;
+  if(marketDate===today&&marketTime*1000<=Date.now()+120_000&&(!(minutes>=540&&minutes<=810)||age<=30*60_000)){
+   currentQuote={price,change:price-prior,changePercent:(price-prior)/prior*100,date:today,time:new Intl.DateTimeFormat('zh-TW',{timeZone:'Asia/Taipei',hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false}).format(quotedAt)};
+  }
+ }
+ return {...parsed,quote:currentQuote};
 }
 
 export function readYahooUSMarketQuote(payload,symbol,now=new Date()){
@@ -143,7 +151,7 @@ export function reserveRequestWindow(storage,key,now,limit,windowMs){
 }
 
 export function createServicesModule(ctx){
- let key='',finmindKey='',geminiKey='',fxKey='',feedback='',intradayRange='1d',intradayTimeframe=1,serviceResults={},fugleIndexSocket=null,fugleIndexSymbolsByMarket=null,fugleIndexCatalogPromise=null,fugleIndexAuthenticated=false,fugleIndexAuthPromise=null;const priceBands=new Map(),intradayCache=new Map(),preOpenCalendar=new Map(),preOpenAttempts=new Map(),yahooIndexCache=new Map(),fugleIndexQuotes=new Map();const fugleCallsKey='rebuild.free-tier.fugle.calls.v1',yahooCallsKey='rebuild.free-tier.yahoo.calls.v1';
+ let key='',finmindKey='',geminiKey='',fxKey='',feedback='',intradayRange='1d',intradayTimeframe=1,serviceResults={},fugleIndexSocket=null,fugleIndexSymbolsByMarket=null,fugleIndexCatalogPromise=null,fugleIndexAuthenticated=false,fugleIndexAuthPromise=null;const priceBands=new Map(),intradayCache=new Map(),preOpenCalendar=new Map(),preOpenAttempts=new Map(),yahooIndexCache=new Map(),fugleIndexQuotes=new Map();const fugleCallsKey='rebuild.free-tier.fugle.calls.v1',yahooCallsKey='rebuild.free-tier.yahoo.calls.v1',yahooStockEndpoint='https://acer-worker.tail5f9e3f.ts.net/v1/market/yahoo/chart';
  function exchangeDate(now,forUS=false){return exchangeDateTime(now,forUS).date;}
  async function refreshCalendarBeforeOpen(forUS,now=new Date()){
   if(!isPreOpenCalendarRefreshWindow(now,forUS))return;
@@ -285,8 +293,8 @@ export function createServicesModule(ctx){
      const payload=await response.json();source=readIntraday({symbol,date:today,data:payload.data},symbol);provider='Fugle';
     }else{
      if(!reserveRequestWindow(localStorage,yahooCallsKey,Date.now(),10,60_000)||!reserveRequestWindow(localStorage,`${yahooCallsKey}.${symbol}`,Date.now(),1,60_000))return ctx.status('Yahoo 免費來源保護已啟動','每支證券每 60 秒最多 1 次，所有 Yahoo 分時合計每 60 秒最多 10 次。');
-     const listing=ctx.state.listing.stocks[symbol],ticker=`${encodeURIComponent(symbol)}${listing.market==='TPEX'?'.TWO':'.TW'}`,response=await fetch(`https://query1.finance.yahoo.com/v8/finance/chart/${ticker}?range=1d&interval=1m&indicators=quote&includeTimestamps=true`,{cache:'no-store',credentials:'omit',signal:AbortSignal.timeout(12000)});
-     if(!response.ok)throw new Error(`Yahoo Finance 回應 ${response.status}。`);
+     const listing=ctx.state.listing.stocks[symbol],response=await fetch(yahooStockEndpoint+'?symbol='+encodeURIComponent(symbol),{headers:{Accept:'application/json'},mode:'cors',cache:'no-store',credentials:'omit',signal:AbortSignal.timeout(12000)});
+     if(!response.ok){let detail='';try{detail=(await response.json()).error||'';}catch{}const reasons={rate_limited:'N100 Yahoo 免費來源保護啟動：全站每分鐘最多 10 次、每支股票每分鐘最多 1 次。',public_data_available:'Public_Data 已發布今日個股資料，請重新載入以使用 canonical 資料。',calendar_unconfirmed:'Public_Data calendar.json 尚未確認台股今日開市。',not_listed:'股票清單未確認此代號為目前上市／上櫃證券。',market_not_open:'尚未到台股開盤時間。'};throw new Error(reasons[detail]||'N100 Yahoo 行情端點回應 '+response.status+'。');}
      source=readYahooIntraday(await response.json(),symbol,listing.market,today);provider='Yahoo Finance';
     }
     intradayCache.set(symbol,{source,provider,at:Date.now()});
@@ -304,8 +312,9 @@ export function createServicesModule(ctx){
    const dateLabel=value=>new Intl.DateTimeFormat('zh-TW',{timeZone:'Asia/Taipei',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hour12:false}).format(new Date(value));
    const graph=`<svg class="chart" viewBox="0 0 720 330" role="img" aria-label="${e(identity)} ${e(source.date??'日期不足')} ${rangeLabel} 原始分時價格與成交量"><text x="40" y="18">${n(hi)}</text><text x="40" y="230">${n(lo)}</text><polygon points="${area}" fill="${color}" fill-opacity=".22"/><polyline points="${points}" fill="none" stroke="${color}" stroke-width="2"/>${bars}<text x="40" y="318">${dateLabel(rows[0].time)}</text><text x="590" y="318">${dateLabel(rows.at(-1).time)}</text></svg>`;
    const details=rows.slice(-20).map(item=>`<p>${e(identity)} ${dateLabel(item.time)}<br>開 ${n(item.open)}・高 ${n(item.high)}・低 ${n(item.low)}・收 ${n(item.close)}・量 ${n(item.volume,0)}（${provider} 原始單位）</p>`).join('');
-   return ctx.card(`${identity}・分時行情`,`<div class="toolbar intraday-periods" role="group" aria-label="分時期間">${controls}</div><div class="toolbar intraday-periods" role="group" aria-label="分時 K 線週期">${timeframes}</div><div class="metric-grid">${ctx.metric('最高',n(Math.max(...rows.map(item=>item.high))))}${ctx.metric('最低',n(Math.min(...rows.map(item=>item.low))))}${ctx.metric('開盤',n(rows[0].open))}${ctx.metric('收盤',n(rows.at(-1).close))}</div><p class="source muted">${provider} 本日 1 分原始 OHLCV${provider==='Yahoo Finance'?'・可能延遲 15 分鐘，非即時':''}${intradayTimeframe>1?`・按台北交易時段聚合為 ${intradayTimeframe} 分 K`:''}・原始價格・${e(rows[0].day)} 至 ${e(rows.at(-1).day)}・最近一次來源日期 ${e(source.date??'日期不足')}</p>${graph}<p class="muted">成交量使用 ${provider} 原始單位（依商品類型）。歷史分鐘區間僅使用 Public_Data；尚未提供時保持停用；不同週期均由同一份 1 分 OHLCV 聚合，不補造缺失分鐘。</p><button data-action="reload">重新載入分時資料</button>`)+ctx.card('分時 K 線資料',`<details><summary>檢視最近 ${rows.length} 根 ${intradayTimeframe} 分 K</summary>${details}</details>`);
-  }catch(error){const message=error instanceof TypeError?'瀏覽器無法連線至行情服務或 Yahoo 不允許跨來源存取；不繞過 CORS。':error.name==='TimeoutError'?'行情服務連線逾時。':error.message;return ctx.status('分時行情載入失敗',message,'↗',true)+ctx.card('',ctx.link('services'));}
+   const currentQuote=provider==='Yahoo Finance'&&source.quote?'<p class="source" data-yahoo-quote="'+e(symbol)+'">Yahoo 最新報價 '+n(source.quote.price)+'・漲跌 '+n(source.quote.change)+'（'+n(source.quote.changePercent)+'%）・台灣當地時間 '+e(source.quote.date)+' '+e(source.quote.time)+'・可能延遲 15 分鐘，非即時</p>':'';
+   return ctx.card(`${identity}・分時行情`,`<div class="toolbar intraday-periods" role="group" aria-label="分時期間">${controls}</div><div class="toolbar intraday-periods" role="group" aria-label="分時 K 線週期">${timeframes}</div>${currentQuote}<div class="metric-grid">${ctx.metric('最高',n(Math.max(...rows.map(item=>item.high))))}${ctx.metric('最低',n(Math.min(...rows.map(item=>item.low))))}${ctx.metric('開盤',n(rows[0].open))}${ctx.metric('收盤',n(rows.at(-1).close))}</div><p class="source muted">${provider} 本日 1 分原始 OHLCV${provider==='Yahoo Finance'?'・可能延遲 15 分鐘，非即時':''}${intradayTimeframe>1?`・按台北交易時段聚合為 ${intradayTimeframe} 分 K`:''}・原始價格・${e(rows[0].day)} 至 ${e(rows.at(-1).day)}・最近一次來源日期 ${e(source.date??'日期不足')}</p>${graph}<p class="muted">成交量使用 ${provider} 原始單位（依商品類型）。歷史分鐘區間僅使用 Public_Data；尚未提供時保持停用；不同週期均由同一份 1 分 OHLCV 聚合，不補造缺失分鐘。</p><button data-action="reload">重新載入分時資料</button>`)+ctx.card('分時 K 線資料',`<details><summary>檢視最近 ${rows.length} 根 ${intradayTimeframe} 分 K</summary>${details}</details>`);
+  }catch(error){const message=error instanceof TypeError?'Yahoo 行情連線失敗；請確認 N100 唯讀端點與網路。':error.name==='TimeoutError'?'行情服務連線逾時。':error.message;return ctx.status('分時行情載入失敗',message,'↗',true)+ctx.card('',ctx.link('services'));}
  }
  async function priceBand(symbol,row){
   if(!key||!resolveListingStatus(symbol,taipeiDay(),ctx.state.listing).eligible)return null;

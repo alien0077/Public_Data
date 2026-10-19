@@ -190,6 +190,35 @@ test('Yahoo chart fallback uses raw quote close, validates symbol, and keeps onl
  assert.throws(()=>readYahooIntraday(payload,'2330','TPEX'),/身份或回應格式/);
 });
 
+test('Yahoo intraday parser exposes a same-day raw quote with Taiwan-local time',()=>{
+ const today=taipeiDay(),regularMarketTime=Math.floor(Date.now()/1000),open=Date.parse(today+'T09:00:00+08:00')/1000;
+ const payload={chart:{result:[{meta:{symbol:'2330.TW',regularMarketTime,regularMarketPrice:101,chartPreviousClose:99},timestamp:[open],indicators:{quote:[{open:[100],high:[102],low:[99],close:[101],volume:[50]}]}}]}};
+ const parsed=readYahooIntraday(payload,'2330','TWSE',today);
+ assert.equal(parsed.quote.price,101);assert.equal(parsed.quote.change,2);assert.equal(parsed.quote.date,today);assert.match(parsed.quote.time,/^\d{2}:\d{2}:\d{2}$/);
+});
+
+test('Web stock intraday uses the restricted N100 endpoint and renders Yahoo quote plus delay label',async()=>{
+ const NativeDate=globalThis.Date,previous={window:globalThis.window,localStorage:globalThis.localStorage,fetch:globalThis.fetch};
+ const fixedNow=Date.parse('2026-10-20T10:02:00+08:00'),today='2026-10-20';
+ const calendar={meta:{today:{tw:{date:today,is_closed:false}},years:{'2026':{tw:[]}}}};
+ const confirmation={date:today,calendar,confirmed:true,checkedAt:Date.parse('2026-10-20T08:59:00+08:00')};
+ const values=new Map([['rebuild.calendar.preopen.result.v1.tw',JSON.stringify(confirmation)]]);
+ globalThis.Date=class extends NativeDate{constructor(...args){super(...(args.length?args:[fixedNow]));}static now(){return fixedNow;}};
+ globalThis.localStorage={getItem:key=>values.get(key)??null,setItem:(key,value)=>values.set(key,value)};
+ globalThis.window={addEventListener(){},setInterval(){return 1;}};
+ let request;
+ const open=Date.parse(today+'T09:00:00+08:00')/1000,regularMarketTime=Math.floor(Date.parse(today+'T10:01:00+08:00')/1000);
+ const payload={chart:{result:[{meta:{symbol:'2330.TW',regularMarketTime,regularMarketPrice:101,chartPreviousClose:99},timestamp:[open],indicators:{quote:[{open:[100],high:[102],low:[99],close:[101],volume:[50]}]}}]}};
+ globalThis.fetch=async(url,options)=>{request={url,options};return {ok:true,json:async()=>payload};};
+ try{
+  const module=createServicesModule({state:{listing:{cutoff:today,validThrough:today,stocks:{'2330':{status:'LISTED',eligible:true,market:'TWSE'}}}},card:(title,body)=>'<article>'+title+body+'</article>',metric:(label,value)=>'<span>'+label+':'+value+'</span>',status:(title,message)=>title+':'+message,link:()=>'',publicData:async()=>calendar});
+  const html=await module.intraday('2330',{symbol:'2330',name:'台積電',asOf:'2026-10-16'});
+  assert.ok(request.url.includes('https://acer-worker.tail5f9e3f.ts.net/v1/market/yahoo/chart?symbol=2330'));
+  assert.equal(request.options.mode,'cors');assert.equal(request.options.credentials,'omit');
+  assert.match(html,/Yahoo 最新報價 101/);assert.match(html,/可能延遲 15 分鐘，非即時/);assert.match(html,/Yahoo Finance 本日 1 分原始 OHLCV/);
+ }finally{globalThis.Date=NativeDate;for(const key of Object.keys(previous)){if(previous[key]===undefined)delete globalThis[key];else globalThis[key]=previous[key];}}
+});
+
 test('Yahoo request budget enforces one per symbol and ten globally per rolling minute',()=>{
  const now=100_000,s=storage();for(let i=0;i<10;i++)assert.equal(reserveRequestWindow(s,`yahoo-${i}`,now,1,60_000),true);
  const global=storage({all:JSON.stringify(Array.from({length:10},(_,i)=>now-100+i))});assert.equal(reserveRequestWindow(global,'all',now,10,60_000),false);

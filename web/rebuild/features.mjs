@@ -2,7 +2,7 @@ import {createDesktopPages} from './desktop-pages.mjs?v=71';
 import {createFlowHistory} from './flow-history.mjs';
 import {createNewsPage} from './news.mjs?v=49';
 import {createTransferModule} from './transfer.mjs?v=9';
-import {createServicesModule,renderValuationEvidenceTabs} from './services.mjs?v=58';
+import {createServicesModule,renderValuationEvidenceTabs} from './services.mjs?v=60';
 import {periodHistory} from './periods.mjs?v=46';
 import {valuationRange} from './valuation-range.mjs';
 import {shareholderDistributionPage} from './shareholders.mjs?v=45';
