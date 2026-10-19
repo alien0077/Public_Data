@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {aggregateIntradayRows,calendarConfirmsMarketOpen,createServicesModule,hasPreOpenCalendarConfirmation,isPreOpenCalendarRefreshWindow,readIntraday,readYahooIntraday,readYahooUSMarketQuote,readYahooTWIndexQuote,readFugleIndexMessage,renderValuationEvidenceTabs,isTaiwanTradingSession,reserveRequestWindow} from './services.mjs';
+import {aggregateIntradayRows,calendarConfirmsMarketOpen,createServicesModule,hasPreOpenCalendarConfirmation,hasSameDayOpenMarketConfirmation,isPreOpenCalendarRefreshWindow,readIntraday,readYahooIntraday,readYahooUSMarketQuote,readYahooTWIndexQuote,readFugleIndexMessage,renderValuationEvidenceTabs,isTaiwanTradingDateAfterOpen,isTaiwanTradingSession,reserveRequestWindow} from './services.mjs';
 import {taipeiDay} from './core.mjs';
 
 function storage(seed={}){const values=new Map(Object.entries(seed));return {getItem:key=>values.get(key)??null,setItem:(key,value)=>values.set(key,value),values};}
@@ -73,18 +73,23 @@ test('live-market authorization requires a same-date calendar fetched during tha
  assert.equal(hasPreOpenCalendarConfirmation({date:'2026-10-20',calendar,confirmed:true,checkedAt:Date.parse('2026-10-20T09:31:00-04:00')},usNow,true),false);
 });
 
-test('market quote services fail closed after opening when pre-open refresh was missed',async()=>{
+test('market quote services reload the same-day calendar when the pre-open window was missed',async()=>{
  const NativeDate=globalThis.Date,previous={window:globalThis.window,localStorage:globalThis.localStorage,fetch:globalThis.fetch},fixedNow=Date.parse('2026-10-20T10:00:00-04:00');
  let calendarReads=0,providerReads=0;
  globalThis.Date=class extends NativeDate{constructor(...args){super(...(args.length?args:[fixedNow]));}static now(){return fixedNow;}};
  globalThis.localStorage=storage();globalThis.window={addEventListener(){},setInterval(){return 1;}};
- globalThis.fetch=async()=>{providerReads++;return {ok:false,status:503};};
+ globalThis.fetch=async url=>{
+  providerReads++;const symbol=decodeURIComponent(new URL(url).pathname.split('/').at(-1));
+  const regularMarketTime=symbol==='^TWII'||symbol==='^TWOII'?Date.parse('2026-10-20T13:30:00+08:00')/1000:fixedNow/1000;
+  return {ok:true,json:async()=>({chart:{result:[{meta:{symbol,regularMarketTime,regularMarketPrice:101,chartPreviousClose:100}}]}})};
+ };
  try{
   const module=createServicesModule({state:{indices:[]},publicData:async()=>{calendarReads++;return {meta:{today:{tw:{date:'2026-10-20',is_closed:false},us:{date:'2026-10-20',is_closed:false}},years:{'2026':{tw:[],us:[]}}}};}});
-  assert.deepEqual(await module.marketQuotes({indices:[]}),{});
-  assert.deepEqual(await module.marketIndexQuotes({indices:[]}),{});
-  assert.equal(calendarReads,0,'must not fetch calendar after the pre-open window');
-  assert.equal(providerReads,0,'must not call a live quote provider without pre-open confirmation');
+  const us=await module.marketQuotes({indices:[]}),tw=await module.marketIndexQuotes({indices:[]});
+  assert.equal(Object.keys(us).length,5);assert.ok(Object.values(us).every(item=>item.source==='Yahoo Finance'));
+  assert.equal(Object.keys(tw).length,2);assert.ok(Object.values(tw).every(item=>item.source==='Yahoo Finance'));
+  assert.equal(calendarReads,2,'one exact-date canonical calendar reload for each exchange');
+  assert.equal(providerReads,7,'only the missing same-day market quotes are requested');
  }finally{
   globalThis.Date=NativeDate;
   for(const key of Object.keys(previous)){if(previous[key]===undefined)delete globalThis[key];else globalThis[key]=previous[key];}
@@ -97,6 +102,16 @@ test('canonical calendar confirms only the exact market date and rejects holiday
  assert.equal(calendarConfirmsMarketOpen(calendar,new Date('2026-10-19T10:00:00+08:00'),false),false);
  assert.equal(calendarConfirmsMarketOpen(calendar,new Date('2026-10-20T10:00:00+08:00'),true),false);
  assert.equal(calendarConfirmsMarketOpen({...calendar,meta:{...calendar.meta,today:{...calendar.meta.today,tw:{date:'2026-10-20',is_closed:false}},years:{'2026':{tw:['2026-10-20'],us:[]}}}},new Date('2026-10-20T10:00:00+08:00'),false),false);
+});
+
+test('same-day recovered calendar may authorize quotes but stale, future, or closed dates may not',()=>{
+ const calendar={meta:{today:{tw:{date:'2026-10-20',is_closed:false}},years:{'2026':{tw:[],us:[]}}}},now=new Date('2026-10-20T14:00:00+08:00');
+ assert.equal(hasSameDayOpenMarketConfirmation({date:'2026-10-20',calendar,confirmed:true,checkedAt:Date.parse('2026-10-20T14:00:00+08:00')},now,false),true);
+ assert.equal(hasSameDayOpenMarketConfirmation({date:'2026-10-19',calendar,confirmed:true,checkedAt:Date.parse('2026-10-19T08:59:00+08:00')},now,false),false);
+ assert.equal(hasSameDayOpenMarketConfirmation({date:'2026-10-20',calendar,confirmed:true,checkedAt:now.getTime()+300_000},now,false),false);
+ assert.equal(isTaiwanTradingDateAfterOpen(now,calendar),true);
+ assert.equal(isTaiwanTradingDateAfterOpen(new Date('2026-10-20T08:59:00+08:00'),calendar),false);
+ assert.equal(isTaiwanTradingDateAfterOpen(now,{meta:{today:{tw:{date:'2026-10-20',is_closed:true}},years:{'2026':{tw:[],us:[]}}}}),false);
 });
 
 test('Yahoo fallback requires a canonical same-day calendar confirmation and an open session',()=>{

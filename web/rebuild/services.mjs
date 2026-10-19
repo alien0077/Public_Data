@@ -33,6 +33,10 @@ export function hasPreOpenCalendarConfirmation(result,now,forUS=false){
  if(!result||result.error||result.confirmed!==true||result.date!==exchangeDateTime(now,forUS).date||!Number.isFinite(result.checkedAt))return false;
  return isPreOpenCalendarRefreshWindow(new Date(result.checkedAt),forUS)&&calendarConfirmsMarketOpen(result.calendar,now,forUS);
 }
+export function hasSameDayOpenMarketConfirmation(result,now,forUS=false){
+ if(!result||result.error||result.confirmed!==true||result.date!==exchangeDateTime(now,forUS).date||!Number.isFinite(result.checkedAt)||result.checkedAt>now.getTime()+120_000)return false;
+ return calendarConfirmsMarketOpen(result.calendar,now,forUS);
+}
 export function renderValuationEvidenceTabs(symbol,tabs){
  const code=e(symbol),nav=`<div class="valuation-evidence-tabs" role="tablist" aria-label="估值依據分頁">${tabs.map(([key,label],index)=>`<button type="button" role="tab" data-valuation-tab="${e(key)}" id="valuation-tab-${code}-${e(key)}" aria-controls="valuation-panel-${code}-${e(key)}" aria-selected="${index===0}" tabindex="${index===0?0:-1}" class="${index===0?'primary':''}">${e(label)}</button>`).join('')}</div>`;
  const panels=tabs.map(([key,,content],index)=>`<section class="valuation-evidence-panel" role="tabpanel" id="valuation-panel-${code}-${e(key)}" aria-labelledby="valuation-tab-${code}-${e(key)}" data-valuation-panel="${e(key)}"${index===0?'':' hidden'}>${content}</section>`).join('');
@@ -42,6 +46,10 @@ export function isTaiwanTradingSession(now,calendar){
  const {date,minutes}=exchangeDateTime(now,false);
  if(!calendarConfirmsMarketOpen(calendar,now,false))return false;
  return minutes>=540&&minutes<=810;
+}
+export function isTaiwanTradingDateAfterOpen(now,calendar){
+ const {minutes}=exchangeDateTime(now,false);
+ return calendarConfirmsMarketOpen(calendar,now,false)&&minutes>=540;
 }
 
 export function readYahooIntraday(payload,symbol,market,today=taipeiDay()){
@@ -131,6 +139,20 @@ export function createServicesModule(ctx){
    try{localStorage.setItem(`rebuild.calendar.preopen.result.v1.${market}`,JSON.stringify(result));}catch{}
   }catch(error){preOpenCalendar.set(market,{date,calendar:null,confirmed:false,checkedAt:Date.now(),error:error.message});}
  }
+ async function confirmMarketForQuotes(forUS,now=new Date()){
+  const market=forUS?'us':'tw',date=exchangeDate(now,forUS),existing=preOpenCalendar.get(market);
+  if(hasSameDayOpenMarketConfirmation(existing,now,forUS))return existing.calendar;
+  if(existing&&!existing.error&&existing.date===date&&Number.isFinite(existing.checkedAt)&&existing.checkedAt<=now.getTime()+120_000&&!calendarConfirmsMarketOpen(existing.calendar,now,forUS))return null;
+  const attemptKey=`rebuild.calendar.quote-attempts.v1.${market}.${date}`;
+  if(!reserveRequestWindow(localStorage,attemptKey,Date.now(),1,300_000))return null;
+  try{
+   const calendar=await ctx.publicData('meta/calendar.json',{reload:true});
+   const result={date,calendar,confirmed:calendarConfirmsMarketOpen(calendar,now,forUS),checkedAt:Date.now()};
+   preOpenCalendar.set(market,result);
+   try{localStorage.setItem(`rebuild.calendar.preopen.result.v1.${market}`,JSON.stringify(result));}catch{}
+   return result.confirmed?calendar:null;
+  }catch(error){preOpenCalendar.set(market,{date,calendar:null,confirmed:false,checkedAt:Date.now(),error:error.message});return null;}
+ }
  try{for(const [key,stamp] of JSON.parse(localStorage.getItem('rebuild.calendar.preopen.attempts.v1')||'[]'))if(typeof key==='string'&&Number.isFinite(stamp))preOpenAttempts.set(key,stamp);for(const market of ['tw','us']){const item=JSON.parse(localStorage.getItem(`rebuild.calendar.preopen.result.v1.${market}`)||'null');if(item&&item.date===exchangeDate(new Date(),market==='us'))preOpenCalendar.set(market,item);}}catch{}
  const checkPreOpenCalendars=()=>Promise.all([refreshCalendarBeforeOpen(false),refreshCalendarBeforeOpen(true)]);
  void checkPreOpenCalendars();window.setInterval?.(()=>{void checkPreOpenCalendars();},30_000);globalThis.document?.addEventListener('visibilitychange',()=>{if(globalThis.document.visibilityState==='visible')void checkPreOpenCalendars();});
@@ -184,9 +206,8 @@ export function createServicesModule(ctx){
   const now=new Date(),today=exchangeDateTime(now,false).date,minutes=exchangeDateTime(now,false).minutes;
   if(minutes<540)return {};
   const symbols=['IX0001','IX0043'],missing=symbols.filter(symbol=>state.indices?.find(row=>row.symbol===symbol)?.asOf!==today);if(!missing.length)return {};
-  const confirmation=preOpenCalendar.get('tw');
-  if(!hasPreOpenCalendarConfirmation(confirmation,now,false))return {};
-  const calendar=confirmation.calendar;
+  const calendar=await confirmMarketForQuotes(false,now);
+  if(!calendar)return {};
   const output={};
   if(key&&isTaiwanTradingSession(now,calendar))Object.assign(output,await fetchFugleIndexQuotes(now));
   for(const symbol of missing){if(output[symbol])continue;const cached=yahooIndexCache.get(symbol);if(cached&&Date.now()-cached.at<60_000&&cached.quote.date===today){output[symbol]=cached.quote;continue;}
@@ -200,9 +221,8 @@ export function createServicesModule(ctx){
   if(minutes<570)return {};
   const symbols=['^DJI','^IXIC','^GSPC','^SOX','TSM'],missing=symbols.filter(symbol=>state.indices?.find(row=>row.symbol===symbol)?.asOf!==today);
   if(!missing.length)return {};
-  const confirmation=preOpenCalendar.get('us');
-  if(!hasPreOpenCalendarConfirmation(confirmation,now,true))return {};
-  const calendar=confirmation.calendar;
+  const calendar=await confirmMarketForQuotes(true,now);
+  if(!calendar)return {};
   const output={};
   for(const symbol of missing){
    const at=Date.now();if(!reserveRequestWindow(localStorage,yahooCallsKey,at,10,60_000)||!reserveRequestWindow(localStorage,`${yahooCallsKey}.${symbol}`,at,1,60_000))continue;
@@ -238,9 +258,8 @@ export function createServicesModule(ctx){
   if(!resolveListingStatus(symbol,today,ctx.state.listing).eligible)return ctx.status('目前市場資料不可用','上市資格尚未確認。');
   if(String(row.asOf??'').slice(0,10)===today)return ctx.status('今日 Public_Data 行情已發布','依資料來源規則使用 Public_Data；目前沒有 canonical 個股歷史分鐘序列，不以外部即時來源覆蓋。');
   try{
-   const now=new Date(),confirmation=preOpenCalendar.get('tw');
-   if(!confirmation||confirmation.date!==today||confirmation.checkedAt<Date.now()-24*60*60_000)return ctx.status('尚未完成開盤前交易日確認','台股開盤前半小時需重新載入 Public_Data calendar.json 並確認當日開市；未確認前不呼叫免費行情來源。');
-   if(!confirmation.confirmed||!isTaiwanTradingSession(now,confirmation.calendar))return ctx.status('目前非台股交易時段','Public_Data calendar.json 未確認今日開市，或目前不在交易時段；不呼叫行情服務。');
+   const now=new Date(),calendar=await confirmMarketForQuotes(false,now);
+   if(!calendar||!isTaiwanTradingDateAfterOpen(now,calendar))return ctx.status('目前市場行情不可用','Public_Data calendar.json 尚未確認台股今日開市，或尚未到開盤時間；不呼叫行情服務。');
    const cached=intradayCache.get(symbol);let source=cached?.source,provider=cached?.provider;
    if(!source||Date.now()-cached.at>=60_000){
     if(key){
