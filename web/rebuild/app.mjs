@@ -24,7 +24,7 @@ import {transactionStockActions} from './transaction-actions.mjs?v=1';
 import {desktopCompanyFinancials} from './desktop-company-financials.mjs';
 import {desktopSecurityWatchRows} from './desktop-pages.mjs?v=71';
 import {desktopSecurityUnavailableContent} from './desktop-security-unavailable.mjs?v=1';
-import {featureModules} from './features.mjs?v=131';
+import {featureModules} from './features.mjs?v=132';
 import {number,escapeHTML as e,taipeiDay,resolveListingStatus,identity,rawRow,searchDirectoryRows,canonicalUSIndexRows,withPriceReference,validPriceReferenceContract,limitStatus,defaultPreference,normalizePreference,sortRows,readChart,loadRecentDailyChart,changeFromRecentRawCloses,withPreviousRawClose,updateExchangeClocks} from './core.mjs?v=51';
 import {preflight,favorites,mutateFavorites,recoverStorage,migrateLegacyListPreferences,exportBackup} from './storage.mjs?v=3';
 const app=document.querySelector('#app');

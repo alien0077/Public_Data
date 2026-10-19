@@ -64,7 +64,7 @@ test('rotation sector pagination advances shell and served module/style cache ke
  const index=read('index.html'),app=read('app.mjs'),features=read('features.mjs'),worker=read('sw.js'),transfer=read('transfer.mjs');
  assert.match(index,/app\.mjs\?v=224/);
  assert.match(index,/style\.css\?v=124/);
- assert.match(app,/features\.mjs\?v=131/);
+ assert.match(app,/features\.mjs\?v=132/);
  assert.match(app,/storage\.mjs\?v=3/);
  assert.match(app,/market\.mjs\?v=62/);
  assert.match(app,/explore-market\.mjs\?v=3/);
@@ -76,7 +76,7 @@ test('rotation sector pagination advances shell and served module/style cache ke
  assert.match(features,/transfer\.mjs\?v=9/);
  assert.match(features,/services\.mjs\?v=60/);
  assert.match(features,/rotation\.mjs\?v=7/);
- assert.match(worker,/twstock-rebuild-shell-v233/);
+ assert.match(worker,/twstock-rebuild-shell-v234/);
  assert.match(app,/market-turnover\.mjs\?v=2/);
  assert.match(worker,/market-turnover\.mjs\?v=2/);
  assert.match(worker,/app\.mjs\?v=224/);
@@ -86,7 +86,7 @@ test('rotation sector pagination advances shell and served module/style cache ke
  assert.match(worker,/explore-market\.mjs\?v=3/);
  assert.match(worker,/\.\/explore-market\.mjs/);
  assert.match(worker,/index-intraday\.mjs\?v=9/);
- assert.match(worker,/features\.mjs\?v=131/);
+ assert.match(worker,/features\.mjs\?v=132/);
  assert.match(worker,/rotation\.mjs\?v=7/);
  assert.match(features,/m03-research\.mjs\?v=4/);
  assert.match(worker,/m03-research\.mjs\?v=4/);
