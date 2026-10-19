@@ -1,0 +1,22 @@
+.launch{min-height:calc(100dvh - 20px);display:flex;flex-direction:column;justify-content:center;gap:18px;width:min(100% - 32px,620px);margin:0 auto;padding:28px 0 max(24px,env(safe-area-inset-bottom))}
+.launch-brand{display:flex;align-items:center;gap:16px;padding:2px 4px 8px}
+.launch-brand .brandmark{display:grid;place-items:center;width:62px;height:62px;flex:none;border:1px solid color-mix(in srgb,var(--blue) 18%,var(--line));border-radius:19px;background:linear-gradient(145deg,color-mix(in srgb,var(--blue) 14%,var(--card)),color-mix(in srgb,#18a999 9%,var(--card)));color:var(--blue);font-size:2rem;font-weight:700}
+.launch-brand h1{font-size:1.65rem;letter-spacing:-.03em}
+.launch-brand p{margin-top:3px;color:var(--muted);font-size:.88rem}
+.launch-welcome{display:grid;gap:15px;padding:22px;border:1px solid var(--line);border-radius:22px;background:var(--card);box-shadow:var(--shadow)}
+.launch-welcome h2{font-size:1.23rem;line-height:1.45}
+.launch-welcome>p{color:var(--muted);font-size:.9rem}
+.launch-features{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;padding:2px 0}
+.launch-features article{display:grid;align-content:start;gap:5px;min-width:0;min-height:100px;padding:12px 10px;border:1px solid var(--line);border-radius:15px;background:var(--bg)}
+.launch-features article>span{display:grid;place-items:center;width:30px;height:30px;margin-bottom:2px;border-radius:9px;background:color-mix(in srgb,var(--blue) 11%,var(--card));color:var(--blue);font-size:1.15rem}
+.launch-features strong{font-size:.88rem}
+.launch-features small{font-size:.72rem;line-height:1.45}
+.launch-local{display:grid;gap:5px;padding-top:14px;border-top:1px solid var(--line);font-size:.85rem;line-height:1.55}
+.launch-local p{color:var(--muted);font-size:.78rem}
+.launch-action{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;min-height:52px;font-weight:700}
+.launch-action span{font-size:1.2rem}
+.launch-footnote{text-align:center;font-size:.75rem}
+@media(max-width:360px){.launch{width:calc(100% - 24px);gap:14px}.launch-welcome{padding:17px}.launch-features{gap:6px}.launch-features article{padding:10px 8px}.launch-features small{font-size:.68rem}}
+@media(min-width:1100px){.launch{min-height:calc(100dvh - 40px);padding-top:40px}.launch-welcome{padding:28px}.launch-brand{padding-bottom:12px}}
+
+.launch-brand .brandmark svg{width:44px;height:34px;overflow:visible}.launch-brand .brandmark svg path{fill:none;stroke:currentColor;stroke-width:4;stroke-linecap:round;stroke-linejoin:round}

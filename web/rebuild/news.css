@@ -1,0 +1,46 @@
+.news-category-tabs {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 2px;
+  overflow: visible;
+}
+
+.news-category-tabs a.chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  min-height: 44px;
+  padding: 4px 2px;
+  white-space: nowrap;
+  font-size: .72rem;
+}
+
+.news-category-tabs a.chip.selected {
+  border-radius: 8px;
+  background: var(--selected);
+  font-weight: 600;
+}
+
+.health-periods button.selected {
+  border-color: var(--blue);
+  background: var(--selected);
+  font-weight: 650;
+}
+
+.health-price-chart {
+  width: 100%;
+  height: auto;
+  min-height: 200px;
+  overflow: visible;
+}
+
+.health-price-chart text {
+  fill: var(--muted);
+  font-size: 12px;
+}
+
+.health-price-chart .grid {
+  stroke: var(--line);
+  stroke-width: 1;
+}
