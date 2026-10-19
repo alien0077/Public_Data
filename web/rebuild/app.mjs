@@ -625,7 +625,7 @@ async function start(){
 }
 let eligibilityDay=taipeiDay();setInterval(()=>{if(taipeiDay()!==eligibilityDay){eligibilityDay=taipeiDay();state.rows=[];state.error='交易日期已變更，請重新載入 Public_Data 股票名冊與行情。';render();}},30000);
 window.addEventListener('online',async()=>{if(!state.startupReady)return;state.offline=false;state.error=null;cache.clear();try{state.listing=await loadCanonicalListingSnapshot(publicData);await loadMarket();}catch(error){state.error=error.message;}await render();});
-if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=143',{scope:'./'}).catch(()=>{});
+if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=144',{scope:'./'}).catch(()=>{});
 await start();
 app.addEventListener('change',async event=>{const t=event.target;if(!t.dataset.memberMove||!t.value)return;const source=t.dataset.group,destination=t.value,symbol=t.dataset.memberMove;try{await mutateFavorites(groups=>{if(Object.hasOwn(groups,destination)&&Object.hasOwn(groups,source)){groups[source]=groups[source].filter(x=>x!==symbol);groups[destination]=[...new Set([...groups[destination],symbol])];}return groups;});document.querySelector('dialog').innerHTML=groupMembers(source);}catch(error){state.error=error.message;await render();}});
 app.addEventListener('input',event=>{const input=event.target;if(input?.id!=='group-member-query')return;const form=input.closest('#group-add-member'),host=form?.querySelector('#group-member-suggestions');if(!form||!host)return;host.innerHTML=groupMemberSuggestions(form.dataset.group,input.value);form.querySelector('[role=status]').textContent='';});

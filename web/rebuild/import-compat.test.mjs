@@ -59,16 +59,16 @@ test('iOS annual-settlement export also accepts its empty-object representation'
  assert.equal(preview.legacySourceRecords,null);
 });
 
-test('rotation sector pagination advances shell and served module/style cache keys',()=>{
+test('Web shell versions and navigation cache bypass stay aligned',()=>{
  const read=name=>readFileSync(new URL(`./${name}`,import.meta.url),'utf8');
  const index=read('index.html'),app=read('app.mjs'),features=read('features.mjs'),worker=read('sw.js'),transfer=read('transfer.mjs');
- assert.match(index,/app\.mjs\?v=226/);
+ assert.match(index,/app\.mjs\?v=227/);
  assert.match(index,/style\.css\?v=125/);
  assert.match(app,/features\.mjs\?v=133/);
  assert.match(app,/storage\.mjs\?v=3/);
  assert.match(app,/market\.mjs\?v=62/);
  assert.match(app,/explore-market\.mjs\?v=3/);
- assert.match(app,/sw\.js\?v=143/);
+ assert.match(app,/sw\.js\?v=144/);
  assert.match(app,/transaction-actions\.mjs\?v=1/);
  assert.match(app,/transactionStockActions\(s,stock\.name,/);
  assert.match(app,/comparison\.mjs\?v=2/);
@@ -76,10 +76,10 @@ test('rotation sector pagination advances shell and served module/style cache ke
  assert.match(features,/transfer\.mjs\?v=9/);
  assert.match(features,/services\.mjs\?v=62/);
  assert.match(features,/rotation\.mjs\?v=7/);
- assert.match(worker,/twstock-rebuild-shell-v237/);
+ assert.match(worker,/twstock-rebuild-shell-v238/);
  assert.match(app,/market-turnover\.mjs\?v=2/);
  assert.match(worker,/market-turnover\.mjs\?v=2/);
- assert.match(worker,/app\.mjs\?v=226/);
+ assert.match(worker,/app\.mjs\?v=227/);
  assert.match(worker,/transaction-actions\.mjs\?v=1/);
  assert.match(worker,/comparison\.mjs\?v=2/);
  assert.match(worker,/market\.mjs\?v=62/);
