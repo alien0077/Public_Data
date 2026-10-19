@@ -43,6 +43,12 @@ test('iOS legacy brokerage rows and annual settlements are included in a Web v2 
  assert.match(preview.warnings.join(' '),/不會計入有效持倉或資產數字/);
 });
 
+test('trade import checkboxes stay compact and horizontal on mobile',()=>{
+ const css=readFileSync(new URL('./style.css',import.meta.url),'utf8');
+ assert.match(css,/label:has\(>input\[data-compatible-index\]\)\{display:flex;flex-direction:row/);
+ assert.match(css,/label:has\(>input\[data-compatible-index\]\)>input\{width:22px;height:22px/);
+});
+
 test('iOS backup rejects malformed supplemental record collections',async()=>{
  await assert.rejects(()=>previewIOSBackup(JSON.stringify({transactions:[trade()],normalizedTrades:{}})),/格式不正確/);
 });
@@ -57,12 +63,12 @@ test('rotation sector pagination advances shell and served module/style cache ke
  const read=name=>readFileSync(new URL(`./${name}`,import.meta.url),'utf8');
  const index=read('index.html'),app=read('app.mjs'),features=read('features.mjs'),worker=read('sw.js'),transfer=read('transfer.mjs');
  assert.match(index,/app\.mjs\?v=223/);
- assert.match(index,/style\.css\?v=122/);
+ assert.match(index,/style\.css\?v=123/);
  assert.match(app,/features\.mjs\?v=131/);
  assert.match(app,/storage\.mjs\?v=3/);
  assert.match(app,/market\.mjs\?v=62/);
  assert.match(app,/explore-market\.mjs\?v=3/);
- assert.match(app,/sw\.js\?v=140/);
+ assert.match(app,/sw\.js\?v=141/);
  assert.match(app,/transaction-actions\.mjs\?v=1/);
  assert.match(app,/transactionStockActions\(s,stock\.name,/);
  assert.match(app,/comparison\.mjs\?v=2/);
@@ -70,7 +76,7 @@ test('rotation sector pagination advances shell and served module/style cache ke
  assert.match(features,/transfer\.mjs\?v=9/);
  assert.match(features,/services\.mjs\?v=58/);
  assert.match(features,/rotation\.mjs\?v=7/);
- assert.match(worker,/twstock-rebuild-shell-v230/);
+ assert.match(worker,/twstock-rebuild-shell-v231/);
  assert.match(app,/market-turnover\.mjs\?v=2/);
  assert.match(worker,/market-turnover\.mjs\?v=2/);
  assert.match(worker,/app\.mjs\?v=223/);
@@ -88,7 +94,7 @@ test('rotation sector pagination advances shell and served module/style cache ke
  assert.match(worker,/etf-battle\.mjs\?v=6/);
  assert.match(worker,/assets\.mjs\?v=3/);
  assert.match(worker,/explore\.mjs\?v=13/);
- assert.match(worker,/style\.css\?v=122/);
+ assert.match(worker,/style\.css\?v=123/);
  assert.match(features,/desktop-pages\.mjs\?v=71/);
  assert.match(worker,/desktop-pages\.mjs\?v=71/);
  assert.match(worker,/services\.mjs\?v=58/);
