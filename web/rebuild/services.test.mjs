@@ -188,6 +188,8 @@ test('Yahoo chart fallback uses raw quote close, validates symbol, and keeps onl
  const parsed=readYahooIntraday(payload,'2330','TWSE');assert.equal(parsed.rows.length,1);assert.equal(parsed.rows[0].close,101);assert.equal(parsed.rows[0].volume,10);
  assert.throws(()=>readYahooIntraday(payload,'2317','TWSE'),/身份或回應格式/);
  assert.throws(()=>readYahooIntraday(payload,'2330','TPEX'),/身份或回應格式/);
+ const sparse={chart:{result:[{meta:{symbol:'2330.TW'},timestamp:[open,open+60,open+120],indicators:{quote:[{open:[100,null,101],high:[102,null,103],low:[99,null,100],close:[101,null,102],volume:[10,null,20]}]}}]}};
+ const filtered=readYahooIntraday(sparse,'2330','TWSE');assert.equal(filtered.rows.length,2);assert.deepEqual(filtered.rows.map(row=>row.close),[101,102]);
 });
 
 test('Yahoo intraday parser exposes a same-day raw quote with Taiwan-local time',()=>{

@@ -62,6 +62,7 @@ export function readYahooIntraday(payload,symbol,market,today=taipeiDay()){
   const time=Number(timestamps[i]);if(!Number.isFinite(time)||time<=0)throw new Error('Yahoo 分時時間戳無效');const date=new Date(time*1000),day=taipeiDay(date),minute=new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Taipei',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).format(date);
   if(day!==today||minute<'09:00'||minute>'13:30')continue;
   const row={date:date.toISOString(),open:quote.open?.[i],high:quote.high?.[i],low:quote.low?.[i],close:quote.close?.[i],volume:quote.volume?.[i]};
+  if(!['open','high','low','close','volume'].every(key=>typeof row[key]==='number'&&Number.isFinite(row[key]))||row.open<=0||row.high<=0||row.low<=0||row.close<=0||row.volume<0)continue;
   rows.push(row);
  }
  const parsed=readIntraday({symbol,date:today,data:rows},symbol),meta=result.meta??{},marketTime=Number(meta.regularMarketTime),price=Number(meta.regularMarketPrice),prior=Number(meta.chartPreviousClose??meta.previousClose);
