@@ -1,6 +1,6 @@
 {
   "schema": "twstock-public-source-registry-v1",
-  "updated_at": "2026-10-15T09:34:04.814Z",
+  "updated_at": "2026-10-19T05:48:11.295Z",
   "purpose": "Canonical registry of useful public acquisition/discovery sources for Taiwan-stock corporate evidence, catalyst discovery, historical expectation backfill and source-health monitoring. Public sources/evidence only; no private Fair Value logic.",
   "rules": {
     "record_new_useful_sources_before_pipeline_use": true,
@@ -621,6 +621,48 @@
       ],
       "last_verified_at": "2026-10-16T22:25:48+08:00",
       "verification_context": "Opened 2025-02-27 China Times Commercial Times attributed Yahoo article naming KGI Investment Advisory 3231 target TWD135 and server revenue mix forecast."
+    },
+    {
+      "source_id": "moneydj_timestamped_corporate_news",
+      "name": "MoneyDJ 財經新聞／公司展望",
+      "domain": "moneydj.com",
+      "url_pattern": "https://www.moneydj.com/kmdj/news/newsviewer.aspx?a={article_guid}",
+      "source_type": "public_timestamped_secondary_corporate_news",
+      "priority": "medium",
+      "use_cases": [
+        "company_reported_guidance",
+        "issuer_outlook",
+        "capacity_expansion",
+        "revenue_growth",
+        "equipment_delivery_schedule",
+        "analyst_estimate_context"
+      ],
+      "fields_verified": [
+        "published_at",
+        "symbol",
+        "issuer_name",
+        "reported_numeric_fact",
+        "attributed_management_or_analyst_forecast",
+        "source_locator"
+      ],
+      "pit_quality": "PUBLIC_TIMESTAMPED_SECONDARY_NOT_STRICT_PIT",
+      "historical_backfill": true,
+      "limitations": [
+        "Company statements and unnamed analyst forecasts in news are secondary attribution, not official filing",
+        "Delivery schedule is not signed-contract proof or realized revenue",
+        "Search snippets are discovery only; open full article and verify exact locator",
+        "Preserve structured facts and URL only, do not republish copyrighted text",
+        "Historical availability requires independently archived publication evidence before strict PIT certification"
+      ],
+      "schedule_tags": [
+        "corporate_evidence",
+        "catalyst",
+        "issuer_fv_bridge",
+        "source_health"
+      ],
+      "last_verified_at": "2026-10-19T13:41:57+08:00",
+      "verification_context": "Opened 2026-10-19 12:21:38 MoneyDJ 6664 Group Up article; confirmed article timestamp, issuer identity, Q3 revenue, equipment delivery outlook and Yangmei expansion as secondary attribution.",
+      "health_status": "healthy_current"
     }
   ]
 }
