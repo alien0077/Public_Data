@@ -63,7 +63,7 @@ test('rotation sector pagination advances shell and served module/style cache ke
  const read=name=>readFileSync(new URL(`./${name}`,import.meta.url),'utf8');
  const index=read('index.html'),app=read('app.mjs'),features=read('features.mjs'),worker=read('sw.js'),transfer=read('transfer.mjs');
  assert.match(index,/app\.mjs\?v=223/);
- assert.match(index,/style\.css\?v=123/);
+ assert.match(index,/style\.css\?v=124/);
  assert.match(app,/features\.mjs\?v=131/);
  assert.match(app,/storage\.mjs\?v=3/);
  assert.match(app,/market\.mjs\?v=62/);
@@ -94,7 +94,7 @@ test('rotation sector pagination advances shell and served module/style cache ke
  assert.match(worker,/etf-battle\.mjs\?v=6/);
  assert.match(worker,/assets\.mjs\?v=3/);
  assert.match(worker,/explore\.mjs\?v=13/);
- assert.match(worker,/style\.css\?v=123/);
+ assert.match(worker,/style\.css\?v=124/);
  assert.match(features,/desktop-pages\.mjs\?v=71/);
  assert.match(worker,/desktop-pages\.mjs\?v=71/);
  assert.match(worker,/services\.mjs\?v=58/);
